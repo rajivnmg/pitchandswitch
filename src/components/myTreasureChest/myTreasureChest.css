@@ -1,0 +1,19 @@
+.myTreasure { background: #f2f2f2; padding: 25px 0 }
+.myTreasure .container { margin: 0 auto; max-width: 1100px;}
+.msgSuccess {height: 22px;border-radius: 4px;background-color: #3ab03a; text-align: center; padding:15px 0; margin:0 auto 40px; color: #ffffff;font-size: 16px; line-height: 22px; max-width: 820px;}
+.msgSuccess .close {float:right; margin-right:25px; color:#fff;color: #ffffff;font-size: 16px;  border-radius:50%; border:2px solid #fff; width:22px; height: 22px; text-decoration: none; line-height:22px;}
+.myTreasure .heading-row { padding-bottom:30px; margin-top: 0}
+.myTreasure .heading-row .more-items {float:right; max-width:unset; margin-top: 0; border-radius:35px;}
+.myTreasure .heading-row h1 {color: #414141;font-size: 30px;font-weight: 700; padding-bottom: 15px; padding-top:0px}
+.myTreasure .heading-row .more-items .plus {font-size:22px; margin-right: 10px;}
+.item-listing .Items .details h4 a { text-decoration: none;}
+.heading-row .subheading {color: #969696;font-size: 16px;font-weight: 400;}
+.myTreasure .item-listing {border-top: 1px solid #ccc; padding: 30px 0 0}
+.myTreasure .item-listing .Items { margin-right: 29px;}
+.myTreasure .item-listing .Items .pic { position: relative}
+.myTreasure .item-listing .Items:nth-child(4n+4) { margin:0 17px 30px 0}
+.myTreasure .item-listing .Items:nth-child(5n+5) { margin-right:0}
+.myTreasure .item-listing .Items .pic .overlay { background:rgba(0,0,0,0.5); width:100%; height:100%; position: absolute; top:0; left:0; display: none }
+.myTreasure .item-listing .Items .pic:hover .overlay { display: block}
+.myTreasure .item-listing .Items .pic .delete { background: #fff url(../../images/delete-edit-icon.png) no-repeat 10px 8px; width:40px; height: 40px; display: block; position: absolute; top:15px; right:65px; border-radius: 50%; text-indent:-999px;}
+.myTreasure .item-listing .Items .pic .edit { background: #fff url(../../images/delete-edit-icon.png) no-repeat 9px -27px; width:40px; height: 40px; display: block; position: absolute; top:15px; right:13px; border-radius: 50%; text-indent:-999px;}

@@ -1,0 +1,9 @@
+.dashboard { background: #f2f2f2; padding: 25px 0 }
+.popularItems {border-top:1px solid #ccc}
+.dashboard .container { margin: 0 auto; max-width: 1100px;}
+.msgSuccess {height: 22px;border-radius: 4px;background-color: #3ab03a; text-align: center; padding:15px 0; margin:0 auto 40px; color: #ffffff;font-size: 16px; line-height: 22px; max-width: 820px;}
+.msgSuccess .close {float:right; margin-right:25px; color:#fff;color: #ffffff;font-size: 16px;  border-radius:50%; border:2px solid #fff; width:22px; height: 22px; text-decoration: none; line-height:22px;}
+.heading-row { padding-bottom:30px;}
+.heading-row .more-items {float:right;}
+.heading-row h1 {color: #414141;font-size: 30px;font-weight: 700; padding-bottom: 15px}
+.heading-row .subheading {color: #969696;font-size: 16px;font-weight: 400;}

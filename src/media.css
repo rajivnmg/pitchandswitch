@@ -1,0 +1,49 @@
+@media screen and (max-width:1100px) {
+.category { margin-left:2%}
+.search-container { margin-left: 2%}
+.search-container .search { width:240px}
+.sponsors img { max-width:100% }
+.slick-next { right: 10px}
+.slick-prev {left:10px}
+footer { padding-left: 15px; padding-right: 15px;}
+
+    
+}
+@media screen and (max-width:1023px) {
+    
+
+    
+}
+@media screen and (max-width:767px) {
+.sponsors,.popularItems,.testimonialContainer, .weKeepSafe, .howitworks { padding-top:25px; padding-bottom:25px}
+.donateContainer { padding:0}
+    
+h3, .howitworks h3, .whatpitch h3, .sponsors h3 {font-size: 20px}
+.banner-details { max-width: 300px; margin-left: -150px; margin-top: -45px;}
+.banner-details h1 {font-size: 25px;}
+.banner-details a.home-btn {  padding: 10px 15px; font-size: 16px; max-width: 150px;}
+.more-items, .donateContainer .donate-div .details a, .howitworks .more-items, .whatpitch .more-items{  padding: 10px 15px; font-size: 16px; max-width: 120px;}
+
+.login-nav { margin: 0 auto 15px; float:none; clear: both; display: block; text-align: center}
+.search-container {float:none; width:100%; clear:both; box-sizing: border-box; margin:15px auto 15px; max-width: 300px;}
+.category {float:none; clear: both; margin: 15px auto 0; display:block; max-width: 100px;}
+header .logo {float:none; margin: 0 auto }
+.search-container .search {width:118px;}
+.login-nav .login-link { display: inline-block}
+.donateContainer .donate-div .details { background: rgba(0,0,0,0.5); top:0; left:0; width:100%; height:100%; box-sizing: border-box; right:auto; max-width: 100%; text-align: center}
+.donateContainer .donate-div .details a { display: inline-block}
+.donateContainer .donate-div h4 { font-size: 16px;}
+.popularItems .slides-div .details h4 { font-size: 16px}
+.weKeepSafe ul li { display: block; width: auto; border-bottom: 1px solid #ccc; padding: 0 15px 15px; margin-bottom:15px}
+.weKeepSafe ul { display: block}
+.weKeepSafe ul li:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: 0 }
+footer .left-div { width: auto; text-align: center; float:none;}
+footer .right-div { width: auto; float:none; text-align: center; margin-top: 15px; clear: both;}
+footer .left-div ul { text-align: center; margin-right: 10px;}
+footer .left-div p{ text-align: center;}
+.sponsors ul li { padding:0 10px 10px }
+.sponsors ul { padding-bottom: 0}
+.testimonialContainer h3 { padding-bottom: 15px;} 
+
+
+}

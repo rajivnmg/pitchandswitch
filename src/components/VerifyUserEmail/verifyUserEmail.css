@@ -1,0 +1,5 @@
+.login-container { background:#e38f30 url(../../images/login-bg.png) no-repeat 0 0; padding:70px 0; background-size:100% auto}
+.login-container .container { max-width: 1140px; margin: 0 auto}
+.login-container .login {float:left; box-shadow: -11px 10px 0 rgba(0, 0, 0, 0.1); background-color: #ffffff; padding: 50px; width:514px; box-sizing: border-box }
+.login-container .login-icon {float:left; margin-right:30px;} 
+

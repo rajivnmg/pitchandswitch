@@ -1,0 +1,95 @@
+.slick-dots {bottom: -25px; width: 100%; margin: 0; list-style: none;  text-align: center;}
+.slick-dots, .slick-next, .slick-prev { position: absolute; display: block;  padding: 0;}
+.slick-next, .slick-prev { font-size: 0; line-height: 0; top: 50%; width: 20px; height: 20px;    -webkit-transform: translate(0,-50%); -ms-transform: translate(0,-50%); transform: translate(0,-50%); cursor: pointer;    color: transparent; border: none; outline: 0; background: 0 0;}
+.slick-dots li {    position: relative;    display: inline-block;    width: 20px;    height: 20px;    margin: 0 5px;    padding: 0;    cursor: pointer;}
+.slick-dots li button { font-size: 0; line-height: 0; display: block; width: 20px; height: 20px; padding: 5px; cursor: pointer; color: transparent; border: 0; outline: 0; background: 0 0;}
+.slick-next {right: -25px;}
+.slick-next, .slick-prev { background:url(../../images/slide-arrow.png) no-repeat 0 0; width:50px; height: 50px; opacity:0.8; z-index: 999} 
+.slick-next { background-position:top right; right:-40px}
+.slick-next:hover { background:url(../../images/slide-arrow.png) no-repeat top right; opacity:1}
+.slick-prev { background-position:0 0; left:-40px}
+.slick-prev:hover {  background:url(../../images/slide-arrow.png) no-repeat 0 0; opacity: 1}
+.slick-next:before, .slick-prev:before { display:none;}
+.slick-disabled,.slick-disabled:hover { opacity:0.3}
+
+/**************** banner css starts ***********************/
+.banner img { max-width: 100%; width:100%}
+.banner-details { position: absolute; top:50%; left:50%; margin: -60px 0 0 -420px; max-width: 840px; width: 100%;}
+.banner-details h1 {text-shadow: 0 3px 4px rgba(0, 0, 0, 0.27);color: #ffffff;font-family: Roboto;font-size: 60px;font-weight: 700; font-weight: normal; text-align: center}
+.banner-details a.home-btn {max-width:220px; background:#fff; border-radius: 35px; padding: 15px 25px; color: #dcb73f; font-size:16px; text-decoration: none; margin:20px auto 0; display: block; text-align:center; font-size: 20px;font-weight: 400; text-decoration: none}
+.banner-details a.home-btn:hover {background:#fff; color: #dcb73f;}
+.banner { position: relative}
+
+/**************** sponsors css starts ***********************/
+.sponsors {padding:25px; text-align: center; border-bottom:1px solid #ccc;}
+.sponsors h3 { color:#414141; font-size: 20px; text-transform: uppercase; padding: 0 0 25px;}
+.sponsors ul { list-style: none; text-align: center; padding-bottom:15px}
+.sponsors ul li { display: inline-block; padding: 0 25px}
+
+/**************** popular items css starts ***********************/
+.popularItems { text-align: center; padding: 45px 0; max-width: 1100px; margin: 0 auto}
+.popularItems .pic { padding:0; min-height:243px; background:#f2f2f2}
+.popularItems .pic img { max-width: 100%}
+.popularItems .slides-div { border-radius:8px; box-shadow:0 0 4px rgba(0,0,0,0.5); max-width: 199px; overflow: hidden}
+.popularItems .slides-div .details { padding:10px 15px; text-align: left}
+.popularItems .slides-div .details h4 { color: #414141;font-family: Roboto;font-size: 18px;font-weight: 400; margin-bottom: 10px;     text-overflow: ellipsis; height:53px; overflow: hidden; }
+.popularItems .slides-div .details h4 a {color:#414141; text-decoration: none}
+.popularItems .slides-div .catLink {background-color: #dab439; color: #fff; display: inline-block; padding: 5px 15px; border-radius:15px; text-decoration: none; font-size: 12px;}
+.more-items {border-radius:25px; padding: 13px 25px; background:#dcb73f; color:#fff; text-align: center; display: block; margin:25px auto 0; max-width: 170px; text-decoration: none;font-family: Roboto;font-size: 20px; }
+.more-items:hover {  background:#caa325;}
+
+/**************** testimonials css starts ***********************/
+.testimonialContainer { padding:45px 0;  background:url(../../images/testimonials-bg.png) repeat 0 0;}
+.testimonialContainer .testimonial-div { background: #fff; padding:15px; box-shadow:0 0 4px rgba(0,0,0,0.5); border-radius:8px; margin: 15px 15px}
+.testimonialContainer .starRating { text-align: center; padding:25px 0 16px 125px;} 
+.testimonialContainer .starRating img { display: inline-block} 
+.testimonialContainer h4 { text-align: center; font-weight: normal ; font-size: 14px; color: #5e5e5e; min-height: 76px; padding:0 25px 25px; line-height: 18px;}
+.testimonialContainer h5 { text-align: center;  padding-bottom:5px; color: #414141; font-size: 16px;}
+.testimonialContainer .city { font-size:14px; text-align: center; color: #aeaeae; padding-bottom: 15px;}
+.testimonialContainer .container { max-width: 1100px; margin: 0 auto}
+
+/**************** donate css starts ***********************/
+.donateContainer { padding:45px 0}
+.donateContainer .container { max-width:952px; margin: 0 auto }
+.donateContainer .donate-div { position: relative}
+.donateContainer .imgDiv {padding:0}
+.donateContainer .donate-div h4 {color: #fff; font-size: 23px; font-weight: normal; font-family: Roboto; line-height: 26px; letter-spacing: 1px;}
+.donateContainer .donate-div .details { position: absolute; top:0; right:0; color:#fff; max-width:300px; padding:50px 25px 0 } 
+.donateContainer .donate-div .details a {border-radius: 25px; padding: 13px 25px; background: #dcb73f; color: #fff; text-align: center; display: block; margin: 25px 0 0;  max-width: 140px; text-decoration: none; font-family: Roboto;  font-size: 20px;}
+.slick-dots { bottom:15px}
+.slick-dots li { height:13px; width: 13px;}
+.slick-dots li button {border:3px solid #fff; border-radius:50%; padding: 0; margin: 0; width: 100%; height: 100%}
+.slick-dots li button:before { display: none;}
+.slick-dots li.slick-active button { background:#fff;  }
+
+
+/**************** newlyProducts css starts ***********************/
+.newlyProducts {padding:45px 0; background: url(../../images/testimonials-bg.png) repeat 0 0; max-width: 100%;}
+.newlyProducts .container {max-width: 1100px; margin: 0 auto;}
+
+
+/**************** howItWorks css starts ***********************/
+.howitworks {padding:45px 0; background: url(../../images/how-it-works-bg.jpg) no-repeat 0 0; background-size:cover;  max-width: 100%;}
+.howitworks .container { max-width:1100px; margin: 0 auto }
+.howitworks h3 {color:#fff;color: #ffffff;font-family: Roboto;font-size: 30px;font-weight: 400;}
+.howitworks p {color: #ffffff;font-family: Roboto;font-size: 14px;font-weight: 400; text-align: center; padding-bottom: 25px}
+.howitworks .more-items { background:#fff;color: #dcb73f;font-size: 20px;}
+.howitworks .more-items:hover { background:#dcb73f;color: #fff;}
+
+/**************** Wekeepsyou css starts ***********************/
+.weKeepSafe { background: #fff; padding:45px 0;}
+.weKeepSafe .container { max-width:1100px; margin: 0 auto }
+.weKeepSafe ul { list-style: none; display: flex}
+.weKeepSafe ul li { flex-grow:1; text-align: center;  padding: 0 5%}
+.weKeepSafe ul li .icon { padding:0 0 15px; }
+.weKeepSafe ul li h4 {color: #dcb73f;font-family: Roboto;font-size: 22px;font-weight: 400; padding: 0 0 15px}
+.weKeepSafe ul li p {color: #5e5e5e;font-family: Roboto;font-size: 14px;font-weight: 400;}
+
+/**************** Whatispitch css starts ***********************/
+.whatpitch {padding:45px 0; background: url(../../images/what-pitch-bg.png) no-repeat 0 0; background-size:cover;  max-width: 100%;}
+.whatpitch .container { max-width:1100px; margin: 0 auto }
+.whatpitch h3 {color:#fff;color: #ffffff;font-family: Roboto;font-size: 30px;font-weight: 400;}
+.whatpitch p {color: #ffffff;font-family: Roboto;font-size: 14px;font-weight: 400; text-align: center}
+.whatpitch .more-items { background:#fff;color: #dcb73f;font-size: 20px;}
+.whatpitch .more-items:hover { background:#dcb73f;color: #fff;}
+.read-more-button{color: lightseagreen;cursor: pointer !important;}

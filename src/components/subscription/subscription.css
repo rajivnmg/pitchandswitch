@@ -1,0 +1,29 @@
+.subscription-container { background-color: #f1f1f1; padding:70px 0; background-size:100% auto}
+.subscription-container .container { max-width: 1140px; margin: 0 auto; text-align: center}
+.subscription-container .subHeading { text-align: center;color: #969696;font-size: 16px;font-weight: 400; padding-bottom:45px; }
+.subscription-container h3 { padding-bottom:25px; color: #414141;font-size: 30px;font-weight: 700; }
+.subscription-container .colum-basic { display:inline-block; width:280px; background: #fff;border: 1px solid #e5e5e5;border-radius: 4px; margin-right: 52px; text-align: center; padding:20px 12px 30px; }
+.subscription-container .colum-basic.gold { margin-right: 0} 
+.subscription-container .colum-basic .pic-row { min-height: 142px; padding-bottom: 12px; vertical-align: bottom}
+.subscription-container .colum-basic .pic-row img { vertical-align: bottom; display: inline}
+
+.subscription-container .colum-basic .row-div {padding:0; border-bottom:1px solid  #f3e0e0; color: #969696;font-weight: 400; }
+.subscription-container .colum-basic .row-div strong {color: #414141;font-size: 15px;line-height: 36px;}
+.subscription-container .colum-basic h4 {color: #d0a518;font-size: 30px;font-weight: 400; padding-bottom: 25px;  border-bottom:1px solid  #f3e0e0; }
+.subscription-container .colum-basic h4.price {color: #3ab03a;font-size: 36px;font-weight: 700; border-bottom:0; padding:25px 0 25px  }
+.subscription-container .colum-basic h4.price sub {font-size: 18px;font-weight: 700;} 
+.subscription-container .colum-basic .getStarted-btn {width: 193px;height: 46px; line-height: 46px; border-radius: 23px;background-color: #dcb73f; display: block;color: #ffffff;font-size: 20px;font-weight: 700; text-decoration:none; margin: 0 auto; cursor: pointer }
+
+.popup-overlay { overflow: auto!important; padding:70px 0}
+.modal {  font-size: 12px; text-align: left}
+.popup-content { box-shadow: 0 2px 30px rgba(0, 0, 0, 0.16); border-radius: 4px; padding: 40px!important;background-color: #ffffff;}
+.modal > .header {  width: 100%;  color: #414141;font-size: 30px;font-weight: 700; text-align:left;  padding:0 0 35px}
+.modal > .content {  width: 100%;  padding:0;}
+.modal > .actions {  margin: auto;}
+.modal > .actions {  width: 100%;  padding: 10px 5px;  text-align: center;}
+.modal > .close {  cursor: pointer; position: absolute;  display: block; width:20px; height:20px; line-height:20px;  right: 20px;  top:20px;  font-size:18px;  background: #ffffff;  border-radius:50%;  border:2px solid #969696; color:#969696; text-decoration: none; text-align: center; font-weight: bold;}
+
+.secureicon { background:url(../../images/lockicon.png) no-repeat 0 0; padding:0 0 0 30px;color: #3ab03a; font-size: 16px; font-weight: 700; line-height: 24px; margin: 0 auto; max-width: 140px; margin-top:8px;  }
+.payInst {color: #969696;font-size: 16px;font-weight: 400;line-height: 36px; text-align: center }
+.gold-div {border-radius: 4px;border: 1px solid #efefab;background-color: #ffffdc; color: #414141;font-size: 24px;font-weight: 700; padding:20px 15px;}
+.gold-div strong  {width:40%; display: inline-block}
