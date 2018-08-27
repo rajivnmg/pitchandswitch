@@ -5,6 +5,7 @@ const httpResponseMessage = require("../helpers/httpResponseMessage");
 const constant = require("../../common/constant");
 const validation = require("../middlewares/validation");
 const moment = require("moment-timezone");
+//var Promise = require('bluebird');
 
 /** Auther	: Rajiv Kumar
  *  Date	: June 18, 2018
@@ -232,17 +233,27 @@ const updateCategory = (req, res) => {
     }
   );
 };
+
+
+function populateParents(categories) {
+     return Category.populate(categories, { path: "parent" }).then(function(categories) {
+     return categories.parent ? populateParents(categories.parent) : Promise.all(categories);
+  });
+}
+
+
+
 /** Auther	: Rajiv kumar
  *  Date	: June 18, 2018
  */
 /// function to list all products
-const allCategories = (req, res) => {
+const allCategories_ORG = (req, res) => {
   //var perPage = constant.PER_PAGE_RECORD
   //var page = req.params.page || 1;
   Category.find({})
-    .populate({ path: "children", model: "Category" })
-    .populate({ path: "parent", model: "Category" })
-   // .skip(perPage * page - perPage)
+   // .populate({ path: "children", model: "Category" })
+   // .populate({ path: "parent", model: "Category" })
+    // .skip(perPage * page - perPage)
     //.limit(perPage)
     .exec(function(err, categories) {
         if (err) return next(err);
@@ -250,9 +261,233 @@ const allCategories = (req, res) => {
           code: httpResponseCode.EVERYTHING_IS_OK,
           message: httpResponseMessage.SUCCESSFULLY_DONE,
           result: categories
-        });    
+        }); 
     });
+   
+   
+  // Bottom to top query 
+  //~ Category.
+  //~ find({}).
+  //~ populate({
+    //~ path: 'parent',
+    //~ // Get friends of friends - populate the 'friends' array for every friend
+    //~ populate: { path: 'parent' ,
+					//~ populate: { path: 'parent' ,
+						 //~ populate: { path: 'parent', populate: { path: 'parent', populate: { path: 'parent' }} }
+					//~ }
+		//~ }
+  //~ }).exec(function(err, categories) {
+        //~ return res.json({
+          //~ code: httpResponseCode.EVERYTHING_IS_OK,
+          //~ message: httpResponseMessage.SUCCESSFULLY_DONE,
+          //~ result: categories
+        //~ }); 
+    //~ });
 };
+
+
+/** Auther	: Rajiv kumar
+ *  Date	: June 18, 2018
+ */
+/// function to list all products
+const allCategories = (req, res) => {	
+  //var perPage = constant.PER_PAGE_RECORD
+  //var page = req.params.page || 1;
+  //~ Category.find({})
+    //~ .populate({ path: "children", model: "Category" })
+    //~ .populate({ path: "parent", model: "Category" })
+    //~ // .skip(perPage * page - perPage)
+    //~ //.limit(perPage)
+    //~ .exec(function(err, categories) {
+	  //~ populateParents(categories).then(function(){	
+        //~ if (err) return next(err);
+        //~ return res.json({
+          //~ code: httpResponseCode.EVERYTHING_IS_OK,
+          //~ message: httpResponseMessage.SUCCESSFULLY_DONE,
+          //~ result: categories
+        //~ }); 
+      //~ });  
+          
+    //~ });
+   
+   
+  // Bottom to top query 
+  //~ Category.
+  //~ find({}).
+  //~ populate({
+    //~ path: 'parent',
+    //~ // Get friends of friends - populate the 'friends' array for every friend
+    //~ populate: { path: 'parent' ,
+					//~ populate: { path: 'parent' ,
+						 //~ populate: { path: 'parent', populate: { path: 'parent', populate: { path: 'parent' }} }
+					//~ }
+		//~ }
+  //~ }).exec(function(err, categories) {
+	 
+        //~ return res.json({
+          //~ code: httpResponseCode.EVERYTHING_IS_OK,
+          //~ message: httpResponseMessage.SUCCESSFULLY_DONE,
+          //~ result: categories
+        //~ }); 
+     
+    //~ });
+ 
+ 
+ Category.aggregate([
+	//{$match:{'parent':null}},
+	{
+    $graphLookup: {
+        from: "categories",
+        startWith: "$_id",
+        connectFromField: "_id",
+        connectToField: "parent",
+         maxDepth: 4,
+         depthField: "parent",
+        as: "subCategory"
+    }
+}]).exec(function(err, categories) {
+	 
+        return res.json({
+          code: httpResponseCode.EVERYTHING_IS_OK,
+          message: httpResponseMessage.SUCCESSFULLY_DONE,
+          result: categories
+        }); 
+     
+    });
+ 
+ 
+ console.log("DONE");
+ 
+ 
+ //~ var categories = Category.aggregate([
+//~ // reshape the data you'll need further on from each mached doc
+//~ // now put a common _id so you can group them, and also put stuff into arrays
+//~ {
+    //~ $project: {
+        //~ id: {$literal: 'id'},
+        //~ mainCategory: {
+            //~ // if our parent is null, put our data.
+            //~ // otherwise put null here.
+            //~ $cond: [{$eq: [null, '$parent']}, {_id: '$data.id', name: '$data.title'}, undefined]
+        //~ },
+        //~ subcat: {
+            //~ // here is the other way around.
+            //~ $cond: [{$ne: [null, '$parent']}, {_id: '$data.id', name: '$data.title'}, null]
+
+        //~ }
+    //~ }
+    //~ // that stage produces for each doc either a mainCat or subcat
+    //~ // (and the other prop equals to null)
+//~ },
+//~ // finally, group the things so you can have them together
+//~ {
+    //~ $group: {
+        //~ _id: '$id',
+        //~ // a bit hacky, but mongo will yield to it
+        //~ mainCategory: {$max: '$mainCategory'},
+        //~ subCategories: {
+            //~ // this will, unfortunately, also add the `null` we have
+            //~ // assigned to main category up there
+            //~ $addToSet: '$subcat'
+        //~ }
+    //~ }
+//~ },
+//~ // so we get rid of the unwanted _id = 'id' and the null from subcats.
+//~ {
+    //~ $project: {
+        //~ _id: false,
+        //~ mainCategory: 1,
+        //~ subCategories: {
+            //~ $setDifference: ['$subCategories', [null]]
+        //~ }
+    //~ }
+//~ }]).exec(function(err, categories) {
+	 
+        //~ return res.json({
+          //~ code: httpResponseCode.EVERYTHING_IS_OK,
+          //~ message: httpResponseMessage.SUCCESSFULLY_DONE,
+          //~ result: categories
+        //~ }); 
+     
+    //~ });
+ //console.log("categories",categories)
+ 
+ 
+        
+  //~ from: <collection>,
+      //~ startWith: <expression>,
+      //~ connectFromField: <string>,
+      //~ connectToField: <string>,
+      //~ as: <string>,
+      //~ maxDepth: <number>,
+      //~ depthField: <string>,
+      //~ restrictSearchWithMatch: <document>
+   //~ }
+   
+  
+ //~ Category.aggregate([
+	
+	//~ {
+      //~ $graphLookup: {
+         //~ from: "_id",
+         //~ startWith: "$parent", //returns an array with the object values
+         //~ connectFromField: "parent", // not sure about this
+         //~ connectToField: "_id",
+         //~ as: "chhhhhhhh",
+         //~ maxDepth:5
+      //~ }
+   //~ }
+	  //~ ])                
+     //~ .exec(function(err, categories) {	
+                  //~ return res.json({
+                  //~ code: httpResponseCode.EVERYTHING_IS_OK,
+                  //~ message: httpResponseMessage.SUCCESSFULLY_DONE,
+                  //~ result: categories
+              //~ });
+        
+        //~ });
+        
+      //~ console.log("DADDADDADADADADA")  
+//~ var descendants=[]
+//~ var stack=[];
+//~ var item = Category.find({_id:"5b5ac03f261a64354489d47b"});
+//~ stack.push(item);
+//~ while (stack.length>0){
+    //~ var currentnode = stack.pop();
+    //~ var children = Category.find({parent:currentnode._id});
+    //~ while(true === children.hasNext()) {
+        //~ var child = children.next();
+        //~ descendants.push(child._id);
+        //~ stack.push(child);
+    //~ }
+//~ }
+
+//~ descendants.join(",")
+//~ console.log("descendants",descendants)
+//Electronics / Cell_Phones_and_Accessories / Cell_Phones_and_Smartphones
+      
+
+};
+
+function populateChield(category,allCateg) {
+    Category.find({'parent':category._id})
+		.exec(function(err, ccates) {			
+			//console.log("populateChield",ccates)
+			if(ccates.length !== 0){
+				allCateg.push(ccates);
+				console.log("populateGrandChield",ccates)
+				ccates.forEach(function(cats, index, arr) {
+					populateChield(cats,allCateg);
+				})    
+			}else{
+				allCateg.push(ccates);
+			}
+		
+	});
+	//console.log("allCateg",allCateg)
+	return allCateg
+}
+
 
 /** Auther	: Rajiv Kumar
  *  Date	: June 20, 2018
@@ -274,6 +509,7 @@ const deleteCategory = (req, res) => {
     });
   });
 };
+
 
 module.exports = {
   create,
