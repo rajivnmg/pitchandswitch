@@ -8,8 +8,10 @@ import Slider from "react-slick";
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import popularItemImg from '../../images/popular-item1.jpg';
 import axios from 'axios';
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+
 class NewlyProducts extends Component {
-     constructor(props)
+   constructor(props)
     {
         super(props);
         this.state = {
@@ -23,13 +25,13 @@ class NewlyProducts extends Component {
         ;
     }
 
- componentDidMount(){
+   componentDidMount(){
 	 axios.get('/product/listProduct').then(result => {		 
 		 console.log("Product",result)		 ;
 			this.setState({newlyProducts:result.data.result})
 		 })
-
-}
+   }
+   
     render() {
         const settings = {
             dots: false,
@@ -58,9 +60,9 @@ class NewlyProducts extends Component {
                 }
             ]
         };
-
+        
         return (
-                <div className="popularItems newlyProducts">
+        <div className="popularItems newlyProducts">
         <div className="container">
                     <h3> Newly added products</h3>
                     
@@ -84,6 +86,7 @@ class NewlyProducts extends Component {
                     </div>
                 </div>
                             );
+
             }
         }
         export default NewlyProducts;

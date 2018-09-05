@@ -23,9 +23,9 @@ const createBrands = (req, res) => {
     }
     const data = req.body;
     const flag = validation.validate_all_request(data, ['brandName']);
-    if (flag) {
+     if (flag) {
       return res.json(flag);
-    }
+     }
     let now = new Date();
     Brand.create(req.body, (err, result) => {
         console.log('RES-brandName',err, result);
@@ -178,7 +178,7 @@ const updateBrands = (req, res) => {
                 code: httpResponseCode.EVERYTHING_IS_OK,
                 message: httpResponseMessage.SUCCESSFULLY_DONE,
                result: result
-              });
+          });
     })
   }
 

@@ -56,6 +56,7 @@ class NewlyProducts extends Component {
 										<div className='details'>
 											<h4>{newlyProduct.productName}</h4>
 											<Link className="catLink" to='/'>{(newlyProduct.category && (newlyProduct.category.length > 0))?newlyProduct.category[0].title:''}</Link>
+
 										</div>
 									</div>
 								</div>

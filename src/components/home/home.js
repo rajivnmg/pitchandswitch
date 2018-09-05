@@ -7,6 +7,7 @@ import Testimonials from './testimonials'
 import Donate from './donate'
 import NewlyProducts from './newlyProducts'
 import WhatOtherSwitched from './whatOtherSwitched'
+import MostTrusted from './mostTrusted'
 import HowItWorks from './howItWorks'
 import WeKeepSafe from './weKeepSafe'
 import WhatPitchSwitch from './whatPitchSwitch'
@@ -14,20 +15,21 @@ import WhatPitchSwitch from './whatPitchSwitch'
 
 class Home extends Component {
     render() {
-        return (
-                <div className="home">
-                    <Banner />
-                    <HomeSponsors />
-                    <PopularItems />
-                    <Testimonials />
-                    <Donate />
-                    <NewlyProducts />
-                    <WhatOtherSwitched />
-                    <HowItWorks />
-                    <WeKeepSafe />
-                    <WhatPitchSwitch />
-                </div>
-                );
+      return (
+		<div className="home">
+			<Banner />
+			<HomeSponsors />
+			<PopularItems />
+			<Testimonials />
+			<Donate />
+			<NewlyProducts />
+			<WhatOtherSwitched />
+			<MostTrusted />
+			<HowItWorks />
+			<WeKeepSafe />
+			<WhatPitchSwitch />
+		</div>
+		);
     }
 }
 export default Home;
