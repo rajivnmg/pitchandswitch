@@ -30,18 +30,22 @@
 .popularItems { text-align: center; padding: 45px 0; max-width: 1100px; margin: 0 auto}
 .popularItems .pic { padding:0; min-height:243px; background:#f2f2f2}
 .popularItems .pic img { max-width: 100%}
-.popularItems .slides-div { border-radius:8px; box-shadow:0 0 4px rgba(0,0,0,0.5); max-width: 199px; overflow: hidden}
+.popularItems .slides-div { border-radius:8px; box-shadow:0 0 4px rgba(0,0,0,0.5); max-width: 199px; overflow: hidden; background: #fff}
 .popularItems .slides-div .details { padding:10px 15px; text-align: left}
 .popularItems .slides-div .details h4 { color: #414141;font-family: Roboto;font-size: 18px;font-weight: 400; margin-bottom: 10px;     text-overflow: ellipsis; height:53px; overflow: hidden; }
 .popularItems .slides-div .details h4 a {color:#414141; text-decoration: none}
 .popularItems .slides-div .catLink {background-color: #dab439; color: #fff; display: inline-block; padding: 5px 15px; border-radius:15px; text-decoration: none; font-size: 12px;}
 .more-items {border-radius:25px; padding: 13px 25px; background:#dcb73f; color:#fff; text-align: center; display: block; margin:25px auto 0; max-width: 170px; text-decoration: none;font-family: Roboto;font-size: 20px; }
 .more-items:hover {  background:#caa325;}
+.userdiv { padding:10px 9px; border-top:1px solid #d8d8d8; text-align: left; }
+.userdiv .user-pic { display: inline-block; margin-right:10px; vertical-align: middle}
+.userdiv .user-name { display: inline-block; color: #414141;font-family: Helvetica;font-size: 16px; vertical-align: middle}
+
 
 /**************** testimonials css starts ***********************/
 .testimonialContainer { padding:45px 0;  background:url(../../images/testimonials-bg.png) repeat 0 0;}
 .testimonialContainer .testimonial-div { background: #fff; padding:15px; box-shadow:0 0 4px rgba(0,0,0,0.5); border-radius:8px; margin: 15px 15px}
-.testimonialContainer .starRating { text-align: center; padding:25px 0 16px 125px;} 
+.testimonialContainer .starRating { text-align: center; padding:25px 0 16px 0;} 
 .testimonialContainer .starRating img { display: inline-block} 
 .testimonialContainer h4 { text-align: center; font-weight: normal ; font-size: 14px; color: #5e5e5e; min-height: 76px; padding:0 25px 25px; line-height: 18px;}
 .testimonialContainer h5 { text-align: center;  padding-bottom:5px; color: #414141; font-size: 16px;}
@@ -92,4 +96,31 @@
 .whatpitch p {color: #ffffff;font-family: Roboto;font-size: 14px;font-weight: 400; text-align: center}
 .whatpitch .more-items { background:#fff;color: #dcb73f;font-size: 20px;}
 .whatpitch .more-items:hover { background:#dcb73f;color: #fff;}
-.read-more-button{color: lightseagreen;cursor: pointer !important;}
+
+
+/**************** most trusted css starts ***********************/
+.mostTrusted { text-align: center; padding: 45px 0; max-width: 1100px; margin: 0 auto; border-top:1px solid #ccc}
+.mostTrusted .pic { padding:0;  overflow: hidden; background:#f2f2f2; border-radius:50%; height: 120px; width:120px; margin:0 auto 20px}
+.mostTrusted .pic img { max-width: 100%}
+.mostTrusted .slides-div {   max-width: 199px; overflow: hidden}
+.mostTrusted .slides-div .details { padding:0; text-align: center}
+.mostTrusted .slides-div .details h4 { color: #414141;font-family: Roboto;font-size: 16px;font-weight: 400; margin-bottom: 10px;     text-overflow: ellipsis; margin-bottom:20px;}
+.mostTrusted .slides-div .details h4 a {color:#414141; text-decoration: none}
+.mostTrusted .slides-div .ratingRow {height: 31px; line-height: 31px; border-radius: 23px;background-color: #dcb73f; margin:0 auto; color: #ffffff; font-size: 20px;font-weight: 700; padding: 0 20px; display: inline-block}
+
+.popularItems.no-shadow-box .slides-div { border-radius:0; box-shadow:none; max-width: 199px; overflow:visible; background: #fff; padding-bottom: 15px;}
+
+
+/* entire container, keeps perspective */
+.flip-container {perspective: 1000px;}
+	/* flip the pane when hovered */
+.flip-container:hover .flipper, .flip-container.hover .flipper {transform: rotateY(180deg);}
+.flip-container, .front, .back {width:100%; height: 402px; margin-top:6px;}
+/* flip speed goes here */
+.flipper {transition: 0.6s;transform-style: preserve-3d;position: relative;}
+/* hide back of pane during swap */
+.front, .back {	backface-visibility: hidden;position: absolute;	top: 0;	left: 0; border-radius:8px; box-shadow:0 0 4px rgba(0,0,0,0.5); overflow: hidden}
+/* front pane, placed above back */
+.front {z-index: 2;/* for firefox 31 */	transform: rotateY(0deg); background:#fff;}
+.back {transform: rotateY(180deg); background: #fff;}
+.flip-container:hover .flipper, .flip-container.hover .flipper, .flip-container.flip .flipper {transform: rotateY(180deg);}

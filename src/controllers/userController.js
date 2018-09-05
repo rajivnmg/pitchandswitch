@@ -57,7 +57,6 @@ const signup = (req, res) => {
       let accessToken = md5(salt)
       req.body.accessToken = accessToken      
       User.create(data, (err, result) => {
-
 		  console.log('RES-FIND',err, result);
         
       if (err) {
@@ -184,9 +183,7 @@ const userSignup = (req, res) => {
       let accessToken = md5(salt)
       req.body.accessToken = accessToken      
       User.create(data, (err, result) => {
-
 		  console.log('RES-FIND',err, result);
-        
       if (err) {
           return res.send({
 			errr : err,

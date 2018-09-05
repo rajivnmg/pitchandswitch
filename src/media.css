@@ -44,6 +44,9 @@ footer .left-div p{ text-align: center;}
 .sponsors ul li { padding:0 10px 10px }
 .sponsors ul { padding-bottom: 0}
 .testimonialContainer h3 { padding-bottom: 15px;} 
+header nav.after-login { margin: 0 auto; float:none; text-align: center}
+header nav.after-login ul { text-align: left}
+header nav ul li.notification { float:right;}
 
 
 }
