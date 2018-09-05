@@ -72,7 +72,7 @@ class NewlyProducts extends Component {
 									<div className='pic'><Link to="/my-trade-detail" ><img src={'http://localhost:3006/assets/uploads/Products/'+newlyProduct.productImages} /></Link></div>
 										<div className='details'>
 										<h4><a href="/my-trade-detail">{newlyProduct.productName}</a></h4>
-											<Link className="catLink" to='/'>{(newlyProduct.category)?newlyProduct.category[0].title:''}</Link>
+											<Link className="catLink" to='/'>{(newlyProduct.category && (newlyProduct.category.length > 0))?newlyProduct.category[0].title:''}</Link>
 										</div>
 									</div>
 								</div>

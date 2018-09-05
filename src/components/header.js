@@ -72,12 +72,29 @@ Capitalize(str){
                         <input type="submit" value="search" className="search-icon" />
                         <div className="cl"></div>
                     </div>
-                    <nav className="login-nav">
-                    
-                    
-                     <If condition={this.state.user.userName !==''}>
+                  
+                    <nav style={navHide}>
+						 <If condition={this.state.user.userName !==''}>
 						<Then>
-						  <Link to={''} onClick={this.logoutHandler} className="login-link">Logout</Link>
+							<ul>
+								<li><Link to={'/dashboard/Dashboard'}>Dashboard</Link></li>
+								<li><Link to={'/myTrades/MyTrades'}>My Trades</Link></li>
+								<li><a href="#">Wish list</a></li>
+								<li><a href="#">Treasure Chest</a></li>
+								<li><a href="#">Treasure Hunt</a></li>
+								<li><a href="#">Message</a></li>
+								<li><a href="#">Notifications</a></li>
+								<li><a href="#">My Profile</a>
+									<ul>
+										<li><a href="#">Update email </a></li>
+										<li><a href="#">Upgrade Plans </a></li>
+										<li><a href="#">Contact Us</a></li>
+										<li><a href="#">Settings</a></li>
+										<li> <Link to={''} onClick={this.logoutHandler} className="login-link">Logout</Link></li>
+									</ul>
+								</li>
+							</ul>
+                         
 						</Then>						
 						<Else>
 						 <Link to={'/login'} className="login-link">Login</Link>
@@ -85,27 +102,6 @@ Capitalize(str){
 						</Else>
 					 </If>
                         
-                
-                    </nav>
-                    <nav style={navHide}>
-                        <ul>
-                            <li><Link to={'/dashboard/Dashboard'}>Dashboard</Link></li>
-                            <li><Link to={'/myTrades/MyTrades'}>My Trades</Link></li>
-                            <li><a href="#">Wish list</a></li>
-                            <li><a href="#">Treasure Chest</a></li>
-                            <li><a href="#">Treasure Hunt</a></li>
-                            <li><a href="#">Message</a></li>
-                            <li><a href="#">Notifications</a></li>
-                            <li><a href="#">My Profile</a>
-                                <ul>
-                                    <li><a href="#">Update email </a></li>
-                                    <li><a href="#">Upgrade Plans </a></li>
-                                    <li><a href="#">Contact Us</a></li>
-                                    <li><a href="#">Settings</a></li>
-                                    <li><a href="#">Logout</a></li>
-                                </ul>
-                            </li>
-                        </ul>
                     </nav>
                     <div className="cl"></div>
                 </header>
