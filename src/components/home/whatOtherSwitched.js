@@ -30,7 +30,7 @@ class WhatOtherSwitched extends Component {
 	componentDidMount(){
 	 axios.get('/product/switchTodays').then(result => {		 
 		 console.log("ooooooo",result);
-			this.setState({switches:result.data.result});
+			//this.setState({switches:result.data.result});
 		 })
      }
     

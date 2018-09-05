@@ -82,14 +82,14 @@ Capitalize(str){
 					 <ul>
 						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">Robert </a>
 						<ul className="dashboard-subnav">
-							<li><a href="#" className="dashboard-icon">Dashboard</a></li>
+							<li><a href={'/dashboard'} className="dashboard-icon">Dashboard</a></li>
 							<li><a href="#" className="my-trades-icon">My Trades </a></li>
 							<li><a href="#" className="wishlist-icon">Wishlist</a></li>
 							<li><a href="#" className="trade-match-icon">Trade Match</a></li>
-							<li><a href="#" className="my-chest-icon">My Treasure Chest</a></li>
+							<li><a href={'/my-treasure-chest'} className="my-chest-icon">My Treasure Chest</a></li>
 							<li><a href="#" className="settings-icon">Settings</a></li>
 							<li><a href="#" className="help-icon">Help</a></li>
-							<li><a href="#" className="logout-icon">Logout</a></li>
+							<li><Link to={''} onClick={this.logoutHandler} className="login-link">Logout</Link></li>
 						</ul>
 					  </li>
 				    <li className="notification "><a href="#"><i className="icon"></i></a>

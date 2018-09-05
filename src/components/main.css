@@ -10,8 +10,8 @@ header nav ul li ul li { display: block; padding: 5px 15px;}
 header nav ul li a {color:#666}
 header nav ul li.user-login {}
 header nav.after-login{ margin-top:20px;}
-header nav ul .drop-arrow { position: relative;  padding-right:15px; vertical-align: middle}
-header nav ul .drop-arrow::after {content:""; position: absolute; top:2px; right:0; border: solid #414141; border-width: 0 2px 2px 0; display: inline-block; padding: 3px; vertical-align: middle; transform: rotate(45deg); -webkit-transform: rotate(45deg);} 
+header nav ul .drop-arrow { /*position: relative;*/  padding-right:15px; vertical-align: middle}
+header nav ul .drop-arrow::after {content:""; position: absolute; top:10px; right:0; border: solid #414141; border-width: 0 2px 2px 0; display: inline-block; padding: 3px; vertical-align: middle; transform: rotate(45deg); -webkit-transform: rotate(45deg);} 
 header nav ul li .pic {margin-right: 10px; vertical-align: middle; display: inline-block}
 .login-nav {float:right; font-family: Roboto; font-size: 14px;}
 .login-nav .login-link {  padding:10px 15px; color:#dcb73f; background:url(../images/login-icon.png) no-repeat 0 10px; padding-left:30px; text-decoration: none;}
