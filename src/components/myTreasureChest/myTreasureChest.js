@@ -239,7 +239,7 @@ class myTreasureChest extends Component {
                 
                     </div>
                 </div>
-                    );
+           );
     }
 }
 export default myTreasureChest;

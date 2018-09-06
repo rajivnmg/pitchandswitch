@@ -139,8 +139,8 @@
   "scripts": {
     "build-css": "node-sass-chokidar --include-path ./node_modules ./src/scss -o ./src/scss",
     "start-js": "PORT=3002 react-scripts start",
-    "server-js": "nodemon ./bin/www",
-    "start": "npm-run-all -p server-js start-js",
+    "server-js": "nodemon ./bin/www",    
+    "start": "npm-run-all -p start-js",
     "build-js": "react-scripts build",
     "build": "npm-run-all build-css build-js",
     "test": "react-scripts test --env=jsdom",
