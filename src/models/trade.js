@@ -17,13 +17,9 @@ offerTradeId:{
 },
 tradePitchProductId:{
 	type: Schema.Types.ObjectId,
-	ref: 'TradePitchProduct'
+	ref: 'Product'
 },
 tradeSwitchProductId:{
-	type: Schema.Types.ObjectId,
-	ref: 'TradePitchProduct'
-},
-pitchUserProductId:{
 	type: Schema.Types.ObjectId,
 	ref: 'Product'
 },

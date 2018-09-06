@@ -70,7 +70,7 @@ class NewlyProducts extends Component {
 					return (
 						<div className="slides-div" key={index}>
 						<div key={newlyProduct}>
-							<div className='pic'><Link to="/my-trade-detail" ><img src={'http://localhost:3006/assets/uploads/Products/'+newlyProduct.productImages} /></Link></div>
+							<div className='pic'><Link to="/my-trade-detail" ><img src={'http://localhost:3006/assets/uploads/Products/'+newlyProduct.productImages}/></Link></div>
 							<div className='details'>
 							<h4><a href="/my-trade-detail">{newlyProduct.productName}</a></h4>					
 						</div>
