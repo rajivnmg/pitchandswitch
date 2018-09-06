@@ -20,7 +20,7 @@ class NewlyProducts extends Component {
                 }
             ]
         }
-        ;
+        
     }
 
 	 componentDidMount(){
@@ -43,23 +43,25 @@ class NewlyProducts extends Component {
         return (
         <div className="popularItems recently-added">
         <div className="container">
-          <h3> <strong>Recently added</strong></h3>
+        <h3> <strong>Recently added</strong></h3>
 			<Slider {...settings}>
-				{this.state.newlyProducts.map(function (newlyProduct,index) {
-				return (
-						<div className="slides-div" key={index}>
-							<div key={newlyProduct}>
-								<div className='pic'><img src={'http://localhost:3006/assets/uploads/Products/'+newlyProduct.productImages} /></div>
-								<div className='details'>
-									<h4>{newlyProduct.productName}</h4>
-									<Link className="catLink" 
-									to='/'>{(newlyProduct.category[0])?newlyProduct.category[0].title:''}</Link>
-								</div>
-							</div>
-						</div>
-						)
-				})
-				}
+			{this.state.newlyProducts.map(function (newlyProduct,index) {
+			return (
+			<div className="slides-div" key={index}>
+			<div key={newlyProduct}>
+			<div className='pic'><img src={'http://localhost:3006/assets/uploads/Products/'+newlyProduct.productImages} /></div>
+			<div className='details'>
+			<h4>{newlyProduct.productName}</h4>
+			<Link className="catLink" to='/'>{(newlyProduct.category && (newlyProduct.category.length > 0))?newlyProduct.category[0].title:''}</Link>
+
+			</div>
+			</div>
+			</div>
+			</div>
+			</div>
+			)
+			})
+			}
 			</Slider>                    
            </div>
            </div>

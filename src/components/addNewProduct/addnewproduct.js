@@ -93,7 +93,7 @@ class Register extends React.Component {
         <div  className="container">
         <div className="breadcrumb">
         <ul>
-        <li><a href="/">Home</a></li><li><a href="#">My Treasure Chest</a></li><li>Add New Product</li>
+        <li><a href="/">Home</a></li><li><a href={'/my-treasure-chest'}>My Treasure Chest</a></li><li>Add New Product</li>
         </ul>
         </div>
               <div className="cl"></div>

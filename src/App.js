@@ -22,8 +22,10 @@ import axios from 'axios';
 //import http from 'http';
 const port=4001;
 const basePath ='';// '/react-test';
-axios.defaults.baseURL = window.location.protocol + '//' + window.location.hostname + ':' + port + basePath;
+//axios.defaults.baseURL = window.location.protocol + '//' + window.location.hostname + ':' + port + basePath;
+axios.defaults.baseURL = 'http://localhost:5001'+ basePath;
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
+const SERVER_URL='http://localhost:5001';
 
 class App extends Component {
 	constructor(props){
@@ -34,7 +36,7 @@ class App extends Component {
     }
   }
   componentDidMount() {
-
+	//the function call just after render the html	
   }
 	
     render() {

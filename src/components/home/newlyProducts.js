@@ -64,26 +64,31 @@ class NewlyProducts extends Component {
         return (
         <div className="popularItems newlyProducts">
         <div className="container">
-             <h3> Newly added products</h3>
-				<Slider {...settings}>
-					{this.state.newlyProducts.map(function (newlyProduct,index) {
-					return (
-						<div className="slides-div" key={index}>
-						<div key={newlyProduct}>
-							<div className='pic'><Link to="/my-trade-detail" ><img src={'http://localhost:3006/assets/uploads/Products/'+newlyProduct.productImages}/></Link></div>
-							<div className='details'>
-							<h4><a href="/my-trade-detail">{newlyProduct.productName}</a></h4>					
-						</div>
-						</div>
-						</div>
-					 )
-					})
-					}
-				</Slider>
-               <Link to='/' className='more-items'>More items</Link>
-               </div>
-               </div>
-               );
+
+                    <h3> Newly added products</h3>
+                    
+                    <Slider {...settings}>
+                        {this.state.newlyProducts.map(function (newlyProduct,index) {
+						return (
+								<div className="slides-div" key={index}>
+									<div key={newlyProduct}>
+									<div className='pic'><Link to="/my-trade-detail" ><img src={'http://localhost:3006/assets/uploads/Products/'+newlyProduct.productImages} /></Link></div>
+										<div className='details'>
+										<h4><a href="/my-trade-detail">{newlyProduct.productName}</a></h4>
+											<Link className="catLink" to='/'>{(newlyProduct.category && (newlyProduct.category.length > 0))?newlyProduct.category[0].title:''}</Link>
+										</div>
+									</div>
+								</div>
+								)
+                        })
+                        }
+                    </Slider>
+                    <Link to='/' className='more-items'>More items</Link>
+                    </div>
+                </div>
+              );
+
+
             }
         }
         export default NewlyProducts;

@@ -114,7 +114,7 @@ class Register extends React.Component {
 		console.log("COmponentDIDmaount to verify email")
 		if(this.props.match.params.id){
 			console.log("PARAm",this.props.match.params.id)
-			axios.get('/user/verifyUserEmail/'+this.props.match.params.id).then(result => {
+			axios.get('http://localhost:5001/user/verifyUserEmail/'+this.props.match.params.id).then(result => {
 				//	console.log("result", result)
 				 if(result.data.code === 200){
 					this.setState({user:result.data.result})

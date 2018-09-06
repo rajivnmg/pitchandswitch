@@ -7,12 +7,15 @@ const validation = require("../middlewares/validation");
 const moment = require("moment-timezone");
 //var Promise = require('bluebird');
 
+
+// method
+const Promise = require('bluebird');
 /** Auther	: Rajiv Kumar
  *  Date	: June 18, 2018
  */
 /// function to add category in  collection
 const create = (req, res) => {
-  console.log("<<<<<<<<<<<", JSON.stringify(req.body));
+  //console.log("<<<<<<<<<<<", JSON.stringify(req.body));
   if (!req.body.title) {
     return res.send({
       code: httpResponseCode.BAD_REQUEST,
@@ -35,7 +38,7 @@ const create = (req, res) => {
       if (req.body.parent != "") {
         Category.findOne({ _id: req.body.parent }, (err, result) => {
           Category.create(req.body, (err1, result1) => {
-            console.log("RES-CATEGORY", err, result1);
+           // console.log("RES-CATEGORY", err, result1);
             if (err1) {
               return res.send({
                 errr: err1,
@@ -100,7 +103,7 @@ const categories = (req, res) => {
     .populate('parent',['title'])
     .sort({createdAt:-1})
     .exec(function(err, categories) {
-        Category.count().exec(function(err, count) {
+        Category.estimatedDocumentCount().exec(function(err, count) {
           if (err) return next(err)
             return res.json({
                 code: httpResponseCode.EVERYTHING_IS_OK,
@@ -247,14 +250,14 @@ function populateParents(categories) {
  *  Date	: June 18, 2018
  */
 /// function to list all products
-const allCategories_ORG = (req, res) => {
-  //var perPage = constant.PER_PAGE_RECORD
-  //var page = req.params.page || 1;
+const allCategories111 = (req, res) => {
+  var perPage = constant.PER_PAGE_RECORD
+  var page = req.params.page || 1;
   Category.find({})
-   // .populate({ path: "children", model: "Category" })
-   // .populate({ path: "parent", model: "Category" })
-    // .skip(perPage * page - perPage)
-    //.limit(perPage)
+    .populate({ path: "children", model: "Category" })
+    .populate({ path: "parent", model: "Category" })
+    .skip(perPage * page - perPage)
+    .limit(perPage)
     .exec(function(err, categories) {
         if (err) return next(err);
         return res.json({
@@ -285,30 +288,65 @@ const allCategories_ORG = (req, res) => {
     //~ });
 };
 
+const getNestedChildren = (arr, parent) => {
+    var out = []
+    for(var i in arr) {
+        if((arr[i].parent != null ?arr[i].parent.toString():arr[i].parent) == (parent != null ?parent.toString():parent)) {
+            var children = getNestedChildren(arr, arr[i]._id)
+            if(children.length) {				
+                arr[i].children = children
+            }
+            out.push(arr[i]);
+        }
+    }
+    return out;
+};
+
 
 /** Auther	: Rajiv kumar
  *  Date	: June 18, 2018
  */
 /// function to list all products
 const allCategories = (req, res) => {	
-  //var perPage = constant.PER_PAGE_RECORD
-  //var page = req.params.page || 1;
-  //~ Category.find({})
-    //~ .populate({ path: "children", model: "Category" })
-    //~ .populate({ path: "parent", model: "Category" })
-    //~ // .skip(perPage * page - perPage)
-    //~ //.limit(perPage)
-    //~ .exec(function(err, categories) {
-	  //~ populateParents(categories).then(function(){	
-        //~ if (err) return next(err);
-        //~ return res.json({
-          //~ code: httpResponseCode.EVERYTHING_IS_OK,
-          //~ message: httpResponseMessage.SUCCESSFULLY_DONE,
-          //~ result: categories
-        //~ }); 
-      //~ });  
-          
-    //~ });
+	// top to bottom query 
+   Category.find({}).sort({parent: 1})
+    .exec(function(err, categories) {	
+		var newCats = [];
+		var index = 0;
+		for(var i in categories) {
+			//var mycat = Object.assign({}, categories[i]);
+			var mycat = Object.assign({}, categories[i]);
+			var cat = mycat._doc;
+			delete cat.products;
+			delete cat.description
+			delete cat.createdAt;
+			delete cat.updatedAt;
+			delete cat.__v;
+			delete cat.cat_id;
+			delete cat.id;
+			delete cat.catParent;
+			cat.text = categories[i].title;
+			cat.label = categories[i].title;
+			cat.value = (categories[i]._id == null )?"0":categories[i]._id.toString();
+			//cat.data = {_id: categories[i]._id};
+			//cat.id = parseInt(index) + 1;
+			//index++;
+		
+			newCats.push(cat);
+			//~ categories[i]["text"] = categories[i].title;
+			//~ categories[i]["label"] = categories[i].title;
+			//~ categories[i]["value"] = categories[i]._id;
+		}	
+	//	console.log('MMMMMMMMMM', newCats);
+	  categories = getNestedChildren(newCats, null);
+	//  console.log('categoriescategories', categories);
+	  if (err) return next(err);
+        return res.json({
+          code: httpResponseCode.EVERYTHING_IS_OK,
+          message: httpResponseMessage.SUCCESSFULLY_DONE,
+          result: categories
+        });            
+    });
    
    
   // Bottom to top query 
@@ -332,161 +370,26 @@ const allCategories = (req, res) => {
      
     //~ });
  
- 
- Category.aggregate([
-	//{$match:{'parent':null}},
-	{
-    $graphLookup: {
-        from: "categories",
-        startWith: "$_id",
-        connectFromField: "_id",
-        connectToField: "parent",
-         maxDepth: 4,
-         depthField: "parent",
-        as: "subCategory"
-    }
-}]).exec(function(err, categories) {
-	 
-        return res.json({
-          code: httpResponseCode.EVERYTHING_IS_OK,
-          message: httpResponseMessage.SUCCESSFULLY_DONE,
-          result: categories
-        }); 
-     
-    });
- 
- 
- console.log("DONE");
- 
- 
- //~ var categories = Category.aggregate([
-//~ // reshape the data you'll need further on from each mached doc
-//~ // now put a common _id so you can group them, and also put stuff into arrays
-//~ {
-    //~ $project: {
-        //~ id: {$literal: 'id'},
-        //~ mainCategory: {
-            //~ // if our parent is null, put our data.
-            //~ // otherwise put null here.
-            //~ $cond: [{$eq: [null, '$parent']}, {_id: '$data.id', name: '$data.title'}, undefined]
-        //~ },
-        //~ subcat: {
-            //~ // here is the other way around.
-            //~ $cond: [{$ne: [null, '$parent']}, {_id: '$data.id', name: '$data.title'}, null]
-
-        //~ }
-    //~ }
-    //~ // that stage produces for each doc either a mainCat or subcat
-    //~ // (and the other prop equals to null)
-//~ },
-//~ // finally, group the things so you can have them together
-//~ {
-    //~ $group: {
-        //~ _id: '$id',
-        //~ // a bit hacky, but mongo will yield to it
-        //~ mainCategory: {$max: '$mainCategory'},
-        //~ subCategories: {
-            //~ // this will, unfortunately, also add the `null` we have
-            //~ // assigned to main category up there
-            //~ $addToSet: '$subcat'
-        //~ }
-    //~ }
-//~ },
-//~ // so we get rid of the unwanted _id = 'id' and the null from subcats.
-//~ {
-    //~ $project: {
-        //~ _id: false,
-        //~ mainCategory: 1,
-        //~ subCategories: {
-            //~ $setDifference: ['$subCategories', [null]]
-        //~ }
-    //~ }
-//~ }]).exec(function(err, categories) {
-	 
-        //~ return res.json({
-          //~ code: httpResponseCode.EVERYTHING_IS_OK,
-          //~ message: httpResponseMessage.SUCCESSFULLY_DONE,
-          //~ result: categories
-        //~ }); 
-     
-    //~ });
- //console.log("categories",categories)
- 
- 
-        
-  //~ from: <collection>,
-      //~ startWith: <expression>,
-      //~ connectFromField: <string>,
-      //~ connectToField: <string>,
-      //~ as: <string>,
-      //~ maxDepth: <number>,
-      //~ depthField: <string>,
-      //~ restrictSearchWithMatch: <document>
-   //~ }
-   
-  
- //~ Category.aggregate([
-	
-	//~ {
-      //~ $graphLookup: {
-         //~ from: "_id",
-         //~ startWith: "$parent", //returns an array with the object values
-         //~ connectFromField: "parent", // not sure about this
-         //~ connectToField: "_id",
-         //~ as: "chhhhhhhh",
-         //~ maxDepth:5
-      //~ }
-   //~ }
-	  //~ ])                
-     //~ .exec(function(err, categories) {	
-                  //~ return res.json({
-                  //~ code: httpResponseCode.EVERYTHING_IS_OK,
-                  //~ message: httpResponseMessage.SUCCESSFULLY_DONE,
-                  //~ result: categories
-              //~ });
-        
-        //~ });
-        
-      //~ console.log("DADDADDADADADADA")  
-//~ var descendants=[]
-//~ var stack=[];
-//~ var item = Category.find({_id:"5b5ac03f261a64354489d47b"});
-//~ stack.push(item);
-//~ while (stack.length>0){
-    //~ var currentnode = stack.pop();
-    //~ var children = Category.find({parent:currentnode._id});
-    //~ while(true === children.hasNext()) {
-        //~ var child = children.next();
-        //~ descendants.push(child._id);
-        //~ stack.push(child);
-    //~ }
-//~ }
-
-//~ descendants.join(",")
-//~ console.log("descendants",descendants)
-//Electronics / Cell_Phones_and_Accessories / Cell_Phones_and_Smartphones
-      
-
 };
 
-function populateChield(category,allCateg) {
-    Category.find({'parent':category._id})
-		.exec(function(err, ccates) {			
-			//console.log("populateChield",ccates)
-			if(ccates.length !== 0){
-				allCateg.push(ccates);
-				console.log("populateGrandChield",ccates)
-				ccates.forEach(function(cats, index, arr) {
-					populateChield(cats,allCateg);
-				})    
-			}else{
-				allCateg.push(ccates);
-			}
+//~ function populateChield(category,allCateg) {
+    //~ Category.find({'parent':category._id})
+		//~ .exec(function(err, ccates) {			
+			//~ //console.log("populateChield",ccates)
+			//~ if(ccates.length !== 0){
+				//~ allCateg.push(ccates);
+				//~ console.log("populateGrandChield",ccates)
+				//~ ccates.forEach(function(cats, index, arr) {
+					//~ populateChield(cats,allCateg);
+				//~ })    
+			//~ }else{
+				//~ allCateg.push(ccates);
+			//~ }
 		
-	});
-	//console.log("allCateg",allCateg)
-	return allCateg
-}
+	//~ });
+	//~ //console.log("allCateg",allCateg)
+	//~ return allCateg
+//~ }
 
 
 /** Auther	: Rajiv Kumar

@@ -59,18 +59,18 @@ class Testimonials extends Component {
                     <h3><span>Testimonials</span></h3>
                     <Slider {...settings}>
                         {this.state.testimonials.map(function (testimonial) {
-                                        return (
-                                                <div key={testimonial}>
-                                        <div className="testimonial-div" key={testimonial}>
-                                                        <div className='starRating' align="center"><ReactStars  count={5} size={15} color2={'#ffd700'} edit={false} value={testimonial.review}  /></div>
-                                                        <p align="center"><strong>{testimonial.title}</strong></p>
-                                                        <h4><ReadMoreReact text={testimonial.description.replace(/<(?:.|\n)*?>/gm, '')} min={1}  ideal={100} max={200} /></h4>
-                                                        <h5 className="">{(testimonial.author)?testimonial.author.userName:''}</h5>
-                                                        <p className="city">{testimonial.testimonialCity}</p>
-                                                    </div>
-                                                </div>
+						return (
+								<div key={testimonial}>
+						<div className="testimonial-div" key={testimonial}>
+										<div className='starRating' align="center"><ReactStars  count={5} size={15} color2={'#ffd700'} edit={false} value={testimonial.review}  /></div>
+										<p align="center"><strong>{testimonial.title}</strong></p>
+										<h4><ReadMoreReact text={testimonial.description.replace(/<(?:.|\n)*?>/gm, '')} min={1}  ideal={100} max={200} /></h4>
+										<h5 className="">{(testimonial.author)?testimonial.author.userName:''}</h5>
+										<p className="city">{testimonial.testimonialCity}</p>
+									</div>
+								</div>
 
-                                                )
+								)
                         })
                         }
                     </Slider>
