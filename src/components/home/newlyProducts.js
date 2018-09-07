@@ -64,6 +64,7 @@ class NewlyProducts extends Component {
         return (
         <div className="popularItems newlyProducts">
         <div className="container">
+
                     <h3> Newly added products</h3>
                     
                     <Slider {...settings}>
@@ -85,7 +86,8 @@ class NewlyProducts extends Component {
                     <Link to='/' className='more-items'>More items</Link>
                     </div>
                 </div>
-                            );
+              );
+
 
             }
         }

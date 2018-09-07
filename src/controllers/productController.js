@@ -238,13 +238,12 @@ const popularItems = (req,res) => {
 **/
 const switchTodays = (req,res) => {	
 	var toDate = new Date();
-	 Trade.find({createdAt:new Date("2018-07-17T13:16:22.095Z")})	
-	    .populate({ path: "tradePitchProductId", model: "Product"})
+	 Trade.find({createdAt:new Date("2018-09-05T11:44:30.732Z")})	
 	    .populate({ path: "tradeSwitchProductId", model: "Product"})
-	    .populate({ path: "productCategory", model: "Category"})
+	    .populate({ path: "tradePitchProductId", model: "Product"})
 	    .populate({ path: "productImages", model: "Product"})	   
+	    .populate({ path: "productCategory", model: "Category"})	   
 	    .exec(function(err,result){			
-			console.log('mmmmmm',result);
 			if (err) {
 			 return res.send({
 				code: httpResponseCode.BAD_REQUEST,

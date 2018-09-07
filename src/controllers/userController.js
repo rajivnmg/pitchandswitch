@@ -3,6 +3,7 @@ const User = require('../models/User')
 const Product = require('../models/product')
 const Donation = require('../models/donation')
 const Trade = require('../models/trade')
+const MostTrusted = require('../models/mostTrusted')
 const FlagUser = require('../models/flagUser')
 const Notification = require('../models/notification')
 const httpResponseCode = require('../helpers/httpResponseCode')
@@ -24,6 +25,9 @@ var settings = require('../config/settings'); // get settings file
 //var NodeSession = require('node-session');
 //session = new NodeSession({secret: 'Q3UBzdH9GEfiRCTKbi5MTPyChpzXLsTD'});
 var bcrypt = require('bcrypt-nodejs');
+
+
+
 getToken = function (headers) {	
   if (headers && headers.authorization) {
     var parted = headers.authorization.split(' ');    
@@ -544,10 +548,7 @@ const forgotPassword = (req,res) => {
             </tr>
         </table>`;
         
-        host=req.get('host');
-        //link="http://"+req.get('host')+"/user/resetPassword/"+result._id;       
-       
-        // setup email data with unicode symbols
+        host=req.get('host');        
         let mailOptions = {
           from: constant.SMTP_FROM_EMAIL, // sender address
           to: req.body.email, // list of receivers
@@ -555,18 +556,11 @@ const forgotPassword = (req,res) => {
           text: 'Hello world?', // plain text body
           html : output
         };
-		//console.log("mailOptions",mailOptions)
-        // send mail with defined transport object
+		
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
             return console.log(error);
-          }
-          //console.log('Message sent: %s', info.messageId);
-          // Preview only available when sending through an Ethereal account
-          //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-          //res.render('ResetPassword')
-          // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-          // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+          }         
         });
         return res.json({
           code: httpResponseCode.EVERYTHING_IS_OK,
@@ -657,8 +651,7 @@ const updateNewPassword = (req, res) => {
  *  Date	: June 18, 2018
  *	Description : Function to list the available user on the plateform
  **/
-const listUser = (req, res) => {	
-	
+const listUser = (req, res) => {
   var token = getToken(req.headers);  
   if (token) {	  
 		decoded = jwt.verify(token,settings.secret);	  
@@ -733,7 +726,7 @@ const listUser = (req, res) => {
 				  });
 				})
 			});
-		}else{
+		} else {
 			  return res.status(403).send({code: 403, message: 'Unauthorized.'});
 		}
     }
@@ -959,6 +952,7 @@ const deleteUser = (req, res) => {
   })
 }
 
+
 /** Auther	: Rajiv Kumar
  *  Date	: July , 2018
  *	Description : Function to getLoggedInUser
@@ -1006,20 +1000,20 @@ const resdNotification = (req, res) => {
 			code: httpResponseCode.BAD_REQUEST,
 			message: httpResponseMessage.INTERNAL_SERVER_ERROR
 		  });
-    }else {
+    } else {
       if (!result) {
         res.json({
           message: httpResponseMessage.USER_NOT_FOUND,
           code: httpResponseMessage.BAD_REQUEST
         });
-      }else {
+      } else {
         return res.json({
               code: httpResponseCode.EVERYTHING_IS_OK,
               message: httpResponseMessage.EMAIL_VERIFY_SUCCESSFULLY,
              result: result
             });
 
-      }
+         }
     }
   })
 }
@@ -1236,5 +1230,6 @@ module.exports = {
     forgotPassword,
     resetPassword,
     updateNewPassword,
-    resdNotification
+    resdNotification,
+   
 }

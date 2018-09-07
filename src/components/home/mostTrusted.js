@@ -4,82 +4,37 @@ import Style from './home.css';
 import Slider from "react-slick";
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import popularItemImg from '../../images/popular-item1.jpg';
+import axios from 'axios';
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 
 class mostTrusted extends Component {
-    constructor(props)
+	
+   constructor(props)
     {
         super(props);
         this.state = {
-            slides: [{
-                    "userName": "Sasha Neplokhov",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "rating": "4.8"
-                },
-                {
-                    "userName": "Sasha Neplokhov",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "rating": "4.8"
-                },
-                {
-                    "userName": "Sasha Neplokhov",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "rating": "4.8"
-                },
-                {
-                 "userName": "Sasha Neplokhov",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "rating" : "4.8"
-                },
-                {
-                   "userName": "Sasha Neplokhov",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "rating" : "4.8"
-                },
-                {
-                  "userName": "Sasha Neplokhov",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "rating" : "4.8"
-                },
-                {
-                   "userName": "Sasha Neplokhov",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "rating" : "4.8"
-                },
-                {
-                    "userName": "Sasha Neplokhov",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "rating" : "4.8"
-                },
-                {
-                   "userName": "Sasha Neplokhov",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "rating" : "4.8"
-                },
-                {
-                   "userName": "Sasha Neplokhov",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "rating" : "4.8"
-                },
-                {
-                   "userName": "Sasha Neplokhov",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "rating" : "4.8"
-                },
-                {
-                    "userName": "Sasha Neplokhov",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "rating" : "4.8"
+            newlyProducts: [{
+                    "title": "",
+                    "image": "",
+                    "category": ""
                 }
             ]
-        }
-        ;
+        };
     }
+        
+	componentDidMount(){
+	  axios.get('/user/mostTrusted').then(result => {		 
+		 console.log("most",result);
+			//this.setState({mosttrustedUsers:result.data.result});
+		 })
+     }
+    
     render() {
-        const settings = {
+       const settings = {
             dots: false,
             infinite: false,
             speed: 500,
-            slidesToShow: 6,
+            slidesToShow: 5,
             slidesToScroll: 1,
             responsive: [
                 {
@@ -103,29 +58,11 @@ class mostTrusted extends Component {
             ]
         };
 
-        return (
-                <div className="mostTrusted">
+        return (<div className="mostTrusted">
         <h3> Most <strong>trusted users</strong> </h3>
-                    <Slider {...settings}>
-                        {this.state.slides.map(function (slide) {
-						return (
-								<div className="slides-div"  key={slide}>
-									<div key={slide}>
-									<div className='pic'> <img src={slide.image} /> </div>
-										<div className='details'>
-										<h4><a href="/my-trade-detail" >{slide.userName}</a></h4>
-											<div className="ratingRow">{slide.rating}</div>
-										</div>
-									</div>
-								</div>
-								)
-                        })
-                        }
-                    </Slider>
-                     
-                
+              
                 </div>
-                            );
+               );
             }
         }
         export default mostTrusted;
