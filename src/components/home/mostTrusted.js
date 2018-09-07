@@ -25,7 +25,7 @@ class mostTrusted extends Component {
 	componentDidMount(){
 	  axios.get('/user/mostTrusted').then(result => {		 
 		 console.log("most",result);
-			this.setState({mosttrustedUsers:result.data.result});
+			//this.setState({mosttrustedUsers:result.data.result});
 		 })
      }
     

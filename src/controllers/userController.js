@@ -953,24 +953,7 @@ const deleteUser = (req, res) => {
             });
   })
 }
-/** Auther	: Rajiv Kumar
- *  Date	: June 18, 2018
- *	Description : Function to delete the user
- **/
-const mostTrusted = (req, res) => {	
-	 console.log('uuuuuuuuuuuuu')
-	//~ mostTrusted.aggregate([{
-       //~ $group:
-         //~ {
-           //~ _id: { $userId: "$userId"} },
-           //~ totalAmount: { $sum: "$review" },
-           //~ count: { $sum: 1 }         
-	     //~ }
-	//~ ])
-     //~ .exec(function(err, users) {			 
-         //~ 
-        //~ });
-}
+
 
 /** Auther	: Rajiv Kumar
  *  Date	: July , 2018
@@ -1250,5 +1233,5 @@ module.exports = {
     resetPassword,
     updateNewPassword,
     resdNotification,
-    mostTrusted
+   
 }
