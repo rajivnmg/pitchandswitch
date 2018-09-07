@@ -80,7 +80,7 @@ Capitalize(str){
                     <Then>
                     <nav className="after-login">
 					 <ul>
-						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">Robert </a>
+						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">{this.Capitalize(this.state.user.userName)} </a>
 						<ul className="dashboard-subnav">
 							<li><a href={'/dashboard'} className="dashboard-icon">Dashboard</a></li>
 							<li><a href="#" className="my-trades-icon">My Trades </a></li>
