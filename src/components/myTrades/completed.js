@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import statusTrack from '../../images/track-status1.png'
 import ReturnInfo from './returnPopup'
 
-class Switched extends React.Component {
+class Switched extends Component {
     TrackHandler = (id) => {
         let pitches = this.state.pitches;
         let index = pitches.findIndex(pitch => pitch.id === id);

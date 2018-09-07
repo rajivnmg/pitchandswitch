@@ -31,7 +31,7 @@ class Header extends Component {
 	    notifications:[]
 	}	
      this.logoutHandler = this.logoutHandler.bind(this);
-     console.log('TOken', localStorage.getItem('jwtToken'));
+    // console.log('TOken', localStorage.getItem('jwtToken'));
      if(localStorage.getItem('jwtToken') === null){
        window.location.href="#/login";
       }
@@ -47,7 +47,7 @@ class Header extends Component {
 	console.log("jwtToken",localStorage.getItem('jwtToken'))
 	if(localStorage.getItem('jwtToken') !== null){
 		axios.get('/user/getLoggedInUser').then(result => {
-			console.log("result",result)
+			console.log("result getLoggedInUser",result)
 			this.setState({ 
 				user:result.data.result,
 				notification_type:result.data.notification_type,
@@ -80,7 +80,7 @@ Capitalize(str){
                     <Then>
                     <nav className="after-login">
 					 <ul>
-						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">Robert </a>
+						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">{this.Capitalize(this.state.user.userName)} </a>
 						<ul className="dashboard-subnav">
 							<li><a href={'/dashboard'} className="dashboard-icon">Dashboard</a></li>
 							<li><a href="#" className="my-trades-icon">My Trades </a></li>

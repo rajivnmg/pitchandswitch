@@ -106,6 +106,7 @@
     "react-simple-jstree": "^0.2.2",
     "react-slick": "^0.23.1",
     "react-stars": "^2.2.5",
+    "react-styled-select": "^1.1.0",
     "react-tabs": "^2.2.2",
     "react-test-renderer": "^16.4.0",
     "react-validation": "^3.0.7",
@@ -139,7 +140,7 @@
   "scripts": {
     "build-css": "node-sass-chokidar --include-path ./node_modules ./src/scss -o ./src/scss",
     "start-js": "PORT=3002 react-scripts start",
-    "server-js": "nodemon ./bin/www",    
+    "server-js": "nodemon ./bin/www",
     "start": "npm-run-all -p start-js",
     "build-js": "react-scripts build",
     "build": "npm-run-all build-css build-js",

@@ -74,7 +74,7 @@ class categoryMenu extends Component {
     componentDidMount(){		
 	 axios.get('/category/allCategories').then(result => {
       if(result.data.code === 200){		  
-		  console.log("allCategories",result)
+		  //console.log("allCategories",result)
         this.setState({
           category: result.data.result,           
         });

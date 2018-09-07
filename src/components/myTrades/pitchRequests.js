@@ -6,7 +6,7 @@ import DitchPopup from './ditchPopup'
 
 
 
-class PitchRequests extends React.Component {
+class PitchRequests extends Component {
     constructor() {
         super();
 

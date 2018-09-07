@@ -5,7 +5,7 @@ import subscribeImg2 from '../../images/subscription-pic2.png';
 import GetStarted from '../subscription-basic/subscription-basic'
 
 
-class Subscription extends React.Component {
+class Subscription extends Component {
 
     render() {
         return (
