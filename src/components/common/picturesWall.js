@@ -48,6 +48,7 @@ class PicturesWall extends React.Component {
           action="http://localhost:5001/product/tepmUpload/"
           listType="picture-card"
           fileList={fileList}
+          multiple={true}
           onPreview={this.handlePreview}
           onChange={this.handleChange}
         >

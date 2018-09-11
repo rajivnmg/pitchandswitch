@@ -9,12 +9,15 @@ import CategorySelectBox from '../../components/CategorySelectBox/CategorySelect
 import axios from 'axios';
 var FD = require('form-data');
 var fs = require('fs');
-class ColorPicker extends Component {
-   render() {
-    return <SketchPicker />
-  }
-}
-class Form extends React.Component {
+//~ class ColorPicker extends Component {
+   //~ render() {
+    //~ return <SketchPicker 
+		//~ color={ this.state.background } 
+		//~ onChangeComplete={ this.handleChangeComplete }
+		//~ />
+  //~ }
+//~ }
+class Form extends Component {
   state = {
     isValidated: false
   };
@@ -106,6 +109,7 @@ class Register extends React.Component {
 			   sizes: [],
 			   conditions: [],
 			   categoryValue: '',
+			   background: '#fff',
 			   validation:{
 				productName:{
 				  rules: {
@@ -130,9 +134,9 @@ class Register extends React.Component {
 		this.setState({categoryValue:value })
 		}
 
-		fileChangedHandler = (event) => {
-		  this.setState({selectedFile: event.target.files[0]})
-		}
+		//~ fileChangedHandler = (event) => {
+		  //~ this.setState({selectedFile: event.target.files[0]})
+		//~ }
 		
 		handleCategory = (category) => {
 			this.setState({categoryValue:category });
@@ -149,10 +153,16 @@ class Register extends React.Component {
 		
 		// set the selected file in to state
 		handlePictureChange = (event) => {
-			console.log("FILESSS",event,)
+			console.log("FILESSS",event)
 		  this.setState({selectedFile: event})
 		}
-
+		
+		// Set The cureent color on change color
+		handleChangeComplete = (color) => {
+			this.setState({ background: color.hex });
+			console.log("handleChangeComplete",this.state)
+		};		
+		
 		componentDidMount() {			
 			//GET ALL Brand
 			axios.get('/brand/listingbrand').then(result => {			
@@ -166,10 +176,7 @@ class Register extends React.Component {
 			axios.get('/size/listingsize').then(result => {			
 				this.setState({sizes:result.data.result})
 			})	
-		}
-		fileChangedHandler = (event) => {
-		   this.setState({selectedFile: event.target.files[0]})
-		}
+		}		
 
 		conditionsChange = (value) => {
 		   this.setState({conditionValue: value.target.value});
@@ -188,25 +195,27 @@ class Register extends React.Component {
 		this.setState({ addProductForm: NewProductForm }, function(){console.log(this.state.addProductForm)});
 		};
   
-  submit = () => {	  
-		const data =new FD()
-		
+	submit = () => {	  
+		const data =new FD()		
         data.append('productName', (this.state.addProductForm.productName)?this.state.addProductForm.productName.value:''),
         data.append('description', (this.state.addProductForm.description)?this.state.addProductForm.description.value:''),
         data.append('productCategory',this.state.categoryValue),
         data.append('size',(this.state.addProductForm.size)?this.state.addProductForm.size.value:''),
-        data.append('color', (this.state.addProductForm.color)?this.state.addProductForm.color.value:''),
+        data.append('color', this.state.background),
         data.append('brand', (this.state.addProductForm.brand)?this.state.addProductForm.brand.value:''),
         data.append('productAge',(this.state.addProductForm.productAge)?this.state.addProductForm.productAge.value:''),
         data.append('condition', (this.state.addProductForm.condition)?this.state.addProductForm.condition.value:''),
         data.append('productStatus',(this.state.addProductForm.productStatus)?this.state.addProductForm.productStatus.value:'1'),
         data.append('userId','1');
         if(this.state.selectedFile){
+			
+			this.state.selectedFile.forEach((file) => {
+				console.log("file",file);
+				data.append('files', file);
+			});
+			
 		    data.append('productImages', this.state.selectedFile);
-      	}
-      	console.log("data",data)
-      	console.log("this state",this.state)
-       
+      	}      	
         axios.post('/product/addProduct', data).then(result => {
           console.log('USER DATA', data)
          if(result.data.code ==200){			    
@@ -255,152 +264,147 @@ class Register extends React.Component {
         </ul>
         </div>
               <div className="cl"></div>
-          <div className="add-product">
+       <div className="add-product">
            {this.state.showFormSuccess ? this._renderSuccessMessage() : null}
-            <div className="form-row">
-                                <h3>Add New Product</h3>
-            </div>
-          
-              <Form submit={this.submit}>
+		<div className="form-row">
+			  <h3>Add New Product</h3>
+		</div>
+	  
+        <Form submit={this.submit}>
                  
-                <div className="form-row">
-                <div className="invalid-feedback validation"> </div>   
-                <span className="astrik">*</span>
-                  <label className="label" htmlFor={"name"}>Product name</label>
-                  <input id={"productName"} className={"form-control textBox"} required={true} name={"productName"} type={"productName"} placeholder="Enter your name"  onChange={(e) => this.inputChangedHandler(e, 'productName')} />
-                </div>
-                        <div className="form-row">
-                        <div className="invalid-feedback validation"> </div>
-                <span className="astrik">*</span>
-                  <label className="label"
-                    htmlFor={"description"}
-                    >
-                   Description
-                  </label>
-                  <textarea
-                    id={"description"}
-                    className={"form-control textBox"}
-                    required={true}
-                    name={"description"}
-                    type={"description"}
-                    onChange={(e) => this.inputChangedHandler(e, 'description')}
-                    placeholder=""
-                    ></textarea>
-                  
-                </div>
-                <div className="form-row">
-                  <label className="label">Add product a photo</label>
-                  <PicturesWall onHandlePicture={this.handlePictureChange}/>
-                </div>
-                <div className="form-row">
-                  <label className="label">Color</label>
-                  <ColorPicker />
-                  
-                </div>
+		<div className="form-row">
+			<div className="invalid-feedback validation"> </div>   
+			<span className="astrik">*</span>
+			<label className="label" htmlFor={"name"}>Product name</label>
+			<input id={"productName"} className={"form-control textBox"} required={true} name={"productName"} type={"productName"} placeholder="Enter your name"  onChange={(e) => this.inputChangedHandler(e, 'productName')} />
+		</div>
+		
+		<div className="form-row">
+			<div className="invalid-feedback validation"> </div>
+			<span className="astrik">*</span>
+			<label className="label" htmlFor={"description"} >Description</label>
+			<textarea
+			id={"description"}
+			className={"form-control textBox"}
+			required={true}
+			name={"description"}
+			type={"description"}
+			onChange={(e) => this.inputChangedHandler(e, 'description')}
+			placeholder=""
+			></textarea>
+		</div>
+		
+		<div className="form-row">
+			<label className="label">Add product a photo</label>
+			<PicturesWall onHandlePicture={this.handlePictureChange}/>
+		</div>
+		
+		<div className="form-row">
+			<label className="label">Color</label>
+			<SketchPicker 
+				color={ this.state.background } 
+				onChangeComplete={ this.handleChangeComplete }
+			/>
+			{/*<ColorPicker /> */}
+		</div>
                
-                 <div className="form-row">
-                 <div className="invalid-feedback validation"> </div>   
-                <span className="astrik">*</span>
-				
-                  <label className="label" htmlFor={"category"}>Category<br/></label>
-                
-                  <CategorySelectBox onSelectCategory={this.handleCategory}/>
-                
-                </div>
-                 
-                  <div className="form-row">
-                  <div className="colum">
-        <div className="invalid-feedback validation"> </div>             
-        <span className="astrik">*</span>
-                  <label className="label" htmlFor={"size"}>Size</label>
-                 {/*<input id={"size"} className={"form-control textBox"} required={true} name={"size"} type={"text"} placeholder="" defaultValue="Meduim" />*/}
-                 {/*  <SizeSelectBox onSelectSize={this.handleSize}/> */}
-                 <div className="select-box">
-							  <select required={true} name={"size"} id={"size"}  onChange={(e) => this.inputChangedHandler(e, 'size')}>
-							  <option value="">Select Brand</option>
-							 { 
-								 this.state.sizes.map(size =>{
-									return(<option key={size._id} value={size._id}>{size.size}</option>)
-								})
-							}
-							  </select>
-						</div>
-                  </div>
-                   
-                  <div className="colum right">
-						<div className="invalid-feedback validation"> </div>             
-						<span className="astrik">*</span>
-						<label className="label" htmlFor={"brand"}>Brand</label>
-						 <div className="select-box">
-							  <select required={true} name={"brand"}  id={"brand"} onChange={(e) => this.inputChangedHandler(e, 'brand')}>
-							  <option value="">Select Brand</option>
-							 {
-								 this.state.brands.map(brand =>{
-									return (<option key={brand._id} value={brand._id}>{brand.brandName}</option>)
-							  })
-							 }
-							  </select>
-						</div>
-						{/*<input id={"brand"} className={"form-control textBox"} required={true} name={"brand"} type={"text"} placeholder="" defaultValue="barbie" /> */}
-						{/*	<BrandSelectBox onSelectBrand={this.handleBrand}/> */}
-							</div>
-                    
-                  <div className="cl"></div>
-                  
-        </div>
-        <div className="form-row">
-                  <div className="colum">
-                  <div className="invalid-feedback validation"> </div>   
-        <span className="astrik">*</span>
-                  <label className="label" htmlFor={"age"}>Age</label>
-                  <input id={"productAge"} className={"form-control textBox"} onChange={(e) => this.inputChangedHandler(e, 'productAge')} required={true} name={"productAge"} type={"text"} placeholder="Age" defaultValue="" /></div>
-                  <div className="colum right">
-         <div className="invalid-feedback validation"> </div>          
-        <span className="astrik">*</span>
-                  <label className="label" htmlFor={"condition"}>Condition</label>
-                  <div className="select-box">
-                  <select required={true} name={"condition"} id={"condition"} onChange={(e) => this.inputChangedHandler(e, 'condition')}>
-                  <option value="">Select</option>
-					{this.state.conditions.map(condition => {
-							return (<option  key={condition.id} value={condition.id}>{condition.name}</option>)
+		<div className="form-row">
+			<div className="invalid-feedback validation"> </div>   
+			<span className="astrik">*</span>
+			<label className="label" htmlFor={"category"}>Category<br/></label>
+			<CategorySelectBox onSelectCategory={this.handleCategory}/>
+		</div>                 
+		<div className="form-row">
+			<div className="colum">
+				<div className="invalid-feedback validation"> </div>             
+				<span className="astrik">*</span>
+				<label className="label" htmlFor={"size"}>Size</label>
+				{/*<input id={"size"} className={"form-control textBox"} required={true} name={"size"} type={"text"} placeholder="" defaultValue="Meduim" />*/}
+				{/*  <SizeSelectBox onSelectSize={this.handleSize}/> */}
+				<div className="select-box">
+						<select required={true} name={"size"} id={"size"}  onChange={(e) => this.inputChangedHandler(e, 'size')}>
+						<option value="">Select Brand</option>
+						{ 
+						this.state.sizes.map(size =>{
+						return(<option key={size._id} value={size._id}>{size.size}</option>)
 						})
+						}
+						</select>
+				</div>
+			</div>
+
+			<div className="colum right">
+				<div className="invalid-feedback validation"> </div>             
+				<span className="astrik">*</span>
+				<label className="label" htmlFor={"brand"}>Brand</label>
+				<div className="select-box">
+					<select required={true} name={"brand"}  id={"brand"} onChange={(e) => this.inputChangedHandler(e, 'brand')}>
+						<option value="">Select Brand</option>
+						{
+						this.state.brands.map(brand =>{
+						return (<option key={brand._id} value={brand._id}>{brand.brandName}</option>)
+						})
+						}
+					</select>
+				</div>
+				{/*<input id={"brand"} className={"form-control textBox"} required={true} name={"brand"} type={"text"} placeholder="" defaultValue="barbie" /> */}
+				{/*	<BrandSelectBox onSelectBrand={this.handleBrand}/> */}
+			</div>
+
+			<div className="cl"></div>
+
+		</div>
+		<div className="form-row">
+			<div className="colum">
+				<div className="invalid-feedback validation"> </div>   
+				<span className="astrik">*</span>
+				<label className="label" htmlFor={"age"}>Age</label>
+				<input id={"productAge"} className={"form-control textBox"} onChange={(e) => this.inputChangedHandler(e, 'productAge')} required={true} name={"productAge"} type={"text"} placeholder="Age" defaultValue="" />
+			</div>
+			<div className="colum right">
+				<div className="invalid-feedback validation"> </div>          
+				<span className="astrik">*</span>
+				<label className="label" htmlFor={"condition"}>Condition</label>
+				<div className="select-box">
+					<select required={true} name={"condition"} id={"condition"} onChange={(e) => this.inputChangedHandler(e, 'condition')}>
+					<option value="">Select</option>
+					{this.state.conditions.map(condition => {
+						return (<option  key={condition.id} value={condition.id}>{condition.name}</option>)
+					})
 					}
-                  </select>
-                  </div></div>
-                  <div className="cl"></div>
-                  
-        </div>
-        <div className="form-row">
-                  <div className="colum">
-                  <div className="invalid-feedback validation"> </div>   
-        <span className="astrik">*</span>
-                  <label className="label" htmlFor={"status"}>Status</label>
-                   <div className="select-box">
-                   <select required={true} name={"productStatus"} id={"productStatus"} onChange={(e) => this.inputChangedHandler(e, 'productStatus')}>                 
-                  <option value="1">Active</option>
-                  <option value="0">In-Active</option>
-                  </select>
-                  </div>
-                  </div>
-                  <div className="colum right">&nbsp;</div>
-                  <div className="cl"></div>
-                  
-                 </div>
-                
-                 <div className="form-row no-padding">
-                    <button
-                      type={"submit"}
-                      className={"submitBtn"}
-                      >
-                    Save
-                    </button>
-                  </div>
-                
-              </Form>
-            </div>
-            <div className="cl"> </div>
-          </div>
-      </div>
+					</select>
+				</div>
+			</div>
+			<div className="cl"></div>
+		</div>
+		<div className="form-row">
+			<div className="colum">
+				<div className="invalid-feedback validation"> </div>   
+				<span className="astrik">*</span>
+				<label className="label" htmlFor={"status"}>Status</label>
+				<div className="select-box">
+					<select required={true} name={"productStatus"} id={"productStatus"} onChange={(e) => this.inputChangedHandler(e, 'productStatus')}>                 
+					<option value="1">Active</option>
+					<option value="0">In-Active</option>
+					</select>
+				</div>
+			</div>
+			<div className="colum right">&nbsp;</div>
+			<div className="cl"></div>
+		</div>
+		<div className="form-row no-padding">
+			<button
+				type={"submit"}
+				className={"submitBtn"}
+				>
+				Save
+			</button>
+		</div>
+	</Form>
+</div>
+<div className="cl"> </div>
+</div>
+</div>
     );
   }
 }
