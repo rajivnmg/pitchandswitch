@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-class Ditch extends React.Component {
+class Ditch extends Component {
     constructor() {
         super();
 

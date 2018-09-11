@@ -7,7 +7,7 @@ import createHistory from "history/createBrowserHistory"
 const history = createHistory();
 
 
-class MyTrades extends React.Component {
+class MyTrades extends Component {
     render() {
         return (
                 <div className="my-trades-container">

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Style from './addnewproduct.css';
+import Style from './editproduct.css';
 import { Link } from 'react-router-dom';
 import { SketchPicker } from 'react-color'
-import PicturesWall from './picturesWall';
- 
+import PicturesWall from '../common/picturesWall';
+import CategorySelectBox from '../../components/CategorySelectBox/CategorySelectBox';
 class ColorPicker extends React.Component {
    render() {
     return <SketchPicker />
@@ -71,7 +71,7 @@ class Form extends React.Component {
     );
   }
 }
-class Register extends React.Component {
+class editproduct extends React.Component {
   
   state = {
     showFormSuccess: false
@@ -93,14 +93,14 @@ class Register extends React.Component {
         <div  className="container">
         <div className="breadcrumb">
         <ul>
-        <li><a href="/">Home</a></li><li><a href="#">My Treasure Chest</a></li><li>Add New Product</li>
+        <li><a href="/">Home</a></li><li><a href={'/my-treasure-chest'}>My Treasure Chest</a></li><li>Edit Product</li>
         </ul>
         </div>
               <div className="cl"></div>
           <div className="add-product">
            {this.state.showFormSuccess ? this._renderSuccessMessage() : null}
             <div className="form-row">
-                                <h3>Add New Product</h3>
+                                <h3>Edit Product</h3>
             </div>
           
               <Form submit={this.submit}>
@@ -142,13 +142,8 @@ class Register extends React.Component {
                  <div className="form-row">
                  <div className="invalid-feedback validation"> </div>   
                 <span className="astrik">*</span>
-                  <label className="label" htmlFor={"category"}>Category</label>
-                  <div className="select-box">
-                  <select required={true} name={"category"}>
-                  <option>Select</option>
-                  <option>Toy</option>
-                  </select>
-                  </div>
+                   <label className="label" htmlFor={"category"}>Category<br/></label>                
+                  <CategorySelectBox onSelectCategory={this.handleCategory}/>
                 </div>
                  
                   <div className="form-row">
@@ -220,4 +215,4 @@ class Register extends React.Component {
   }
 }
  
-export default Register;
+export default editproduct;

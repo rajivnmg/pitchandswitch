@@ -9,12 +9,14 @@ class PicturesWall extends React.Component {
   state = {
     previewVisible: false,
     previewImage: '',
-    fileList: [{
-      uid: -1,
-      name: 'xxx.png',
-      status: 'done',
-      url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    }],
+    fileList: [
+    //~ {
+      //~ uid: -1,
+      //~ name: 'xxx.png',
+      //~ status: 'done',
+      //~ url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+    //~ }
+    ],
   };
 
   handleCancel = () => this.setState({ previewVisible: false })
@@ -26,7 +28,11 @@ class PicturesWall extends React.Component {
     });
   }
 
-  handleChange = ({ fileList }) => this.setState({ fileList })
+  //handleChange = ({ fileList }) => this.setState({ fileList })
+	handleChange = ({ fileList }) => {
+		this.setState({ fileList })
+		this.props.onHandlePicture(fileList);
+	}
 
   render() {
     const { previewVisible, previewImage, fileList } = this.state;
@@ -39,13 +45,14 @@ class PicturesWall extends React.Component {
     return (
       <div className="clearfix">
         <Upload
-          action="//jsonplaceholder.typicode.com/posts/"
+          action="http://localhost:5001/product/tepmUpload/"
           listType="picture-card"
           fileList={fileList}
+          multiple={true}
           onPreview={this.handlePreview}
           onChange={this.handleChange}
         >
-          {fileList.length >= 12 ? null : uploadButton}
+          {fileList.length >= 4 ? null : uploadButton}
         </Upload>
         <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />

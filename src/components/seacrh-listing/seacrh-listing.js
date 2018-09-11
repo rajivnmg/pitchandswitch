@@ -7,7 +7,7 @@ const Hide = {
     display: "none"
 }
 
-class Register extends React.Component {
+class Register extends Component {
     constructor(props)
     {
         super(props);

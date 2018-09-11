@@ -10,7 +10,7 @@ var fs = require('fs');
  * A custom Form component that handles form validation errors.
  * It executes the form's checkValidity
  **/
-class Form extends React.Component {
+class Form extends Component {
   state = {
     isValidated: false
   };
@@ -171,7 +171,7 @@ class Register extends React.Component {
   };
   
   submit = () => {
-	 console.log("PROPS",this.state.registerForm);
+	// console.log("PROPS",this.state.registerForm);
 	 
 	 const data =new FD()
 	 console.log("this.firstName.value",this.state.registerForm.name.value)

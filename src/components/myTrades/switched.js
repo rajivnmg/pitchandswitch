@@ -3,7 +3,7 @@ import statusTrack from '../../images/track-status.png'
 import TradeInfo from './tradeInfo'
 import Messages from './message'
         
-class Switched extends React.Component {
+class Switched extends Component {
     constructor() {
         super();
         this.state = {
