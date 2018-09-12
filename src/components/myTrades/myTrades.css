@@ -92,4 +92,4 @@
 .productDetails table tr td:nth-child(2) { font-weight: 700;}
 .productDetails table tr:nth-child(odd) td { background:#fff}
 
-
+.pitch-row .pitch-div > div.complete-date {color: #414141;font-family: Roboto;font-size: 18px;font-weight: 400; width:32%}

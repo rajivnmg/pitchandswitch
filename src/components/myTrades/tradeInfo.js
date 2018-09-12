@@ -15,7 +15,7 @@ const contentStyle = {
 
 const CustomModal = () => (
 <Popup
-    trigger={<a className= 'TradeInfobtn'> Trade Info</a>}
+    trigger={<a className= 'TradeInfobtn'> View Pitch</a>}
     modal
     contentStyle = {contentStyle}
     lockScroll 

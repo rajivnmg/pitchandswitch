@@ -27,7 +27,7 @@ const basePath ='';// '/react-test';
 //axios.defaults.baseURL = window.location.protocol + '//' + window.location.hostname + ':' + port + basePath;
 axios.defaults.baseURL = 'http://localhost:5001'+ basePath;
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
-const SERVER_URL='http://localhost:5001';
+//const SERVER_URL='http://localhost:5001';
 
 class App extends Component {
 	constructor(props){

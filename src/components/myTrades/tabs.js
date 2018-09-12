@@ -10,7 +10,7 @@ import TabContent from './TabContent';
 import { bsClass as setBsClass } from './utils/bootstrapUtils';
 import ValidComponentChildren from './utils/ValidComponentChildren';
 
-class ControlledTabs extends Component {
+class ControlledTabs extends React.Component {
   constructor(props, context) {
     super(props, context);
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-class Ditch extends Component {
+class Ditch extends React.Component {
     constructor() {
         super();
 
@@ -7,7 +7,7 @@ class Ditch extends Component {
             pitches: [{
                     id: 1,
                     pitchType: false,
-                    user: "213496",
+                    user: "Oleksandr Pid",
                     status: "received",
                     action: "Ditched",
                     messageType: false,
@@ -20,7 +20,7 @@ class Ditch extends Component {
                 {
                     id: 2,
                     pitchType: false,
-                    user: "213496",
+                    user: "Oleksandr Pid",
                     status: "sent",
                     action: "Pitch Again",
                     messageType: false,
@@ -30,7 +30,7 @@ class Ditch extends Component {
                 {
                     id: 3,
                     pitchType: false,
-                    user: "213496",
+                    user: "Oleksandr Pid",
                     status: "sent",
                     action: "Ditched",
                     messageType: false,
@@ -40,7 +40,7 @@ class Ditch extends Component {
                 {
                     id: 4,
                     pitchType: false,
-                    user: "213496",
+                    user: "Oleksandr Pid",
                     status: "received",
                     action: "Ditched",
                     messageType: false,
@@ -50,7 +50,7 @@ class Ditch extends Component {
                 {
                     id: 5,
                     pitchType: false,
-                    user: "213496",
+                    user: "Oleksandr Pid",
                     status: "received",
                     action: "Pitch Again",
                     messageType: false,
@@ -60,7 +60,7 @@ class Ditch extends Component {
                 {
                     id: 6,
                     pitchType: false,
-                    user: "213496",
+                    user: "Oleksandr Pid",
                     status: "received",
                     action: "Pitch Again",
                     messageType: false,
@@ -70,7 +70,7 @@ class Ditch extends Component {
                 {
                     id: 7,
                     pitchType: false,
-                    user: "213496",
+                    user: "Oleksandr Pid",
                     status: "sent",
                     action: "Pitch Again",
                     messageType: false,
@@ -80,7 +80,7 @@ class Ditch extends Component {
                 {
                     id: 8,
                     pitchType: false,
-                    user: "213496",
+                    user: "Oleksandr Pid",
                     status: "sent",
                     action: "Pitch Again",
                     messageType: false,
@@ -97,11 +97,11 @@ class Ditch extends Component {
                             return (<div className="pitch-row" key={index}>
                                 <div className="pitch-div">
                                     { pitch.pitchType == true ? <div className="newPitch">New Pitch</div> : null }
-                                    <div className="colum user">User:  <span>{pitch.user}</span></div>
+                                    <div className="colum user"><span>{pitch.user}</span></div>
                                     <div className="colum status"><span className={pitch.status}>{pitch.status}</span></div>
                                     <div className="colum"><a href="#" className="view-pitch">View Pitch</a></div>
                                     <div className="colum"> </div>
-                                    { pitch.isMessage == true ? <div className="colum message"> {pitch.messageType == true ? <a href="#" className="message new">Message</a> : <a href="#" className="message">Message</a> }</div> : <div className="colum message"> </div>  }
+                                     <div className="colum message"> </div> 
                                     <div className="colum action">{pitch.blocked == true ? <a href="#" className={'ditch blocked ' + pitch.action.replace(/\s/g, '').toLowerCase() }>{pitch.action}</a> : <a href="#" className={'ditch ' + pitch.action.replace(/\s/g, '').toLowerCase() }>{pitch.action}</a>}</div>
                                 </div>
                         
