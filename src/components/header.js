@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Style from './main.css';
 import '../slick.min.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
 import Logo from '../images/logo.png';
 import userIMg from '../images/user-pic.png';
 import CategoryMenu from './categoryMenu';
@@ -31,8 +32,7 @@ class Header extends Component {
 	    result: [],
 	    rs: []
 	}	
-     this.logoutHandler = this.logoutHandler.bind(this);
-    // console.log('TOken', localStorage.getItem('jwtToken'));
+     this.logoutHandler = this.logoutHandler.bind(this);   
      if(localStorage.getItem('jwtToken') === null){
        window.location.href="#/login";
       }
@@ -49,7 +49,6 @@ class Header extends Component {
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 	console.log("jwtToken",localStorage.getItem('jwtToken'))
 	if(localStorage.getItem('jwtToken') !== null){
-
 		axios.get('/user/getLoggedInUser').then(result => {
 			console.log("result getLoggedInUser",result)
 			this.setState({ 
@@ -58,25 +57,25 @@ class Header extends Component {
 				notifications :result.data.notifications,
 				totalNotifications:result.data.totalNotifications
 			})			
+			console.log('nnnnnnnnnnnnnnn',this.state.notification_type)
 		})
 	}
 	
-	axios.get('/user/getLoggedInUser').then(result => {
+	axios.get('/user/frontNotification').then(result => {
 		this.setState({ 
 			user:result.data.result,
 			notification_type:result.data.notification_type,
 			notifications :result.data.notifications,
 			totalNotifications:result.data.totalNotifications
-		})			
-		console.log('llllllllllllll',this.state.totalNotifications);
+		})	
+		console.log('adsfladfadafaffadf',this.state.notification_type)		
 	})
 	
 	
 	axios.get('/location/listingCity').then(result => {			  
 		this.setState({
 			options: result.data.result, 
-		});		
-			  
+		});	  
 	})	
 		
 	 axios.get('/product/activeProducts').then(rs => {			   			 
@@ -88,7 +87,7 @@ class Header extends Component {
       
 	
    Capitalize(str){
-	 return str.charAt(0).toUpperCase() + str.slice(1);
+      //return str.charAt(0).toUpperCase() + str.slice(1);
    } 
 	
        render() {
@@ -98,12 +97,14 @@ class Header extends Component {
 				  let optionsList = this.state.productsListing; 
 				    optionsLists = optionsList.map(s => <li key={s._id}>{s.productName + ' - ' +s.productCategory.title}</li>);
 			    }
-			    if(this.state.options){
+
+                if(this.state.options){
 				    let optionsListing = this.state.options; 
 				    optionsAll = optionsListing.map(p => <li key={p._id}>{p.cityName + ' - ' + p.stateSelect.stateName}</li>); 
 			    }
-		
-        return(
+			    
+			    let matchingData = this.state.notification_type;
+              return(
                 <header>
                     <figure className="logo">
                         <Link to={'/'}><img src={Logo} alt='logo' /></Link>
@@ -129,12 +130,11 @@ class Header extends Component {
                         <input type="submit" value="search" className="search-icon" />
                         <div className="cl"></div>
                     </div>
-
-                    <If condition={this.state.user.userName !==''}>
+                    <If condition={this.state.user.userName && this.state.user.userName !=""}>
                     <Then>
                     <nav className="after-login">
 					 <ul>
-						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">{this.Capitalize(this.state.user.userName)} </a>
+						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">{this.Capitalize(this.state.user)} </a>
 						<ul className="dashboard-subnav">
 							<li><a href={'/dashboard'} className="dashboard-icon">Dashboard</a></li>
 							<li><a href="#" className="my-trades-icon">My Trades </a></li>
@@ -148,34 +148,15 @@ class Header extends Component {
 					  </li>
 				    <li className="notification "><a href="#"><i className="icon"></i></a>
 					<ul className="dashboard-subnav notification-show">
-					   <li><h3>Notifications</h3></li>
-						<li>
-						     <div className="scroll-div"> 
-								<div className="row unread">
-									<FontAwesomeIcon icon="tag" /> You have got a new pitch request
-								</div>                            
-								<div className="row unread">
-									<FontAwesomeIcon icon="grin-alt" /> Your pitch request has been accepted
-								</div> 
-								<div className="row">
-									<FontAwesomeIcon icon="frown-open" /> Your pitch request has been rejected
-								</div> 
-								<div className="row unread">
-									<FontAwesomeIcon icon="envelope" /> You have got a new message
-								</div> 
-								<div className="row">
-									<FontAwesomeIcon icon="truck" /> Your item has been delivered successfully
-								</div> 
-								<div className="row">
-									<FontAwesomeIcon icon="clock" /> Your subscription will end on 25 May 2018
-								</div> 
-								<div className="row">
-									<FontAwesomeIcon icon="times-circle" /> Trade has been end you have pitched on
-								</div> 
-								<div className="row">
-									<FontAwesomeIcon icon="cog" /> New features updated on your account
-								</div> 
-							</div>
+					   <li><h3>Notifications {this.state.totalNotifications}</h3></li>
+						<li><div className="scroll-div"> 
+						  { this.state.notifications.map((notificationValue, i) => {
+							    const notifyHeading = this.state.notification_type.find(notify => notify.id === notificationValue.notificationTypeId)
+							     return (<div className="row unread"><FontAwesomeIcon icon="tag" />{i+1+') '+notifyHeading.name} </div>
+							   )
+					         })
+					       }
+                          </div>
 						</li>
 					</ul>                    
 				</li>

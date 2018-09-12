@@ -1,4 +1,4 @@
-//const bodyParser = require('body-parser')
+getLoggedInUser//const bodyParser = require('body-parser')
 const User = require('../models/User')
 const Product = require('../models/product')
 const Donation = require('../models/donation')
@@ -921,7 +921,7 @@ const changeStatus = (req, res) => {
           message: httpResponseMessage.USER_NOT_FOUND,
           code: httpResponseMessage.BAD_REQUEST
         });
-      }else {
+      } else {
         return res.json({
               code: httpResponseCode.EVERYTHING_IS_OK,
               message: httpResponseMessage.CHANGE_STATUS_SUCCESSFULLY,
@@ -963,7 +963,6 @@ const getLoggedInUser = (req, res) => {
 		var totalNotifications  = 0;
 		decoded = jwt.verify(token,settings.secret);	  
 		var userId = decoded._id;
-		//console.log("decoded",decoded,userId)
 		  User.findOne({_id: userId}).then(function(user){   
 			Notification.find({toUserId:1,isRead:0}, function (err, notifications) {
 			if(err){
@@ -985,37 +984,6 @@ const getLoggedInUser = (req, res) => {
   } else {
 	 return res.status(403).send({code: 403, message: 'Unauthorized.'});
 	}
-}
-
-
-
-/** Auther	: Rajiv Kumar
- *  Date	: August 3, 2018
- *	Description : Function to change the notification status as Read
- **/
-const resdNotification = (req, res) => {
-  Notification.update({ _id:req.body._id },  { "$set": { "isRead": 1 } }, { new:true }, (err,result) => {
-    if(err){
-		return res.send({
-			code: httpResponseCode.BAD_REQUEST,
-			message: httpResponseMessage.INTERNAL_SERVER_ERROR
-		  });
-    } else {
-      if (!result) {
-        res.json({
-          message: httpResponseMessage.USER_NOT_FOUND,
-          code: httpResponseMessage.BAD_REQUEST
-        });
-      } else {
-        return res.json({
-              code: httpResponseCode.EVERYTHING_IS_OK,
-              message: httpResponseMessage.EMAIL_VERIFY_SUCCESSFULLY,
-             result: result
-            });
-
-         }
-    }
-  })
 }
 
 
@@ -1161,7 +1129,6 @@ const dashboardStates = (req, res) => {
 	});
 }
 
-
 //contactus form
 const contustUs = (req, res) => {
 	console.log('COntact us form');
@@ -1225,11 +1192,12 @@ module.exports = {
 	contustUs,
 	send,
 	getLoggedInUser,
+	getFrontLoggedInUser,
     dashboardStates,
     myProfle,
     forgotPassword,
     resetPassword,
-    updateNewPassword,
-    resdNotification,
+    updateNewPassword
+   
    
 }
