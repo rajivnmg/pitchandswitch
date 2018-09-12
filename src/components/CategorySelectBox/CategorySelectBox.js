@@ -12,16 +12,10 @@ class CategorySelectBox extends Component {
   constructor(props) {
     super(props);    
     this.state = { value: 'Select Category', category : '',	data:[]}; 
-    // this.onChange = this.onChange.bind(this) 
+    //this.onChange = this.onChange.bind(this.props.value) 
+         console.log("propssss",this.props) 
   }
-    
-  //~ onChange(currentNode, selectedNodes) {
-		//~ selectedNodes = currentNode;
-		//~ console.log('State Properties', this.state,this.props);	
-		//~ console.log('currentNode', currentNode);	
-		//~ console.log('selectedNodes',selectedNodes);	
-  //~ }
- 
+  
   onChange = (value) => {
    // console.log(value);
     this.setState({value});
@@ -58,7 +52,8 @@ class CategorySelectBox extends Component {
     return (
       <TreeSelect        
         style={{ width: 475 }}
-        value={this.state.value}
+        defaultValue={this.props.value}
+        value={this.state.value}       
         dropdownStyle={{ maxHeight: 300, overflow: 'auto' }}
         treeData={this.state.data}
         placeholder="Please select"
