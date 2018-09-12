@@ -4,11 +4,15 @@ import popularItemImg from '../../images/popular-item1.jpg';
 import userPicture from '../../images/user-pic.png';
 import Select from 'react-select';
 import axios from 'axios';
+import { Popconfirm, message, Button } from 'antd';
 const categoryFilter = [
     {label: "Select", value: 1},
     {label: "Games", value: 2},
     {label: "Toy", value: 3} 
 ];
+
+const text = 'Are you sure to delete this?';
+
 const App1 = () => ( 
             <div className="app">
                 <div className="container">
@@ -67,11 +71,31 @@ class myTreasureChest extends Component {
 					}
                 }
             ],
+           showFormSuccess : false
         }  
-        
-        // this.onDeleteProduct = this.deleteProduct.bind(this);
               
     }    
+    
+    
+   productDeleteHandler(e){
+		console.log("EEEEEEEEEEEEEE",e)
+		  axios.delete('/product/deleteProduct/' + e).then(result => {
+          if(result.data.code == '200'){
+            let products = this.state.myTreasureChests;
+            let productIndex = products.findIndex(x => x._id === e);
+            products.splice(productIndex, 1);
+            this.setState({
+              myTreasureChests: products,
+              approveId: null,
+              approve: false
+            });
+            this.setState({showFormSuccess: true});
+			setTimeout(() => {this.setState({showFormSuccess: false});}, 5000)
+          }
+        });
+	}
+	
+   
     componentDidMount(){	
 			// get the loogedIn user details
 			axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
@@ -96,14 +120,17 @@ class myTreasureChest extends Component {
 			});
 	}
 	
-    deleteProduct(e){
-		console.log("deleteProduct",e)
-	}
-    
    Capitalize(str){
 	return str.charAt(0).toUpperCase() + str.slice(1);
 } 
 
+ _renderSuccessMessage() {
+    return (
+      <div className={"alert alert-danger mt-4"} role="alert">
+       Product Has been deleted successfully!
+      </div>
+    );
+  }
     render() {
         return (
                 <div className="myTreasure">
@@ -133,20 +160,31 @@ class myTreasureChest extends Component {
                             </div>
                             <div className="cl"></div>
                         </div>
+                         {this.state.showFormSuccess ? this._renderSuccessMessage() : null}
                         <div className="item-listing">
                             {this.state.myTreasureChests.slice(0, this.state.limit).map((slide, index) => {
                                     return(<div className="Items" key={index}>
-                                        <div className="pic"><div className="overlay"><a href={'#'} onClick={this.deleteProduct(slide._id)} className="delete">Delete</a><a href={'/edit-product/'+slide._id} className="edit">Edit</a></div><img src={'http://localhost:3006/assets/uploads/Products/'+slide.productImages} alt="" /></div>
-                                        <div className="details">
-                                            <h4><a href="/my-trade-detail">{slide.productName}</a></h4>
-                                            <a href="#" className="catLink"> {(slide.productCategory && slide.productCategory !== null)?slide.productCategory.title:'N/A'}</a>           
-                                        </div>
-                                        <div className="userdiv">
-                                            <div className="user-pic"><img className="userProfile" src={'http://localhost:3006/assets/uploads/ProfilePic/'+slide.userId.profilePic} /></div>
-                                            <div className="user-name">{(slide.userId)?slide.userId.userName:''}</div>
-                                        </div>
-                                    </div>
-                                            )
+											<div className="pic"><div className="overlay">
+												
+				<Popconfirm placement="top" title={text} onConfirm={this.productDeleteHandler.bind(this, slide._id)} okText="Yes" cancelText="No">
+							<span className="delete mousePointer">Delete</span>
+				</Popconfirm>
+      
+												
+												<a href={'/edit-product/'+slide._id} className="edit">Edit</a>
+											</div>
+												<img src={'http://localhost:3006/assets/uploads/Products/'+slide.productImages} alt="" />
+											</div>
+											<div className="details">
+												<h4><a href="/my-trade-detail">{slide.productName}</a></h4>
+												<a href="#" className="catLink"> {(slide.productCategory && slide.productCategory !== null)?slide.productCategory.title:'N/A'}</a>           
+											</div>
+											<div className="userdiv">
+												<div className="user-pic"><img className="userProfile" src={'http://localhost:3006/assets/uploads/ProfilePic/'+slide.userId.profilePic} /></div>
+												<div className="user-name">{(slide.userId)?slide.userId.userName:''}</div>
+											</div>
+										</div>
+									)
                             })}
                             <div className="cl"></div>
                         </div>

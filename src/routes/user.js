@@ -1,4 +1,4 @@
-mostTrustedconst router = require('express').Router();
+const router = require('express').Router();
 var passport = require('passport');
 var express = require('express');
 var jwt = require('jsonwebtoken');
