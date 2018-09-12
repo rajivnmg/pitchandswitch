@@ -6,7 +6,7 @@ import DitchPopup from './ditchPopup'
 
 
 
-class PitchRequests extends Component {
+class PitchRequests extends React.Component {
     constructor() {
         super();
 
@@ -14,7 +14,7 @@ class PitchRequests extends Component {
             pitches: [{
                     id: 1,
                     pitchType: true,
-                    user: "213496",
+                    user: "Chritstina Morilio",
                     status: "received",
                     action: "Ditch",
                     messageShow: 0,
@@ -28,7 +28,7 @@ class PitchRequests extends Component {
                 {
                     id: 2,
                     pitchType: false,
-                    user: "213496",
+                    user: "Min An",
                     status: "sent",
                     action: "Cancel Pitch",
                     messageShow: 0,
@@ -39,7 +39,7 @@ class PitchRequests extends Component {
                 {
                     id: 3,
                     pitchType: false,
-                    user: "213496",
+                    user: "Lisa Fotois",
                     status: "sent",
                     action: "Cancel Pitch",
                     messageShow: 0,
@@ -50,7 +50,7 @@ class PitchRequests extends Component {
                 {
                     id: 4,
                     pitchType: false,
-                    user: "213496",
+                    user: "Chritstina Morilio",
                     status: "received",
                     action: "Ditch",
                     messageShow: 0,
@@ -61,7 +61,7 @@ class PitchRequests extends Component {
                 {
                     id: 5,
                     pitchType: false,
-                    user: "213496",
+                    user: "Min An",
                     status: "received",
                     action: "Last Pitch",
                     messageShow: 0,
@@ -72,7 +72,7 @@ class PitchRequests extends Component {
                 {
                     id: 6,
                     pitchType: false,
-                    user: "213496",
+                    user: "Lisa Fotois",
                     status: "received",
                     action: "Ditch",
                     messageShow: 0,
@@ -101,11 +101,11 @@ class PitchRequests extends Component {
                             return (<div className="pitch-row" key={index}>
                                 <div className="pitch-div">
                                     { pitch.pitchType == true ? <div className="newPitch">New Pitch</div> : null }
-                                    <div className="colum user">User:  <span>{pitch.user}</span></div>
+                                    <div className="colum user"> <span>{pitch.user}</span></div>
                                     <div className="colum status"><span className={pitch.status}>{pitch.status}</span></div>
                                     <div className="colum"><a href="#" className="view-pitch">View Pitch</a></div>
                                     <div className="colum"> </div>
-                                    {pitch.isMessage == true ? <div className="colum message"> {pitch.messageType == true ? <button onClick={(id) => this.TrackHandler(pitch.id)} className="message new">Message</button> : <button onClick={(id) => this.TrackHandler(pitch.id)} className="message">Message</button> }</div> : <div className="colum message"> </div>  }
+                                    <div className="colum message"></div>  
                                     <div className="colum action">{pitch.action== "Ditch" ? <DitchPopup />  : <a href="#" className={ditchClasses.join(' ')}>{pitch.action}</a> }</div>
                                
                                 </div>

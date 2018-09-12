@@ -8,7 +8,7 @@ import CategoryMenu from './categoryMenu';
 import { AutoComplete } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import {  faTag, faGrinAlt, faFrownOpen, faEnvelope, faTruck, faClock, faTimesCircle, faCog } from '@fortawesome/free-solid-svg-icons';
+import {  faTag, faGrinAlt, faFrownOpen, faEnvelope, faTruck, faClock, faTimesCircle, faCog,faIcon } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 
@@ -31,7 +31,7 @@ class Header extends Component {
 	    result: [],
 	    rs: []
 	}	
-     this.logoutHandler = this.logoutHandler.bind(this);
+     this.logoutHandler = this.logoutHandler.bind(this); 
     // console.log('TOken', localStorage.getItem('jwtToken'));
      if(localStorage.getItem('jwtToken') === null){
        window.location.href="#/login";
@@ -42,8 +42,10 @@ class Header extends Component {
     localStorage.removeItem('jwtToken');        
     this.props.history.push('/login');
   };
-  
 
+	searchHandler = () => {
+	   console.log("Click Search")
+	}
   
   componentDidMount() {
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
@@ -60,18 +62,7 @@ class Header extends Component {
 			})			
 		})
 	}
-	
-	axios.get('/user/getLoggedInUser').then(result => {
-		this.setState({ 
-			user:result.data.result,
-			notification_type:result.data.notification_type,
-			notifications :result.data.notifications,
-			totalNotifications:result.data.totalNotifications
-		})			
-		console.log('llllllllllllll',this.state.totalNotifications);
-	})
-	
-	
+
 	axios.get('/location/listingCity').then(result => {			  
 		this.setState({
 			options: result.data.result, 
@@ -126,7 +117,7 @@ class Header extends Component {
 								  filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
 							  />
                            </div>
-                        <input type="submit" value="search" className="search-icon" />
+                        <input type="button" onClick={this.searchHandler} value="search" className="search-icon" />
                         <div className="cl"></div>
                     </div>
 
@@ -136,11 +127,11 @@ class Header extends Component {
 					 <ul>
 						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">{this.Capitalize(this.state.user.userName)} </a>
 						<ul className="dashboard-subnav">
-							<li><a href={'/dashboard'} className="dashboard-icon">Dashboard</a></li>
-							<li><a href="#" className="my-trades-icon">My Trades </a></li>
+							<li><Link to={'/dashboard'} className="dashboard-icon">Dashboard</Link></li>
+							<li><Link to={'/my-trades'} className="my-trades-icon">My Trades</Link></li>
 							<li><a href="#" className="wishlist-icon">Wishlist</a></li>
 							<li><a href="#" className="trade-match-icon">Trade Match</a></li>
-							<li><a href={'/my-treasure-chest'} className="my-chest-icon">My Treasure Chest</a></li>
+							<li><Link to={'/my-treasure-chest'} className="my-chest-icon">My Treasure Chest</Link></li>
 							<li><a href="#" className="settings-icon">Settings</a></li>
 							<li><a href="#" className="help-icon">Help</a></li>
 							<li><Link to={''} onClick={this.logoutHandler} className="login-link">Logout</Link></li>

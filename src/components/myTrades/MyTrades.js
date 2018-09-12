@@ -6,7 +6,7 @@ import Switched from './switched'
 import Completed from './completed'
 import Ditch from './ditch'
 
-class MyTrades extends Component {
+class MyTrades extends React.Component {
     render() {
         return (
                 <div className="my-trades-container">

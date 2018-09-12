@@ -3,14 +3,14 @@ import statusTrack from '../../images/track-status.png'
 import TradeInfo from './tradeInfo'
 import Messages from './message'
         
-class Switched extends Component {
+class Switched extends React.Component {
     constructor() {
         super();
         this.state = {
             pitches: [{
                     id: 1,
                     pitchType: true,
-                    user: "213496",
+                    user: "Christana Marlio",
                     status: "received",
                     action: "Track",
                     trackStatus: 0,
@@ -25,7 +25,7 @@ class Switched extends Component {
                 {
                     id: 2,
                     pitchType: false,
-                    user: "213496",
+                    user: "Min An",
                     status: "sent",
                     action: "Track",
                     trackStatus: 0,
@@ -37,7 +37,7 @@ class Switched extends Component {
                 {
                     id: 3,
                     pitchType: false,
-                    user: "213496",
+                    user: "Min An",
                     status: "sent",
                     action: "Track",
                     trackStatus: 0,
@@ -49,7 +49,7 @@ class Switched extends Component {
                 {
                     id: 4,
                     pitchType: false,
-                    user: "213496",
+                    user: "Min An",
                     status: "received",
                     action: "Track",
                     trackStatus: 0,
@@ -61,7 +61,7 @@ class Switched extends Component {
                 {
                     id: 5,
                     pitchType: false,
-                    user: "213496",
+                    user: "Min An",
                     status: "received",
                     action: "Track",
                     trackStatus: 0,
@@ -73,7 +73,7 @@ class Switched extends Component {
                 {
                     id: 6,
                     pitchType: false,
-                    user: "213496",
+                    user: "Min An", 
                     status: "received",
                     action: "Track",
                     trackStatus: 0,
@@ -109,12 +109,12 @@ class Switched extends Component {
                             ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());
                             return (<div className="pitch-row" key={index}>
                                 <div className="pitch-div">
-                                    { pitch.pitchType == true ? <div className="newPitch">New Pitch</div> : null }
-                                    <div className="colum user">User:  <span>{pitch.user}</span></div>
+                                    
+                                    <div className="colum user"><span>{pitch.user}</span></div>
                                     <div className="colum status"><span className={pitch.status}>{pitch.status}</span></div>
-                                    <div className="colum"><a href="#" className="view-pitch">View Pitch</a></div>
-                                    <div className="colum trade-info"><TradeInfo /> </div>
-                                    { pitch.isMessage == true ? <div className="colum message"> {pitch.messageType == true ?  <button onClick={(id) => this.messageHandler(pitch.id)} className="message new">Message</button> : <button onClick={(id) => this.messageHandler(pitch.id)} className="message">Message</button> }</div> : <div className="colum message"> </div>  }
+                                    <div className="colum"><a href="#" className="view-pitch"><TradeInfo /></a></div>
+                                    <div className="colum trade-info"> </div>
+                                    <div className="colum message"> </div>
                                     <div className="colum action"><button onClick={(id) => this.TrackHandler(pitch.id)} className={ditchClasses.join(' ')}>{pitch.action}</button></div>
                                 </div>
                                 {(pitch.trackStatus) ? <div className="statusTrack"><img src={statusTrack} /></div> : ''}

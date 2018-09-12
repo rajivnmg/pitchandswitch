@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Messages extends Component {
+class Messages extends React.Component {
     render() {
         return (<div>
             <div className="messageForm">
