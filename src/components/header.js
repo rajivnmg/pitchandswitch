@@ -5,16 +5,15 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Logo from '../images/logo.png';
 import userIMg from '../images/user-pic.png';
 import CategoryMenu from './categoryMenu';
+import { AutoComplete } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {  faTag, faGrinAlt, faFrownOpen, faEnvelope, faTruck, faClock, faTimesCircle, faCog } from '@fortawesome/free-solid-svg-icons';
-
 import axios from 'axios';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 
-const navHide = {
-    display: 'none'
-}
+const Option = AutoComplete.Option;
+const navHide = {   display: 'none' }
 
 class Header extends Component {
 	constructor(props){
@@ -28,7 +27,9 @@ class Header extends Component {
 		 userName:''
 		},
 	    notifications:0,
-	    notifications:[]
+	    notifications:[],
+	    result: [],
+	    rs: []
 	}	
      this.logoutHandler = this.logoutHandler.bind(this);
     // console.log('TOken', localStorage.getItem('jwtToken'));
@@ -38,14 +39,17 @@ class Header extends Component {
   }
   
   logoutHandler = (e) => {
-    localStorage.removeItem('jwtToken');    
-    //window.location.reload();
+    localStorage.removeItem('jwtToken');        
     this.props.history.push('/login');
   };
+  
+
+  
   componentDidMount() {
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 	console.log("jwtToken",localStorage.getItem('jwtToken'))
 	if(localStorage.getItem('jwtToken') !== null){
+
 		axios.get('/user/getLoggedInUser').then(result => {
 			console.log("result getLoggedInUser",result)
 			this.setState({ 
@@ -55,14 +59,50 @@ class Header extends Component {
 				totalNotifications:result.data.totalNotifications
 			})			
 		})
-	}	
-  }
+	}
 	
-Capitalize(str){
-	return str.charAt(0).toUpperCase() + str.slice(1);
-} 
+	axios.get('/user/getLoggedInUser').then(result => {
+		this.setState({ 
+			user:result.data.result,
+			notification_type:result.data.notification_type,
+			notifications :result.data.notifications,
+			totalNotifications:result.data.totalNotifications
+		})			
+		console.log('llllllllllllll',this.state.totalNotifications);
+	})
 	
-    render() {
+	
+	axios.get('/location/listingCity').then(result => {			  
+		this.setState({
+			options: result.data.result, 
+		});		
+			  
+	})	
+		
+	 axios.get('/product/activeProducts').then(rs => {			   			 
+		this.setState({
+		    productsListing: rs.data.result,           
+		});  				  
+	  })
+    }
+      
+	
+   Capitalize(str){
+	 return str.charAt(0).toUpperCase() + str.slice(1);
+   } 
+	
+       render() {
+		   let optionsLists; 
+		    let optionsAll;
+			    if(this.state.productsListing){
+				  let optionsList = this.state.productsListing; 
+				    optionsLists = optionsList.map(s => <li key={s._id}>{s.productName + ' - ' +s.productCategory.title}</li>);
+			    }
+			    if(this.state.options){
+				    let optionsListing = this.state.options; 
+				    optionsAll = optionsListing.map(p => <li key={p._id}>{p.cityName + ' - ' + p.stateSelect.stateName}</li>); 
+			    }
+		
         return(
                 <header>
                     <figure className="logo">
@@ -70,8 +110,22 @@ Capitalize(str){
                     </figure>
                     <CategoryMenu />
                     <div className="search-container">
-                        <div className="location"><input type="text" placeholder="Texas" /></div>
-                        <div className="search"><input type="text" placeholder="Texas" /></div>
+                        <div className="location">
+                           <AutoComplete
+							  style={{ width:85 }}
+							  dataSource={optionsAll}
+							  placeholder="Search"
+							  filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+							  />
+                        </div>
+                        <div className="search">
+                              <AutoComplete
+								  style={{ width:410 }}
+								  dataSource={optionsLists}
+								  placeholder="Search"
+								  filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
+							  />
+                           </div>
                         <input type="submit" value="search" className="search-icon" />
                         <div className="cl"></div>
                     </div>
@@ -138,7 +192,6 @@ Capitalize(str){
               <div className="cl"></div>        
            </header>
          )
-
     }
 }
 
