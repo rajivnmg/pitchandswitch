@@ -32,13 +32,9 @@ class Header extends Component {
 	    result: [],
 	    rs: []
 	}	
-<<<<<<< HEAD
+
      this.logoutHandler = this.logoutHandler.bind(this); 
     // console.log('TOken', localStorage.getItem('jwtToken'));
-=======
-
-     this.logoutHandler = this.logoutHandler.bind(this);    
->>>>>>> fdd2db8ef26881e43fe6038ebb9d22f5876476c6
      if(localStorage.getItem('jwtToken') === null){
        //window.location.href="#/login";
       }
