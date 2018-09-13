@@ -27,13 +27,13 @@ class Header extends Component {
 		 profilePic:'',
 		 userName:''
 		},
-	    notifications:0,
-	    notifications:[],
-	    result: [],
-	    rs: []
+	     notifications:0,
+	     notifications:[],
+	     result: [],
+	     rs: []
 	}	
 
-     this.logoutHandler = this.logoutHandler.bind(this);    
+    this.logoutHandler = this.logoutHandler.bind(this);    
      if(localStorage.getItem('jwtToken') === null){
        //window.location.href="#/login";
       }
@@ -45,15 +45,13 @@ class Header extends Component {
   };
 
 	searchHandler = () => {
-	   console.log("Click Search")
+	   //console.log("Click Search")
 	}
 	
-	searchCategory(categoryID) {
-		console.log('mmmmmm',categoryID);
-		//~ this.setState({
-			  //~ categoryID:categoryID,
-		//~ });
-     }
+	searchCategory = (search)=>{	
+		console.log('searc',search.key)
+		this.setState({searchData:search.key})
+	}
   
   componentDidMount() {
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
@@ -65,7 +63,6 @@ class Header extends Component {
 			})						
 		})
 	}
-
 	
 	axios.get('/user/frontNotification').then(result => {
 		this.setState({ 
@@ -74,7 +71,6 @@ class Header extends Component {
 			notifications :result.data.notifications,
 			totalNotifications:result.data.totalNotifications
 		})	
-		
 	})
 
 	axios.get('/location/listingCity').then(result => {			  
@@ -100,15 +96,14 @@ class Header extends Component {
 		    let optionsAll;
 			    if(this.state.productsListing){
 				  let optionsList = this.state.productsListing; 
-				    optionsLists = optionsList.map(s => <li onClick={this.searchCategory(s.productCategory._id)} key={s.productCategory._id}>{s.productName + ' - ' +s.productCategory.title} </li>);
+				    optionsLists = optionsList.map(s => <li onClick={this.searchCategory.bind(s.productCategory._id)} key={s.productCategory._id}>{s.productName + ' - ' +s.productCategory.title} </li>);
 			    }
                 if(this.state.options){
 				    let optionsListing = this.state.options; 
 				    optionsAll = optionsListing.map(p => <li  key={p._id}>{p.cityName + ' - ' + p.stateSelect.stateName}</li>); 
 			    }
-			    
-			    let matchingData = this.state.notification_type;
-              return(
+			   let matchingData = this.state.notification_type;
+               return(
                 <header>
                     <figure className="logo">
                         <Link to={'/'}><img src={Logo} alt='logo' /></Link>
@@ -120,7 +115,6 @@ class Header extends Component {
 							  style={{ width:85 }}
 							  dataSource={optionsAll}
 							  placeholder="Search"
-							  filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
 							  />
                         </div>
                         <div className="search">
@@ -128,17 +122,17 @@ class Header extends Component {
 								  style={{ width:410 }}
 								  dataSource={optionsLists}
 								  placeholder="Search"
-								  filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
 							  />
-                           </div>
-                        <input type="button" onClick={this.searchHandler} value="search" className="search-icon" />
+                           </div>                      
+                        <Link to={'/search-listing/'+this.state.searchData} className="search-icon">Search</Link>
                         <div className="cl"></div>
+                        
                     </div>
-                    <If condition={this.state.user.userName && this.state.user.userName !=""}>
+                    <If condition={this.state.user && this.state.user.userName!=''}>
                     <Then>
                     <nav className="after-login">
 					 <ul>
-						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">{this.Capitalize(this.state.user.userName)}</a>
+						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">{this.Capitalize(this.state.user)}</a>
 						<ul className="dashboard-subnav">
 							<li><Link to={'/dashboard'} className="dashboard-icon">Dashboard</Link></li>
 							<li><Link to={'/my-trades'} className="my-trades-icon">My Trades</Link></li>

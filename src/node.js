@@ -26,6 +26,7 @@ const fs = require('fs');
 var cookieParser = require('cookie-parser');
 var session = require('express-session')
 var auth = require('./routes/auth');
+const search = require('./routes/search')
 //mongoose.connect(config.db)
 mongoose.connect('mongodb://pitchnswitch:nmg251@ds147450.mlab.com:47450/pitch-switch', { useNewUrlParser: true });
 //mongoose.connect('mongodb://localhost:27017/pitchAndSwitch', { useNewUrlParser: true });
@@ -84,5 +85,6 @@ app.use('/trade',trade);
 app.use('/location',location)
 app.use('/transaction',transaction);
 app.use('/notification',notification);
+app.use('/search',search);
 app.listen(app.get('port'), () => console.log('Server running on ' + app.get('port')));
 module.exports = app;
