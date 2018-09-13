@@ -9,7 +9,7 @@ import CategoryMenu from './categoryMenu';
 import { AutoComplete } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import {  faTag, faGrinAlt, faFrownOpen, faEnvelope, faTruck, faClock, faTimesCircle, faCog,faIcon } from '@fortawesome/free-solid-svg-icons';
+import {  fasTag, faTag, faGrinAlt, faFrownOpen, faEnvelope, faTruck, faClock, faTimesCircle, faCog,faIcon } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 
@@ -33,7 +33,9 @@ class Header extends Component {
 	     rs: []
 	}	
 
-    this.logoutHandler = this.logoutHandler.bind(this);    
+     this.logoutHandler = this.logoutHandler.bind(this); 
+    // console.log('TOken', localStorage.getItem('jwtToken'));
+
      if(localStorage.getItem('jwtToken') === null){
        //window.location.href="#/login";
       }
@@ -88,7 +90,7 @@ class Header extends Component {
       
 	
    Capitalize(str){
-      //return str.charAt(0).toUpperCase() + str.slice(1);
+      return str.charAt(0).toUpperCase() + str.slice(1);
    } 
 	
      render() {
@@ -132,7 +134,10 @@ class Header extends Component {
                     <Then>
                     <nav className="after-login">
 					 <ul>
-						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">{this.Capitalize(this.state.user)}</a>
+
+
+						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">{this.Capitalize(this.state.user.userName)}</a>
+
 						<ul className="dashboard-subnav">
 							<li><Link to={'/dashboard'} className="dashboard-icon">Dashboard</Link></li>
 							<li><Link to={'/my-trades'} className="my-trades-icon">My Trades</Link></li>
@@ -150,7 +155,7 @@ class Header extends Component {
 						<li><div className="scroll-div"> 
 						  { this.state.notifications.map((notificationValue, i) => {
 							    const notifyHeading = this.state.notification_type.find(notify => notify.id === notificationValue.notificationTypeId)
-							     return (<div className="row unread"><FontAwesomeIcon icon="tag" />{i+1+') '+ notifyHeading.name} </div>
+							     return (<div key={notificationValue.notificationTypeId} className="row unread"><FontAwesomeIcon icon="tag" />{i+1+') '+notifyHeading.name} </div>
 							   )
 					         })
 					       }
