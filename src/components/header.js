@@ -32,10 +32,15 @@ class Header extends Component {
 	    result: [],
 	    rs: []
 	}	
+<<<<<<< HEAD
      this.logoutHandler = this.logoutHandler.bind(this); 
     // console.log('TOken', localStorage.getItem('jwtToken'));
+=======
+
+     this.logoutHandler = this.logoutHandler.bind(this);    
+>>>>>>> fdd2db8ef26881e43fe6038ebb9d22f5876476c6
      if(localStorage.getItem('jwtToken') === null){
-       window.location.href="#/login";
+       //window.location.href="#/login";
       }
   }
   
@@ -47,17 +52,22 @@ class Header extends Component {
 	searchHandler = () => {
 	   console.log("Click Search")
 	}
+	
+	searchCategory(categoryID) {
+		console.log('mmmmmm',categoryID);
+		//~ this.setState({
+			  //~ categoryID:categoryID,
+		//~ });
+     }
   
   componentDidMount() {
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 	console.log("jwtToken",localStorage.getItem('jwtToken'))
 	if(localStorage.getItem('jwtToken') !== null){
-		axios.get('/user/getLoggedInUser').then(result => {
-			console.log("result getLoggedInUser",result)
+		axios.get('/user/getLoggedInUser').then(result => {			
 			this.setState({ 
 				user:result.data.result,
-			})			
-			console.log('nnnnnnnnnnnnnnn',this.state.notification_type)
+			})						
 		})
 	}
 
@@ -69,7 +79,7 @@ class Header extends Component {
 			notifications :result.data.notifications,
 			totalNotifications:result.data.totalNotifications
 		})	
-		console.log('adsfladfadafaffadf',this.state.notification_type)		
+		
 	})
 
 	axios.get('/location/listingCity').then(result => {			  
@@ -81,7 +91,7 @@ class Header extends Component {
 	 axios.get('/product/activeProducts').then(rs => {			   			 
 		this.setState({
 		    productsListing: rs.data.result,           
-		});  				  
+		});  							  
 	  })
     }
       
@@ -90,17 +100,16 @@ class Header extends Component {
       return str.charAt(0).toUpperCase() + str.slice(1);
    } 
 	
-       render() {
+     render() {
 		   let optionsLists; 
 		    let optionsAll;
 			    if(this.state.productsListing){
 				  let optionsList = this.state.productsListing; 
-				    optionsLists = optionsList.map(s => <li key={s._id}>{s.productName + ' - ' +s.productCategory.title}</li>);
+				    optionsLists = optionsList.map(s => <li onClick={this.searchCategory(s.productCategory._id)} key={s.productCategory._id}>{s.productName + ' - ' +s.productCategory.title} </li>);
 			    }
-
                 if(this.state.options){
 				    let optionsListing = this.state.options; 
-				    optionsAll = optionsListing.map(p => <li key={p._id}>{p.cityName + ' - ' + p.stateSelect.stateName}</li>); 
+				    optionsAll = optionsListing.map(p => <li  key={p._id}>{p.cityName + ' - ' + p.stateSelect.stateName}</li>); 
 			    }
 			    
 			    let matchingData = this.state.notification_type;
@@ -134,7 +143,8 @@ class Header extends Component {
                     <Then>
                     <nav className="after-login">
 					 <ul>
-						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">{this.Capitalize(this.state.user.userName)} </a>
+
+						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">{this.Capitalize(this.state.user.userName)}</a>
 						<ul className="dashboard-subnav">
 							<li><Link to={'/dashboard'} className="dashboard-icon">Dashboard</Link></li>
 							<li><Link to={'/my-trades'} className="my-trades-icon">My Trades</Link></li>
@@ -172,7 +182,7 @@ class Header extends Component {
 		   </If>
               <div className="cl"></div>        
            </header>
-         )
+       )
     }
 }
 
