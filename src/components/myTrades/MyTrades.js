@@ -5,8 +5,21 @@ import PitchRequests from './pitchRequests'
 import Switched from './switched'
 import Completed from './completed'
 import Ditch from './ditch'
-
-class MyTrades extends React.Component {
+import axios from  'axios'
+class MyTrades extends React.Component {	
+	constructor(props){
+		super(props)
+		this.state = {
+				trades:[]
+			}
+	}	
+	//this function call jusrt after render the page, all the initial data can be load here
+	ComponentDidMount(){
+		axios.get('/offerTrade/trades').then(result => {
+			console.log("offerTrades")
+		})
+	}
+	
     render() {
         return (
                 <div className="my-trades-container">

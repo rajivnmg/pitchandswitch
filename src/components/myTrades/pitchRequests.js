@@ -2,14 +2,10 @@ import React, { Component } from 'react';
 import msgSent from '../../images/msg-img.png'
 import Messages from './message'
 import DitchPopup from './ditchPopup'
-
-
-
-
+import axios from 'axios'
 class PitchRequests extends React.Component {
-    constructor() {
-        super();
-
+    constructor(props) {
+        super(props);
         this.state = {
             pitches: [{
                     id: 1,
@@ -82,42 +78,44 @@ class PitchRequests extends React.Component {
                 }
             ]
         }
-    }
-    ;
-        TrackHandler = (id) => {
-        let pitches = this.state.pitches;
-        let index = pitches.findIndex(pitch => pitch.id === id);
-        pitches[index].messageShow = 1 - parseInt(pitches[index].messageShow);
-        this.setState({pitches: pitches});
+    };
         
-    }
-    ;
-            render() {
-
+	TrackHandler = (id) => {
+		let pitches = this.state.pitches;
+		let index = pitches.findIndex(pitch => pitch.id === id);
+		pitches[index].messageShow = 1 - parseInt(pitches[index].messageShow);
+		this.setState({pitches: pitches});
+	};
+    
+    componentDidMount(){
+		axios.get('/offerTrade/trades').then(result => {
+			console.log("offerTrades")
+		})
+	}
+    
+    
+    render() {
         return (<div>
-            {this.state.pitches.map((pitch, index) => {
+			{this.state.pitches.map((pitch, index) => {
                             let ditchClasses = ['ditch'];
                             ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());
                             return (<div className="pitch-row" key={index}>
-                                <div className="pitch-div">
-                                    { pitch.pitchType == true ? <div className="newPitch">New Pitch</div> : null }
-                                    <div className="colum user"> <span>{pitch.user}</span></div>
-                                    <div className="colum status"><span className={pitch.status}>{pitch.status}</span></div>
-                                    <div className="colum"><a href="#" className="view-pitch">View Pitch</a></div>
-                                    <div className="colum"> </div>
-                                    <div className="colum message"></div>  
-                                    <div className="colum action">{pitch.action== "Ditch" ? <DitchPopup />  : <a href="#" className={ditchClasses.join(' ')}>{pitch.action}</a> }</div>
-                               
-                                </div>
-                                {(pitch.messageShow) ? <Messages /> : ''}
-                                        
+									<div className="pitch-div">
+										{ pitch.pitchType == true ? <div className="newPitch">New Pitch</div> : null }
+										<div className="colum user"> <span>{pitch.user}</span></div>
+										<div className="colum status"><span className={pitch.status}>{pitch.status}</span></div>
+										<div className="colum"><a href="#" className="view-pitch">View Pitch</a></div>
+										<div className="colum"> </div>
+										<div className="colum message"></div>  
+										<div className="colum action">{pitch.action== "Ditch" ? <DitchPopup />  : <a href="#" className={ditchClasses.join(' ')}>{pitch.action}</a> }</div>
+								   
+									</div>
+									{(pitch.messageShow) ? <Messages /> : ''}                                        
                             </div>)
-            }
+					}
             )}
-        
-        
         </div>
-                    );
+       );
     }
 }
 

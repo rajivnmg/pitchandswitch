@@ -27,8 +27,8 @@ class WhatOtherSwitched extends Component {
     }
 	componentDidMount(){
 	 axios.get('/product/switchTodays').then(result => {		 
-		 console.log("ooooooo",result);
-			//this.setState({switches:result.data.result});
+		 //console.log("ooooooo",result);
+			this.setState({switches:result.data.result});
 		 })
      }
      
@@ -78,7 +78,7 @@ class WhatOtherSwitched extends Component {
 						  </div>
 						<div className='details'>						
 						<h4><a href="/my-trade-detail" >{switched.tradeSwitchProductId?switched.tradeSwitchProductId.productName:''}</a></h4>
-						<Link className="catLink" replace to='/'>{switched.productCategory?switched.productCategory:""}</Link>
+						<Link className="catLink" replace to='/'>1111{switched.tradePitchProductId?switched.tradePitchProductId.productCategory:""}</Link>
 						</div>
 						<div className="userdiv">
 						<div className="user-pic"><img src='http://localhost:3006/assets/uploads/Products/'/></div>
@@ -89,7 +89,7 @@ class WhatOtherSwitched extends Component {
 						<div className='pic'><Link to="/my-trade-detail" ><img src={'http://localhost:3006/assets/uploads/Products/'+imagePathPitch} /></Link></div>
 						<div className='details'>
 						<h4><a href="/my-trade-detail" >{switched.tradePitchProductId?switched.tradePitchProductId.productName:''}</a></h4>
-						<Link className="catLink" replace to='/'>{switched.imagePathPitch?switched.tradeSwitchProductId.productName:''}</Link>
+						<Link className="catLink" replace to='/'>222{switched.tradePitchProductId?switched.tradePitchProductId.productCategory:''}</Link>
 						</div>
 						<div className="userdiv">
 						<div className="user-pic"><img src={'http://localhost:3006/assets/uploads/Products/'} /></div>
