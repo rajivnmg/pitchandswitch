@@ -137,3 +137,4 @@ select{ height:30px; width:100%; border:0px; background:transparent; appearance:
 .item-listing .Items .catLink {background-color: #dab439; color: #fff; display: inline-block; padding: 5px 15px; border-radius:15px; text-decoration: none; font-size: 12px;}
 .item-listing .Items:nth-child(4n+4) { margin-right: 0} 
 .ant-select-selection__rendered{background: rgba(233,233,233,0.5);}
+

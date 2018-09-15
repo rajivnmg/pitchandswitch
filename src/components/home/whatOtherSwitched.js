@@ -27,7 +27,7 @@ class WhatOtherSwitched extends Component {
     }
 	componentDidMount(){
 	 axios.get('/product/switchTodays').then(result => {		 
-		 //console.log("ooooooo",result);
+		 console.log("ooooooo",result);
 			this.setState({switches:result.data.result});
 		 })
      }
@@ -66,7 +66,9 @@ class WhatOtherSwitched extends Component {
 				<h3> What others have switched today </h3>
 				 <Slider {...settings}>				    
 				   {this.state.switches.map(function (switched,index) {					   
-					var imagePathSwitch = switched.tradeSwitchProductId?switched.tradeSwitchProductId.productImages[0]:'';	var imagePathPitch = switched.tradePitchProductId?switched.tradePitchProductId.productImages[0]:'';						
+				var imagePathSwitch = switched.tradeSwitchProductId?switched.tradeSwitchProductId.productImages[0]:'';
+				var imagePathPitch = switched.tradePitchProductId?switched.tradePitchProductId.productImages[0]:'';		var imagePathPitchUser = switched.offerTradeId?switched.offerTradeId.pitchUserId.profilePic:'';
+				var imagePathSwitchUser = switched.offerTradeId?switched.offerTradeId.SwitchUserId.profilePic:'';																
 					return (					    					
 					    <div className="slides-div"  key={index}>
 						<div key={index}>
@@ -78,22 +80,26 @@ class WhatOtherSwitched extends Component {
 						  </div>
 						<div className='details'>						
 						<h4><a href="/my-trade-detail" >{switched.tradeSwitchProductId?switched.tradeSwitchProductId.productName:''}</a></h4>
-						<Link className="catLink" replace to='/'>1111{switched.tradePitchProductId?switched.tradePitchProductId.productCategory:""}</Link>
+						<Link className="catLink" replace to='/'>{(switched.tradePitchProductId)?switched.tradePitchProductId.productCategory.title:"NA"}</Link>
 						</div>
 						<div className="userdiv">
-						<div className="user-pic"><img src='http://localhost:3006/assets/uploads/Products/'/></div>
-						<div className="user-name">{switched.tradeSwitchProductId?switched.tradeSwitchProductId.productName:''}</div>
+						<div className="user-pic userProfilePic"><img src={'http://localhost:3006/assets/uploads/ProfilePic/'+imagePathSwitchUser} height="20px;" width="20px;"/></div>
+						<div className="user-name">{(switched.offerTradeId && switched.offerTradeId.SwitchUserId)?switched.offerTradeId.SwitchUserId.userName:''}</div>
+						{/*
+							switched.offerTradeId.SwitchUserId.profilePic
+								switched.offerTradeId.pitchUserId.profilePic						
+							 */}
 						</div>
 						</div>
 						<div className="back">
 						<div className='pic'><Link to="/my-trade-detail" ><img src={'http://localhost:3006/assets/uploads/Products/'+imagePathPitch} /></Link></div>
 						<div className='details'>
 						<h4><a href="/my-trade-detail" >{switched.tradePitchProductId?switched.tradePitchProductId.productName:''}</a></h4>
-						<Link className="catLink" replace to='/'>222{switched.tradePitchProductId?switched.tradePitchProductId.productCategory:''}</Link>
+						<Link className="catLink" replace to='/'>{switched.tradePitchProductId?switched.tradePitchProductId.productCategory.title:'NA'}</Link>
 						</div>
 						<div className="userdiv">
-						<div className="user-pic"><img src={'http://localhost:3006/assets/uploads/Products/'} /></div>
-						<div className="user-name">{switched.tradePitchProductId?switched.tradePitchProductId.productName:''}</div>
+						<div className="user-pic"><img src={'http://localhost:3006/assets/uploads/ProfilePic/'+imagePathPitchUser} height="20px;" width="20px;"/></div>
+						<div className="user-name">{(switched.offerTradeId && switched.offerTradeId.pitchUserId)?switched.offerTradeId.pitchUserId.userName:''}</div>
 						</div>
 						</div>
 						</div>
