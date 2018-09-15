@@ -18,8 +18,9 @@ const navHide = {   display: 'none' }
 
 class Header extends Component {
 	constructor(props){
+	//let categoryId = props.match.params.id;
     super(props);
-    this.state = {
+        this.state = {
 	     user:{
 		 email:'',
 		 lastName:'',
@@ -30,30 +31,31 @@ class Header extends Component {
 	     notifications:0,
 	     notifications:[],
 	     result: [],
-	     rs: []
+	     rs: [],
+	     searchData:"",
+	     searchD :"",
+	     categoryId :"",
 	}	
-
      this.logoutHandler = this.logoutHandler.bind(this); 
-    // console.log('TOken', localStorage.getItem('jwtToken'));
-
+     this.onSearchHandler = this.searchHandler.bind(this); 
      if(localStorage.getItem('jwtToken') === null){
-       //window.location.href="#/login";
+         //window.location.href="#/login";
       }
   }
   
-  logoutHandler = (e) => {
-    localStorage.removeItem('jwtToken');        
-    this.props.history.push('/login');
-  };
-
-	searchHandler = () => {
-	   //console.log("Click Search")
+   logoutHandler = (e) => {
+      localStorage.removeItem('jwtToken');        
+      this.props.history.push('/login');
+   };
+  
+    searchHandler = () =>
+    {
+	   window.location = 'http://localhost:3002/search-listing/'+this.state.searchData;
 	}
 	
-	searchCategory = (search)=>{	
-		console.log('searc',search.key)
+	searchCategory = (search,categoryName)=>{
 		this.setState({searchData:search.key})
-	}
+	};
   
   componentDidMount() {
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
@@ -102,7 +104,7 @@ class Header extends Component {
 			    }
                 if(this.state.options){
 				    let optionsListing = this.state.options; 
-				    optionsAll = optionsListing.map(p => <li  key={p._id}>{p.cityName + ' - ' + p.stateSelect.stateName}</li>); 
+				    optionsAll = optionsListing.map(p => <li key={p._id}>{p.cityName + ' - ' + p.stateSelect.stateName}</li>); 
 			    }
 			   let matchingData = this.state.notification_type;
                return(
@@ -118,26 +120,23 @@ class Header extends Component {
 							  dataSource={optionsAll}
 							  placeholder="Search"
 							  />
-                        </div>
+                        </div>                       
                         <div className="search">
                               <AutoComplete
 								  style={{ width:410 }}
 								  dataSource={optionsLists}
 								  placeholder="Search"
+								  defaultValue={this.state.value}
 							  />
-                           </div>                      
-                        <Link to={'/search-listing/'+this.state.searchData} className="search-icon">Search</Link>
-                        <div className="cl"></div>
-                        
+                           </div>
+                       <input type="submit" value="search" onClick={this.onSearchHandler.bind(this)} className="search-icon" />
+                       <div className="cl"></div>                        
                     </div>
-                    <If condition={this.state.user && this.state.user.userName!=''}>
+                    <If condition={this.state.user && this.state.user.userName!=''} >
                     <Then>
                     <nav className="after-login">
 					 <ul>
-
-
 						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">{this.Capitalize(this.state.user.userName)}</a>
-
 						<ul className="dashboard-subnav">
 							<li><Link to={'/dashboard'} className="dashboard-icon">Dashboard</Link></li>
 							<li><Link to={'/my-trades'} className="my-trades-icon">My Trades</Link></li>

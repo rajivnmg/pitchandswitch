@@ -291,11 +291,8 @@ class Register extends React.Component {
 					<div className="cl"></div>
 				</div>
 				
-			
-				
 				<div className="item-listing"  results={this.state.results}>
-					
-					  {console.log('dddddd',this.state.resultData)}
+				{console.log('dddddd',this.state.resultData)}
 					{ this.state.resultData.map(function (results,index) {
 						return (
 							<div className="slides-div" key={index}>
