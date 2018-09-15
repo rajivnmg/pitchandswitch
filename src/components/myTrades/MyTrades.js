@@ -15,7 +15,7 @@ class MyTrades extends React.Component {
 	}	
 	//this function call jusrt after render the page, all the initial data can be load here
 	ComponentDidMount(){
-		axios.get('/offerTrade/trades').then(result => {
+		axios.get('/trade/offerTrades').then(result => {
 			console.log("offerTrades")
 		})
 	}

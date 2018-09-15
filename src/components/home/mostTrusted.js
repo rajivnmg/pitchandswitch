@@ -12,11 +12,11 @@ class mostTrusted extends Component {
    constructor(props)
     {
         super(props);
-        this.state = {
-            newlyProducts: [{
-                    "title": "",
-                    "image": "",
-                    "category": ""
+        this.state = {           
+            mosttrustedUsers: [{
+                    "userName": "Sasha Neplokhov",
+                    "image": "https://api.androidhive.info/json/movies/2.jpg",
+                    "totalRating": "4.8"
                 }
             ]
         };
@@ -25,7 +25,7 @@ class mostTrusted extends Component {
 	componentDidMount(){
 	  axios.get('/user/mostTrustedUsers').then(result => {		 
 		 console.log("most",result);
-			//this.setState({mosttrustedUsers:result.data.result});
+			this.setState({mosttrustedUsers:result.data.result});
 		 })
      }
     
@@ -58,11 +58,30 @@ class mostTrusted extends Component {
             ]
         };
 
-        return (<div className="mostTrusted">
+      return (
+                <div className="mostTrusted">
         <h3> Most <strong>trusted users</strong> </h3>
-              
+                    <Slider {...settings}>
+                        {this.state.mosttrustedUsers.map(function (slide) {
+						var userImage = slide._id?slide._id.profilePic:'';
+                                        return (
+                                                <div className="slides-div"  key={slide}>
+                                                    <div key={slide}>
+                                                    <div className='pic'> <img src={'http://localhost:3006/assets/uploads/ProfilePic/'+userImage}/> </div>
+                                                        <div className='details'>
+                                                        <h4><a href="/my-trade-detail" >{(slide._id)?slide._id.userName:''}</a></h4>
+                                                            <div className="ratingRow">{slide.totalRating}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                )
+                        })
+                        }
+                    </Slider>
+                     
+                
                 </div>
-               );
+                            );
             }
         }
         export default mostTrusted;

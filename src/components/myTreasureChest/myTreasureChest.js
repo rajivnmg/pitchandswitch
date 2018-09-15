@@ -5,18 +5,18 @@ import userPicture from '../../images/user-pic.png';
 import Select from 'react-select';
 import axios from 'axios';
 import { Popconfirm, message, Button } from 'antd';
-const categoryFilter = [
-    {label: "Select", value: 1},
-    {label: "Games", value: 2},
-    {label: "Toy", value: 3} 
-];
+//~ const categoryFilter = [
+    //~ {label: "Select", value: 1},
+    //~ {label: "Games", value: 2},
+    //~ {label: "Toy", value: 3} 
+//~ ];
 
 const text = 'Are you sure to delete this?';
 
 const App1 = () => ( 
             <div className="app">
                 <div className="container">
-                    <Select value="Newly Added" options={categoryFilter} />
+                    <Select value="Newly Added" options={this.state.categories} />
                 </div>
             </div>
             );
@@ -24,7 +24,7 @@ const newlyAdded = [
     {label: "Newly Added", value: 1},
     {label: "A - Z", value: 2},
     {label: "Z - A", value: 3},
-    {label: "Nearest", value: 3}
+    {label: "Nearest", value: 4}
 ];
 const App2 = () => (
             <div className="app">
@@ -35,11 +35,7 @@ const App2 = () => (
             );
 
 class myTreasureChest extends Component {
-
-    onLoadMore = () => {
-        this.setState((old) => ({limit: old.limit + 10}));
-    }
-
+   
     constructor(props)
     {
 
@@ -55,6 +51,10 @@ class myTreasureChest extends Component {
 			},
             limit: 10,
             loadMore: true,
+            categories : [{label: "Select", value: 1}],
+            currentCategory:'',
+            currentshortBy:1,
+            filterOpt : {category: "", sortBy: 1},
             myTreasureChests: [{
                     "title": "Call of Duty : Infinate Warfare More",
                     "image": popularItemImg,
@@ -76,9 +76,12 @@ class myTreasureChest extends Component {
               
     }    
     
+    onLoadMore = () => {
+        this.setState((old) => ({limit: old.limit + 10}));
+    }
     
    productDeleteHandler(e){
-		console.log("EEEEEEEEEEEEEE",e)
+		
 		  axios.delete('/product/deleteProduct/' + e).then(result => {
           if(result.data.code == '200'){
             let products = this.state.myTreasureChests;
@@ -95,14 +98,37 @@ class myTreasureChest extends Component {
         });
 	}
 	
+	finterByCategory(categoryId){			
+			// Get the user treasure chest filter by category
+			this.setState({filterOpt:{category:categoryId,sortBy:this.state.currentshortBy},sortBy:this.state.currentshortBy})
+			//console.log("filterOpt",this.state.filterOpt)
+			axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
+				this.setState({
+					myTreasureChests : result.data.result
+				});
+			});
+			
+	}
+	
+	sortBy(id){			
+			// Get the user treasure chest filter by category			
+			this.setState({filterOpt:{category:this.state.currentCategory,sortBy:id},currentshortBy:id})
+			//console.log("filterOpt",this.state.filterOpt,id)
+			axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
+				this.setState({
+					myTreasureChests : result.data.result
+				});
+			});
+			
+	}	
    
     componentDidMount(){	
 			// get the loogedIn user details
 			axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
-			console.log("jwtToken",localStorage.getItem('jwtToken'))
+			//console.log("jwtToken",localStorage.getItem('jwtToken'))
 			if(localStorage.getItem('jwtToken') !== null){
 				axios.get('/user/getLoggedInUser').then(result => {
-					console.log("result getLoggedInUser",result)
+					//console.log("result getLoggedInUser",result)
 					this.setState({ 
 						user:result.data.result,
 						notification_type:result.data.notification_type,
@@ -113,9 +139,16 @@ class myTreasureChest extends Component {
 			}			
 			// Get the user treasure chest	
 			axios.get('/product/myTreasureChest').then(result =>{
-				console.log("myTreasureChests",result.data.result)
+				//console.log("myTreasureChests",result.data.result)
 				this.setState({
 					myTreasureChests : result.data.result
+				});
+			});
+			
+			axios.get('/category/listCategory').then(result =>{
+				//console.log("categories",result.data.result)
+				this.setState({
+					categories : result.data.result
 				});
 			});
 	}
@@ -149,13 +182,13 @@ class myTreasureChest extends Component {
                             <div className="category-left">
                                 <span>Category:</span> 
                                 <div className="categoryFilter">
-                                    <div ><Select options={categoryFilter} defaultValue={categoryFilter[0]} onChange={opt => console.log(opt.label, opt.value)} /></div>
+                                    <div ><Select options={this.state.categories} defaultValue={this.state.categories[0]} onChange={opt => this.finterByCategory(opt.value)/*console.log(opt.label, opt.value)*/} /></div>
                                 </div>
                             </div>
                             <div className="sort-by right">
                                 <span>Sort by:</span> 
                                 <div className="newly-add">
-                                    <div className="search"><Select options={newlyAdded} defaultValue={newlyAdded[0]}   onChange={opt => console.log(opt.label, opt.value)} /></div>
+                                    <div className="search"><Select options={newlyAdded} defaultValue={newlyAdded[0]}   onChange={opt => this.sortBy(opt.value)/*console.log(opt.label, opt.value)*/} /></div>
                                 </div>
                             </div>
                             <div className="cl"></div>
@@ -163,6 +196,7 @@ class myTreasureChest extends Component {
                          {this.state.showFormSuccess ? this._renderSuccessMessage() : null}
                         <div className="item-listing">
                             {this.state.myTreasureChests.slice(0, this.state.limit).map((slide, index) => {
+								var userImage = slide.userId?slide.userId.profilePic:'';
                                     return(<div className="Items" key={index}>
 											<div className="pic"><div className="overlay">
 												
@@ -180,7 +214,7 @@ class myTreasureChest extends Component {
 												<a href="#" className="catLink"> {(slide.productCategory && slide.productCategory !== null)?slide.productCategory.title:'N/A'}</a>           
 											</div>
 											<div className="userdiv">
-												<div className="user-pic"><img className="userProfile" src={'http://localhost:3006/assets/uploads/ProfilePic/'+slide.userId.profilePic} /></div>
+												<div className="user-pic"><img className="userProfile" src={'http://localhost:3006/assets/uploads/ProfilePic/'+userImage} /></div>
 												<div className="user-name">{(slide.userId)?slide.userId.userName:''}</div>
 											</div>
 										</div>

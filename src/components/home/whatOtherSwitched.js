@@ -26,8 +26,7 @@ class WhatOtherSwitched extends Component {
         };
     }
 	componentDidMount(){
-	 axios.get('/product/switchTodays').then(result => {		 
-		 console.log("ooooooo",result);
+	 axios.get('/product/switchTodays').then(result => {		 		 
 			this.setState({switches:result.data.result});
 		 })
      }
@@ -67,7 +66,8 @@ class WhatOtherSwitched extends Component {
 				 <Slider {...settings}>				    
 				   {this.state.switches.map(function (switched,index) {					   
 				var imagePathSwitch = switched.tradeSwitchProductId?switched.tradeSwitchProductId.productImages[0]:'';
-				var imagePathPitch = switched.tradePitchProductId?switched.tradePitchProductId.productImages[0]:'';		var imagePathPitchUser = switched.offerTradeId?switched.offerTradeId.pitchUserId.profilePic:'';
+				var imagePathPitch = switched.tradePitchProductId?switched.tradePitchProductId.productImages[0]:'';	
+				var imagePathPitchUser = switched.offerTradeId?switched.offerTradeId.pitchUserId.profilePic:'';
 				var imagePathSwitchUser = switched.offerTradeId?switched.offerTradeId.SwitchUserId.profilePic:'';																
 					return (					    					
 					    <div className="slides-div"  key={index}>
