@@ -49,7 +49,7 @@ class myTreasureChest extends Component {
 				 profilePic:'',
 				 userName:'Robert'
 			},
-            limit: 10,
+            limit: 5,
             loadMore: true,
             categories : [{label: "Select", value: 1}],
             currentCategory:'',

@@ -11,33 +11,28 @@ import axios from 'axios';
 const Hide = {
     display: "none"
 }
-
-const searchUser = [
-    {label: "Christina Morillo", value: 1},
-    {label: "Sharon McCutcheon", value: 2},
-    {label: "Christina Morillo", value: 3},
-    {label: "Sharon McCutcheon 2", value: 4},
-    {label: "Smallest crocodiles", value: 5}
-];
+let searchUser;
 const App = () => (
-		<div className="app">
-			<div className="container">
-				<Select options={searchUser} />
-			</div>
-		</div>
-		);
+<div className="app">
+	<div className="container">
+	<Select options={searchUser} />
+	</div>
+</div>
+);
+
 const filterSearch = [
     {label: "Newly Added", value: 1},
     {label: "A - Z", value: 2},
     {label: "Z - A", value: 3}
 ];
+
 const App1 = () => (
-		<div className="app">
-			<div className="container">
-				<Select value="Newly Added" options={filterSearch} />
-			</div>
-		</div>
-		);
+<div className="app">
+<div className="container">
+<Select value="Newly Added" options={filterSearch} />
+</div>
+</div>
+);
     
 class Register extends React.Component {
     constructor(props)
@@ -46,24 +41,68 @@ class Register extends React.Component {
         let categoryId = props.match.params.id; 
         this.state = {
             resultData: [{
-                    "id": "",
-                    "title": "",
-                    "image": "",
-                    "category": "",
-                    "userPic": "",
-                    "userName": "",
+				"id": "",
+				"title": "",
+				"image": "",
+				"category": "",
+				"userPic": "",
+				"userName": "",
                 }
             ],
+             items: [],
+             visible: 5,
+             error: false,
+             categoryList: [{
+                    "id": "",
+                    "title": "",
+                }
+            ],
+            usersList: [{
+				"id": "",
+				"title": "",
+               }
+            ],
+            citiesList:[{"id": "","title": "" }],
+            sizeList:[{"id": "","title": "" }],
+            brandsList:[{"id": "","title": "" }],
+            constantList:[{"id": "","title": "" }],
             result: [],
             query: '',
             categoryId: categoryId,
-        };       
+        };
+        
+        this.loadMore = this.loadMore.bind(this);       
     }
+    
+      loadMore() {
+		this.setState((prev) => {
+		  return {visible: prev.visible + 4};
+		});
+	  }
  
     componentDidMount(){
 	      axios.get('/product/searchresult/'+ this.state.categoryId).then(result => {
 			 this.setState({resultData:result.data.result});
 		})
+	     axios.get('/category/categoriesActive/').then(rs => {
+			 this.setState({categoryList:rs.data.result});
+		})
+	     axios.get('/user/activeUser/').then(users => {
+			 this.setState({usersList:users.data.result});			
+		})
+	     axios.get('/location/activeCities/').then(cities => {
+			 this.setState({citiesList:cities.data.result});			
+		})
+	     axios.get('/size/listingsize/').then(sizes => {
+			 this.setState({sizeList:sizes.data.result});			
+		})
+	     axios.get('/brand/listingbrand/').then(brands => {
+			 this.setState({brandsList:brands.data.result});			
+		})
+	     axios.get('/donation/getConstant/').then(constants => {
+			 this.setState({constantList:constants.data.result});			
+		})
+	   
      }
      
     handleInputChange = () => {
@@ -93,42 +132,43 @@ class Register extends React.Component {
     }
   
     render() {
-        return (
+	  if(this.state.usersList){
+        let usersListing = this.state.usersList;
+         searchUser = usersListing.map(option => ({ label: option.firstName, value: option._id }));   
+      }
+		
+    return (
 	<div className="search-page">
 		<div className="container">
 			<div className="lft-section">
 				<div className="column">
-					<h4>All categories</h4>                
-					<div className="check-box">
-						<input name="Apple" id="cat1" type="checkbox" />
-						<label htmlFor="cat1">Toys & Games</label>
-					</div>
-					<div className="check-box">
-						<input name="Samsung" id="cat2" type="checkbox" />
-						<label htmlFor="cat2">Art & Collectibles</label>
-					</div>
-					<div className="check-box">
-						<input name="LG" id="cat3" type="checkbox" />
-						<label htmlFor="cat3">Electronics & Accessories</label>
-					</div>
-					<div className="check-box">
-						<input name="Asus" id="cat4" type="checkbox" />
-						<label htmlFor="cat4">Clothing</label>
-					</div>
-					<div className="check-box">
-						<input name="Lenovo" id="cat5" type="checkbox" />
-						<label htmlFor="cat5">Craft Supplies & Tools</label>
-					</div>
-					<a href="#" className="moreCat">+240 More</a>
+				   <h4>All categories</h4> 
+						{this.state.categoryList.slice(0, this.state.visible).map((listing, index) => {						
+						return (
+						 <div className="check-box">
+							<input name="Apple" id={"cat"+index} type="checkbox" />
+							<label htmlFor={"cat"+index}>{listing.title}</label>
+						  </div>
+						  )
+					    })
+                      }
+                     { 
+						this.state.visible < this.state.categoryList.length &&
+						<button onClick={this.loadMore} type="button" className="load-more moreCat">Load more</button>
+					 }
 				</div>
 				<div className="column">
 					<h4>Search by user</h4>
-					<div className="search"><Select  options={searchUser} onChange={opt => console.log(opt.label, opt.value)} /></div>
+					<div className="search"><Select options={searchUser} onChange={opt => console.log(opt.label, opt.value)} /></div>
 					<div className="taglinerow">
-						<span href="javascript:void(0)" className="tagline">Christina Morillo <a href="#" className="close">x</a></span>
-						<span href="javascript:void(0)" className="tagline">Sharon McCutcheon <a href="#" className="close">x</a></span>
-	
-						<div className="cl"></div>
+					{ this.state.usersList.map(function (userlisting,index) {					
+						return (	
+						  <span href="javascript:void(0)" className="tagline">{userlisting.firstName}
+						  <a href="#" className="close">#</a></span>
+						  )
+					    })
+                      }
+	                   <div className="cl"></div>
 					</div>
 					<div className="cl"></div>	
 				</div>
@@ -136,9 +176,12 @@ class Register extends React.Component {
 					<h4>Location</h4>
 					<div className="select-box">
 						<select>
-							<option>Texas</option>
-							<option>Texas</option>
-							<option>Texas</option>
+						{ this.state.citiesList.map(function (citylisting,index) {
+							return (	
+							    <option>{citylisting.cityName}</option>
+							)
+					    })
+                      }
 						</select>
 					</div>
 					<div className="distance-range">
@@ -157,8 +200,12 @@ class Register extends React.Component {
 					<div className="select-box">
 						<select>
 							<option>Select</option>
-							<option>Select 1</option>
-							<option>Select 2</option>
+							{ this.state.sizeList.map(function (sizelisting,index) {
+							return (	
+							    <option>{sizelisting.size}</option>
+							 )
+					      })
+                        }
 						</select>
 					</div>
 					<div className="taglinerow">
@@ -167,46 +214,31 @@ class Register extends React.Component {
 				</div>
 				<div className="column">
 					<h4>Brands</h4>
-					<div className="check-box">
-						<input name="Apple" id="apple" type="checkbox" />
-						<label htmlFor="apple">Apple</label>
-					</div>
-					<div className="check-box">
-						<input name="Samsung" id="samsung" type="checkbox" />
-						<label htmlFor="samsung">Samsung</label>
-					</div>
-					<div className="check-box">
-						<input name="LG" id="lg" type="checkbox" />
-						<label htmlFor="lg">LG</label>
-					</div>
-					<div className="check-box">
-						<input name="Asus" id="asus" type="checkbox" />
-						<label htmlFor="asus">Asus</label>
-					</div>
-					<div className="check-box">
-						<input name="Lenovo" id="lenovo" type="checkbox" />
-						<label htmlFor="lenovo">Lenovo</label>
-					</div>
-					<a href="#" className="moreCat">+240 More</a>
+					{this.state.brandsList.slice(0, this.state.visible).map((listing, index) => {						
+						return (
+						    <div className="check-box">
+								<input name="Apple" id={"apple"+index} type="checkbox" />
+								<label htmlFor={"apple"+index}>{listing.brandName}</label>
+							</div>
+						  )
+					    })
+                      }
+                     { 
+						this.state.visible < this.state.brandsList.length &&
+						<button onClick={this.loadMore} type="button" className="load-more moreCat">Load more</button>
+					 }
 				</div>
 				<div className="column">
 					<h4>Condition</h4>
-					<div className="check-box">
-						<input name="New" id="new" type="checkbox" />
-						<label htmlFor="new">New</label>
-					</div>
-					<div className="check-box">
-						<input name="Good" id="good" type="checkbox" />
-						<label htmlFor="good">Good</label>
-					</div>
-					<div className="check-box">
-						<input name="excellent" id="excellent" type="checkbox" />
-						<label htmlFor="excellent">Excellent</label>
-					</div>
-					<div className="check-box">
-						<input name="broken" id="broken" type="checkbox" />
-						<label htmlFor="broken">Broken</label>
-					</div>
+					{ this.state.constantList.map(function (constantList,index) {
+							return (
+								<div className="check-box">
+									<input name="New" id={"new"+index} type="checkbox" />
+									<label htmlFor={"new"+index}>{constantList.name}</label>
+								</div>
+					         )
+					      })
+                      }
 				</div>
 				<div className="column">
 					<h4>Colors</h4>
@@ -292,15 +324,19 @@ class Register extends React.Component {
 				</div>
 				
 				<div className="item-listing"  results={this.state.results}>
-				{console.log('dddddd',this.state.resultData)}
 					{ this.state.resultData.map(function (results,index) {
+						let img = results.userId?results.userId.profilePic:"";
 						return (
-							<div className="slides-div" key={index}>
-								<div key={results}>
-								<div className='pic'><Link to="/my-trade-detail" ><img src={'http://localhost:3006/assets/uploads/Products/'+results.productImages} /></Link></div>
+							 <div className="Items" key={index}>
+								<div>
+									<div className='pic'><img src={'http://localhost:3004/assets/uploads/Products/'+results.productImages} /></div>
 									<div className='details'>
-									<h4><a href="/my-trade-detail">{results.productName}</a></h4>
+										<h4>{results.productName}</h4>
 										<Link className="catLink" to='/'>{((results.productCategory)?results.productCategory.title:"")}</Link>
+									</div>
+									<div className="userdiv">
+										<div className="user-pic"><img src={'http://localhost:3004/assets/uploads/ProfilePic/'+img} /></div>
+										<div className="user-name">{results.userId?results.userId.firstName:""}</div>
 									</div>
 								</div>
 							</div>
