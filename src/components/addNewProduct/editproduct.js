@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Style from './addnewproduct.css';
 import { Link } from 'react-router-dom';
+import { Spin } from 'antd';
 import { SketchPicker } from 'react-color'
 import PicturesWall from '../common/picturesWall';
 import CategorySelectBox from '../../components/CategorySelectBox/CategorySelectBox';
@@ -9,6 +10,8 @@ import CategorySelectBox from '../../components/CategorySelectBox/CategorySelect
 import axios from 'axios';
 var FD = require('form-data');
 var fs = require('fs');
+
+
 //~ class ColorPicker extends Component {
    //~ render() {
     //~ return <SketchPicker 
@@ -80,165 +83,148 @@ class Form extends Component {
   }
 }
 class Register extends React.Component {
-		constructor(props){
-			super(props);			
-			this.productName = React.createRef();
-			this.description = React.createRef();
-			this.parent = React.createRef();
-			this.status = React.createRef();
-			this.productImages = React.createRef();
-			this.category = React.createRef();
-			this.author = React.createRef();
-			this.condition = React.createRef();
-			this.brand = React.createRef();
-			this.size = React.createRef();			
-			let productId = this.props.match.params.id;
-			this.state = {
-				productId: productId,
-			   editProductForm: {
-					productName:'',
-					description:'',
-					productCategory:'',
-					size:'',
-					color:'',
-					brand:'',
-					productAge:'',
-					condition:'',
-					productImages:'',
-					productStatus:'0'
-				},
-			   Categories: [],
-			   brands: [],
-			   sizes: [],
-			   conditions: [],
-			   categoryValue: '',
-			   background: '#fff',
-			   validation:{
-				productName:{
-				  rules: {
-					notEmpty: {
-					  message: 'Product name field can\'t be left blank',
-					  valid: false
-					}
-				  },
-				  valid: null,
-				  message: ''
-				},
-				 showFormSuccess: false
-			  }
-			};
-			
-			
-			this.categoryhandleContentChange = this.categoryhandleContentChange.bind(this)
-		}
+	state = {
+		productId: this.props.match.params.id,
+		selectedFiles: '',
+		editProductForm: {
+			productName:'',
+			description:'',
+			productCategory:'',
+			size:'',
+			color:'',
+			brand:'',
+			productAge:'',
+			condition:'',
+			productImages:'',
+			productStatus:'0'
+		},
+	   Categories: [],
+	   brands: [],
+	   sizes: [],
+	   conditions: [],
+	   categoryValue: '',
+	   background: '#fff',
+	   validation:{
+		productName:{
+		  rules: {
+			notEmpty: {
+			  message: 'Product name field can\'t be left blank',
+			  valid: false
+			}
+		  },
+		  valid: null,
+		  message: ''
+		},
+		 showFormSuccess: false
+	  }
+	};
+	constructor(props){
+		super(props);
+		this.categoryhandleContentChange = this.categoryhandleContentChange.bind(this)
+	}
 
 
-		categoryhandleContentChange(value) {
-		this.setState({categoryValue:value })
+	categoryhandleContentChange(value) {
+	this.setState({categoryValue:value })
+	}
+	
+	cancelHandler(){
+	this.props.history.push("/products");
+	}
+	
+	// set the selected file in to state
+	handlePictureChange = (event) => {
+	  let oldFiles = [];
+	  event.map((file) => {
+		console.log('FIle', file);
+		if (file.response && file.response.code === 200) {
+		  // Component will show file.url as link
+		  oldFiles.push({
+			filename: file.response.result[0].filename,
+			size: file.response.result[0].size,
+			path: file.response.result[0].path
+		  });
 		}
-
-		//~ fileChangedHandler = (event) => {
-		  //~ this.setState({selectedFile: event.target.files[0]})
-		//~ }
-		
-		handleCategory = (category) => {
-			this.setState({categoryValue:category });
-		}
-		handleBrand = (brand) => {
-			this.setState({brand: brand});
-		}
-		handleSize = (size) => {
-			this.setState({size: size});
-		}
-		cancelHandler(){
-		this.props.history.push("/products");
-		}
-		
-		// set the selected file in to state
-		handlePictureChange = (event) => {
-			console.log("FILESSS",event)
-		  this.setState({selectedFile: event})
-		}
-		
-		// Set The cureent color on change color
-		handleChangeComplete = (color) => {
-			this.setState({ background: color.hex });
-			console.log("handleChangeComplete",this.state)
-		};		
-		
-		componentDidMount() {	
-			axios.get('/product/viewProduct/' + this.state.productId).then(result => {
-			  if(result.data.code === 200) {
-				this.setState({editProductForm: result.data.result});
-				console.log('ffffffffff',result.data.result);
-				//this.productName.value = result.data.result.productName;
-				//this.description.value = result.data.result.description;
-				if(result.data.result.productCategory){						
-					this.setState({category:result.data.result.productCategory._id})						
-				}
-				if(result.data.result.brand){
-					this.setState({brand:result.data.result.brand._id})
-				}
-				if(result.data.result.size){
-					this.setState({size:result.data.result.size._id})
-				}
-				//~ this.setState({productImages: result.data.result.productImages});       
-			   }      
-			 }) 		
-			//GET ALL Brand
-			axios.get('/brand/listingbrand').then(result => {			
-				this.setState({brands:result.data.result})
-			})	
-			//GET ALL Condition
-			axios.get('/donation/getConstant').then(result => {			
-				this.setState({conditions:result.data.result})
-			})	
-			//GET ALL Size
-			axios.get('/size/listingsize').then(result => {			
-				this.setState({sizes:result.data.result})
-			})				
-			console.log("ddddd",this.category.value)
-		}		
-
-		conditionsChange = (value) => {
-		   this.setState({conditionValue: value.target.value});
-		}
-		
-		inputChangedHandler = (event, inputIdentifier) => {
+	  });
+	  this.setState({selectedFiles: JSON.stringify(oldFiles)});
+	}
+	handleCategory = (category) => {
 		const productForm = {
 		  ...this.state.editProductForm
 		};
-		const productFormElement = {
-		  ...productForm[inputIdentifier]
+		productForm['productCategory'] = category;    
+		this.setState({ editProductForm: productForm });
+	}
+	// Set The cureent color on change color
+	handleChangeComplete = (color) => {
+		const productForm = {
+		  ...this.state.editProductForm
 		};
-		productFormElement.value = event.target.value;
-		productFormElement.touched = true;
-		productForm[inputIdentifier] = productFormElement;    
-		this.setState({ editProductForm: productForm }, function(){console.log(this.state.editProductForm)});
+		productForm['color'] = color.hex;    
+		this.setState({ addProductForm: productForm });
+	};		
+	
+	componentDidMount() {			
+		axios.get('/product/viewProduct/' + this.state.productId).then(result => {
+		  if(result.data.code === 200) {
+			let productData = result.data.result;
+			productData.productCategory = productData.productCategory._id;
+			productData.brand = productData.brand._id;
+			productData.size = productData.size._id;
+			this.setState({editProductForm: productData});
+			//console.log('Product Data',result.data.result, productData);
+			
+			//~ this.setState({productImages: result.data.result.productImages});       
+		   }      
+		 });			
+		//GET ALL Brand
+		axios.get('/brand/listingbrand').then(result => {			
+			this.setState({brands:result.data.result})
+		})	
+		//GET ALL Condition
+		axios.get('/donation/getConstant').then(result => {			
+			this.setState({conditions:result.data.result})
+		})	
+		//GET ALL Size
+		axios.get('/size/listingsize').then(result => {			
+			this.setState({sizes:result.data.result})
+		})
+	}		
+
+	conditionsChange = (value) => {
+	   this.setState({conditionValue: value.target.value});
+	}
+	
+	inputChangedHandler = (event, inputIdentifier) => {
+		const productForm = {
+		  ...this.state.editProductForm
 		};
+		productForm[inputIdentifier] = event.target.value;    
+		this.setState({ editProductForm: productForm });
+	};
   
 	submit = () => {	  
+		
+		
+		
 		const data =new FD()		
-        data.append('productName', (this.state.editProductForm.productName)?this.state.editProductForm.productName.value:''),
-        data.append('description', (this.state.editProductForm.description)?this.state.editProductForm.description.value:''),
-       	data.append('_id', this.props.match.params.id);
-        data.append('productCategory',this.state.categoryValue),
-        data.append('size',(this.state.editProductForm.size)?this.state.editProductForm.size.value:''),
-        data.append('color', this.state.background),
-        data.append('brand', (this.state.editProductForm.brand)?this.state.editProductForm.brand.value:''),
-        data.append('productAge',(this.state.editProductForm.productAge)?this.state.editProductForm.productAge.value:''),
-        data.append('condition', (this.state.editProductForm.condition)?this.state.editProductForm.condition.value:''),
-        data.append('productStatus',(this.state.editProductForm.productStatus)?this.state.editProductForm.productStatus.value:'1'),
-        data.append('userId','1');
-        if(this.state.selectedFile){			
-			this.state.selectedFile.forEach((file) => {
-				console.log("file",file);
-				data.append('files', file);
-			});
-			
-		    data.append('productImages', this.state.selectedFile);
-      	}      	
-        axios.post('/product/addProduct', data).then(result => {
+		const formData = this.state.editProductForm;
+		for (let [key, value] of Object.entries(formData)) {
+			if(key != '__v'){
+				  if(key == 'productImages'){
+					  if(this.state.selectedFiles){
+						data.append('files', this.state.selectedFiles);
+					  } 
+				  }else if(key == 'userId'){
+					  data.append('userId', formData.userId._id);	
+				  }else{
+					  data.append(key, value);
+				  }
+			  }
+		}
+		
+		//console.log('DATA', formData);
+        axios.put('/product/updateProduct', data).then(result => {
           console.log('USER DATA', data)
          if(result.data.code ==200){			    
 			  this.setState({
@@ -247,7 +233,7 @@ class Register extends React.Component {
 				showFormSuccess: true,
 				showFormError: false
 			  });
-			  //this.props.history.push("/products");
+			  this.props.history.push("/my-treasure-chest");
 			}else{
 			  this.setState({
 				message: result.data.messaage,
@@ -264,7 +250,7 @@ class Register extends React.Component {
 				
 			}
 		  });   
-    setTimeout(() => {this.setState({showFormSuccess: false,showFormError: false});}, 12000);
+		setTimeout(() => {this.setState({showFormSuccess: false,showFormError: false});}, 12000);
 	  
     this.setState({showFormSuccess: true});
     setTimeout(() => {this.setState({showFormSuccess: false});}, 5000)
@@ -276,9 +262,10 @@ class Register extends React.Component {
       </div>
     );
   }
-  render() {
-    return (
-            <div className="add-product-container">
+  render() {	
+	let editForm = <div className="example"><Spin /></div>;
+	if(this.state.editProductForm._id != undefined){
+		editForm = <div className="add-product-container">
         <div  className="container">
         <div className="breadcrumb">
         <ul>
@@ -335,7 +322,7 @@ class Register extends React.Component {
 			<div className="invalid-feedback validation"> </div>   
 			<span className="astrik">*</span>
 			<label className="label" htmlFor={"category"}>Category<br/></label>
-			<CategorySelectBox onSelectCategory={this.handleCategory} value={this.state.category} />
+			<CategorySelectBox onSelectCategory={this.handleCategory} value={this.state.editProductForm.productCategory} />
 		</div>                 
 		<div className="form-row">
 			<div className="colum">
@@ -346,10 +333,10 @@ class Register extends React.Component {
 				{/*  <SizeSelectBox onSelectSize={this.handleSize}/> */}
 				<div className="select-box">
 						<select required={true} name={"size"} id={"size"}  onChange={(e) => this.inputChangedHandler(e, 'size')}>
-						<option value="">Select Brand</option>
+						<option value="">Select Size</option>
 						{ 
 						this.state.sizes.map(size =>{
-							return(<option key={size._id} selected={(this.state.size == size._id)?"selected":""} value={size._id}>{size.size}</option>)
+							return(<option key={size._id} selected={(this.state.editProductForm.size == size._id)?"selected":""} value={size._id}>{size.size}</option>)
 						})
 						}
 						</select>
@@ -365,7 +352,7 @@ class Register extends React.Component {
 						<option value="">Select Brand</option>
 						{
 						this.state.brands.map(brand =>{
-						return (<option key={brand._id} value={brand._id} selected={(this.state.brand == brand._id)?"selected":""}>{brand.brandName}</option>)
+						return (<option key={brand._id} value={brand._id} selected={(this.state.editProductForm.brand == brand._id)?"selected":""}>{brand.brandName}</option>)
 						})
 						}
 					</select>
@@ -427,8 +414,10 @@ class Register extends React.Component {
 </div>
 <div className="cl"> </div>
 </div>
-</div>
-    );
+</div>;
+	}
+	  
+    return editForm;
   }
 }
  

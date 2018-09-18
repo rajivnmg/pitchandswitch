@@ -9,25 +9,19 @@ import { TreeSelect } from 'antd';
 //const TreeNode = TreeSelect.TreeNode;
 
 class CategorySelectBox extends Component {
-  constructor(props) {
-    super(props);    
-    this.state = { value: 'Select Category', category : '',	data:[]}; 
-    //this.onChange = this.onChange.bind(this.props.value) 
-         console.log("propssss",this.props) 
-  }
-  
+  state = { value: 'Select Category', category : '',	data:[]};   
   onChange = (value) => {
-   // console.log(value);
-    this.setState({value});
+   this.setState({value});
     this.setState({category:value});
-    this.props.onSelectCategory(value); 	
+    this.props.onSelectCategory(value);
   }
-  componentDidMount(){
+  componentDidMount(){	  
+	  console.log('PROPS', this.props);
     axios.get('/category/allCategories').then(result => {
       if(result.data.code === 200){		  
 		 // console.log("allCategories",result.data.result)
         this.setState({
-          data: result.data.result,           
+          data: result.data.result
         });
       }
     })
@@ -38,7 +32,12 @@ class CategorySelectBox extends Component {
       }
     });
   }
-  
+  componentWillMount(){
+	  setTimeout(()=>{
+		  console.log('HERE', this.props.value);
+		  this.setState({value: this.props.value});
+	  }, 100);
+  }
   render() {
      //~ let data;
       //~ if(this.state.data){
