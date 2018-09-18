@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import msgSent from '../../images/msg-img.png'
 import Messages from './message'
 import DitchPopup from './ditchPopup'
+import CancelPitchPopup from './cancelPitch'
+import LastPitchPopup from './lditch'
 import axios from 'axios'
 class PitchRequests extends React.Component {
     constructor(props) {
@@ -23,39 +25,39 @@ class PitchRequests extends React.Component {
 
                 },
                 
-                {
-                    id: 3,
-                    pitchType: false,
-                    user: "Lisa Fotois",
-                    status: "sent",
-                    action: "Cancel Pitch",
-                    messageShow: 0,
-                    messageType: true,
-                    isMessage: true,
-                    message: []
-                },
-                {
-                    id: 4,
-                    pitchType: false,
-                    user: "Chritstina Morilio",
-                    status: "received",
-                    action: "Ditch",
-                    messageShow: 0,
-                    messageType: false,
-                    isMessage: true,
-                    message: []
-                },
-                {
-                    id: 5,
-                    pitchType: false,
-                    user: "Min An",
-                    status: "received",
-                    action: "Last Pitch",
-                    messageShow: 0,
-                    messageType: false,
-                    isMessage: true,
-                    message: []
-                }
+                //~ {
+                    //~ id: 3,
+                    //~ pitchType: false,
+                    //~ user: "Lisa Fotois",
+                    //~ status: "sent",
+                    //~ action: "Cancel Pitch",
+                    //~ messageShow: 0,
+                    //~ messageType: true,
+                    //~ isMessage: true,
+                    //~ message: []
+                //~ },
+                //~ {
+                    //~ id: 4,
+                    //~ pitchType: false,
+                    //~ user: "Chritstina Morilio",
+                    //~ status: "received",
+                    //~ action: "Ditch",
+                    //~ messageShow: 0,
+                    //~ messageType: false,
+                    //~ isMessage: true,
+                    //~ message: []
+                //~ },
+                //~ {
+                    //~ id: 5,
+                    //~ pitchType: false,
+                    //~ user: "Min An",
+                    //~ status: "received",
+                    //~ action: "Last Pitch",
+                    //~ messageShow: 0,
+                    //~ messageType: false,
+                    //~ isMessage: true,
+                    //~ message: []
+                //~ }
             ]
         }
     };
@@ -69,7 +71,7 @@ class PitchRequests extends React.Component {
     
     componentDidMount(){
 		axios.get('/trade/offerTrades').then(result => {
-			  if(result.data.code === 200){
+			  if(result.data.code === 200){				  
 				this.setState({
 					pitches: result.data.result,
 					currentUser: result.data.currentUser				  
@@ -90,14 +92,12 @@ class PitchRequests extends React.Component {
                             var send = (pitch.pitchUserId &&  pitch.pitchUserId._id == this.state.currentUser)?1:0;
                             let ditchClasses = ['ditch'];                                                       
                             var ditch = 'Ditch';
-                            if(send===0){
-								var ditch = 'Pitch Again';
-							}else if(send===1 && pitch.ditchCount <= 3){
+                            if(send===1 && pitch.ditchCount <= 3){
 								var ditch = 'Cancel Pitch';
-							}else if(send===1 && pitch.ditchCount > 3){
-								var ditch = 'Last Pitch';
+							}else if(send===0 && pitch.ditchCount > 3){
+								var ditch = 'Last Ditch';
 							}         
-							console.log("send",send,this.state.currentUser,pitch.pitchUserId)              
+							//console.log("send",send,this.state.currentUser,pitch.pitchUserId)              
                            // ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());
                             return (<div className="pitch-row" key={index}>
 									<div className="pitch-div">
@@ -107,7 +107,14 @@ class PitchRequests extends React.Component {
 										<div className="colum"><a href="#" className="view-pitch">View Pitch</a></div>
 										<div className="colum"> </div>
 										<div className="colum message"></div>  
-										<div className="colum action">{(send===0) ? <DitchPopup />  : <a href="#" className={ditchClasses.join(' ')}>{ditch}</a> }</div>
+										<div className="colum action">
+										
+										{send == 0? <DitchPopup /> :<CancelPitchPopup />}
+										
+										
+										
+										
+										</div>
 								   
 									</div>
 									                                     
@@ -119,4 +126,35 @@ class PitchRequests extends React.Component {
     }
 }
 
+  /*render() {
+
+        return (<div>
+       
+            {this.state.pitches.map((pitch, index) => {
+                            let ditchClasses = ['ditch'];
+                            ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());
+                            return (<div className="pitch-row" key={index}>
+                                <div className="pitch-div">
+                                    { pitch.pitchType == true ? <div className="newPitch">New Pitch</div> : null }
+                                    <div className="colum user width1"> <span>{pitch.user}</span></div>
+                                    <div className="colum status"><span className={pitch.status}>{pitch.status}</span></div>
+                                    <div className="colum"><a href="#" className="view-pitch">View Pitch</a></div>
+                                    <div className="colum"> </div>
+                                    <div className="colum message"></div>  
+                                    <div className="colum action">
+										{pitch.action== "Ditch" ? <DitchPopup />  : pitch.action== "Cancel Pitch" ? <CancelPitchPopup />  : pitch.action== "Last Pitch" ? <LastPitchPopup />  : <a href="#" className={ditchClasses.join(' ')}>{pitch.action}</a> }
+                                    </div>
+                                </div>
+                                {(pitch.messageShow) ? <Messages /> : ''}
+                                        
+                            </div>)
+            }
+            )}
+        
+        
+        </div>
+                    );
+    }
+}
+*/
 export default PitchRequests;

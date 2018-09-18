@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import statusTrack from '../../images/track-status1.png'
-        import ReturnInfo from './returnPopup'
+import ReturnInfo from './returnPopup'
+import axios from 'axios'
 
         class Switched extends React.Component {
     TrackHandler = (id) => {
@@ -14,7 +15,7 @@ import statusTrack from '../../images/track-status1.png'
         super();
 
         this.state = {
-            pitches: [{
+            completedPitches: [{
                     id: 1,
                     pitchType: true,
                     user: "Oleksandr Pid",
@@ -86,12 +87,29 @@ import statusTrack from '../../images/track-status1.png'
             ]
         }
     }
+    
+     componentDidMount(){
+		axios.get('/trade/completedTrades').then(result => {
+			  if(result.data.code === 200){
+				this.setState({
+					completedPitches11: result.data.result,
+					currentUser: result.data.currentUser				  
+				});
+			  }
+			})
+			.catch((error) => {		
+			  if(error.code === 401) {
+				this.props.history.push("/login");
+			  }
+			});
+	}
+	
     render() {
         return (<div>
-    {this.state.pitches.map((pitch, index) => {
-                            let ditchClasses = ['ditch'];
-                            ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());
-                        return (<div className="pitch-row" key={index}>
+    {this.state.completedPitches.map((pitch, index) => {
+     let ditchClasses = ['ditch'];
+     ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());
+     return (<div className="pitch-row" key={index}>
     <div className="pitch-div">
         { pitch.pitchType == true ? <div className="newPitch">New Pitch</div> : null }
         <div className="colum user"><span>{pitch.user}</span></div>

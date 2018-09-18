@@ -136,7 +136,7 @@ class Header extends Component {
                     <Then>
                     <nav className="after-login">
 					 <ul>
-						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">{this.Capitalize(this.state.user.userName)}</a>
+						<li><span className="pic"><img src={userIMg} alt={userIMg} /></span><a className="drop-arrow" href="#">{this.Capitalize(this.state.user.userName.substring(0, 5))}</a>
 						<ul className="dashboard-subnav">
 							<li><Link to={'/dashboard'} className="dashboard-icon">Dashboard</Link></li>
 							<li><Link to={'/my-trades'} className="my-trades-icon">My Trades</Link></li>
