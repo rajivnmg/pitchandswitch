@@ -9,25 +9,23 @@ import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import popularItemImg from '../../images/popular-item1.jpg';
 
+const constant = require("../../config/constant");
 class PopularItems extends Component {
   constructor(props)
     {
        super(props);
         this.state = {
-            popularItems: [{
-                    "title": "",
-                    "image": "",
-                    "category": ""
-                }
-            ]
+            popularItems: []
         }
        ;
     }
     
     componentDidMount(){
 	 axios.get('/product/popularItems').then(result => {		 
-		 console.log("Product",result);
-			this.setState({popularItems:result.data.result})
+		 console.log("popularItems",result);
+			 if(result.data.code === 200){
+				this.setState({popularItems:result.data.result})
+			 }
 		 })
      }
     
@@ -100,7 +98,7 @@ class PopularItems extends Component {
         //~ ;
     //~ }
     
-    render() {
+     render() {
         const settings = {
             dots: false,
             infinite: false,
@@ -130,10 +128,39 @@ class PopularItems extends Component {
         };
 
         return (
-			<div className="popularItems">
-				<h3> Pitch and switch's <span>popular Items</span></h3>
-			</div>
-			);
-		}
-	}
-  export default PopularItems;
+                <div className="popularItems">
+                    <h3> Pitch and switch's <span>popular Items</span> </h3>
+                    <Slider {...settings}>
+                        {this.state.popularItems.map(function (item) {							
+							var productImage = item._id?item._id.productImages[0]:'';	
+							var userImage = item._id?item._id.userId.profilePic:'';
+							return (
+									<div className="slides-div" key={item}>
+										<div key={item}>
+										<div className='pic'>
+											<Link to="/my-trade-detail" >
+												<img src={constant.BASE_ADMIN_URL+'assets/uploads/Products/'+productImage} />
+											</Link>
+										</div>
+											<div className='details'>
+											<h4><a href="/my-trade-detail" >{item._id?item._id.productName:''}{}</a></h4>
+												<Link className="catLink" to={'/'}>
+												{item._id?item._id.productCategory?item._id.productCategory.title:'':''}</Link>
+											</div>
+										<div className="userdiv">
+											<div className="user-pic"><img src={constant.BASE_ADMIN_URL+'assets/uploads/ProfilePic/'+userImage} height="20px;" width="20px;"/></div>
+											<div className="user-name">{item._id?item._id.userId?item._id.userId.userName:'':''}</div>
+										</div>
+										</div>
+									</div>
+									)
+                        })
+                        }
+                    </Slider>
+                    <Link to='/' className='more-items'>More items</Link>
+                
+                </div>
+                            );
+            }
+        }
+        export default PopularItems;
