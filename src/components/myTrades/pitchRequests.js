@@ -23,41 +23,7 @@ class PitchRequests extends React.Component {
                         {message: "Pitch and Switch connects thoughtful consumers around the world with creative entrepreneurs."}
                     ]
 
-                },
-                
-                //~ {
-                    //~ id: 3,
-                    //~ pitchType: false,
-                    //~ user: "Lisa Fotois",
-                    //~ status: "sent",
-                    //~ action: "Cancel Pitch",
-                    //~ messageShow: 0,
-                    //~ messageType: true,
-                    //~ isMessage: true,
-                    //~ message: []
-                //~ },
-                //~ {
-                    //~ id: 4,
-                    //~ pitchType: false,
-                    //~ user: "Chritstina Morilio",
-                    //~ status: "received",
-                    //~ action: "Ditch",
-                    //~ messageShow: 0,
-                    //~ messageType: false,
-                    //~ isMessage: true,
-                    //~ message: []
-                //~ },
-                //~ {
-                    //~ id: 5,
-                    //~ pitchType: false,
-                    //~ user: "Min An",
-                    //~ status: "received",
-                    //~ action: "Last Pitch",
-                    //~ messageShow: 0,
-                    //~ messageType: false,
-                    //~ isMessage: true,
-                    //~ message: []
-                //~ }
+                }
             ]
         }
     };

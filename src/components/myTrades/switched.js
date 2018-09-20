@@ -20,81 +20,20 @@ class Switched extends React.Component {
                     message: [{username: "213496"},
                         {message: "Pitch and Switch connects thoughtful consumers around the world with creative entrepreneurs."}
                     ]
-
 				}
-                //~ {
-                    //~ id: 2,
-                    //~ pitchType: false,
-                    //~ user: "Min An",
-                    //~ status: "sent",
-                    //~ action: "Track",
-                    //~ trackStatus: 0,
-                    //~ messageShow: 0,
-                    //~ messageType: false,
-                    //~ isMessage: false,
-                    //~ message: []
-                //~ },
-                //~ {
-                    //~ id: 3,
-                    //~ pitchType: false,
-                    //~ user: "Min An",
-                    //~ status: "sent",
-                    //~ action: "Track",
-                    //~ trackStatus: 0,
-                    //~ messageShow: 0,
-                    //~ messageType: true,
-                    //~ isMessage: true,
-                    //~ message: []
-                //~ },
-                //~ {
-                    //~ id: 4,
-                    //~ pitchType: false,
-                    //~ user: "Min An",
-                    //~ status: "received",
-                    //~ action: "Track",
-                    //~ trackStatus: 0,
-                    //~ messageShow: 0,
-                    //~ messageType: false,
-                    //~ isMessage: true,
-                    //~ message: []
-                //~ },
-                //~ {
-                    //~ id: 5,
-                    //~ pitchType: false,
-                    //~ user: "Min An",
-                    //~ status: "received",
-                    //~ action: "Track",
-                    //~ trackStatus: 0,
-                    //~ messageShow: 0,
-                    //~ messageType: false,
-                    //~ isMessage: true,
-                    //~ message: []
-                //~ },
-                //~ {
-                    //~ id: 6,
-                    //~ pitchType: false,
-                    //~ user: "Min An", 
-                    //~ status: "received",
-                    //~ action: "Track",
-                    //~ trackStatus: 0,
-                    //~ messageShow: 0,
-                    //~ messageType: false,
-                    //~ isMessage: true,
-                    //~ message: []
-                //~ }
             ]
         }
     };
     TrackHandler = (id) => {
-        let pitches = this.state.pitches;
-        let index = pitches.findIndex(pitch => pitch.id === id);
+        let pitches = this.state.switches;
+        let index = pitches.findIndex(pitch => pitch._id === id);
         pitches[index].trackStatus = 1 - parseInt(pitches[index].trackStatus);
         pitches[index].messageShow = 0;
         this.setState({pitches: pitches});
     }
     messageHandler = (id) => {
-        let pitches = this.state.pitches;
-        let index = pitches.findIndex(pitch => pitch.id === id);
+        let pitches = this.state.switches;
+        let index = pitches.findIndex(pitch => pitch._id === id);
         pitches[index].messageShow = 1 - parseInt(pitches[index].messageShow);
         pitches[index].trackStatus = 0;
         this.setState({pitches: pitches});
@@ -106,7 +45,7 @@ class Switched extends React.Component {
 			  if(result.data.code === 200){
 				  console.log("SWITCH RESPONCE",result.data.result)
 				this.setState({
-					switches2: result.data.result,
+					switches: result.data.result,
 					currentUser: result.data.currentUser				  
 				});
 			  }
@@ -121,24 +60,28 @@ class Switched extends React.Component {
       render() {
         return (<div>
             {this.state.switches.map((pitch, index) => {
+							
                             let ditchClasses = ['ditch'];
-                            ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());
+                            //ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());
+                            
+                            var send = (pitch.offerTradeId &&  pitch.offerTradeId.pitchUserId._id == this.state.currentUser)?1:0;
+                           
+                            var action = 'Track';
                             return (<div className="pitch-row" key={index}>
-                                <div className="pitch-div">                                    
-                                    <div className="colum user"><span>{pitch.user}</span></div>
-                                    <div className="colum status"><span className={pitch.status}>{pitch.status}</span></div>
+                                <div className="pitch-div">
+									{ (pitch.offerTradeId &&  pitch.offerTradeId.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New switched</div> : null }
+                                    <div className="colum user width1"><span>{(send===1)?(pitch.offerTradeId)?pitch.offerTradeId.SwitchUserId.userName:'N/A':(pitch.offerTradeId)?pitch.offerTradeId.pitchUserId.userName:'N/A'}</span></div>
+                                    <div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
                                     <div className="colum"><a href="#" className="view-pitch"><TradeInfo /></a></div>
                                     <div className="colum trade-info"> </div>
                                     <div className="colum message"> </div>
-                                    <div className="colum action"><button onClick={(id) => this.TrackHandler(pitch.id)} className={ditchClasses.join(' ')}>{pitch.action}</button></div>
+                                    <div className="colum action"><button onClick={(id) => this.TrackHandler(pitch._id)} className={ditchClasses.join(' ')}>{action}</button></div>
                                 </div>
                                 {(pitch.trackStatus) ? <div className="statusTrack"><img src={statusTrack} /></div> : ''}
-                                        {(pitch.messageShow) ? <Messages /> : ''}
+                                {(pitch.messageShow) ? <Messages /> : ''}
                             </div>)
             }
             )}
-        
-        
         </div>
                     );
     }
