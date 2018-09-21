@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from "react-dom";
 import Style from './dashboard.css';
+
 // import imgPath from '../../images'
 // import "~slick-carousel/slick/slick.css"; 
 //import "~slick-carousel/slick/slick-theme.css"; 
@@ -8,6 +9,7 @@ import Slider from "react-slick";
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import popularItemImg from '../../images/popular-item1.jpg';
 import axios from 'axios';
+const constant = require("../../config/constant");
 class NewlyProducts extends Component {
     constructor(props)
     {
@@ -46,7 +48,7 @@ class NewlyProducts extends Component {
 			return (
 				<div className="slides-div" key={index}>
 					<div key={newlyProduct}>
-					<div className='pic'><img src={'http://localhost:3006/assets/uploads/Products/'+newlyProduct.productImages} /></div>
+					<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+newlyProduct.productImages} /></div>
 					<div className='details'>
 					<h4>{newlyProduct.productName}</h4>
 					<Link className="catLink" to='/'>{(newlyProduct.category && (newlyProduct.category.length > 0))?newlyProduct.category[0].title:''}</Link>

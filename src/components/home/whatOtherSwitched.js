@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import popularItemImg from '../../images/popular-item1.jpg';
 import userPicture from '../../images/user-pic.png';
 import axios from 'axios';
-
+const constant = require("../../config/constant");
 class WhatOtherSwitched extends Component {
 	
    constructor(props)
@@ -76,14 +76,14 @@ class WhatOtherSwitched extends Component {
 						<div className="flipper">
 						<div className="front">
 						<div className='pic'>
-						  <Link to="/my-trade-detail" ><img src={'http://localhost:3006/assets/uploads/Products/'+imagePathSwitch} /></Link>
+						  <Link to="/my-trade-detail" ><img src={constant.BASE_IMAGE_URL+'Products/'+imagePathSwitch} /></Link>
 						  </div>
 						<div className='details'>						
 						<h4><a href="/my-trade-detail" >{switched.tradeSwitchProductId?switched.tradeSwitchProductId.productName:''}</a></h4>
 						<Link className="catLink" replace to='/'>{(switched.tradePitchProductId)?switched.tradePitchProductId.productCategory.title:"NA"}</Link>
 						</div>
 						<div className="userdiv">
-						<div className="user-pic userProfilePic"><img src={'http://localhost:3006/assets/uploads/ProfilePic/'+imagePathSwitchUser} height="20px;" width="20px;"/></div>
+						<div className="user-pic userProfilePic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+imagePathSwitchUser} height="20px;" width="20px;"/></div>
 						<div className="user-name">{(switched.offerTradeId && switched.offerTradeId.SwitchUserId)?switched.offerTradeId.SwitchUserId.userName:''}</div>
 						{/*
 							switched.offerTradeId.SwitchUserId.profilePic
@@ -92,13 +92,13 @@ class WhatOtherSwitched extends Component {
 						</div>
 						</div>
 						<div className="back">
-						<div className='pic'><Link to="/my-trade-detail" ><img src={'http://localhost:3006/assets/uploads/Products/'+imagePathPitch} /></Link></div>
+						<div className='pic'><Link to="/my-trade-detail" ><img src={constant.BASE_IMAGE_URL+'Products/'+imagePathPitch} /></Link></div>
 						<div className='details'>
 						<h4><a href="/my-trade-detail" >{switched.tradePitchProductId?switched.tradePitchProductId.productName:''}</a></h4>
 						<Link className="catLink" replace to='/'>{switched.tradePitchProductId?switched.tradePitchProductId.productCategory.title:'NA'}</Link>
 						</div>
 						<div className="userdiv">
-						<div className="user-pic"><img src={'http://localhost:3006/assets/uploads/ProfilePic/'+imagePathPitchUser} height="20px;" width="20px;"/></div>
+						<div className="user-pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+imagePathPitchUser} height="20px;" width="20px;"/></div>
 						<div className="user-name">{(switched.offerTradeId && switched.offerTradeId.pitchUserId)?switched.offerTradeId.pitchUserId.userName:''}</div>
 						</div>
 						</div>

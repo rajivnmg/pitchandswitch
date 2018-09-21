@@ -40,8 +40,7 @@ class Ditch extends React.Component {
         return (<div>
             {this.state.ditchedPitches.map((pitch, index) => {
 				//console.log("pitch",this.state)
-							var send = (pitch.pitchUserId && pitch.pitchUserId._id == this.state.currentUser)?1:0;							
-                            let ditchClasses = ['ditch'];                                                       
+							var send = (pitch.pitchUserId && pitch.pitchUserId._id == this.state.currentUser)?1:0;		let ditchClasses = ['ditch'];                                                       
                             var ditch = 'Ditched';
                             if(send===1 && pitch.ditchCount > 0 && pitch.ditchCount < 3){
 								var ditch = 'Pitch Again';

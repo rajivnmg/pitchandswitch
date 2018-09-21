@@ -51,7 +51,7 @@ class PopularItems extends Component {
 										<div key={item}>
 										<div className='pic'>
 											<Link to="/my-trade-detail" >
-												<img src={constant.BASE_ADMIN_URL+'assets/uploads/Products/'+productImage} />
+												<img src={constant.BASE_IMAGE_URL+'Products/'+productImage} />
 											</Link>
 										</div>
 											<div className='details'>
@@ -60,7 +60,7 @@ class PopularItems extends Component {
 												{item._id?item._id.productCategory?item._id.productCategory.title:'':''}</Link>
 											</div>
 										<div className="userdiv">
-											<div className="user-pic"><img src={constant.BASE_ADMIN_URL+'assets/uploads/ProfilePic/'+userImage} height="20px;" width="20px;"/></div>
+											<div className="user-pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} height="20px;" width="20px;"/></div>
 											<div className="user-name">{item._id?item._id.userId?item._id.userId.userName:'':''}</div>
 										</div>
 										</div>
