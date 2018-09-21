@@ -12,6 +12,7 @@ const Hide = {
     display: "none"
 }
 let searchUser;
+let catArr;
 const App = () => (
 <div className="app">
 	<div className="container">
@@ -69,10 +70,12 @@ class Register extends React.Component {
             result: [],
             query: '',
             categoryId: categoryId,
+            optionsChecked: []
         };
         
         this.loadMore = this.loadMore.bind(this);       
     }
+   
     
       loadMore() {
 		this.setState((prev) => {
@@ -118,7 +121,26 @@ class Register extends React.Component {
             }
         })
     }
-
+    
+    
+	 changeEvent(event) {
+      let checkedArray = this.state.optionsChecked;
+      let selectedValue = event.target.value;
+        if (event.target.checked === true) {
+        	checkedArray.push(selectedValue);
+            this.setState({
+              optionsChecked: checkedArray
+            });
+        } else {
+        	let valueIndex = checkedArray.indexOf(selectedValue);
+			checkedArray.splice(valueIndex, 1);
+            this.setState({
+              optionsChecked: checkedArray
+            });
+        }
+        //console.log('optns',this.state.optionsChecked);
+    }
+    
     getInfo = () => {
         console.log(this.state.slides)
         let ArraySlides = this.state.slides
@@ -146,14 +168,14 @@ class Register extends React.Component {
 						{this.state.categoryList.slice(0, this.state.visible).map((listing, index) => {						
 						return (
 						 <div className="check-box">
-							<input name="Apple" id={"cat"+index} type="checkbox" />
+							<input name="Apple" value={listing._id} id={"cat"+index} type="checkbox" onChange={this.changeEvent.bind(this)}/>
 							<label htmlFor={"cat"+index}>{listing.title}</label>
 						  </div>
 						  )
 					    })
                       }
                      { 
-						this.state.visible < this.state.categoryList.length &&
+					   this.state.visible < this.state.categoryList.length &&
 						<button onClick={this.loadMore} type="button" className="load-more moreCat">Load more</button>
 					 }
 				</div>
