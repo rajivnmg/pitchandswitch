@@ -18,14 +18,14 @@ import SearchListing from './components/seacrh-listing/seacrh-listing';
 import AddNewProduct from './components/addNewProduct/addnewproduct';
 import EditProduct from './components/addNewProduct/editproduct';
 import myTreasureChest from './components/myTreasureChest/myTreasureChest';
-
 import Style1 from './media.css';
 import axios from 'axios';
+const constant = require("./config/constant");
 //import http from 'http';
 const port=4001;
 const basePath ='';// '/react-test';
 //axios.defaults.baseURL = window.location.protocol + '//' + window.location.hostname + ':' + port + basePath;
-axios.defaults.baseURL = 'http://localhost:5001'+ basePath;
+axios.defaults.baseURL = constant.BASE_SERVER_URL;
 //axios.defaults.baseURL = 'http://demo.newmediaguru.co:5001'+ basePath;
 axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 //const SERVER_URL='http://localhost:5001';

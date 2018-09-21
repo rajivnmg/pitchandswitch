@@ -1,6 +1,8 @@
 module.exports = {
 	'PUBLIC_URL':'http://localhost:3000/',
 	'BASE_ADMIN_URL':'http://localhost:3006/',	
+	'BASE_SERVER_URL':'http://localhost:5001',	
+	'BASE_IMAGE_URL':'http://localhost:3006/assets/uploads/',	
     'PER_PAGE_RECORD': 10,
     'SMTP_HOST':'smtp.sendgrid.net',
     'SMTP_PORT': 587,

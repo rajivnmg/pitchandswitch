@@ -7,7 +7,7 @@ import SponsorImg4 from '../../images/sponsors3.jpg'
 import SponsorImg5 from '../../images/sponsors4.jpg'
 import SponsorImg6 from '../../images/sponsors5.jpg'
 import axios from 'axios';
-
+const constant = require("../../config/constant");
 
 class HomeSponsors extends Component {
 	
@@ -39,7 +39,7 @@ class HomeSponsors extends Component {
                     <ul>
                     {
 						this.state.sponsers.map(function(sponser,index){
-                         return(<li key={index}><a href={sponser.redirectURL} target="_blank"><img src={'http://localhost:3006/assets/uploads/AdvertisementImage/'+sponser.image} height="50px" width="120px" alt={sponser.advertisementName}/></a></li>)
+                         return(<li key={index}><a href={sponser.redirectURL} target="_blank"><img src={constant.BASE_IMAGE_URL+'AdvertisementImage/'+sponser.image} height="50px" width="120px" alt={sponser.advertisementName}/></a></li>)
 					  })
 				   }
                     </ul>
