@@ -37,8 +37,8 @@ const App2 = () => (
 class myTreasureChest extends Component {
    
     constructor(props)
+    
     {
-
         super(props);
         this.state = {
 			user:{
@@ -80,8 +80,7 @@ class myTreasureChest extends Component {
         this.setState((old) => ({limit: old.limit + 10}));
     }
     
-   productDeleteHandler(e){
-		
+   productDeleteHandler(e){		
 		  axios.delete('/product/deleteProduct/' + e).then(result => {
           if(result.data.code == '200'){
             let products = this.state.myTreasureChests;
@@ -98,37 +97,29 @@ class myTreasureChest extends Component {
         });
 	}
 	
-	finterByCategory(categoryId){			
-			// Get the user treasure chest filter by category
-			this.setState({filterOpt:{category:categoryId,sortBy:this.state.currentshortBy},sortBy:this.state.currentshortBy})
-			//console.log("filterOpt",this.state.filterOpt)
-			axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
+	finterByCategory(categoryId){						
+		this.setState({filterOpt:{category:categoryId,sortBy:this.state.currentshortBy},sortBy:this.state.currentshortBy})
+		  axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
 				this.setState({
 					myTreasureChests : result.data.result
 				});
-			});
-			
+		  });
 	}
 	
-	sortBy(id){			
-			// Get the user treasure chest filter by category			
-			this.setState({filterOpt:{category:this.state.currentCategory,sortBy:id},currentshortBy:id})
-			//console.log("filterOpt",this.state.filterOpt,id)
-			axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
-				this.setState({
-					myTreasureChests : result.data.result
-				});
+	sortBy(id){						
+		this.setState({filterOpt:{category:this.state.currentCategory,sortBy:id},currentshortBy:id})		
+		axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
+			this.setState({
+				myTreasureChests : result.data.result
 			});
+		});
 			
 	}	
    
-    componentDidMount(){	
-			// get the loogedIn user details
-			axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
-			//console.log("jwtToken",localStorage.getItem('jwtToken'))
+    componentDidMount(){
+			axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');			
 			if(localStorage.getItem('jwtToken') !== null){
-				axios.get('/user/getLoggedInUser').then(result => {
-					//console.log("result getLoggedInUser",result)
+				axios.get('/user/getLoggedInUser').then(result => {					
 					this.setState({ 
 						user:result.data.result,
 						notification_type:result.data.notification_type,
@@ -136,17 +127,13 @@ class myTreasureChest extends Component {
 						totalNotifications:result.data.totalNotifications
 					})			
 				})
-			}			
-			// Get the user treasure chest	
-			axios.get('/product/myTreasureChest').then(result =>{
-				//console.log("myTreasureChests",result.data.result)
+			}
+			axios.get('/product/myTreasureChest').then(result =>{				
 				this.setState({
 					myTreasureChests : result.data.result
 				});
 			});
-			
-			axios.get('/category/listCategory').then(result =>{
-				//console.log("categories",result.data.result)
+			axios.get('/category/listCategory').then(result =>{			
 				this.setState({
 					categories : result.data.result
 				});
@@ -182,7 +169,7 @@ class myTreasureChest extends Component {
                             <div className="category-left">
                                 <span>Category:</span> 
                                 <div className="categoryFilter">
-                                    <div ><Select options={this.state.categories} defaultValue={this.state.categories[0]} onChange={opt => this.finterByCategory(opt.value)/*console.log(opt.label, opt.value)*/} /></div>
+                                    <div ><Select options={this.state.categories} defaultValue={this.state.categories[0]} onChange={opt => this.finterByCategory(opt.value)} /></div>
                                 </div>
                             </div>
                             <div className="sort-by right">
@@ -199,12 +186,9 @@ class myTreasureChest extends Component {
 								var userImage = slide.userId?slide.userId.profilePic:'';
                                     return(<div className="Items" key={index}>
 											<div className="pic"><div className="overlay">
-												
-				<Popconfirm placement="top" title={text} onConfirm={this.productDeleteHandler.bind(this, slide._id)} okText="Yes" cancelText="No">
-							<span className="delete mousePointer">Delete</span>
-				</Popconfirm>
-      
-												
+											<Popconfirm placement="top" title={text} onConfirm={this.productDeleteHandler.bind(this, slide._id)} okText="Yes" cancelText="No">
+														<span className="delete mousePointer">Delete</span>
+											</Popconfirm>			
 												<a href={'/edit-product/'+slide._id} className="edit">Edit</a>
 											</div>
 												<img src={'http://localhost:3006/assets/uploads/Products/'+slide.productImages} alt="" />
@@ -223,8 +207,7 @@ class myTreasureChest extends Component {
                             <div className="cl"></div>
                         </div>
                         {this.state.myTreasureChests.length > this.state.limit ? <div>{this.state.loadMore ? <a className="more-items" href="javascript:void()" onClick={this.onLoadMore}>Load more</a> : ''}</div> : '' } 
-                        <div>&nbsp;</div>
-                
+                        <div>&nbsp;</div>                
                     </div>
                 </div>
            );
