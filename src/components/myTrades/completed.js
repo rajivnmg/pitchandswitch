@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import statusTrack from '../../images/track-status1.png'
 import ReturnInfo from './returnPopup'
+import PostReview from './postReviewPopup'
 import axios from 'axios'
 
         class Switched extends React.Component {
@@ -11,8 +12,8 @@ import axios from 'axios'
         this.setState({pitches: pitches});
     }
     ;
-            constructor() {
-        super();
+            constructor(props) {
+        super(props);
 
         this.state = {
             completedPitches: [{
@@ -28,61 +29,6 @@ import axios from 'axios'
                         {message: "Pitch and Switch connects thoughtful consumers around the world with creative entrepreneurs."}
                     ]
 
-                },
-                {
-                    id: 2,
-                    pitchType: false,
-                    user: "Oleksandr Pid",
-                    status: "sent",
-                    action: "Return",
-                    trackStatus: 0,
-                    messageType: false,
-                    isMessage: false,
-                    message: []
-                },
-                {
-                    id: 3,
-                    pitchType: false,
-                    user: "Oleksandr Pid",
-                    status: "sent",
-                    action: "Return",
-                    trackStatus: 0,
-                    messageType: true,
-                    isMessage: true,
-                    message: []
-                },
-                {
-                    id: 4,
-                    pitchType: false,
-                    user: "Oleksandr Pid",
-                    status: "received",
-                    action: "Return",
-                    trackStatus: 0,
-                    messageType: false,
-                    isMessage: true,
-                    message: []
-                },
-                {
-                    id: 5,
-                    pitchType: false,
-                    user: "Oleksandr Pid",
-                    status: "received",
-                    action: "Return",
-                    trackStatus: 0,
-                    messageType: false,
-                    isMessage: true,
-                    message: []
-                },
-                {
-                    id: 6,
-                    pitchType: false,
-                    user: "Oleksandr Pid",
-                    status: "received",
-                    action: "Return",
-                    trackStatus: 0,
-                    messageType: false,
-                    isMessage: true,
-                    message: []
                 }
             ]
         }
@@ -92,7 +38,7 @@ import axios from 'axios'
 		axios.get('/trade/completedTrades').then(result => {
 			  if(result.data.code === 200){
 				this.setState({
-					completedPitches11: result.data.result,
+					completedPitches: result.data.result,
 					currentUser: result.data.currentUser				  
 				});
 			  }
@@ -104,31 +50,28 @@ import axios from 'axios'
 			});
 	}
 	
-    render() {
-        return (<div>
-    {this.state.completedPitches.map((pitch, index) => {
-     let ditchClasses = ['ditch'];
-     ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());
-     return (<div className="pitch-row" key={index}>
-    <div className="pitch-div">
-        { pitch.pitchType == true ? <div className="newPitch">New Pitch</div> : null }
-        <div className="colum user"><span>{pitch.user}</span></div>
-        <div className="colum status"><span className={pitch.status}>{pitch.status}</span></div>
-        <div className="colum complete-date">20/May/2018 </div>
-        <div className="colum trade-info"><a href="#" className="TradeInfobtn">Post Review</a> </div>  
-        <div className="colum action"><ReturnInfo /> </div>
+	render() {
+		return (<div>
+		{this.state.completedPitches.map((pitch, index) => {
+			let ditchClasses = ['ditch'];
+			//ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());
+			var send = (pitch.offerTradeId &&  pitch.offerTradeId.pitchUserId._id == this.state.currentUser)?1:0;          
+				return (<div className="pitch-row" key={index}>
+					<div className="pitch-div">
+						{ (pitch.offerTradeId &&  pitch.offerTradeId.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
+						<div className="colum user"><span>{(send===1)?(pitch.offerTradeId)?pitch.offerTradeId.SwitchUserId.userName:'N/A':(pitch.offerTradeId)?pitch.offerTradeId.pitchUserId.userName:'N/A'}</span></div>
+						<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
+						<div className="colum complete-date">20/May/2018 </div>
+						<div className="colum trade-info"><PostReview /> </div>  
+						<div className="colum action"><ReturnInfo /> </div>
+					</div>
 
-    </div>
-
-    {(pitch.trackStatus) ? <div className="statusTrack"><img src={statusTrack} /></div> : ''}
-</div>)
-    }
-    )}
-
-
-</div>
-                    );
-    }
+					{(pitch.trackStatus) ? <div className="statusTrack"><img src={statusTrack} /></div> : ''}
+				</div>)
+			}
+		)}
+		</div>);
+	}
 }
 
 export default Switched;
