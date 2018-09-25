@@ -7,6 +7,10 @@ import userPicture from '../../images/user-pic.png';
 import star from '../../images/star.png';
 import Select from 'react-select';
 import axios from 'axios';
+var FD = require('form-data');
+var fs = require('fs');
+
+
 
 const Hide = {
     display: "none"
@@ -51,8 +55,13 @@ class Register extends React.Component {
                 }
             ],
              items: [],
-             visible: 5,
-             error: false,
+             limit: 5,
+			 loadMore: true,
+			 categories : [{label: "Select", value: 1}],
+			 currentCategory:'',
+			 currentshortBy:1,
+			 filterOpt : {category: "", sortBy: 1},
+			 error: false,
              categoryList: [{
                     "id": "",
                     "title": "",
@@ -70,22 +79,20 @@ class Register extends React.Component {
             result: [],
             query: '',
             categoryId: categoryId,
-            optionsChecked: []
+            optionsChecked: [],
+            ids :[],
+            showFormSuccess : false
         };
         
-        this.loadMore = this.loadMore.bind(this);       
+        //this.loadMore = this.loadMore.bind(this);       
     }
    
     
-      loadMore() {
-		this.setState((prev) => {
-		  return {visible: prev.visible + 4};
-		});
-	  }
+    
  
     componentDidMount(){
 	      axios.get('/product/searchresult/'+ this.state.categoryId).then(result => {
-			 this.setState({resultData:result.data.result});
+			 this.setState({resultData:result.data.result});				 
 		})
 	     axios.get('/category/categoriesActive/').then(rs => {
 			 this.setState({categoryList:rs.data.result});
@@ -131,14 +138,36 @@ class Register extends React.Component {
             this.setState({
               optionsChecked: checkedArray
             });
-        } else {
+        }
+        else {
         	let valueIndex = checkedArray.indexOf(selectedValue);
 			checkedArray.splice(valueIndex, 1);
             this.setState({
               optionsChecked: checkedArray
             });
         }
-        //console.log('optns',this.state.optionsChecked);
+        const data = new FD();
+        console.log('sssss',this.state.optionsChecked);
+        data.append('ids',this.state.optionsChecked)
+        data.append('type','productCategory')
+        axios.post('/product/filterBycategory',data).then(result =>{				
+			this.setState({
+				resultData : result.data.result
+			});
+		});
+    }
+    
+    changeUser(userList){
+	    console.log('uuuuuuuuuuuu',userList.value);
+	    axios.post('/product/filterBycategory',this.state.optionsChecked).then(result =>{				
+			  this.setState({
+					resultData : result.data.result
+			  });
+		 });
+	}
+    
+     onLoadMore = () => {
+        this.setState((old) => ({limit: old.limit + 10}));
     }
     
     getInfo = () => {
@@ -181,9 +210,9 @@ class Register extends React.Component {
 				</div>
 				<div className="column">
 					<h4>Search by user</h4>
-					<div className="search"><Select options={searchUser} onChange={opt => console.log(opt.label, opt.value)} /></div>
+					<div className="search"><Select options={searchUser} onChange={this.changeUser.bind(this)} /></div>
 					<div className="taglinerow">
-					{ this.state.usersList.map(function (userlisting,index) {					
+					 { this.state.usersList.map(function (userlisting,index) {					
 						return (	
 						  <span href="javascript:void(0)" className="tagline">{userlisting.firstName}
 						  <a href="#" className="close">#</a></span>
@@ -367,8 +396,8 @@ class Register extends React.Component {
                       }
 					
 				</div>
-				<div className="cl"></div>
-				<Link to='/' className='more-items'>More items</Link>	
+				<div className="cl"></div>				
+				
 			</div>	
 			<div className="cl"></div>
 		</div>

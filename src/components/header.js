@@ -55,6 +55,7 @@ class Header extends Component {
 	
 	searchCategory = (search,categoryName)=>{
 		this.setState({searchData:search.key})
+		console.log('dddddddddd',this.state.searchData);
 	};
   
   componentDidMount() {
