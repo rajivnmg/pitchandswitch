@@ -7,14 +7,18 @@ import userPicture from '../../images/user-pic.png';
 import star from '../../images/star.png';
 import Select from 'react-select';
 import axios from 'axios';
+import {
+  Fade,
+  Form,
+  FormGroup,
+  FormText,
+  FormFeedback
+} from 'reactstrap';
+
 var FD = require('form-data');
 var fs = require('fs');
 
-
-
-const Hide = {
-    display: "none"
-}
+const Hide = {  display: "none"}
 let searchUser;
 let catArr;
 const App = () => (
@@ -82,38 +86,13 @@ class Register extends React.Component {
             optionsChecked: [],
             ids :[],
             showFormSuccess : false
-        };
-        
-        //this.loadMore = this.loadMore.bind(this);       
+        }; 
     }
    
     
     
  
-    componentDidMount(){
-	      axios.get('/product/searchresult/'+ this.state.categoryId).then(result => {
-			 this.setState({resultData:result.data.result});				 
-		})
-	     axios.get('/category/categoriesActive/').then(rs => {
-			 this.setState({categoryList:rs.data.result});
-		})
-	     axios.get('/user/activeUser/').then(users => {
-			 this.setState({usersList:users.data.result});			
-		})
-	     axios.get('/location/activeCities/').then(cities => {
-			 this.setState({citiesList:cities.data.result});			
-		})
-	     axios.get('/size/listingsize/').then(sizes => {
-			 this.setState({sizeList:sizes.data.result});			
-		})
-	     axios.get('/brand/listingbrand/').then(brands => {
-			 this.setState({brandsList:brands.data.result});			
-		})
-	     axios.get('/donation/getConstant/').then(constants => {
-			 this.setState({constantList:constants.data.result});			
-		})
-	   
-     }
+   
      
     handleInputChange = () => {
         this.setState({
@@ -130,7 +109,7 @@ class Register extends React.Component {
     }
     
     
-	 changeEvent(event) {
+	changeEvent(event) {
       let checkedArray = this.state.optionsChecked;
       let selectedValue = event.target.value;
         if (event.target.checked === true) {
@@ -146,10 +125,10 @@ class Register extends React.Component {
               optionsChecked: checkedArray
             });
         }
-        const data = new FD();
-        console.log('sssss',this.state.optionsChecked);
+        const data = new FD();        
         data.append('ids',this.state.optionsChecked)
         data.append('type','productCategory')
+        console.log('aaaa',data);
         axios.post('/product/filterBycategory',data).then(result =>{				
 			this.setState({
 				resultData : result.data.result
@@ -157,18 +136,36 @@ class Register extends React.Component {
 		});
     }
     
-    changeUser(userList){
-	    console.log('uuuuuuuuuuuu',userList.value);
-	    axios.post('/product/filterBycategory',this.state.optionsChecked).then(result =>{				
-			  this.setState({
-					resultData : result.data.result
-			  });
+    changeUser(userList){	    
+		let userValue = userList.value;
+	    const userdata = new FD();        
+        userdata.append('ids',userList.value)
+        userdata.append('type','userId')
+        console.log('aaaa',userdata);
+	    axios.post('/product/filterBycategory',userdata).then(result =>{				
+		    this.setState({
+				resultData : result.data.result
+			});
+		 });
+	}
+	
+    changeCity(cityList){	    
+		let cityValue = cityList.value;
+	    const citydata = new FD();        
+        citydata.append('ids',cityList.value)
+        citydata.append('type','city')
+        console.log('citydata',citydata)
+	    axios.get('/user/searchCity',citydata).then(result =>{				
+			console.log('result',result);
+		    this.setState({
+				resultData : result.data.result
+			});
 		 });
 	}
     
      onLoadMore = () => {
         this.setState((old) => ({limit: old.limit + 10}));
-    }
+     }
     
     getInfo = () => {
         console.log(this.state.slides)
@@ -181,6 +178,33 @@ class Register extends React.Component {
             results: this.state.slides
         })
     }
+    
+    
+     componentDidMount(){
+	      axios.get('/product/searchresult/'+ this.state.categoryId).then(result => {
+			 this.setState({resultData:result.data.result});				 
+		})
+	     axios.get('/category/categoriesActive/').then(rs => {
+			 this.setState({categoryList:rs.data.result});
+		})
+	     axios.get('/user/activeUser/').then(users => {
+			 this.setState({usersList:users.data.result});			
+		})
+	     axios.get('/location/activeCities/').then(cities => {
+			 this.setState({citiesList:cities.data.result});			
+			 console.log('citiesList',this.state.citiesList)
+		})
+	     axios.get('/size/listingsize/').then(sizes => {
+			 this.setState({sizeList:sizes.data.result});			
+		})
+	     axios.get('/brand/listingbrand/').then(brands => {
+			 this.setState({brandsList:brands.data.result});			
+		})
+	     axios.get('/donation/getConstant/').then(constants => {
+			 this.setState({constantList:constants.data.result});			
+		})
+     }
+    
   
     render() {
 	  if(this.state.usersList){
@@ -191,6 +215,7 @@ class Register extends React.Component {
     return (
 	<div className="search-page">
 		<div className="container">
+		  <Form noValidate>
 			<div className="lft-section">
 				<div className="column">
 				   <h4>All categories</h4> 
@@ -226,10 +251,10 @@ class Register extends React.Component {
 				<div className="column">
 					<h4>Location</h4>
 					<div className="select-box">
-						<select>
+						<select onChange={this.changeCity.bind(this)} >
 						{ this.state.citiesList.map(function (citylisting,index) {
 							return (	
-							    <option>{citylisting.cityName}</option>
+							    <option value={citylisting._id}>{citylisting.cityName}</option>
 							)
 					    })
                       }
@@ -297,7 +322,7 @@ class Register extends React.Component {
 				</div>
 				<div className="column no-bord">
 					<h4>Age</h4>
-					<form>
+					
 						<div className="multiselect">
 							<div className="selectBox" click="showCheckboxes()">
 								<select>
@@ -328,7 +353,7 @@ class Register extends React.Component {
 								</div>
 							</div>
 						</div>
-					</form>
+					
 					<div className="taglinerow">
 						<span href="javascript:void(0)" className="tagline">1 month - 6 month <a href="#" className="close">x</a></span>
 						<span href="javascript:void(0)" className="tagline">6 month - 1 year <a href="#" className="close">x</a></span>
@@ -360,6 +385,7 @@ class Register extends React.Component {
 					<a href="#" className="clearfilter">Clear filter</a>
 				</div>
 			</div>
+			 </Form>
 			<div className="rgt-section">
 				<div className="search-row">
 					<div className="search-result">
