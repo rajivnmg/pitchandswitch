@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import popularItemImg from '../../images/popular-item1.jpg';
 import axios from 'axios';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
-
+const constant = require("../../config/constant");
 class NewlyProducts extends Component {
    constructor(props)
     {
@@ -66,13 +66,19 @@ class NewlyProducts extends Component {
                <h3> Newly added products</h3>
                     <Slider {...settings}>
                         {this.state.newlyProducts.map(function (newlyProduct,index) {
+							
+							var userImage = newlyProduct.user?newlyProduct.user[0].profilePic:null
 						return (
 							<div className="slides-div" key={index}>
 								<div key={newlyProduct}>
-								<div className='pic'><Link to="/my-trade-detail" ><img src={'http://localhost:3006/assets/uploads/Products/'+newlyProduct.productImages} /></Link></div>
+								<div className='pic'><Link to="/my-trade-detail" ><img src={constant.BASE_IMAGE_URL+'Products/'+newlyProduct.productImages} /></Link></div>
 									<div className='details'>
 									<h4><a href="/my-trade-detail">{newlyProduct.productName}</a></h4>
 										<Link className="catLink" to='/'>{(newlyProduct.category && (newlyProduct.category.length > 0))?newlyProduct.category[0].title:''}</Link>
+									</div>
+									  <div className="userdiv">
+										<div className="user-pic"><img className="userPicNew"src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} /></div>
+										<div className="user-name">{(newlyProduct.user)?newlyProduct.user[0].userName:''}</div>
 									</div>
 								</div>
 							</div>

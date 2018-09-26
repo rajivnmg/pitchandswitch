@@ -1,25 +1,27 @@
 import React, { Component } from 'react';
 import ReactDOM from "react-dom";
-import Style from './home.css';
-// import imgPath from '../../images'
-// import "~slick-carousel/slick/slick.css"; 
-//import "~slick-carousel/slick/slick-theme.css"; 
+import Style from './dashboard.css';
 import Slider from "react-slick";
-import axios from 'axios';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import popularItemImg from '../../images/popular-item1.jpg';
+import axios from 'axios'
 const constant = require("../../config/constant");
 class PopularItems extends Component {
-  constructor(props)
+    constructor(props)
     {
-       super(props);
+        super(props);
         this.state = {
-            popularItems: []
-        }
-       ;
+            slides: [{
+                    "title": "Call of Duty : Infinate Warfare More",
+                    "image": popularItemImg,
+                    "category": "Games"
+                }
+            ],
+          popularItems: []
+        };
     }
     
-    componentDidMount(){
+     componentDidMount(){
 	 axios.get('/product/popularItems').then(result => {		 
 		 console.log("popularItems",result);
 			 if(result.data.code === 200){
@@ -28,36 +30,16 @@ class PopularItems extends Component {
 		 })
      }
      
-     render() {
+    render() {
         const settings = {
             dots: false,
             infinite: false,
             speed: 500,
             slidesToShow: 5,
-            slidesToScroll: 1,
-            responsive: [
-                {
-                    breakpoint: 1026,
-                    settings: {
-                        slidesToShow: 4
-                    }
-                },
-                {
-                    breakpoint: 1023,
-                    settings: {
-                        slidesToShow: 3
-                    }
-                },
-                {
-                    breakpoint: 480,
-                    settings: {
-                        slidesToShow: 1
-                    }
-                }
-            ]
+            slidesToScroll: 1
         };
 
-        return (
+      return (
                 <div className="popularItems">
                     <h3> Pitch and switch's <span>popular Items</span> </h3>
                     <Slider {...settings}>
@@ -69,7 +51,7 @@ class PopularItems extends Component {
 										<div key={item}>
 										<div className='pic'>
 											<Link to="/my-trade-detail" >
-												<img className="popularItemImg"src={constant.BASE_IMAGE_URL+'Products/'+productImage} />
+												<img src={constant.BASE_IMAGE_URL+'Products/'+productImage} />
 											</Link>
 										</div>
 											<div className='details'>

@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import popularItemImg from '../../images/popular-item1.jpg';
 import axios from 'axios';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
-
+const constant = require("../../config/constant");
 class mostTrusted extends Component {
 	
    constructor(props)
@@ -67,7 +67,7 @@ class mostTrusted extends Component {
                                         return (
                                                 <div className="slides-div"  key={slide}>
                                                     <div key={slide}>
-                                                    <div className='pic'> <img src={'http://localhost:3006/assets/uploads/ProfilePic/'+userImage}/> </div>
+                                                    <div className='pic'> <img src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage}/> </div>
                                                         <div className='details'>
                                                         <h4><a href="/my-trade-detail" >{(slide._id)?slide._id.userName:''}</a></h4>
                                                             <div className="ratingRow">{slide.totalRating}</div>

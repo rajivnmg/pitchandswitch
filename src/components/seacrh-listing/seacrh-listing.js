@@ -8,6 +8,8 @@ import star from '../../images/star.png';
 import Select from 'react-select';
 import axios from 'axios';
 
+const constant  = require("../../config/constant")
+
 const Hide = {
     display: "none"
 }
@@ -351,13 +353,13 @@ class Register extends React.Component {
 						return (
 							 <div className="Items" key={index}>
 								<div>
-									<div className='pic'><img src={'http://localhost:3004/assets/uploads/Products/'+results.productImages} /></div>
+									<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+results.productImages} /></div>
 									<div className='details'>
 										<h4>{results.productName}</h4>
 										<Link className="catLink" to='/'>{((results.productCategory)?results.productCategory.title:"")}</Link>
 									</div>
 									<div className="userdiv">
-										<div className="user-pic"><img src={'http://localhost:3004/assets/uploads/ProfilePic/'+img} /></div>
+										<div className="user-pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} /></div>
 										<div className="user-name">{results.userId?results.userId.firstName:""}</div>
 									</div>
 								</div>
