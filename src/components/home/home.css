@@ -124,3 +124,5 @@
 .front {z-index: 2;/* for firefox 31 */	transform: rotateY(0deg); background:#fff;}
 .back {transform: rotateY(180deg); background: #fff;}
 .flip-container:hover .flipper, .flip-container.hover .flipper, .flip-container.flip .flipper {transform: rotateY(180deg);}
+.popularItemImg{max-height: 245px !important;}
+.userPicNew{height:20px !important; width:20px !important;}

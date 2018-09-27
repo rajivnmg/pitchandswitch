@@ -29,6 +29,11 @@ const CustomModal = () => (
             &times;
         </a>
         <div className="header">Choose products to <span className="yellow">pitch again</span> on 
+        <div className="select-box top-right">
+                                            <select required="" name="category">
+                                                <option>Select category</option>                                                
+                                            </select>
+                                        </div>
 				<div className="cl"></div>
 			</div>
 

@@ -4,7 +4,7 @@ import { Upload, Icon, Modal }  from 'antd';
 import moment from 'moment';
 import './picturesWall.css';
 // import 'antd/dist/antd.css';
-
+const constant = require("../../config/constant");
 class PicturesWall extends React.Component {
   state = {
     previewVisible: false,
@@ -45,7 +45,7 @@ class PicturesWall extends React.Component {
     return (
       <div className="clearfix">
         <Upload
-          action="http://localhost:5001/product/tepmUpload/"
+          action={constant.BASE_SERVER_URL+"/product/tepmUpload/"}
           listType="picture-card"
           fileList={fileList}
           multiple={true}

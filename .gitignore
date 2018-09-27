@@ -23,3 +23,8 @@ public/assets/uploads/*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+src/BK--controllers--/*
+src/BK=routes/*
+src/Bk-models/*
+src/scss--1-1-/*

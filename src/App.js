@@ -21,6 +21,7 @@ import EditProduct from './components/addNewProduct/editproduct';
 import myTreasureChest from './components/myTreasureChest/myTreasureChest';
 import Style1 from './media.css';
 import axios from 'axios';
+import NotFound from './components/NotFound';
 const constant = require("./config/constant");
 //import http from 'http';
 const port=4001;
@@ -44,6 +45,7 @@ class App extends Component {
   }
     render() {
         return(
+
 		   <Router>
 				<div className="layout">
 					<Header />
@@ -72,6 +74,8 @@ class App extends Component {
 				</div>
 			</Router>
               )
+
+             
     }
 }
 export default App;

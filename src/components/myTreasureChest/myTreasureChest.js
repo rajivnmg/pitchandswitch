@@ -11,6 +11,8 @@ import { Popconfirm, message, Button } from 'antd';
     //~ {label: "Toy", value: 3} 
 //~ ];
 
+const constant = require("../../config/constant");
+
 const text = 'Are you sure to delete this?';
 
 const App1 = () => ( 
@@ -191,14 +193,14 @@ class myTreasureChest extends Component {
 											</Popconfirm>			
 												<a href={'/edit-product/'+slide._id} className="edit">Edit</a>
 											</div>
-												<img src={'http://localhost:3006/assets/uploads/Products/'+slide.productImages} alt="" />
+												<img src={constant.BASE_IMAGE_URL+'Products/'+slide.productImages} alt="" />
 											</div>
 											<div className="details">
 												<h4><a href="/my-trade-detail">{slide.productName}</a></h4>
 												<a href="#" className="catLink"> {(slide.productCategory && slide.productCategory !== null)?slide.productCategory.title:'N/A'}</a>           
 											</div>
 											<div className="userdiv">
-												<div className="user-pic"><img className="userProfile" src={'http://localhost:3006/assets/uploads/ProfilePic/'+userImage} /></div>
+												<div className="user-pic"><img className="userProfile" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} /></div>
 												<div className="user-name">{(slide.userId)?slide.userId.userName:''}</div>
 											</div>
 										</div>

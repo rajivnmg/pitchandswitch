@@ -4,10 +4,23 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import PitchRequests from './pitchRequests'
 import detailPic from '../../images/detail-pic.png'
 import createHistory from "history/createBrowserHistory" 
+import axios from 'axios'
 const history = createHistory();
 
 
 class MyTrades extends React.Component {
+	
+	constructor(props){
+		super(props)
+		//this.state = {}
+	}
+	
+	componentWillMount(){
+		console.log("componentWillMount called")
+		
+	}
+	
+	
     render() {
         return (
                 <div className="my-trades-container">

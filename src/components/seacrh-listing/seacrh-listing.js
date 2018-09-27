@@ -18,11 +18,19 @@ import {
   FormFeedback
 } from 'reactstrap';
 
+<<<<<<< HEAD
 const constant = require('../../config/constant')
+=======
+
+const constant  = require("../../config/constant")
+
+const Hide = {
+    display: "none"
+}
+
+>>>>>>> aa9320e09de3772f6744eb85ecc1b4a456538a28
 var FD = require('form-data');
 var fs = require('fs');
-
-const Hide = {  display: "none"}
 let searchUser;
 let catArr;
 const App = () => (
@@ -479,15 +487,23 @@ class Register extends React.Component {
 						return (
 							 <div className="Items" key={index}>
 								<div>
+<<<<<<< HEAD
 								<Link className="catLink" to={'/search-result/'+results._id}>
 									<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+results.productImages} /></div>
 								</Link>
+=======
+									<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+results.productImages} /></div>
+>>>>>>> aa9320e09de3772f6744eb85ecc1b4a456538a28
 									<div className='details'>
 										<h4>{results.productName}</h4>
 										<Link className="catLink" to={'/search-result/'+results._id}>{((results.productCategory)?results.productCategory.title:"")}</Link>
 									</div>
 									<div className="userdiv">
+<<<<<<< HEAD
 										<div className="user-pic"><img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} /></div>
+=======
+										<div className="user-pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} /></div>
+>>>>>>> aa9320e09de3772f6744eb85ecc1b4a456538a28
 										<div className="user-name">{results.userId?results.userId.firstName:""}</div>
 									</div>
 								</div>

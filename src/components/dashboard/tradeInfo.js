@@ -46,14 +46,14 @@ const CustomModal = () => (
 					<div className="cl"></div>
 					<div className="switch-product-section">
 						<p>Offered products for switch:
-							<strong>User: 213496</strong>
+                                                <span class="pitch-offered"><span class="pitch-offer">Pitch offered by </span> Godisable Jacob</span>
 							<div className="cl"></div>
 						</p>
 						<div className="switch-product-box">
 							<div className="switch-product-image-box">
 								<img src={offerProduct1} alt="recieved-product image" />
 								<div className="switch-option-mask">
-									<a className="view-btn" href="/">View</a>
+									<a className="view-btn" href="/my-trade-detail#">View</a>
 									<a className="switch-btn" href="/">Switch</a>
 								</div>
 							</div>
