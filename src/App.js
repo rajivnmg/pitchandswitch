@@ -20,6 +20,7 @@ import EditProduct from './components/addNewProduct/editproduct';
 import myTreasureChest from './components/myTreasureChest/myTreasureChest';
 import Style1 from './media.css';
 import axios from 'axios';
+import NotFound from './components/NotFound';
 const constant = require("./config/constant");
 //import http from 'http';
 const port=4001;
@@ -63,6 +64,7 @@ class App extends Component {
                             <Route exact path='/my-trades' component={MyTrades} />
                             <Route exact path='/my-trade-detail' component={MyTradesDetail} />
                             <Route exact path="/my-treasure-chest" component={myTreasureChest} />
+                            <Route path="*" component={NotFound} />
                         </Switch>
                         </div>
                         <Footer />
