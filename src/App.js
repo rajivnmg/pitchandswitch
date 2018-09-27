@@ -15,6 +15,7 @@ import Reset from './components/resetPassword/reset'
 import Subscription from './components/subscription/subscription'
 import Dashboard from './components/dashboard/dashboard';
 import SearchListing from './components/seacrh-listing/seacrh-listing';
+import SearchDetail from './components/seacrh-listing/searchDetail';
 import AddNewProduct from './components/addNewProduct/addnewproduct';
 import EditProduct from './components/addNewProduct/editproduct';
 import myTreasureChest from './components/myTreasureChest/myTreasureChest';
@@ -43,31 +44,33 @@ class App extends Component {
   }
     render() {
         return(
-               <Router>
-                    <div className="layout">
-                        <Header />
-                        <div id="content">
-                        <Switch>
-                            <Route exact path="/" component={Home} />
-                            <Route exact path='/login' component={Login} />
-                            <Route exact path='/register' component={Register} />
-                            <Route exact path='/forget' component={Forget} />
-                            <Route exact path='/reset/:id?' component={Reset} />   
-                            <Route exact path='/verifyUserEmail/:id?' component={Login} />                          
-                            <Route exact path='/subscription' component={Subscription} />
-                            <Route exact path='/dashboard' component={Dashboard} />
-                            <Route exact path='/search-listing/:id?' component={SearchListing} />
-                            <Route exact path='/search-listing' component={SearchListing} />
-                            <Route exact path='/add-new-product' component={AddNewProduct} />
-                            <Route exact path='/edit-product/:id?' component={EditProduct} />
-                            <Route exact path='/my-trades' component={MyTrades} />
-                            <Route exact path='/my-trade-detail' component={MyTradesDetail} />
-                            <Route exact path="/my-treasure-chest" component={myTreasureChest} />
-                        </Switch>
-                        </div>
-                        <Footer />
-                    </div>
-                </Router>
+		   <Router>
+				<div className="layout">
+					<Header />
+					<div id="content">
+					<Switch>
+						<Route exact path="/" component={Home} />
+						<Route exact path='/login' component={Login} />
+						<Route exact path='/register' component={Register} />
+						<Route exact path='/forget' component={Forget} />
+						<Route exact path='/reset/:id?' component={Reset} />   
+						<Route exact path='/verifyUserEmail/:id?' component={Login} />                          
+						<Route exact path='/subscription' component={Subscription} />
+						<Route exact path='/dashboard' component={Dashboard} />
+						<Route exact path='/search-listing/:id?' component={SearchListing} />
+						<Route exact path='/search-listing' component={SearchListing} />
+						<Route exact path='/search-result/:id?' component={SearchDetail} />
+						<Route exact path='/search-result' component={SearchDetail} />
+						<Route exact path='/add-new-product' component={AddNewProduct} />
+						<Route exact path='/edit-product/:id?' component={EditProduct} />
+						<Route exact path='/my-trades' component={MyTrades} />
+						<Route exact path='/my-trade-detail' component={MyTradesDetail} />
+						<Route exact path="/my-treasure-chest" component={myTreasureChest} />
+					</Switch>
+					</div>
+					<Footer />
+				</div>
+			</Router>
               )
     }
 }
