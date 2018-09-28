@@ -18,17 +18,14 @@ import {
   FormFeedback
 } from 'reactstrap';
 
-<<<<<<< HEAD
-const constant = require('../../config/constant')
-=======
 
-const constant  = require("../../config/constant")
+const constant = require('../../config/constant')
+
 
 const Hide = {
     display: "none"
 }
 
->>>>>>> aa9320e09de3772f6744eb85ecc1b4a456538a28
 var FD = require('form-data');
 var fs = require('fs');
 let searchUser;
@@ -101,10 +98,7 @@ class Register extends React.Component {
         };
         
          this.changeContanst = this.changeContanst.bind(this);
-    }
-   
-    
-    
+    }	
  
    
      
@@ -482,36 +476,30 @@ class Register extends React.Component {
 				</div>
 				
 				<div className="item-listing"  results={this.state.results}>
-					{ this.state.resultData.map(function (results,index) {
-						let img = results.userId?results.userId.profilePic:"";						
-						return (
-							 <div className="Items" key={index}>
-								<div>
-<<<<<<< HEAD
-								<Link className="catLink" to={'/search-result/'+results._id}>
-									<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+results.productImages} /></div>
-								</Link>
-=======
-									<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+results.productImages} /></div>
->>>>>>> aa9320e09de3772f6744eb85ecc1b4a456538a28
-									<div className='details'>
-										<h4>{results.productName}</h4>
-										<Link className="catLink" to={'/search-result/'+results._id}>{((results.productCategory)?results.productCategory.title:"")}</Link>
-									</div>
-									<div className="userdiv">
-<<<<<<< HEAD
-										<div className="user-pic"><img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} /></div>
-=======
-										<div className="user-pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} /></div>
->>>>>>> aa9320e09de3772f6744eb85ecc1b4a456538a28
-										<div className="user-name">{results.userId?results.userId.firstName:""}</div>
-									</div>
-								</div>
-							</div>
-							)
-                         })
-                      }
-					
+				   { this.state.resultData.map(function (results,index) {
+					let img = results.userId?results.userId.profilePic:"";						
+					return (
+					<div className="Items" key={index}><div>
+					<Link className="catLink" to={'/search-result/'+results._id}>
+					    <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+results.productImages} /></div>
+					</Link>
+					<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+results.productImages} /></div>
+					<div className='details'>
+					<h4><Link className="catLink" to={'/search-result/'+results._id}>{results.productName}</Link></h4>
+					<Link className="catLink" to={'/search-result/'+results._id}>{((results.productCategory)?results.productCategory.title:"")}</Link>
+					</div>
+					<div className="userdiv">
+					<div className="user-pic">
+					   <img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} />
+					</div>
+					   <div className="user-pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} /></div>
+					   <div className="user-name">{results.userId?results.userId.firstName:""}</div>
+					</div>
+					</div>
+					</div>
+					)
+				})
+				}
 				</div>
 				<div className="cl"></div>	
 			</div>	
