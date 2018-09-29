@@ -7,6 +7,9 @@ import userPicture from '../../images/user-pic.png';
 import star from '../../images/star.png';
 import Select from 'react-select';
 import axios from 'axios';
+import SearchDetail from '../../components/seacrh-listing/searchDetail.js';
+
+
 import {
   Fade,
   Form,
@@ -16,7 +19,8 @@ import {
 } from 'reactstrap';
 
 
-const constant  = require("../../config/constant")
+const constant = require('../../config/constant')
+
 
 const Hide = {
     display: "none"
@@ -91,11 +95,10 @@ class Register extends React.Component {
             optionsChecked: [],
             ids :[],
             showFormSuccess : false
-        }; 
-    }
-   
-    
-    
+        };
+        
+         this.changeContanst = this.changeContanst.bind(this);
+    }	
  
    
      
@@ -133,13 +136,67 @@ class Register extends React.Component {
         const data = new FD();        
         data.append('ids',this.state.optionsChecked)
         data.append('type','productCategory')
-        console.log('aaaa',data);
         axios.post('/product/filterBycategory',data).then(result =>{				
 			this.setState({
 				resultData : result.data.result
 			});
 		});
     }
+    
+	changeBrand(brand) {
+      let checkedArray = this.state.optionsChecked;
+      let selectedValue = brand.target.value;
+        if (brand.target.checked === true) {
+        	checkedArray.push(selectedValue);
+            this.setState({
+              optionsChecked: checkedArray
+            });
+        }
+        else {
+        	let valueIndex = checkedArray.indexOf(selectedValue);
+			checkedArray.splice(valueIndex, 1);
+            this.setState({
+              optionsChecked: checkedArray
+            });
+        }
+        const data = new FD();        
+        data.append('ids',this.state.optionsChecked)
+        data.append('type','brand')
+        console.log('aaaa',this.state.optionsChecked);
+        axios.post('/product/filterBycategory',data).then(result =>{				
+			this.setState({
+				resultData : result.data.result
+			});
+		});
+    }
+    
+	changeContanst(constantV) {
+      let checkedArray = this.state.optionsChecked;
+      let selectedValue = constantV.target.value;
+        if (constantV.target.checked === true) {
+        	checkedArray.push(selectedValue);
+            this.setState({
+              optionsChecked: checkedArray
+            });
+        }
+        else {
+          let valueIndex = checkedArray.indexOf(selectedValue);
+			checkedArray.splice(valueIndex, 1);
+            this.setState({
+              optionsChecked: checkedArray
+            });
+        }
+        const dataConstant = new FD();        
+        dataConstant.append('ids',this.state.optionsChecked)
+        dataConstant.append('type','condition')        
+        axios.post('/product/filterBycategory',dataConstant).then(result =>{				
+			this.setState({
+				resultData : result.data.result
+			});
+		});
+    }
+    
+	
     
     changeUser(userList){	    
 		let userValue = userList.value;
@@ -154,19 +211,28 @@ class Register extends React.Component {
 		 });
 	}
 	
-    changeCity(cityList){	    
-		let cityValue = cityList.value;
+    changeCity(cityList){	    			
 	    const citydata = new FD();        
-        citydata.append('ids',cityList.value)
+        citydata.append('ids',cityList.target.value)
         citydata.append('type','city')
         console.log('citydata',citydata)
-	    axios.get('/user/searchCity',citydata).then(result =>{				
-			console.log('result',result);
+	    axios.post('/user/searchCity',citydata).then(result =>{				
 		    this.setState({
 				resultData : result.data.result
 			});
 		 });
 	}
+	
+    changeSize(sizeList){	    				
+	    const sizedata = new FD();        
+        sizedata.append('ids',sizeList.target.value)
+        sizedata.append('type','size')        
+	    axios.post('/product/filterBycategory',sizedata).then(result =>{							
+		    this.setState({
+				resultData : result.data.result
+			});
+		});
+	}    
     
      onLoadMore = () => {
         this.setState((old) => ({limit: old.limit + 10}));
@@ -186,8 +252,9 @@ class Register extends React.Component {
     
     
      componentDidMount(){
-	      axios.get('/product/searchresult/'+ this.state.categoryId).then(result => {
+	     axios.get('/product/searchresult/'+ this.state.categoryId).then(result => {
 			 this.setState({resultData:result.data.result});				 
+			 console.log('resultData',this.state.resultData);
 		})
 	     axios.get('/category/categoriesActive/').then(rs => {
 			 this.setState({categoryList:rs.data.result});
@@ -196,8 +263,7 @@ class Register extends React.Component {
 			 this.setState({usersList:users.data.result});			
 		})
 	     axios.get('/location/activeCities/').then(cities => {
-			 this.setState({citiesList:cities.data.result});			
-			 console.log('citiesList',this.state.citiesList)
+			 this.setState({citiesList:cities.data.result});						
 		})
 	     axios.get('/size/listingsize/').then(sizes => {
 			 this.setState({sizeList:sizes.data.result});			
@@ -256,13 +322,13 @@ class Register extends React.Component {
 				<div className="column">
 					<h4>Location</h4>
 					<div className="select-box">
-						<select onChange={this.changeCity.bind(this)} >
+						<select onChange={this.changeCity.bind(this)}>
 						{ this.state.citiesList.map(function (citylisting,index) {
 							return (	
 							    <option value={citylisting._id}>{citylisting.cityName}</option>
 							)
 					    })
-                      }
+                       }
 						</select>
 					</div>
 					<div className="distance-range">
@@ -279,29 +345,30 @@ class Register extends React.Component {
 				<div className="column">
 					<h4>Size</h4>
 					<div className="select-box">
-						<select>
+						<select onChange={this.changeSize.bind(this)}>
 							<option>Select</option>
 							{ this.state.sizeList.map(function (sizelisting,index) {
 							return (	
-							    <option>{sizelisting.size}</option>
+							    <option value={sizelisting._id}>{sizelisting.size}</option>
 							 )
 					      })
                         }
 						</select>
 					</div>
 					<div className="taglinerow">
-						<span href="javascript:void(0)" className="tagline">Medium <a href="#" className="close">x</a></span>
+						<span href="javascript:void(0)" className="tagline">Medium 
+						<a href="#" className="close">x</a></span>
 					</div>
 				</div>
 				<div className="column">
 					<h4>Brands</h4>
-					{this.state.brandsList.slice(0, this.state.visible).map((listing, index) => {						
-						return (
-						    <div className="check-box">
-								<input name="Apple" id={"apple"+index} type="checkbox" />
-								<label htmlFor={"apple"+index}>{listing.brandName}</label>
-							</div>
-						  )
+					{this.state.brandsList.slice(0, this.state.visible).map((bListing, index) => {						
+					return (
+						<div className="check-box">
+							<input name="Apple" value={bListing._id} type="checkbox" onChange={this.changeBrand.bind(this)} id={"apple"+index} type="checkbox" />
+							<label htmlFor={"apple"+index}>{bListing.brandName}</label>
+						</div>
+						 )
 					    })
                       }
                      { 
@@ -311,15 +378,19 @@ class Register extends React.Component {
 				</div>
 				<div className="column">
 					<h4>Condition</h4>
-					{ this.state.constantList.map(function (constantList,index) {
-							return (
-								<div className="check-box">
-									<input name="New" id={"new"+index} type="checkbox" />
-									<label htmlFor={"new"+index}>{constantList.name}</label>
-								</div>
+					 { this.state.constantList.slice(0, this.state.visible).map((constantList, index) => {	
+						return (
+							<div className="check-box">
+								<input name="New" value={constantList.id} onChange={this.changeContanst.bind(this)} id={"new"+index} type="checkbox" />
+								<label htmlFor={"new"+index}>{constantList.name}</label>
+							</div>
 					         )
 					      })
                       }
+                     { 
+						this.state.visible < this.state.constantList.length &&
+						<button onClick={this.loadMore} type="button" className="load-more moreCat">Load more</button>
+					 }
 				</div>
 				<div className="column">
 					<h4>Colors</h4>
@@ -327,7 +398,6 @@ class Register extends React.Component {
 				</div>
 				<div className="column no-bord">
 					<h4>Age</h4>
-					
 						<div className="multiselect">
 							<div className="selectBox" click="showCheckboxes()">
 								<select>
@@ -406,29 +476,32 @@ class Register extends React.Component {
 				</div>
 				
 				<div className="item-listing"  results={this.state.results}>
-					{ this.state.resultData.map(function (results,index) {
-						let img = results.userId?results.userId.profilePic:"";
-						return (
-							 <div className="Items" key={index}>
-								<div>
-									<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+results.productImages} /></div>
-									<div className='details'>
-										<h4>{results.productName}</h4>
-										<Link className="catLink" to='/'>{((results.productCategory)?results.productCategory.title:"")}</Link>
-									</div>
-									<div className="userdiv">
-										<div className="user-pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} /></div>
-										<div className="user-name">{results.userId?results.userId.firstName:""}</div>
-									</div>
-								</div>
-							</div>
-							)
-                         })
-                      }
-					
+				   { this.state.resultData.map(function (results,index) {
+					let img = results.userId?results.userId.profilePic:"";						
+					return (
+					<div className="Items" key={index}><div>
+					<Link className="catLink" to={'/search-result/'+results._id}>
+					    <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+results.productImages} /></div>
+					</Link>
+					<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+results.productImages} /></div>
+					<div className='details'>
+					<h4><Link className="catLink" to={'/search-result/'+results._id}>{results.productName}</Link></h4>
+					<Link className="catLink" to={'/search-result/'+results._id}>{((results.productCategory)?results.productCategory.title:"")}</Link>
+					</div>
+					<div className="userdiv">
+					<div className="user-pic">
+					   <img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} />
+					</div>
+					   <div className="user-pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} /></div>
+					   <div className="user-name">{results.userId?results.userId.firstName:""}</div>
+					</div>
+					</div>
+					</div>
+					)
+				})
+				}
 				</div>
-				<div className="cl"></div>				
-				
+				<div className="cl"></div>	
 			</div>	
 			<div className="cl"></div>
 		</div>

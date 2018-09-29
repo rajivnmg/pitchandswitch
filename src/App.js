@@ -15,6 +15,7 @@ import Reset from './components/resetPassword/reset'
 import Subscription from './components/subscription/subscription'
 import Dashboard from './components/dashboard/dashboard';
 import SearchListing from './components/seacrh-listing/seacrh-listing';
+import SearchDetail from './components/seacrh-listing/searchDetail';
 import AddNewProduct from './components/addNewProduct/addnewproduct';
 import EditProduct from './components/addNewProduct/editproduct';
 import myTreasureChest from './components/myTreasureChest/myTreasureChest';
@@ -60,6 +61,8 @@ class App extends Component {
                             <Route exact path='/dashboard' component={Dashboard} />
                             <Route exact path='/search-listing/:id?' component={SearchListing} />
                             <Route exact path='/search-listing' component={SearchListing} />
+                            <Route exact path='/search-result/:id?' component={SearchDetail} />
+							<Route exact path='/search-result' component={SearchDetail} />
                             <Route exact path='/add-new-product' component={AddNewProduct} />
                             <Route exact path='/edit-product/:id?' component={EditProduct} />
                             <Route exact path='/my-trades' component={MyTrades} />
@@ -73,6 +76,7 @@ class App extends Component {
                     </div>
                 </Router>
             )
+
     }
 }
 export default App;
