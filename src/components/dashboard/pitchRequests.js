@@ -2,31 +2,21 @@ import React, { Component } from 'react';
 import msgSent from '../../images/msg-img.png'
 import Messages from './message'
 import DitchPopup from './ditchPopup'
-import CancelPitchPopup from './cancelPitch'
+import CancelPitch from './cancelPitch'
+import CancelPitchPopup from './cancelPitchPopup'
+import ViewPitchPopup from './viewPitchPopup'
 import LastPitchPopup from './lditch'
+import ViewReceivedPitch from './viewReceivedPitch'
 import axios from 'axios'
-
+import { Spin, Icon, Alert } from 'antd';
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 
 class PitchRequests extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
 			currentUser:'',
-            pitches: [{
-                    id: 1,
-                    pitchType: true,
-                    user: "Chritstina Morilio",
-                    status: "received",
-                    action: "Ditch",
-                    messageShow: 0,
-                    messageType: false,
-                    isMessage: true,
-                    message: [{username: "213496"},
-                        {message: "Pitch and Switch connects thoughtful consumers around the world with creative entrepreneurs."}
-                    ]
-
-                }
-            ]
+            pitches: []
         }
     };
     
@@ -37,7 +27,7 @@ class PitchRequests extends React.Component {
 		this.setState({pitches: pitches});
 	};
     
-    componentDidMount(){
+    componentWillMount(){
 		axios.get('/trade/offerTrades').then(result => {
 			  if(result.data.code === 200){				  
 				this.setState({
@@ -53,10 +43,24 @@ class PitchRequests extends React.Component {
 			});
 	}
     
-            render() {
+
+
+    
+    
+     render() {
 
         return (<div>
-       
+					<If condition={this.state.pitches.length === 0}>
+								<Then>
+									 <Spin tip="Loading...">
+										<Alert
+										  message="Data Loading "
+										  description="Please wait..."
+										  type="info"
+										/>
+									  </Spin>
+								</Then>							
+							</If>
             {this.state.pitches.map((pitch, index) => {
 				var send = (pitch.pitchUserId &&  pitch.pitchUserId._id == this.state.currentUser)?1:0;
                             let ditchClasses = ['ditch'];                                                       
@@ -73,9 +77,19 @@ class PitchRequests extends React.Component {
                                     { (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
                                     <div className="colum user width1"> <span>{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}</span></div>
                                     <div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
-                                    <div className="colum"><a href="#" className="view-pitch">View Pitch</a></div>
+                                    {/*<div className="colum"><a href="#" className="view-pitch">View Pitch</a></div> */}
+                                    <div className="colum action"><span className="view-pitch pointer">
+									<If condition={send === 1}>
+										<Then>
+											 <ViewPitchPopup offerTrade={pitch}/>										 
+										</Then>	
+										<Else>						
+											<ViewReceivedPitch offerTrade={pitch}/>
+										</Else>						
+									</If>                                    
+                                    </span></div> 
                                     <div className="colum message"></div>  
-                                    <div className="colum action">{send == 0? <DitchPopup /> :<CancelPitchPopup />}</div>
+                                    <div className="colum action">{send == 0? <DitchPopup offerTrade={pitch}/> :<CancelPitchPopup offerTrade={pitch}/>}</div>
                                 </div>
                                 {(pitch.messageShow) ? <Messages /> : ''}
                                         

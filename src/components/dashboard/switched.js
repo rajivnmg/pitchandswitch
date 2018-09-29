@@ -3,24 +3,27 @@ import statusTrack from '../../images/track-status.png'
 import TradeInfo from './tradeInfo'
 import Messages from './message'
 import axios from 'axios'
+import { Spin, Icon, Alert } from 'antd';
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 class Switched extends React.Component {
      constructor() {
         super();
         this.state = {
-            switches: [{
-                    id: 1,
-                    pitchType: true,
-                    user: "Christana Marlio",
-                    status: "received",
-                    action: "Track",
-                    trackStatus: 0,
-                    messageShow: 0,
-                    messageType: false,
-                    isMessage: true,
-                    message: [{username: "213496"},
-                        {message: "Pitch and Switch connects thoughtful consumers around the world with creative entrepreneurs."}
-                    ]
-				}
+            switches: [
+            //~ {
+                    //~ id: 1,
+                    //~ pitchType: true,
+                    //~ user: "Christana Marlio",
+                    //~ status: "received",
+                    //~ action: "Track",
+                    //~ trackStatus: 0,
+                    //~ messageShow: 0,
+                    //~ messageType: false,
+                    //~ isMessage: true,
+                    //~ message: [{username: "213496"},
+                        //~ {message: "Pitch and Switch connects thoughtful consumers around the world with creative entrepreneurs."}
+                    //~ ]
+				//~ }
             ]
         }
     };
@@ -58,6 +61,18 @@ class Switched extends React.Component {
 	}
    render() {
         return (<div>
+					<If condition={this.state.switches.length === 0}>
+								<Then>
+									 <Spin tip="Loading...">
+										<Alert
+										  message="Data Loading "
+										  description="Please wait..."
+										  type="info"
+										/>
+									  </Spin>
+								</Then>							
+							</If>
+							
             {this.state.switches.map((pitch, index) => {
                             let ditchClasses = ['ditch'];
                             //ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());                            

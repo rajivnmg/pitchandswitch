@@ -13,6 +13,7 @@ import {  fasTag, faTag, faGrinAlt, faFrownOpen, faEnvelope, faTruck, faClock, f
 import axios from 'axios';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 
+const constant = require('../config/constant')
 const Option = AutoComplete.Option;
 const navHide = {   display: 'none' }
 
@@ -44,13 +45,15 @@ class Header extends Component {
   }
   
    logoutHandler = (e) => {
-      localStorage.removeItem('jwtToken');        
+      localStorage.removeItem('jwtToken');   
+      localStorage.removeItem('loggedInUser');   
+      localStorage.setItem('isLoggedIn',0);        
       this.props.history.push('/login');
    };
   
     searchHandler = () =>
     {
-	   window.location = 'http://localhost:3002/search-listing/'+this.state.searchData;
+	   window.location = constant.PUBLIC_URL+'search-listing/'+this.state.searchData;
 	}
 	
 	searchCategory = (search,categoryName)=>{
@@ -61,36 +64,40 @@ class Header extends Component {
   componentDidMount() {
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 	console.log("jwtToken",localStorage.getItem('jwtToken'))
-	if(localStorage.getItem('jwtToken') !== null){
+	if(localStorage.getItem('jwtToken') !== null){		
 		axios.get('/user/getLoggedInUser').then(result => {			
 			this.setState({ 
 				user:result.data.result,
-			})						
+			})	
+			// setter method for loggedin user
+			localStorage.setItem('loggedInUser',result.data.result);
+			localStorage.setItem('isLoggedIn',1);
 		})
-	}
-	
-	axios.get('/user/frontNotification').then(result => {
+		
+		axios.get('/user/frontNotification').then(result => {
 		this.setState({ 
 			user:result.data.result,
 			notification_type:result.data.notification_type,
 			notifications :result.data.notifications,
 			totalNotifications:result.data.totalNotifications
 		})	
-	})
+		})
 
+	}
+	
+	
 	axios.get('/location/listingCity').then(result => {			  
 		this.setState({
 			options: result.data.result, 
 		});	  
 	})	
 		
-	 axios.get('/product/activeProducts').then(rs => {			   			 
+	axios.get('/product/activeProducts').then(rs => {			   			 
 		this.setState({
 		    productsListing: rs.data.result,           
 		});  							  
 	  })
     }
-      
 	
    Capitalize(str){
       return str.charAt(0).toUpperCase() + str.slice(1);

@@ -68,7 +68,7 @@ class TradeMatch extends Component {
                         {this.state.tradeMatches.map(function (tradeMatch) {
 							var userImage = tradeMatch.user?tradeMatch.user[0].profilePic:null
                                         return (
-                                                <div className="slides-div">
+                                                <div className="slides-div" key={tradeMatch}>
                                                     <div key={tradeMatch}>
                                                         <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+tradeMatch.productImages} /></div>
                                                         <div className='details'>

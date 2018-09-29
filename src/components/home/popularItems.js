@@ -20,6 +20,11 @@ class PopularItems extends Component {
        console.log("STATE ",this.state, this.props)
     }
     
+    componentWillMount(){
+			console.log("isLoggedIn'",localStorage.getItem('isLoggedIn'))
+	}
+    
+    
     componentDidMount(){
 	 axios.get('/product/popularItems').then(result => {		 
 		 console.log("popularItems",result);
@@ -59,22 +64,24 @@ class PopularItems extends Component {
         };
 
         return (
+				
                 <div className="popularItems">
                     <h3> Pitch and switch's <span>popular Items</span> </h3>
                     <Slider {...settings}>
                         {this.state.popularItems.map(function (item) {							
 							var productImage = item._id?item._id.productImages[0]:'';	
-							var userImage = item._id?item._id.userId.profilePic:'';
+							var userImage = item._id?item._id.userId.profilePic:'';							
+							var productUrl = (localStorage.getItem('isLoggedIn') == 1)?'/my-trade-detail':'/search-result/'+item._id._id
 							return (
 									<div className="slides-div" key={item}>
 										<div key={item}>
 										<div className='pic'>
-											<Link to="/my-trade-detail" >
+											<Link to={productUrl} >
 												<img className="popularItemImg" src={constant.BASE_IMAGE_URL+'Products/'+productImage} />
 											</Link>
 										</div>
 											<div className='details'>
-											<h4><a href="/my-trade-detail" >{item._id?item._id.productName:''}{}</a></h4>
+											<h4><a href={productUrl} >{item._id?item._id.productName:''}{}</a></h4>
 												<Link className="catLink" to={'/'}>
 												{item._id?item._id.productCategory?item._id.productCategory.title:'':''}</Link>
 											</div>
