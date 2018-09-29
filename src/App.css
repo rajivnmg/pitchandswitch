@@ -28,8 +28,8 @@ h3 span {font-weight: bold;}
 .form-row .small-instruction {color:#999; font-size: 12px; padding-top:8px; display: inline-block}
 .form-row .colum {float:left; width:48%}
 .form-row .colum.right {float:right;}
-
-
+.form-row .secure-img { background:url(./images/lockicon.png) no-repeat 0 0; display:block; clear:both; color: #3ab03a;font-family: Roboto;font-size: 16px;line-height: 26px;padding-left: 33px; margin: 0 auto 15px; max-width: 130px; }
+.form-row .secure-btm-text {color: #969696;font-family: Roboto;font-size: 16px;font-weight: 400; line-height: 36px; text-align: center}
 .was-validated .form-row .form-control:invalid,.form-control.is-invalid .form-row,.was-validated .form-row .custom-select:invalid,.custom-select.is-invalid .form-row {border: 1px solid rgba(255,0,0,0.5);background-color:rgba(245,190,190,0.5);}
 .was-validated .form-row .form-control:valid, .form-control.is-valid .form-row, .was-validated .form-row .custom-select:valid, .form-row .custom-select.is-valid {border:1px solid #28a745;}
 .alert-success {color:#155724; background: #d4edda; border:1px solid #c3e6cb; padding:10px 15px; margin-bottom: 25px; border-radius: 8px;}
@@ -47,7 +47,7 @@ h3 span {font-weight: bold;}
 .breadcrumb ul li:first-child { padding-left: 0}
 .breadcrumb ul li a { color: #d0a518; font-size: 14px; text-decoration: none;}
 
-.form-row .textarea {width: 100%; height: 50px; line-height: 50px; border-radius: 4px; border: 1px solid #cfcfcf; background-color: #f4f4f4; -webkit-box-sizing: border-box; box-sizing: border-box; padding: 0 15px; clear: both; height: 100px;}
+.form-row .textarea {width: 100%; height: 50px; line-height: 50px; border-radius: 4px; border: 1px solid #cfcfcf; background-color: #f4f4f4; -webkit-box-sizing: border-box; box-sizing: border-box; padding: 0 15px; clear: both; height: 100px; resize:none}
 .return-request-form .select-box, .return-request-form .selectBox {    background: #f4f4f4 none repeat scroll 0 0;}
 .form-row.btn-row { text-align: center}
 .form-row.btn-row .ditch {height: 46px; border-radius: 23px; padding: 0 25px;  color: #ffffff;    font-size: 20px; font-weight: 700; margin: 0 10px; min-width: 142px; }
@@ -55,8 +55,15 @@ h3 span {font-weight: bold;}
 
 .modal > .header.center-align { text-align: center}
 .modal > .header.marginTop { margin-top: 35px;}
-.alert-danger {color: #a94442; background: #f2dede; border: 1px solid #c3e6cb; padding: 10px 15px; margin-bottom: 25px;
-    border-radius: 8px;border-color: #ebccd1;}
+.modal > .header .sub-heading {color: #969696;font-family: Roboto;font-size: 13px;font-weight: 400; padding:15px 0 0}
+.brdr-box-div {border-radius: 4px;border: 1px solid #e2e2e2;background-color: #ffffff; padding:20px; margin-bottom:30px;}
+.brdr-box-div p {color: #414141;font-family: Roboto;font-size: 18px;font-weight: 400; }
+.brdr-box-div .catLink { margin:8px 0; background-color: #dab439; color: #fff; display: inline-block; padding: 5px 15px; border-radius: 15px; text-decoration: none; font-size: 12px;}
+.yellow-brdr-box-div {border-radius: 4px;border: 1px solid #efefab;background-color: #ffffdc; padding:20px; margin-bottom:30px;}
+.yellow-brdr-box-div p {color: #414141;font-family: Roboto;font-size: 14px;font-weight: 700;line-height: 36px;}
+.yellow-brdr-box-div p span {display: block;font-size: 24px; font-weight: normal}
 
-
-
+.notFound {  padding: 150px 15px;}
+.notText { font-size: 120px; text-align: center; color:red}
+.notText span { display: block; font-size:40px; text-align: center; color:#666; margin-bottom: 50px}
+.notFound a {color:#dcb73f; font-weight: bold;}

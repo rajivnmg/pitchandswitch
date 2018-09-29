@@ -17,6 +17,7 @@ class PopularItems extends Component {
             popularItems: []
         }
        ;
+       console.log("STATE ",this.state, this.props)
     }
     
     componentDidMount(){
@@ -69,7 +70,7 @@ class PopularItems extends Component {
 										<div key={item}>
 										<div className='pic'>
 											<Link to="/my-trade-detail" >
-												<img className="popularItemImg"src={constant.BASE_IMAGE_URL+'Products/'+productImage} />
+												<img className="popularItemImg" src={constant.BASE_IMAGE_URL+'Products/'+productImage} />
 											</Link>
 										</div>
 											<div className='details'>
