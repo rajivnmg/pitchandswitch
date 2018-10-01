@@ -4,6 +4,8 @@ import ReturnInfo from './returnPopup'
 import PostReview from './postReviewPopup'
 import axios from 'axios'
 import Moment from 'moment'
+import { Spin, Icon, Alert } from 'antd';
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 class Switched extends React.Component {
 	TrackHandler = (id) => {
 		let pitches = this.state.pitches;
@@ -15,20 +17,21 @@ class Switched extends React.Component {
         super(props);
 
         this.state = {
-            completedPitches: [{
-                    id: 1,
-                    pitchType: true,
-                    user: "Oleksandr Pid",
-                    status: "received",
-                    action: "Return",
-                    trackStatus: 0,
-                    messageType: false,
-                    isMessage: true,
-                    message: [{username: "213496"},
-                        {message: "Pitch and Switch connects thoughtful consumers around the world with creative entrepreneurs."}
-                    ]
+            completedPitches: [
+            //~ {
+                    //~ id: 1,
+                    //~ pitchType: true,
+                    //~ user: "Oleksandr Pid",
+                    //~ status: "received",
+                    //~ action: "Return",
+                    //~ trackStatus: 0,
+                    //~ messageType: false,
+                    //~ isMessage: true,
+                    //~ message: [{username: "213496"},
+                        //~ {message: "Pitch and Switch connects thoughtful consumers around the world with creative entrepreneurs."}
+                    //~ ]
 
-                }
+                //~ }
             ]
         }
     }
@@ -50,6 +53,17 @@ class Switched extends React.Component {
 	}
     render() {
         return (<div>
+        <If condition={this.state.completedPitches.length === 0}>
+								<Then>
+									 <Spin tip="Loading...">
+										<Alert
+										  message="Data Loading "
+										  description="Please wait..."
+										  type="info"
+										/>
+									  </Spin>
+								</Then>							
+							</If>
 					{this.state.completedPitches.map((pitch, index) => {
 						let ditchClasses = ['ditch'];
 						//ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());

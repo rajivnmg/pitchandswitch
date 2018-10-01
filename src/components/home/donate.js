@@ -39,17 +39,17 @@ class Donate extends Component {
                     <div className='container'>
                         <Slider {...settings}>
                             {this.state.donateImg.map(function (donateImgs) {
-                                            return (
-                                                <div key={donateImgs}>
-                                                    <div className="donate-div" key={donateImgs}>
-                                                        <div className='imgDiv'><img src={donateImgs.image} /></div>
-                                                        <div className="details">
-                                                            <h4>{donateImgs.donateTxt}</h4>
-                                                            <Link to="/">Donate </Link>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                    )
+								return (
+									<div key={donateImgs}>
+										<div className="donate-div" key={donateImgs}>
+											<div className='imgDiv'><img src={donateImgs.image} /></div>
+											<div className="details">
+												<h4>{donateImgs.donateTxt}</h4>
+												<Link to="/donated-products">Donate </Link>
+											</div>
+										</div>
+									</div>
+										)
                             })
                             }
                         </Slider>

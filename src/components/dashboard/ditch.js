@@ -1,24 +1,14 @@
 import React, { Component } from 'react';
 import DitchPopup from './shippingTypePopup'
 import axios from 'axios';
+import { Spin, Icon, Alert } from 'antd';
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 class Ditch extends React.Component {
     constructor() {
         super();		
         this.state = {
            currentUser:'',		
-			ditchedPitches: [{
-				id: 1,
-				pitchType: false,
-				user: "Oleksandr Pid",
-				status: "received",
-				action: "Ditched QUICK1 BINGE60",
-				messageType: false,
-				isMessage: true,
-				message: [{username: "213496"},
-					{message: "Pitch and Switch connects thoughtful consumers around the world with creative entrepreneurs."}
-				]
-
-			}]
+			ditchedPitches: []
         }
     }
     
@@ -40,6 +30,17 @@ class Ditch extends React.Component {
 	}
     render() {
         return (<div>
+						<If condition={this.state.ditchedPitches.length == 0}>
+								<Then>
+									 <Spin tip="Loading...">
+										<Alert
+										  message="Data Loading "
+										  description="Please wait..."
+										  type="info"
+										/>
+									  </Spin>
+								</Then>							
+							</If>
 					{this.state.ditchedPitches.map((pitch, index) => {
 							var send = (pitch.pitchUserId && pitch.pitchUserId._id == this.state.currentUser)?1:0;		let ditchClasses = ['ditch'];                                                       
                             var ditch = 'Ditched';
