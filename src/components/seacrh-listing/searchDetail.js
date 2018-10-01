@@ -23,20 +23,24 @@ class MyTrades extends React.Component {
         this.state = {
             resultData: "",
             productId: productId,
+            mainImages: ""
         };
     }
 	
-	 componentDidMount(){
+	 componentWillMount(){
+		 console.log("called will mount")
 	     axios.get('/product/productDetails/'+ this.state.productId).then(result => {			
-			console.log('dddddddddd',result.data.result)
+			this.setState({resultData:result.data.result,mainImages:result.data.result.productImages[0]});
+			//this.setState({mainImages:this.state.resultData.productImages[0]});
+		})
+		 console.log("called will mount1111",this.state.mainImages)
+	     axios.get('/product/getConstant/'+ this.state.resultData.condition).then(result => {	
 			this.setState({resultData:result.data.result});
 		})
 		
-	     axios.get('/product/getConstant/'+ this.state.resultData.condition).then(result => {			
-			console.log('dddddddddd',result.data.result)
+	     axios.get('/product/productImages/'+ this.state.productId).then(result => {	
 			this.setState({resultData:result.data.result});
 		})
-		
      }
 	
     render() {
@@ -59,7 +63,7 @@ class MyTrades extends React.Component {
 			</div>
 			<div className="detail-div">
 			<div className="pic">
-			  <ThumbGallery innerRef={this.state.resultData} />
+			  <ThumbGallery galleries={this.state.mainImages} />
 			</div>
 			<div className="details">
 			<div className="linkRow">
@@ -90,23 +94,23 @@ class MyTrades extends React.Component {
 			<div className="productDetails">
 			<h5>Product Details</h5>
 			<table cellPadding="0" cellSpacing="0" width="100%">
-			<tbody>
-			<tr>
-			<td>Size:</td><td>{this.state.resultData.size?this.state.resultData.size.size:""} GB</td>
-			</tr>
-			<tr>
-			<td>Color:{this.state.resultData.productAge}</td><td><img src={colorOrange} /></td>
-			</tr>
-			<tr>
-			<td>Brand:</td><td>{this.state.resultData.brand?this.state.resultData.brand.brandName:""}</td>
-			</tr>
-			<tr>
-			<td>Condition:</td><td>{this.state.resultData.productAge}</td>
-			</tr>
-			<tr>
-			<td>Age:</td><td>{this.state.resultData.productAge}</td>
-			</tr>
-			</tbody>
+				<tbody>
+					<tr>
+						<td>Size:</td><td>{this.state.resultData.size?this.state.resultData.size.size:""} GB</td>
+					</tr>
+					<tr>
+						<td>Color:</td><td><img src={colorOrange} />{this.state.resultData.color}</td>
+					</tr>
+					<tr>
+						<td>Brand:</td><td>{this.state.resultData.brand?this.state.resultData.brand.brandName:""}</td>
+					</tr>
+					<tr>
+						<td>Condition:</td><td>{this.state.resultData.condition}</td>
+					</tr>
+					<tr>
+						<td>Age:</td><td>{this.state.resultData.productAge}</td>
+					</tr>
+				</tbody>
 			</table>
 			</div>
 			</div>
@@ -115,7 +119,7 @@ class MyTrades extends React.Component {
 			<div className="cl"></div>
 			<div className="my-trades ">
 			<h3 className="center-text">You may be interested in</h3>
-			<NewlyProducts  />
+			   <NewlyProducts  />
 			</div>
 			<div className="cl"> </div>
 			</div>

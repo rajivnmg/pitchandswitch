@@ -3,10 +3,11 @@ import ImageGallery from 'react-image-gallery';
 import "../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
 const PREFIX_URL = 'http://newmediaguru.co/html/pitchandswitch/gallery/';
 
-class App1 extends React.Component {
+class ThumbGallery extends React.Component {
 
   constructor(props) {
     super(props);
+   
     this.state = {
       showIndex: false,
       showBullets: false,
@@ -24,8 +25,8 @@ class App1 extends React.Component {
       showVideo: {},
     };
     
-    {console.log('fadjadlajfdajdf',this.props)}
-    
+   
+     console.log('fadjadlajfdajdf',props)
     this.images = [
      
       {
@@ -209,4 +210,4 @@ class App1 extends React.Component {
     );
   }
 }
-export default App1;
+export default ThumbGallery;
