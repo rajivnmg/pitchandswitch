@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import ImageGallery from 'react-image-gallery';
 import "../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
+import axios from 'axios';	
 const PREFIX_URL = 'http://newmediaguru.co/html/pitchandswitch/gallery/';
+const constant = require('../../config/constant')
 
 class ThumbGallery extends React.Component {
 
   constructor(props) {
-    super(props);
-   
+    super(props);   
     this.state = {
       showIndex: false,
       showBullets: false,
@@ -23,43 +24,42 @@ class ThumbGallery extends React.Component {
       slideInterval: 2000,
       thumbnailPosition: 'bottom',
       showVideo: {},
+      resultData: "",
+      mainImages: "",
+      productImagesResult:""
     };
-    
-   
-     console.log('fadjadlajfdajdf',props)
-    this.images = [
-     
-      {
-        original: `${PREFIX_URL}image_set_default.jpg`,
-        thumbnail: `${PREFIX_URL}image_set_thumb.jpg`,
-        imageSet: [
-          {
-            srcSet: `${PREFIX_URL}image_set_cropped.jpg`,
-            media : '(max-width: 1280px)',
-          },
-          {
-            srcSet: `${PREFIX_URL}image_set_default.jpg`,
-            media : '(min-width: 1280px)',
-          }
-        ]
-      },
-      {
-        original: `${PREFIX_URL}1.jpg`,
-        thumbnail: `${PREFIX_URL}1t.jpg`,
-        originalClass: 'featured-slide',
-        thumbnailClass: 'featured-thumb'      
-      },
-    ].concat(this._getStaticImages());
   }
-
-  componentDidUpdate(prevProps, prevState) {
+  
+  componentWillMount(){		  
+	  console.log('imgases',this.props)
+	     axios.get('/product/productDetails/'+ this.props.galleriesID).then(results => {	
+			this.setState({mainImages:results.data.result?results.data.result.productImages[0]:""});
+		})
+	     axios.get('/product/productImages/'+ this.props.galleriesID).then(results => {	
+			this.setState({productImagesResult:results.data.result});			
+		})
+		    let basicIMG = `${constant.BASE_IMAGE_URL}`;
+		     this.images = [
+			  {
+				//original: basicIMG+this.state.mainImages,
+				original: basicIMG,
+				thumbnail: basicIMG,
+			  },
+			  {
+				original: `${PREFIX_URL}1.jpg`,
+				thumbnail: `${PREFIX_URL}1t.jpg`,
+				originalClass: 'featured-slide',
+				thumbnailClass: 'featured-thumb'      
+			  },
+			].concat(this._getStaticImages());
+  }
+   componentDidUpdate(prevProps, prevState) {
     if (this.state.slideInterval !== prevState.slideInterval ||
         this.state.slideDuration !== prevState.slideDuration) {
-      // refresh setInterval
-      this._imageGallery.pause();
-      this._imageGallery.play();
+        this._imageGallery.pause();
+        this._imageGallery.play();
     }
-  }
+   }
 
   _onImageClick(event) {
     console.debug('clicked on image', event.target, 'at index', this._imageGallery.getCurrentIndex());
@@ -99,8 +99,8 @@ class ThumbGallery extends React.Component {
   }
 
   _getStaticImages() {
-    let images = [];
-    for (let i = 2; i < 3; i++) {
+    let images = []; 
+     for (let i = 2; i < 3; i++) {
       images.push({
         original: `${PREFIX_URL}${i}.jpg`,
         thumbnail:`${PREFIX_URL}${i}t.jpg`
@@ -204,8 +204,7 @@ class ThumbGallery extends React.Component {
           slideDuration={parseInt(this.state.slideDuration)}
           slideInterval={parseInt(this.state.slideInterval)}
           additionalClass="app-image-gallery"
-        />
- 
+        /> 
       </section>
     );
   }

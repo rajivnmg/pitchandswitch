@@ -18,19 +18,16 @@ class Dashboard extends Component {
 	constructor(props){
     super(props);
     this.state = {
-			currentUser:{
-				 email:'',
-				 firstName:'',
-				 lastName:'',
-				 middleName:'',
-				 profilePic:'',
-				 userName:''
-				}			
-				
-					
-	}
-    
-  // console.log('TOken', localStorage.getItem('jwtToken'));
+		currentUser:{
+			 email:'',
+			 firstName:'',
+			 lastName:'',
+			 middleName:'',
+			 profilePic:'',
+			 userName:''
+			}			
+	 }    
+  
     if(localStorage.getItem('jwtToken') === null){
        window.location.href="#/login";
     }
