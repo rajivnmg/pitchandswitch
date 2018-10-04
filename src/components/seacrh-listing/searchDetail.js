@@ -13,6 +13,8 @@ import Moment from 'moment';
 import ReadMoreReact from 'read-more-react';
 import { Spin, Icon, Alert } from 'antd';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
+
 const constant = require('../../config/constant')
 
 const history = createHistory();
@@ -26,14 +28,15 @@ class MyTrades extends React.Component {
             productId: productId,
             mainImages: "",
             productImagesResult:"",
-            galleriesImg :[]
+            galleriesImg :[],
+            condition :[],
         };
     }
 	
-	 componentWillMount(){		
-	     axios.get('/product/productDetails/'+ this.state.productId).then(result => {			
+	    componentWillMount(){		
+	       axios.get('/product/productDetails/'+ this.state.productId).then(result => {			
 			this.setState({resultData:result.data.result,mainImages:result.data.result.productImages?result.data.result.productImages[0]:""});
-		})
+		  })
 		
 	   axios.get('/donation/getConstant').then(result => {
            this.setState({conditions: result.data.result});            
@@ -47,11 +50,12 @@ class MyTrades extends React.Component {
 	
     render() {	
 		
-		let optionTemplate;
-	    if(this.state.conditions){
+		 let optionTemplate;
+	     if(this.state.conditions){
 			let conditionsList = this.state.conditions;
-		    optionTemplate = conditionsList.map(v => (<option value={v.id}>{v.name}</option>));
-       }
+				conditionsList.map((key, index) => {  if(key.id==4){     optionTemplate = key.name;  }
+			})
+         }
 		let img = this.state.resultData.userId?this.state.resultData.userId.profilePic:"";
 		let description = this.state.resultData.description?this.state.resultData.description:"";
         return (
@@ -100,16 +104,16 @@ class MyTrades extends React.Component {
 				<table cellPadding="0" cellSpacing="0" width="100%">
 				  <tbody>
 					<tr>
-						<td>Size:</td><td>{this.state.resultData.size?this.state.resultData.size.size:""} GB</td>
+					<td>Size:</td><td>{this.state.resultData.size?this.state.resultData.size.size:""} GB</td>
 					</tr>
 					<tr>
-						<td>Color:</td><td><img src={colorOrange} />{this.state.resultData.color}</td>
+					<td>Color:</td><td><img src={colorOrange} />{this.state.resultData.color}</td>
 					</tr>
 					<tr>
-						<td>Brand:</td><td>{this.state.resultData.brand?this.state.resultData.brand.brandName:""}</td>
+					<td>Brand:</td><td>{this.state.resultData.brand?this.state.resultData.brand.brandName:""}</td>
 					</tr>
-					<tr>
-						<td>Condition:</td><td><select>{optionTemplate}</select></td>
+					<tr>{console.log('ccccccc',this.state.resultData?this.state.resultData.condition:"")}
+						<td>Condition:</td><td>{optionTemplate}</td>
 					</tr>
 					<tr>
 						<td>Age:</td><td>{this.state.resultData.productAge}</td>
