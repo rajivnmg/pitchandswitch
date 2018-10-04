@@ -1,107 +1,35 @@
 import React, { Component } from 'react';
 import ReactDOM from "react-dom";
-// import Style from './dashboard.css';
-// import imgPath from '../../images'
-// import "~slick-carousel/slick/slick.css"; 
-//import "~slick-carousel/slick/slick-theme.css"; 
 import Slider from "react-slick";
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import popularItemImg from '../../images/popular-item1.jpg';
 import userPicture from '../../images/user-pic.png';
+import axios from 'axios'
+const constant = require('../../config/constant')
 
 class NewlyProducts extends Component {
     constructor(props)
-    {
+     {
        super(props);
-       this.state = {
-            slides: [{
-                    "title": "Call of Duty : Infinate Warfare More",
-                    "image": popularItemImg,
-                    "category": "Games",
-                    "userPic": userPicture,
-                    "userName": "Simon Robben"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Simon Robben"
-                },
-                {
-                    "title": "Leander : Cradle, Crib, High Chair, Changing",
-                    "image": "https://api.androidhive.info/json/movies/3.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Simon Robben"
-                },
-                {
-                    "title": "Holy Crap! This wooden rocket has some",
-                    "image": "https://api.androidhive.info/json/movies/4.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/5.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Simon Robben"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/6.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Call of Duty : Infinate Warfare More",
-                    "image": "https://api.androidhive.info/json/movies/1.jpg",
-                    "category": "Games",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Simon Robben"
-                },
-                {
-                    "title": "Leander : Cradle, Crib, High Chair, Changing",
-                    "image": "https://api.androidhive.info/json/movies/3.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Holy Crap! This wooden rocket has some",
-                    "image": "https://api.androidhive.info/json/movies/4.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/5.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Simon Robben"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/6.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                }
-            ]
-        }
-        ;
-    }
+         this.state = {
+            relatedProduct: [{
+				"title": "",
+				"image": "",
+				"category": "",
+				"userPic":"",
+				"userName":""
+             }
+          ]
+        };
+      }
+      
+     componentDidMount(){
+		 axios.get('/product/relatedCategoryProduct/'+this.props.productID).then(result => {	
+			this.setState({relatedProduct:result.data.result})
+			console.log('pppppppppppppr',this.state.relatedProduct)
+		})
+	  }
+    
     render() {
           const settings = {
             dots: false,
@@ -131,32 +59,33 @@ class NewlyProducts extends Component {
             ]
         };
         return (
-                <div className="popularItems recently-added">
-        <div className="container">
-                    <Slider {...settings}>
-                        {this.state.slides.map(function (slide) {
-                                        return (
-                                                <div className="slides-div" key={slide}>
-                                                    <div>
-                                                        <div className='pic'><img src={slide.image} /></div>
-                                                        <div className='details'>
-                                                            <h4>{slide.title}</h4>
-                                                            <Link className="catLink" to='/'>{slide.category}</Link>
-                                                        </div>
-                                                          <div className="userdiv">
-                                                            <div className="user-pic"><img src={slide.userPic} /></div>
-                                                            <div className="user-name">{slide.userName}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                )
-                        })
-                        }
-                    </Slider>
-                    
-                    </div>
-                </div>
-                            );
-            }
+        <div className="popularItems recently-added">
+          <div className="container">
+			<Slider {...settings}>
+				{   this.state.relatedProduct.map(function (products) {
+					var userImage = products.userId?products.userId.profilePic:"";
+					console.log('products')
+					return (
+					<div className="slides-div" key={products}>
+					<div key={products}>
+					<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+products.productImages} /></div>
+					<div className='details'>
+					<h4>{products.productName}</h4>
+					<Link className="catLink" to='/'>{products.productCategory?products.productCategory.title:''}</Link>
+					</div>
+					<div className="userdiv">
+					<div className="user-pic"><img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} /></div>
+					<div className="user-name">{(products.userId)?products.userId.firstName:""}</div>
+					</div>
+					</div>
+					</div>
+					)
+				  })
+				}
+			  </Slider>
+		     </div>
+		    </div>
+		   );
+         }
         }
         export default NewlyProducts;

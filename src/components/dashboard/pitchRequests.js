@@ -42,25 +42,22 @@ class PitchRequests extends React.Component {
 			  }
 			});
 	}
-    
-
 
     
     
      render() {
-
         return (<div>
-					<If condition={this.state.pitches.length === 0}>
-								<Then>
-									 <Spin tip="Loading...">
-										<Alert
-										  message="Data Loading "
-										  description="Please wait..."
-										  type="info"
-										/>
-									  </Spin>
-								</Then>							
-							</If>
+			<If condition={this.state.pitches.length === 0}>
+			<Then>
+			<Spin tip="Loading...">
+			<Alert
+			message="Data Loading "
+			description="Please wait..."
+			type="info"
+			/>
+			</Spin>
+			</Then>							
+			</If>
             {this.state.pitches.map((pitch, index) => {
 				var send = (pitch.pitchUserId &&  pitch.pitchUserId._id == this.state.currentUser)?1:0;
                             let ditchClasses = ['ditch'];                                                       
