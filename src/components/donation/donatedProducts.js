@@ -5,7 +5,9 @@ import userPicture from '../../images/user-pic.png';
 import Select from 'react-select';
 import axios from 'axios'
 import { Spin, Icon, Alert } from 'antd';
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import { If, Then, ElseIf, Else} from 'react-if-elseif-else-render';
+import { Link } from 'react-router-dom';
+
 
 var moment = require('moment');
 const constant = require('../../config/constant')
@@ -90,7 +92,7 @@ class donatedProducts extends Component {
                             </ul>
                         </div>
                         <div className="heading-row">.
-                            <a href="#" className="more-items"> Donate a product</a>
+                            <Link to={'/donate-product'} className="more-items"> Donate a product</Link>
                             <h1>Donated Products</h1>
                             <p className="subheading">Recently donated products by pitch and swicth members</p>
                             <div className="cl"></div>

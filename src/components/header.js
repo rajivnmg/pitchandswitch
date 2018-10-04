@@ -70,7 +70,10 @@ class Header extends Component {
 				user:result.data.result,
 			})	
 			// setter method for loggedin user
-			localStorage.setItem('loggedInUser',result.data.result);
+			localStorage.setItem('loggedInUser',result.data.result._id);
+			localStorage.setItem('userId',result.data.result._id);
+			localStorage.setItem('userName',result.data.result.userName);
+			
 			localStorage.setItem('isLoggedIn',1);
 		})
 		
@@ -148,7 +151,7 @@ class Header extends Component {
 						<ul className="dashboard-subnav">
 							<li><Link to={'/dashboard'} className="dashboard-icon">Dashboard</Link></li>
 							<li><Link to={'/my-trades'} className="my-trades-icon">My Trades</Link></li>
-							<li><a href="#" className="wishlist-icon">Wishlist</a></li>
+							<li><Link to={'/wishlist'} className="wishlist-icon">Wishlist</Link></li>
 							<li><a href="#" className="trade-match-icon">Trade Match</a></li>
 							<li><Link to={'/my-treasure-chest'} className="my-chest-icon">My Treasure Chest</Link></li>
 							<li><a href="#" className="settings-icon">Settings</a></li>

@@ -68,7 +68,7 @@ class NewlyProducts extends Component {
                         {this.state.newlyProducts.map(function (newlyProduct,index) {
 							
 							var userImage = newlyProduct.user?newlyProduct.user[0].profilePic:null
-							var productUrl = (localStorage.getItem('isLoggedIn') == 1)?'/my-trade-detail':'/search-result/'+newlyProduct._id
+							var productUrl = (localStorage.getItem('isLoggedIn') == 1)?'/my-trade-detail/'+newlyProduct._id:'/search-result/'+newlyProduct._id
 						return (
 							<div className="slides-div" key={index}>
 								<div key={newlyProduct}>

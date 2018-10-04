@@ -6,20 +6,34 @@ import detailPic from '../../images/detail-pic.png'
 import createHistory from "history/createBrowserHistory" 
 import axios from 'axios'
 const history = createHistory();
-
+const userId =  localStorage.getItem('userId')
 
 class MyTrades extends React.Component {
 	
 	constructor(props){
 		super(props)
-		//this.state = {}
+		this.state = {
+				product :[]
+			}
+			
 	}
 	
 	componentWillMount(){
 		console.log("componentWillMount called")
-		
+		axios.get('product/productDetails/'+this.props.match.params.id).then(result=>{
+					this.setState({product:result.data.result})		
+			})
 	}
 	
+	addToWishList(){		
+		let data = {};
+		data.userId = userId;
+		data.productId = this.state.product._id;
+		axios.post('/product/addToWishList',data).then(result => {			
+			console.log("this.state",result)
+		})			
+	}
+
 	
     render() {
         return (
@@ -47,7 +61,7 @@ class MyTrades extends React.Component {
                                 <div className="productId">Product ID: <strong>PS2152436</strong></div>
                                 <div className="btnRow">
                                     <a href="#" className="ditch">Pitch Now</a>
-                                    <a href="#" className="ditch add-wishlist">Add to Wishlist</a>
+                                    <a href="#" className="ditch add-wishlist" onClick={()=>this.addToWishList()}>Add to Wishlist</a>
                                     <div className="cl"></div>
                                 </div>
                                 <div className="productDetails">

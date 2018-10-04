@@ -6,8 +6,7 @@ import offerProduct1 from '../../images/offer-product-img1.jpg'
 import offerProduct3 from '../../images/offer-product-img3.jpg'
 import userPic from '../../images/user-pic.png'
 import axios from 'axios'
-//
-
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 const constant = require('../../config/constant')
 const contentStyle = {
     maxWidth: "660px",
@@ -18,7 +17,8 @@ class viewPitchPopup extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {				
-			offerTrade:this.props.offerTrade
+			offerTrade:this.props.offerTrade,
+			offerTradeProducts:[]
 		}		
 		console.log(" viewPitchPopup props", this.props)
 	}
@@ -28,9 +28,18 @@ class viewPitchPopup extends Component {
 			this.setState({offerTradeId:this.state.offerTrade._id})
 	}
 	
+	componentDidMount(){
+		axios.get('/trade/offerTradeProduct/'+this.state.offerTrade._id).then(result => {
+				if(result.data.code === 200){
+					this.setState({offerTradeProducts:result.data.result})				
+				}
+			})
+	}
+	
+	
 render() {
    return (
-<Popup trigger={<a className= 'view-pitch'> View Pitch </a>} modal contentStyle = {contentStyle} lockScroll > 
+		<Popup trigger={<a className= 'view-pitch'> View Pitch </a>} modal contentStyle = {contentStyle} lockScroll > 
 
 	{ close => (
     <div className="modal">
@@ -63,48 +72,40 @@ render() {
 					<div className="cl"></div>
 					<div className="switch-product-section">
 						<p>Offered products for switch:
-                                                <span className="pitch-offered"><span className="pitch-offer">Pitch offered by </span> Godisable Jacob</span>
+                                                <span className="pitch-offered"><span className="pitch-offer">Pitch offered To </span> {(this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:''}</span>
 							<div className="cl"></div>
 						</p>
-						<div className="switch-product-box">
-							<div className="switch-product-image-box">
-								<img src={offerProduct1} alt="recieved-product image" />
-								<div className="switch-option-mask">
-									<a className="view-btn margin-top1" href="/">View</a>
-									 ditch-btn
-								</div>
-							</div>
-							<div className="switch-product-content-box">
-								<h4>Call of Duty: Infinite Warfare More</h4>
-								<a className="catLink" href="/">Games</a>
-							</div>
-						</div>
-						<div className="switch-product-box">
-							<div className="switch-product-image-box">
-								<img src={offerProduct3} alt="recieved-product image" />
-								<div className="switch-option-mask">
-									<a className="view-btn margin-top1" href="/">View</a>
+						
+						<If condition={this.state.offerTradeProducts.length > 0}>
+								<Then>
+								
+								 {this.state.offerTradeProducts[0].products.map((offerTradeProduct, index) => {
+									 var productImages = (offerTradeProduct._id)?offerTradeProduct.productImages[0]:'';
+									 {console.log("this.state.offerTradeProducts[0]",offerTradeProduct)}
 									 
-								</div>
-							</div>
-							<div className="switch-product-content-box">
-								<h4>Shopkins Shoppies - Bubbleisha</h4>
-								<a className="catLink" href="/">Toy</a>
-							</div>
-						</div>
-						<div className="switch-product-box">
-							<div className="switch-product-image-box">
-								<img src={offerProduct1} alt="recieved-product image" />
-								<div className="switch-option-mask">
-									<a className="view-btn margin-top1" href="/">View</a>
+									 return(<div className="switch-product-box">
+										<div className="switch-product-image-box">
+										<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+											<div className="switch-option-mask">
+												<a className="view-btn margin-top1" href="/">View</a>
+												ditch-btn
+											</div>
+										</div>
+										<div className="switch-product-content-box">
+											<h4>{offerTradeProduct.productName}</h4>
+											<a className="catLink" href="/">{offerTradeProduct.productCategory.title}</a>
+										</div>
+									</div>)
 									 
-								</div>
-							</div>
-							<div className="switch-product-content-box">
-								<h4>Leander: Cradle, Crib, High Chair, Chang...</h4>
-								<a className="catLink" href="/">Baby Products</a>
-							</div>
-						</div>
+								})
+								}
+									
+								</Then>							
+								<Else>
+								  <p>No Image Available</p>
+								</Else>
+							</If>
+						
 					</div>
 				</div>
 			</div>
