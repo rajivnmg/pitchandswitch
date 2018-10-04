@@ -20,6 +20,9 @@ import AddNewProduct from './components/addNewProduct/addnewproduct';
 import EditProduct from './components/addNewProduct/editproduct';
 import myTreasureChest from './components/myTreasureChest/myTreasureChest';
 import donatedProducts from './components/donation/donatedProducts';
+import DonateProduct from './components/donation/donateProduct';
+import Wishlist from './components/wishList/wishlist';
+import EmptyWishlist from './components/wishList/clearWishlist';
 import Style1 from './media.css';
 import axios from 'axios';
 import NotFound from './NotFound';
@@ -66,9 +69,13 @@ class App extends Component {
                             <Route exact path='/add-new-product' component={AddNewProduct} />
                             <Route exact path='/edit-product/:id?' component={EditProduct} />
                             <Route exact path='/my-trades' component={MyTrades} />
+                            <Route exact path='/my-trade-detail/:id?' component={MyTradesDetail} />
                             <Route exact path='/my-trade-detail' component={MyTradesDetail} />
                             <Route exact path="/my-treasure-chest" component={myTreasureChest} />
-                             <Route exact path='/donated-products' component={donatedProducts} />
+                            <Route exact path='/donated-products' component={donatedProducts} />
+                            <Route exact path='/donate-product' component={DonateProduct} />
+                            <Route exact path='/wishlist' component={Wishlist} />
+                            <Route exact path='/empty-wishlist' component={EmptyWishlist} />
                             <Route path="*" component={NotFound} />
                         </Switch>
                         </div>
