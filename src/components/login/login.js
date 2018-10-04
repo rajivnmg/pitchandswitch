@@ -197,9 +197,7 @@ class Register extends React.Component {
   render() {
 	   const { email, password, message } = this.state;
     return (
-            <div className="login-container">
-            
-           
+       <div className="login-container">
         <div  className="container">        	
            <a href="/" className="backBtn">&nbsp;</a>
         <div className="cl"></div>

@@ -6,29 +6,29 @@ import axios from 'axios'
 import jquery from 'jquery'
 import { Route, Redirect } from 'react-router'
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import createHistory from "history/createBrowserHistory" 
 const contentStyle = {
 	maxWidth: "560px",
     width: "90%"
 };
-
+const history = createHistory();
 class ClearWishListPopup extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {				
 			redirect:false
 		}
-	}
-	
+	}		
 	clearWishList(){		
 		axios.delete('product/clearWishlist').then(result => {
-			if(result.data.code === 200 && result.data.total > 0){	
+			if(result.data.code === 200){					
+				jquery('#cancel-btn').click();				
 				window.location.href="/empty-wishlist";
+				
 			}
 		})
 		
 	}
-	
-	
 	
 render() {	
 	
