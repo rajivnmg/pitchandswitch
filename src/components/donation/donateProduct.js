@@ -187,7 +187,7 @@ class Register extends React.Component {
         <div  className="container">
         <div className="breadcrumb">
         <ul>
-        <li><a href="/">Home</a></li><li><a href="#">Donated Products</a></li><li>Donate Product</li>
+        <li><Link to={'/dashboard'}>dashboard</Link></li><li><Link to={'/donated-products'}>Donated Products</Link></li><li>Donate Product</li>
         </ul>
         </div>
               <div className="cl"></div>

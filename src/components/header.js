@@ -135,7 +135,14 @@ class Header extends Component {
                return(
                 <header>
                     <figure className="logo">
-                        <Link to={'/'}><img src={Logo} alt='logo' /></Link>
+                     <If condition={this.state.user && this.state.user.userName!=''} >
+						<Then>
+							<Link to={'/dashboard'}><img src={Logo} alt='logo' /></Link>
+                        </Then>
+                        <Else>
+							<Link to={'/'}><img src={Logo} alt='logo' /></Link>
+                       </Else>
+                     </If>
                     </figure>
                     <CategoryMenu />
                     <div className="search-container">
