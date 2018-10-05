@@ -43,8 +43,7 @@ render() {
    return (
 	<Popup trigger={ <a className = 'ditch cancel-ditch' > Cancel Pitch </a>} modal contentStyle = {contentStyle} lockScroll>
 		{
-			close => (
-							<div className="modal">
+			close => (	<div className="modal">
 								<a className="close" onClick={close}>
 									&times;
 								</a>

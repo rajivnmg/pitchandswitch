@@ -19,7 +19,6 @@ class PitchRequests extends React.Component {
 			currentUser:'',
             pitches: [],
             showLoader :  true
-           
         }
     };
     
@@ -32,20 +31,19 @@ class PitchRequests extends React.Component {
     
     componentWillMount(){		
 		axios.get('/trade/offerTrades').then(result => {
-			  if(result.data.code === 200){				  
-				this.setState({
-					pitches: result.data.result,
-					currentUser: result.data.currentUser,
-					showLoader : false			  
-				});
-			  }
-			  
-			})
-			.catch((error) => {		
-			  if(error.code === 401) {
-				this.props.history.push("/login");
-			  }
+		  if(result.data.code === 200){				  
+			this.setState({
+				pitches: result.data.result,
+				currentUser: result.data.currentUser,
+				showLoader : false			  
 			});
+		  }
+	})
+	  .catch((error) => {		
+	    if(error.code === 401) {
+		  this.props.history.push("/login");
+	   }
+	  });
 	}
 
     
@@ -76,43 +74,43 @@ class PitchRequests extends React.Component {
 			</If>
             {this.state.pitches.map((pitch, index) => {
 				var send = (pitch.pitchUserId &&  pitch.pitchUserId._id == this.state.currentUser)?1:0;
-                            let ditchClasses = ['ditch'];                                                       
-                            var ditch = 'Ditch';
-                            if(send===1 && pitch.ditchCount <= 3){
-								var ditch = 'Cancel Pitch';
-							}else if(send===0 && pitch.ditchCount > 3){
-								var ditch = 'Last Ditch';
-							} 
-                            //~ let ditchClasses = ['ditch'];
-                            //~ ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());
-                            return (<div className="pitch-row" key={index}>
-                                <div className="pitch-div">
-                                    { (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
-                                    <div className="colum user width1"> <span>{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}</span></div>
-                                    <div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
-                                    {/*<div className="colum"><a href="#" className="view-pitch">View Pitch</a></div> */}
-                                    <div className="colum action"><span className="view-pitch pointer">
-									<If condition={send === 1}>
-										<Then>
-											 <ViewPitchPopup offerTrade={pitch}/>										 
-										</Then>	
-										<Else>						
-											<ViewReceivedPitch offerTrade={pitch}/>
-										</Else>						
-									</If>                                    
-                                    </span></div> 
-                                    <div className="colum message"></div>  
-                                    <div className="colum action">{send == 0? <DitchPopup offerTrade={pitch}/> :<CancelPitchPopup offerTrade={pitch}/>}</div>
-                                </div>
-                                {(pitch.messageShow) ? <Messages /> : ''}
-                                        
-                            </div>)
-            }
+					let ditchClasses = ['ditch'];                                                       
+					var ditch = 'Ditch';
+					if(send===1 && pitch.ditchCount <= 3){
+						var ditch = 'Cancel Pitch';
+					} else if(send===0 && pitch.ditchCount > 3){
+						var ditch = 'Last Ditch';
+					} 
+					//~ let ditchClasses = ['ditch'];
+					//~ ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());
+					return (<div className="pitch-row" key={index}>
+						<div className="pitch-div">
+							{ (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
+							<div className="colum user width1"> <span>{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}</span></div>
+							<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
+							{/*<div className="colum"><a href="#" className="view-pitch">View Pitch</a></div> */}
+							<div className="colum action"><span className="view-pitch pointer">
+							<If condition={send === 1}>
+								<Then>
+									 <ViewPitchPopup offerTrade={pitch}/>										 
+								</Then>	
+								<Else>						
+									<ViewReceivedPitch offerTrade={pitch}/>
+								</Else>						
+							</If>                                    
+							</span></div> 
+							<div className="colum message"></div>  
+							<div className="colum action">
+							 {send == 0? <DitchPopup offerTrade={pitch}/> :<CancelPitchPopup offerTrade={pitch}/>}
+							</div>
+						</div>
+						{(pitch.messageShow) ? <Messages /> : ''}
+								
+					</div>)
+                  }
             )}
-        
-        
         </div>
-                    );
+           );
     }
 }
 

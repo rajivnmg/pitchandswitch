@@ -97,7 +97,7 @@ class Header extends Component {
 			notification_type:result.data.notification_type,
 			notifications :result.data.notifications,
 			totalNotifications:result.data.totalNotifications
-		})	
+		  })	
 		})
 
 	}

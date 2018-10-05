@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Style from './myTrades.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import PitchRequests from './pitchRequests'
+import SendRequests from './SendRequests'
+import ReceivedRequests from './ReceivedRequests'
 import Switched from './switched'
 import Completed from './completed'
 import Ditch from './ditch'
@@ -41,9 +43,9 @@ class MyTrades extends Component {
 								 <Tabs forceRenderTabPanel>
 								  <TabList>
 								     <div className="message-filter">
-										<Tab className='active'>ALL</Tab>
-										<Tab className="sent">Sent</Tab>
-										<Tab className="received">Recieved</Tab>
+										<a href="#"><Tab className='active tradeall'>ALL</Tab></a>
+										<Tab className="sent tradeSent">Sent</Tab>
+										<Tab className="received">Received</Tab>
 								    </div> 
 								  </TabList>
 								<h4>Pitch Requests</h4>
@@ -51,10 +53,10 @@ class MyTrades extends Component {
 									   <PitchRequests />
 								  </TabPanel>
 								  <TabPanel>        
-									rent
+									  <SendRequests />
 							 	   </TabPanel>
 								   <TabPanel>        
-									sendddddd
+									  <ReceivedRequests />
 								   </TabPanel>
 								   <a className="more-items" href="#">More result</a>
 								</Tabs>

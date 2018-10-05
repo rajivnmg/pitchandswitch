@@ -42,44 +42,41 @@ class Switched extends React.Component {
     
      componentDidMount(){
 		axios.get('/trade/switchTrades').then(result => {
-			  if(result.data.code === 200){
-				  console.log("SWITCH RESPONCE",result.data.result)
-				this.setState({
-					switches: result.data.result,
-					currentUser: result.data.currentUser				  
-				});
-			  }
-			})
-			.catch((error) => {		
-			  if(error.code === 401) {
-				this.props.history.push("/login");
-			  }
+		  if(result.data.code === 200){
+			  console.log("SWITCH RESPONCE",result.data.result)
+			this.setState({
+				switches: result.data.result,
+				currentUser: result.data.currentUser				  
 			});
+		  }
+		})
+		.catch((error) => {		
+		  if(error.code === 401) {
+			this.props.history.push("/login");
+		  }
+		});
 	}
     
       render() {
         return (<div>
-            {this.state.switches.map((pitch, index) => {
-							
-                            let ditchClasses = ['ditch'];
-                            //ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());
-                            
-                            var send = (pitch.offerTradeId &&  pitch.offerTradeId.pitchUserId._id == this.state.currentUser)?1:0;
-                           
-                            var action = 'Track';
-                            return (<div className="pitch-row" key={index}>
-                                <div className="pitch-div">
-									{ (pitch.offerTradeId &&  pitch.offerTradeId.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New switched</div> : null }
-                                    <div className="colum user width1"><span>{(send===1)?(pitch.offerTradeId)?pitch.offerTradeId.SwitchUserId.userName:'N/A':(pitch.offerTradeId)?pitch.offerTradeId.pitchUserId.userName:'N/A'}</span></div>
-                                    <div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
-                                    <div className="colum"><a href="#" className="view-pitch"><TradeInfo /></a></div>
-                                    <div className="colum trade-info"> </div>
-                                    <div className="colum message"> </div>
-                                    <div className="colum action"><button onClick={(id) => this.TrackHandler(pitch._id)} className={ditchClasses.join(' ')}>{action}</button></div>
-                                </div>
-                                {(pitch.trackStatus) ? <div className="statusTrack"><img src={statusTrack} /></div> : ''}
-                                {(pitch.messageShow) ? <Messages /> : ''}
-                            </div>)
+            {this.state.switches.map((pitch, index) => {							
+			let ditchClasses = ['ditch'];
+			//ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());
+			var send = (pitch.offerTradeId &&  pitch.offerTradeId.pitchUserId._id == this.state.currentUser)?1:0;
+			var action = 'Track';
+			return (<div className="pitch-row" key={index}>
+				<div className="pitch-div">
+					{ (pitch.offerTradeId &&  pitch.offerTradeId.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New switched</div> : null }
+					<div className="colum user width1"><span>{(send===1)?(pitch.offerTradeId)?pitch.offerTradeId.SwitchUserId.userName:'N/A':(pitch.offerTradeId)?pitch.offerTradeId.pitchUserId.userName:'N/A'}</span></div>
+					<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
+					<div className="colum"><a href="#" className="view-pitch"><TradeInfo /></a></div>
+					<div className="colum trade-info"> </div>
+					<div className="colum message"> </div>
+					<div className="colum action"><button onClick={(id) => this.TrackHandler(pitch._id)} className={ditchClasses.join(' ')}>{action}</button></div>
+				</div>
+				{(pitch.trackStatus) ? <div className="statusTrack"><img src={statusTrack} /></div> : ''}
+				{(pitch.messageShow) ? <Messages /> : ''}
+			</div>)
             }
             )}
         </div>
