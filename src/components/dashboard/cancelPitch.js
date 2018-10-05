@@ -7,8 +7,6 @@ import offerProduct1 from '../../images/offer-product-img1.jpg'
 import offerProduct3 from '../../images/offer-product-img3.jpg'
 import userPic from '../../images/user-pic.png'
 
-//
-
 const contentStyle = {
     maxWidth: "660px",
     width: "90%"

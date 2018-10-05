@@ -10,7 +10,7 @@ class Banner extends Component {
                     <img src={bannerImg} alt={bannerImg} />   
                             <div className="banner-details">
                     <h1>Be your own entrepreneur</h1>
-                    <Link className="home-btn" to="/">Start Swapping</Link>
+                    <Link className="home-btn" to={"/login"}>Start Swapping</Link>
                     <div className="cl"></div>
                     </div>
                 </div>

@@ -71,7 +71,7 @@ class PopularItems extends Component {
                         {this.state.popularItems.map(function (item) {							
 							var productImage = item._id?item._id.productImages[0]:'';	
 							var userImage = item._id?item._id.userId.profilePic:'';							
-							var productUrl = (localStorage.getItem('isLoggedIn') == 1)?'/my-trade-detail/'+item._id._id:'/search-result/'+item._id._id
+							var productUrl = (localStorage.getItem('isLoggedIn') == 1)?'/my-trade-detail/'+(item._id)?item._id._id:'0':'/search-result/'+(item._id)?item._id._id:'0'
 							return (
 									<div className="slides-div" key={item}>
 										<div key={item}>

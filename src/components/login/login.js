@@ -23,6 +23,7 @@ class Form extends Component {
 			showFormSuccess : false,
 			showFormError : false,
 			showEmailVerification :false,
+			showInactiveError :false,
 			message:''
 			}
 	}
@@ -154,7 +155,10 @@ class Register extends React.Component {
          console.log("result",result)
          window.location.href='/dashboard';
          // this.props.history.push('/dashboard');
-        }else{			
+        }else if(result.data.code === 403){
+			this.setState({showInactiveError: true});
+			this.setState({ message: result.data.message });			
+		}else{			
           this.setState({
             showFormError: true
           });
@@ -171,11 +175,11 @@ class Register extends React.Component {
 		}
       });	  
     //this.setState({showFormSuccess: true});
-    setTimeout(() => {this.setState({showFormSuccess: false,showFormError:false,showEmailVerification:false});}, 12000)
+    setTimeout(() => {this.setState({showFormSuccess: false,showFormError:false,showEmailVerification:false,showInactiveError:false});}, 12000)
   }
   _renderSuccessMessage() {
     return (
-      <div className={"alert alert-success mt-4"} role="alert">
+      <div className={"alert alert-success mt-4 "} role="alert">
 			Form was successfully submitted!
       </div>
     );
@@ -184,6 +188,13 @@ class Register extends React.Component {
     return (
       <div align="center" className={"alert alert-danger mt-4"} role="alert">
         Oops! Something Went wrong!!!
+      </div>
+    );
+  }
+  _renderRespErrorMessage() {
+    return (
+      <div align="center" className={"alert alert-danger mt-4 inactiveUserError"} role="alert">
+        {this.state.message}
       </div>
     );
   }
@@ -213,6 +224,7 @@ class Register extends React.Component {
               <Form submit={this.submit}>
                 <div>
                  {this.state.showFormError ? this._renderErrorMessage() : null}
+                 {this.state.showInactiveError ? this._renderRespErrorMessage() : null}
                 <div className="form-row">
                 <div className="invalid-feedback validation" /> <span className="astrik">*</span>
                   <label className="label"

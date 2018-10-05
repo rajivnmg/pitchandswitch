@@ -12,6 +12,7 @@ import Ditch from './ditch'
 import ReturnInfo from '../payShopPopup'
 import ReturnInfo1 from '../payShopPopup1'
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 class Dashboard extends Component {
 	
@@ -94,7 +95,7 @@ Capitalize(str){
                         </Then>
 					</If>
                         <div className="heading-row">.
-                            <a href="#" className="more-items">Donate Now</a>
+                            <Link to={'/donate-product'} className="more-items">Donate Now</Link>
                             <h1>Welcome, {this.Capitalize(this.state.currentUser.firstName)}{' '}{this.Capitalize(this.state.currentUser.lastName)}.</h1>
                             <p className="subheading">There is a list of some latest and tranding itmes on pitch and switch </p>
                             <div className="cl"></div>
