@@ -11,12 +11,15 @@ import axios from 'axios'
 import { Spin, Icon, Alert } from 'antd';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 
+
 class PitchRequests extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
 			currentUser:'',
-            pitches: []
+            pitches: [],
+            showLoader :  true
+           
         }
     };
     
@@ -27,14 +30,16 @@ class PitchRequests extends React.Component {
 		this.setState({pitches: pitches});
 	};
     
-    componentWillMount(){
+    componentWillMount(){		
 		axios.get('/trade/offerTrades').then(result => {
 			  if(result.data.code === 200){				  
 				this.setState({
 					pitches: result.data.result,
-					currentUser: result.data.currentUser				  
+					currentUser: result.data.currentUser,
+					showLoader : false			  
 				});
 			  }
+			  
 			})
 			.catch((error) => {		
 			  if(error.code === 401) {
@@ -47,16 +52,27 @@ class PitchRequests extends React.Component {
     
      render() {
         return (<div>
-			<If condition={this.state.pitches.length === 0}>
-			<Then>
-			<Spin tip="Loading...">
-			<Alert
-			message="Data Loading "
-			description="Please wait..."
-			type="info"
-			/>
-			</Spin>
-			</Then>							
+			<If condition={this.state.pitches.length === 0 && this.state.showLoader === true}>
+				<Then>
+					<Spin tip="Loading...">
+					<Alert
+						message="Data Loading "
+						description="Please wait..."
+						type="info"
+					/>
+					</Spin>
+				</Then>	
+							
+			</If>
+			<If condition={this.state.pitches.length === 0 && this.state.showLoader === false}>
+				<Then>					
+					<Alert
+					  message="Informational Notes"
+					  description="Additional description and informations about copywriting."
+					  type="info"
+					  showIcon
+					/>				
+				</Then>								
 			</If>
             {this.state.pitches.map((pitch, index) => {
 				var send = (pitch.pitchUserId &&  pitch.pitchUserId._id == this.state.currentUser)?1:0;

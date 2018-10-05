@@ -37,18 +37,18 @@ class Dashboard extends Component {
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 		 if(localStorage.getItem('jwtToken') !== null){
 			axios.get('/user/getLoggedInUser').then(result => {
-				console.log("result",result)
+				//console.log("result",result)
 				this.setState({ 
 					currentUser:result.data.result,
 					notification_type:result.data.notification_type,
 					notifications:result.data.notifications,
-					totalNotifications:result.data.totalNotifications,
-					totalInvemtory:result.data.totalInvemtory,
-					totalInventoryAllowed:result.data.totalInventoryAllowed,
-					totalTradePermitted:result.data.totalTradePermitted,
-					totalTrade:result.data.totalTrade,
-					inventoryLeft:result.data.inventoryLeft,
-					tradeLeft:result.data.tradeLeft			
+					totalNotifications:result.data.totalNotifications
+					//~ totalInvemtory:result.data.totalInvemtory,
+					//~ totalInventoryAllowed:result.data.totalInventoryAllowed,
+					//~ totalTradePermitted:result.data.totalTradePermitted,
+					//~ totalTrade:result.data.totalTrade,
+					//~ inventoryLeft:result.data.inventoryLeft,
+					//~ tradeLeft:result.data.tradeLeft			
 				})			
 			})	
 		}	
@@ -58,8 +58,10 @@ class Dashboard extends Component {
    componentDidMount() {
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 		 if(localStorage.getItem('jwtToken') !== null){
+			 
 			axios.get('/user/userTradeStates').then(result => {
-				console.log("result",result)
+				console.log("userTradeStates",localStorage.getItem('jwtToken'))
+				//console.log("userTradeStates",result)
 				this.setState({ 					
 					totalInvemtory:result.data.totalInvemtory,
 					totalInventoryAllowed:result.data.totalInventoryAllowed,

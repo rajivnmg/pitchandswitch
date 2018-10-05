@@ -61,25 +61,39 @@ class Header extends Component {
 		//console.log('dddddddddd',this.state.searchData);
 	};
   
+  componentWillMount(){
+	  	if(localStorage.getItem('jwtToken') !== null){	
+			axios.get('/user/getLoggedInUser').then(result => {			
+				this.setState({ 
+					user:result.data.result,
+				})	
+				// setter method for loggedin user
+				localStorage.setItem('loggedInUser',result.data.result._id);
+				localStorage.setItem('userId',result.data.result._id);
+				localStorage.setItem('userName',result.data.result.userName);			
+				localStorage.setItem('isLoggedIn',1);
+			})
+		}
+	}
+  
   componentDidMount() {
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 	console.log("jwtToken",localStorage.getItem('jwtToken'))
 	if(localStorage.getItem('jwtToken') !== null){		
-		axios.get('/user/getLoggedInUser').then(result => {			
-			this.setState({ 
-				user:result.data.result,
-			})	
-			// setter method for loggedin user
-			localStorage.setItem('loggedInUser',result.data.result._id);
-			localStorage.setItem('userId',result.data.result._id);
-			localStorage.setItem('userName',result.data.result.userName);
-			
-			localStorage.setItem('isLoggedIn',1);
-		})
+		//~ axios.get('/user/getLoggedInUser').then(result => {			
+			//~ this.setState({ 
+				//~ user:result.data.result,
+			//~ })	
+			//~ // setter method for loggedin user
+			//~ localStorage.setItem('loggedInUser',result.data.result._id);
+			//~ localStorage.setItem('userId',result.data.result._id);
+			//~ localStorage.setItem('userName',result.data.result.userName);			
+			//~ localStorage.setItem('isLoggedIn',1);
+		//~ })
 		
 		axios.get('/user/frontNotification').then(result => {
 		this.setState({ 
-			user:result.data.result,
+			//user:result.data.result,
 			notification_type:result.data.notification_type,
 			notifications :result.data.notifications,
 			totalNotifications:result.data.totalNotifications

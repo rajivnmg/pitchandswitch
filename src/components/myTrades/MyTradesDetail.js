@@ -5,6 +5,8 @@ import PitchRequests from './pitchRequests'
 import detailPic from '../../images/detail-pic.png'
 import createHistory from "history/createBrowserHistory" 
 import axios from 'axios'
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import { Spin, Icon, Alert } from 'antd';
 const history = createHistory();
 const userId =  localStorage.getItem('userId')
 
@@ -13,7 +15,10 @@ class MyTrades extends React.Component {
 	constructor(props){
 		super(props)
 		this.state = {
-				product :[]
+				product :[],
+				isAlreadyPitched : false,
+				isAlreadyInWishlist : false,
+				showFormSuccess : false
 			}
 			
 	}
@@ -87,7 +92,7 @@ class MyTrades extends React.Component {
 		</div>
        );
 		axios.get('product/productDetails/'+this.props.match.params.id).then(result=>{
-					this.setState({product:result.data.result})		
+				 this.setState({product:result.data.result,isAlreadyPitched:result.data.pitchProduct,isAlreadyInWishlist:result.data.wishListProduct})		
 			})
 	}
 	
@@ -96,11 +101,16 @@ class MyTrades extends React.Component {
 		data.userId = userId;
 		data.productId = this.state.product._id;
 		axios.post('/product/addToWishList',data).then(result => {			
-			console.log("this.state",result)
+			this.setState({product:result.data.result,isAlreadyInWishlist:true,showFormSuccess:true})					
 		})			
+		setTimeout(() => {this.setState({showFormSuccess: false});}, 12000)
 	}
 
-	
+	_renderSuccessMessage() {
+    return (
+      <Alert message="Added Successfully in wishlist" type="success" showIcon />
+    );
+  }
     render() {
         return (
                 <div className="my-trades-container">
@@ -126,8 +136,28 @@ class MyTrades extends React.Component {
                                 <h1>God of War 3 ~ Download Full Version PC third-person action-adventure video game</h1>
                                 <div className="productId">Product ID: <strong>PS2152436</strong></div>
                                 <div className="btnRow">
-                                    <a href="#" className="ditch">Pitch Now</a>
-                                    <a href="#" className="ditch add-wishlist" onClick={()=>this.addToWishList()}>Add to Wishlist</a>
+									
+									   {this.state.showFormSuccess ? this._renderSuccessMessage() : null}  
+									<If condition={this.state.isAlreadyPitched === false}>
+										<Then>
+											<a href="#" className="ditch">Pitch Now</a>											
+										</Then>	
+										<Else>
+											<a href="#" className="ditch">Already Pitched</a>											
+										</Else>
+													
+									</If>
+									
+									<If condition={this.state.isAlreadyInWishlist === false}>
+										<Then>											
+											<a href="#" className="ditch add-wishlist" onClick={()=>this.addToWishList()}>Add to Wishlist</a>
+										</Then>	
+										<Else>											
+											<span className="ditch add-wishlist">Added in Wishlist</span>
+										</Else>
+													
+									</If>
+									
                                     <div className="cl"></div>
                                 </div>
                                 <div className="productDetails">

@@ -4,8 +4,6 @@ import popularItemImg from '../../images/popular-item1.jpg';
 import emptyArt from '../../images/empty_art.png';
 import Select from 'react-select';
 import DitchPopup from './clearWishListPopup'
- 
- 
 
 class myTreasureChest extends Component {
     render() {
