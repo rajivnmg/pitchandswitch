@@ -141,37 +141,34 @@ class Register extends React.Component {
     this.setState({ loginForm: updatedForm }, function(){console.log(this.state.loginForm)});
   };
   
-  submit = () => {	  
-	console.log("PROPS",this.state.loginForm);
+  submit = () => {	  	
 	const email = this.state.loginForm.email.value;
     const password = this.state.loginForm.password.value;
     axios.post('/user/login', { email: email, password:password, userType: '0'})
       .then((result) => {		  
-        console.log('LOGIN RESULT', result)
-        if(result.data.code === 200){
-		  console.log("accessToken",result.data.token)		
+         if(result.data.code === 200){		  
           localStorage.setItem('jwtToken', result.data.token);
-          this.setState({ message: '' });
-         console.log("result",result)
-         window.location.href='/dashboard';
-         // this.props.history.push('/dashboard');
+          this.setState({ message: '' });          
+			console.log("result",result.data.result)
+			if(result.data.result.subscriptionStatus === '0'){
+				window.location.href='/subscription';
+			}else{
+				window.location.href='/dashboard';
+			}			
+			//this.props.history.push('/dashboard');
         }else if(result.data.code === 403){
 			this.setState({showInactiveError: true});
 			this.setState({ message: result.data.message });			
 		}else{			
           this.setState({
             showFormError: true
-          });
-          //~ this.setState({
-            //~ message: result.data.message
-          //~ });
+          });          
         }
       })
       .catch((error) => {
         if(!error.status) {
 			this.setState({showFormError: true});
-			 this.setState({ message: 'Login failed. Username or password not match' });
-			// network error
+			this.setState({ message: 'Login failed. Username or password not match' });			
 		}
       });	  
     //this.setState({showFormSuccess: true});
@@ -267,17 +264,13 @@ class Register extends React.Component {
                   
                 </div>
                  <div className="form-row">
-                <button
-                      type={"submit"}
-                      className={"submitBtn"}
-                      >
+                <button type={"submit"} className={"submitBtn"}>
                      Login
                     </button> 
                   </div>
                  <div className="form-row no-padding">
                             <p className="no-account">Don't have an account? <Link to="/register">Register now</Link></p>
-                                <Link to="/forget">Forgot password?</Link>
-                                
+                                <Link to="/forget">Forgot password?</Link>                                
                             </div>
               </Form>
             </div>
