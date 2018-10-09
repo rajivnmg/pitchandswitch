@@ -6,8 +6,6 @@ import rcvProduct from '../../images/rcv-product-img.jpg'
 import offerProduct1 from '../../images/offer-product-img1.jpg'
 import offerProduct3 from '../../images/offer-product-img3.jpg'
 
-//
-
 const contentStyle = {
     maxWidth: "660px",
     width: "90%"
@@ -19,7 +17,6 @@ const CustomModal = () => (
     modal
     contentStyle = {contentStyle}
     lockScroll 
-          
     >
     {
         close => (
@@ -30,7 +27,6 @@ const CustomModal = () => (
         <div className="header">Pitch recieved on <input className="ditch-btn" value="ditch" type="submit" />
 				<div className="cl"></div>
 			</div>
-
 			<div className="content">
 				<div className="received-product">
 					<div className="received-product-box">
