@@ -10,7 +10,7 @@ const contentStyle = {
 
 const CustomModal = () => (
 <Popup
-    trigger={<a className= 'getStarted-btn'> Pay $25.00</a>}
+    trigger={<a className= 'getStarted-btn'>Get Started</a>}
     modal
     contentStyle = {contentStyle}
     lockScroll 
