@@ -70,6 +70,7 @@ class Header extends Component {
 				// setter method for loggedin user
 				localStorage.setItem('loggedInUser',result.data.result._id);
 				localStorage.setItem('userId',result.data.result._id);
+				localStorage.setItem('userEmail',result.data.result.email);
 				localStorage.setItem('userName',result.data.result.userName);			
 				localStorage.setItem('isLoggedIn',1);
 			})

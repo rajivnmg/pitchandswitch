@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Style from './subscription.css';
 import subscribeImg1 from '../../images/subscription-pic1.png';
 import subscribeImg2 from '../../images/subscription-pic2.png';
-import GetStarted from '../subscription-basic/subscription-basic'
+import GetStarted from '../subscription/subscription-basic'
 import axios from 'axios'
 import { Link } from 'react-router-dom';
 import { Spin, Icon, Alert } from 'antd';
@@ -94,7 +94,7 @@ class Subscription extends React.Component {
 								</div> */}
 									<h4 className="price">{(subscription.price === "0")?'Free':'$'+subscription.price}<sub>/y</sub></h4>
 									
-									{(subscription.price === "0")?<span className='getStarted-btn' onClick={this.handleSubscription.bind(this)} data-id={subscription._id}>Get Started</span>: <GetStarted />}
+									{(subscription.price === "0")?<span className='getStarted-btn' onClick={this.handleSubscription.bind(this)} data-id={subscription._id}>Get Started</span>: <GetStarted  subscription={subscription}/>}
 							</div>)
 							})
 						}

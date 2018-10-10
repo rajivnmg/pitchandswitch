@@ -183,7 +183,7 @@ class Register extends React.Component {
   }
   _renderErrorMessage() {
     return (
-      <div align="center" className={"alert alert-danger mt-4"} role="alert">
+      <div align="center" className={"alert alert-danger mt-4 inactiveUserError"} role="alert">
         Oops! Something Went wrong!!!
       </div>
     );
