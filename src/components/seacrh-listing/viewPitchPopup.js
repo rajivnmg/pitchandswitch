@@ -24,16 +24,15 @@ class viewPitchPopup extends Component {
 	}
 	
 	componentWillMount(){
-		console.log('viewPitchPopup componentWillMount',this.state.offerTrade)
-			this.setState({offerTradeId:this.state.offerTrade._id})
+		this.setState({offerTradeId:this.state.offerTrade._id})
 	}
 	
 	componentDidMount(){
 		axios.get('/trade/offerTradeProduct/'+this.state.offerTrade._id).then(result => {
-				if(result.data.code === 200){
-					this.setState({offerTradeProducts:result.data.result})				
-				}
-			})
+			if(result.data.code === 200){
+				this.setState({offerTradeProducts:result.data.result})				
+			}
+		})
 	}
 	
 	
@@ -52,21 +51,21 @@ render() {
 			<div className="content">
 				<div className="received-product">
 					<div className="received-product-box">
-						<div className="received-product-image-box">
-							<img src={rcvProduct} alt="recieved-product image" />
+					<div className="received-product-image-box">
+						<img src={rcvProduct} alt="recieved-product image" />
+					</div>
+					<div className="received-product-content-box">
+						<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId._id}</strong></span>
+						<h4>Product Name: {this.state.offerTrade.SwitchUserProductId.productName}  </h4>
+						<span> {this.state.offerTrade.SwitchUserProductId.description} </span>
+						<a className="catLink" href="/">{this.state.offerTrade.SwitchUserProductId.productCategory}</a>
+							<div className="ratingRow">
+							<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+this.state.offerTrade.SwitchUserId.profilePic} alt="" /></div>
+							<p>{this.state.offerTrade.SwitchUserId.userName}</p>
+							<div className="rated">4</div>
+						<div className="cl"></div>
 						</div>
-						<div className="received-product-content-box">
-							<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId._id}</strong></span>
-							<h4>Product Name: {this.state.offerTrade.SwitchUserProductId.productName}  </h4>
-							<span> {this.state.offerTrade.SwitchUserProductId.description} </span>
-							<a className="catLink" href="/">{this.state.offerTrade.SwitchUserProductId.productCategory}</a>
-								<div className="ratingRow">
-								<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+this.state.offerTrade.SwitchUserId.profilePic} alt="" /></div>
-								<p>{this.state.offerTrade.SwitchUserId.userName}</p>
-								<div className="rated">4</div>
-							<div className="cl"></div>
-							</div>
-						</div>
+					</div>
 					</div>
 					<div className="cl"></div>
 					<div className="switch-product-section">
@@ -76,25 +75,23 @@ render() {
 						</p>
 						<If condition={this.state.offerTradeProducts.length > 0}>
 						<Then>
-
 						{this.state.offerTradeProducts[0].products.map((offerTradeProduct, index) => {
-						var productImages = (offerTradeProduct._id)?offerTradeProduct.productImages[0]:'';
-						{console.log("this.state.offerTradeProducts[0]",offerTradeProduct)}
-
-						return(<div className="switch-product-box">
-						<div className="switch-product-image-box">
-						<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
-						<div className="switch-option-mask">
-						<a className="view-btn margin-top1" href="/">View</a>
-						ditch-btn
-						</div>
-						</div>
-						<div className="switch-product-content-box">
-						<h4>{offerTradeProduct.productName}</h4>
-						<a className="catLink" href="/">{offerTradeProduct.productCategory.title}</a>
-						</div>
-						</div>)
-						})
+							var productImages = (offerTradeProduct._id)?offerTradeProduct.productImages[0]:'';
+							{console.log("this.state.offerTradeProducts[0]",offerTradeProduct)}
+							return(<div className="switch-product-box">
+							<div className="switch-product-image-box">
+							<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+							<div className="switch-option-mask">
+							<a className="view-btn margin-top1" href="/">View</a>
+							ditch-btn
+							</div>
+							</div>
+							<div className="switch-product-content-box">
+							<h4>{offerTradeProduct.productName}</h4>
+							<a className="catLink" href="/">{offerTradeProduct.productCategory.title}</a>
+							</div>
+							</div>)
+							})
 						}
 						</Then>							
 						<Else>
@@ -102,9 +99,8 @@ render() {
 						</Else>
 						</If>
 					</div>
-				</div>
 			</div>
-
+		</div>
     </div>
     )}
 </Popup>
