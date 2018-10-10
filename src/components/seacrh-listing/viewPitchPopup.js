@@ -49,7 +49,6 @@ render() {
         <div className="header">Pitch sent on <input className="ditch-btn" value="Cancel Pitch" type="submit" />
 				<div className="cl"></div>
 			</div>
-
 			<div className="content">
 				<div className="received-product">
 					<div className="received-product-box">
@@ -76,35 +75,32 @@ render() {
 							<div className="cl"></div>
 						</p>
 						<If condition={this.state.offerTradeProducts.length > 0}>
-								<Then>
-								
-								 {this.state.offerTradeProducts[0].products.map((offerTradeProduct, index) => {
-									 var productImages = (offerTradeProduct._id)?offerTradeProduct.productImages[0]:'';
-									 {console.log("this.state.offerTradeProducts[0]",offerTradeProduct)}
-									 
-									 return(<div className="switch-product-box">
-										<div className="switch-product-image-box">
-										<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
-											<div className="switch-option-mask">
-												<a className="view-btn margin-top1" href="/">View</a>
-												ditch-btn
-											</div>
-										</div>
-										<div className="switch-product-content-box">
-											<h4>{offerTradeProduct.productName}</h4>
-											<a className="catLink" href="/">{offerTradeProduct.productCategory.title}</a>
-										</div>
-									</div>)
-									 
-								})
-								}
-									
-								</Then>							
-								<Else>
-								  <p>No Image Available</p>
-								</Else>
-							</If>
-						
+						<Then>
+
+						{this.state.offerTradeProducts[0].products.map((offerTradeProduct, index) => {
+						var productImages = (offerTradeProduct._id)?offerTradeProduct.productImages[0]:'';
+						{console.log("this.state.offerTradeProducts[0]",offerTradeProduct)}
+
+						return(<div className="switch-product-box">
+						<div className="switch-product-image-box">
+						<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+						<div className="switch-option-mask">
+						<a className="view-btn margin-top1" href="/">View</a>
+						ditch-btn
+						</div>
+						</div>
+						<div className="switch-product-content-box">
+						<h4>{offerTradeProduct.productName}</h4>
+						<a className="catLink" href="/">{offerTradeProduct.productCategory.title}</a>
+						</div>
+						</div>)
+						})
+						}
+						</Then>							
+						<Else>
+						<p>No Image Available</p>
+						</Else>
+						</If>
 					</div>
 				</div>
 			</div>

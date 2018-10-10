@@ -15,28 +15,16 @@ const contentStyle = {
 };
 
 const CustomModal = () => (
-<Popup
-    trigger={<a className= 'ditch'> Last Pitch </a>}
-    modal
-    contentStyle = {contentStyle}
-    lockScroll 
-          
-    >
-    {
-        close => (
-    <div className="modal">
-        <a className="close" onClick={close}>
-            &times;
-        </a>
+<Popup trigger={<a className= 'ditch'> Last Pitch </a>} modal contentStyle = {contentStyle}  lockScroll >
+    {  close => ( <div className="modal">  <a className="close" onClick={close}>   &times;  </a>
         <div className="header">Choose products to <span className="yellow">pitch again</span> on 
         <div className="select-box top-right">
-                                            <select required="" name="category">
-                                                <option>Select category</option>                                                
-                                            </select>
-                                        </div>
-				<div className="cl"></div>
+			<select required="" name="category">
+				<option>Select category</option>                                                
+			</select>
+          </div>
+		   <div className="cl"></div>
 			</div>
-
 			<div className="content">
 				<div className="received-product">
 					<div className="received-product-box">
@@ -47,22 +35,22 @@ const CustomModal = () => (
 							<span>Product ID: <strong>PS2152436</strong></span>
 							<h4>God of War 3 ~ Download Full Version PC third-person action-adventure video game</h4>
 							<a className="catLink" href="/">Baby Products</a>
-                                                        <div className="ratingRow">
-                                                        <div className="pic"><img src={userPic} alt="" /></div>
-                                                        <p>Mustafa ezz</p>
-                                                        <div className="rated">4</div>
-    <div className="cl"></div>
-    </div>
+							<div className="ratingRow">
+							<div className="pic"><img src={userPic} alt="" /></div>
+							<p>Mustafa ezz</p>
+							<div className="rated">4</div>
+							<div className="cl"></div>
+							</div>
 						</div>
 					</div>
 					<div className="cl"></div>
 					<div className="switch-product-section choose-product-div border-top">
-                                         <Scrollbars className="Scrollsdiv" style={{height: 585 }}>
+                       <Scrollbars className="Scrollsdiv" style={{height: 585 }}>
 						<div className="switch-product-box">
                                                 
 							<div className="switch-product-image-box">
 								<img src={offerProduct1} alt="recieved-product image" />
-                                                                <div className="switch-option-mask"> <div className="check-box"><input id="pitch1" type="checkbox" /><label for="pitch1">&nbsp;</label></div> </div>
+                                <div className="switch-option-mask"> <div className="check-box"><input id="pitch1" type="checkbox" /><label for="pitch1">&nbsp;</label></div> </div>
 							</div>
 							<div className="switch-product-content-box">
 								<h4>Call of Duty: Infinite Warfare More</h4>
@@ -73,8 +61,7 @@ const CustomModal = () => (
 							<div className="switch-product-image-box">
 								<img src={offerProduct3} alt="recieved-product image" />
 								<div className="switch-option-mask">
-                                                                <img src={rejected} alt="" />
-									 
+                                <img src={rejected} alt="" />
 								</div>
 							</div>
 							<div className="switch-product-content-box">

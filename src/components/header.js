@@ -67,7 +67,6 @@ class Header extends Component {
 				this.setState({ 
 					user:result.data.result,
 				})	
-				// setter method for loggedin user
 				localStorage.setItem('loggedInUser',result.data.result._id);
 				localStorage.setItem('userId',result.data.result._id);
 				localStorage.setItem('userEmail',result.data.result.email);

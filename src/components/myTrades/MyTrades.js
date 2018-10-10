@@ -45,7 +45,7 @@ class MyTrades extends Component {
 								     <div className="message-filter">
 										<a href="#"><Tab className='active tradeall'>ALL</Tab></a>
 										<Tab className="sent tradeSent">Sent</Tab>
-										<Tab className="received">Received</Tab>
+										<Tab className="received tabreceived">Received</Tab>
 								    </div> 
 								  </TabList>
 								<h4>Pitch Requests</h4>
@@ -86,8 +86,7 @@ class MyTrades extends Component {
 										</TabPanel>                
 									</Tabs>
 								</div>
-							</TabPanel>	
-													
+							</TabPanel>														
 							<TabPanel>
 								<div className="message-filter">
 									<ul>
