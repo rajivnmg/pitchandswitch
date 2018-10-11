@@ -55,21 +55,17 @@ class MyTrades extends React.Component {
 				localStorage.setItem('isLoggedIn',1);
 			})
 		}
-	     //~ axios.get('/product/productImages/'+ this.state.productId).then(results => {	
-			//~ this.setState({productImagesResult:results.data.result});
-			//~ console.log('productImagesResult',this.state.productImagesResult);
-			//~ console.log('resultData',this.state.resultData)
-		//~ })
+	   
      }
 	
     render() {	
 		 let optionTemplate;
 	     if(this.state.conditions){
 			let conditionsList = this.state.conditions;
-				conditionsList.map((key, index) => {  if(key.id==4){     optionTemplate = key.name;  }
+				conditionsList.map((key, index) => {  if(key.id==4){  optionTemplate = key.name;  }
 			})
          }
-		let img = this.state.resultData.userId?this.state.resultData.userId.profilePic:"";
+		let img = this.state.resultData.userId ? this.state.resultData.userId.profilePic:"";
 		let description = this.state.resultData.description?this.state.resultData.description:"";
         return (
             <div>    				

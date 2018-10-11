@@ -20,8 +20,7 @@ class Subscription extends React.Component {
 		let data = {};
 		data.subscription = e.currentTarget.dataset.id
 		data.userId = localStorage.getItem('userId')
-		data.userName = localStorage.getItem('userName')
-		console.log("data",data)
+		data.userName = localStorage.getItem('userName')		
 		axios.post('/subscription/saveUserSubscriptionPlan',data).then(result => {
 				console.log("saveSubscriptionPlan",result.data.result)
 				if(result.data.code === 200){
