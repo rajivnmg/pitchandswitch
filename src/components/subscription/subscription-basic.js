@@ -3,7 +3,6 @@ import Warper from "../common/Warper";
 import Popup from "reactjs-popup";
 import GetStarted from '../subscription/subscription-basic'
 import axios from 'axios'
-import paymentSuccess from '../subscription/paymentSuccess'
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import { Spin, Icon, Alert } from 'antd';
 import { Link } from 'react-router-dom';

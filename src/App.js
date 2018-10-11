@@ -23,6 +23,10 @@ import donatedProducts from './components/donation/donatedProducts';
 import DonateProduct from './components/donation/donateProduct';
 import Wishlist from './components/wishList/wishlist';
 import EmptyWishlist from './components/wishList/clearWishlist';
+import contactUs from './components/pages/contactUs';
+import privacy from './components/pages/privacy';
+import term from './components/pages/terms';
+import aboutUs from './components/pages/about';
 import Style1 from './media.css';
 import axios from 'axios';
 import NotFound from './NotFound';
@@ -76,6 +80,10 @@ class App extends Component {
                             <Route exact path='/donate-product' component={DonateProduct} />
                             <Route exact path='/wishlist' component={Wishlist} />
                             <Route exact path='/empty-wishlist' component={EmptyWishlist} />
+                            <Route exact path='/about-us' component={aboutUs} />
+                            <Route exact path='/contact-us' component={contactUs} />
+                            <Route exact path='/privacy-policy' component={privacy} /> 
+                            <Route exact path='/term-and-condition' component={term} />                           
                             <Route path="*" component={NotFound} />
                         </Switch>
                         </div>
