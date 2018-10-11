@@ -23,44 +23,41 @@ class viewPitchPopup extends Component {
 		this.state = {				
 			offerTrade:this.props.offerTrade,
 			offerTradeProducts:[]
-		}		
-		console.log("viewPitchPopup props", this.props)
-	}
-	
-	
-	getCategoryPitch(object) {		
-		console.log('object',object);
-	}
-	
-	
+		}				
+	 }   
+	  
+	  conditionsChange = (objectSelectedPitch) => {
+          this.setState({categoriesValues: objectSelectedPitch.target.value});
+          //console.log('categoriesValues',this.state.categoriesValues);
+           axios.get('/trade/getProductByCategory/'+this.state.categoriesValues).then(result => {
+			 if(result.data.code === 200){
+			   this.setState({offerTradeProducts:result.data.result})	
+		    }
+		})
+      }
 	
 	componentWillMount(){
 		this.setState({offerTradeId:this.props.offerTrade._id})
 		   axios.get('/trade/getAllProduct/').then(result => {
 			  if(result.data.code === 200){
 			    this.setState({getAllProduct:result.data.result})				
-			    console.log('getAllProduct',this.state.getAllProduct)
-		   }
+			     //console.log('getAllProduct',this.state.getAllProduct)
+		    }
 		})
 	}
 	
 	componentDidMount(){
 		axios.get('/trade/offerTradeProduct/'+this.props.offerTrade._id).then(result => {
 			if(result.data.code === 200){
-			  this.setState({offerTradeProducts:result.data.result})				
-			  
+			  this.setState({offerTradeProducts:result.data.result})
 		   }
 		})		
-		axios.get('/trade/offerTradeProduct/'+this.props.offerTrade._id).then(result => {
-			if(result.data.code === 200){
-			  this.setState({offerTradeProducts:result.data.result})				
-			  
-		   }
-		})		
+		
+				
 		axios.get('/category/categoriesActive/').then(result => {
 			if(result.data.code === 200){
 			  this.setState({categoryActive:result.data.result})				
-			  console.log('categoryActive',this.state.categoryActive);
+			  //console.log('categoryActive',this.state.categoryActive);
 		   }
 		})		
 	}
@@ -70,14 +67,13 @@ class viewPitchPopup extends Component {
 	    if(this.state.categoryActive){
 			let conditionsList = this.state.categoryActive;
 			console.log('conditionsList',conditionsList)
-		    optionTemplate = conditionsList.map(v => (<option key={v._id} value={v._id} onclick={this.getCategoryPitch(this)}>{v.title}</option>));
+		    optionTemplate = conditionsList.map(v => (<option key={v._id} value={v._id}>{v.title}</option>));
        }
     let img = this.props.offerTrade.userId?this.props.offerTrade.userId.profilePic:"";
     let productImg = 
     this.props.offerTrade.productImages?this.props.offerTrade.productImages[0]:"";
    return (
-   <Popup
-    trigger={<a href='#' className= 'ditch'>Pitch Now</a>}
+   <Popup trigger={<a href='#' className= 'ditch'>Pitch Now</a>}
     modal
     contentStyle = {contentStyle}  lockScroll >
     { close => (
@@ -87,9 +83,9 @@ class viewPitchPopup extends Component {
         </a>
         <div className="header">Choose products to <span className="yellow">Pitch</span> on 
         <div className="select-box top-right">
-                <select id="select" innerRef={input => (this.condition = input)} className="form-control" onChange={this.conditionsChange}>
-					{optionTemplate}
-				</select>
+             <select id="select" innerRef={input => (this.condition = input)} className="form-control" onChange={this.conditionsChange}>
+				{optionTemplate}
+			</select>
 		</div>
 		<div className="cl"></div>
 		</div>
@@ -113,34 +109,34 @@ class viewPitchPopup extends Component {
 				</div>
 				<div className="cl"></div>
 				  <div className="switch-product-section choose-product-div border-top">
-				    <Scrollbars className="Scrollsdiv" style={{height: 585 }}>
-				      <If condition={this.state.getAllProduct.length > 0}>
-						<Then>
-						{ this.state.getAllProduct.map((productsListing, index) => {
-							var productImages = (productsListing.productImages)?(productsListing.productImages[0]):'';
-							return(
-				            <div className="switch-product-box">
-							<div className="switch-product-image-box">
-							 <img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
-							 <div className="switch-option-mask"> <div className="check-box"><input id="pitch1" type="checkbox" /><label htmlFor="pitch1">&nbsp;</label></div> </div>
-							</div>
-							<div className="switch-product-content-box">
-							  <h4>{productsListing.productName?productsListing.productName:""}</h4>
-							   <a className="catLink" href="/">{productsListing.productCategory?productsListing.productCategory.title:""}</a>
-							</div>
-						    </div>
-						      )
-							})
-						  }
-						</Then>							
-						<Else>
-						   <p>No Data Available</p>
-						</Else>
-						</If>
-				        </Scrollbars>
-						<div className="btm-btns">
+						<Scrollbars className="Scrollsdiv" style={{height: 585 }}>
+						  <If condition={this.state.getAllProduct.length > 0}>
+							<Then>
+							{ this.state.getAllProduct.map((productsListing, index) => {
+								var productImages = (productsListing.productImages)?(productsListing.productImages[0]):'';
+								return(
+								<div className="switch-product-box">
+								<div className="switch-product-image-box">
+								 <img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+								 <div className="switch-option-mask"> <div className="check-box"><input id="pitch1" type="checkbox" /><label htmlFor="pitch1">&nbsp;</label></div> </div>
+								</div>
+								<div className="switch-product-content-box">
+								  <h4>{productsListing.productName?productsListing.productName:""}</h4>
+								   <a className="catLink" href="/">{productsListing.productCategory?productsListing.productCategory.title:""}</a>
+								</div>
+								</div>
+								  )
+								})
+							  }
+							</Then>							
+							<Else>
+							   <p>No Data Available</p>
+							</Else>
+							</If>
+						   </Scrollbars>
+						  <div className="btm-btns">
 						<a className="more-items" href="#">Pitch Now</a>
-						<a className="ditch cancel-ditch"> Cancel Pitch </a>
+					   <a className="ditch cancel-ditch"> Cancel Pitch </a>
 					 </div>
 				</div>
 			</div>
