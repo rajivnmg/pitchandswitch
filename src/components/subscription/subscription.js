@@ -20,6 +20,7 @@ class Subscription extends React.Component {
 		let data = {};
 		data.subscription = e.currentTarget.dataset.id
 		data.userId = localStorage.getItem('userId')
+		data.userName = localStorage.getItem('userName')
 		console.log("data",data)
 		axios.post('/subscription/saveUserSubscriptionPlan',data).then(result => {
 				console.log("saveSubscriptionPlan",result.data.result)
@@ -27,7 +28,7 @@ class Subscription extends React.Component {
 					this.setState({showFormError: false,showFormSuccess: true})
 					 setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});
 						 window.location.href='/dashboard';
-				    }, 12000);
+				    }, 1000);
 					
 				}else{
 					this.setState({showFormError: true})
