@@ -12,7 +12,6 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {  fasTag, faTag, faGrinAlt, faFrownOpen, faEnvelope, faTruck, faClock, faTimesCircle, faCog,faIcon } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
-
 const constant = require('../config/constant')
 const Option = AutoComplete.Option;
 const navHide = {   display: 'none' }
@@ -41,13 +40,17 @@ class Header extends Component {
      this.onSearchHandler = this.searchHandler.bind(this); 
      if(localStorage.getItem('jwtToken') === null){
          //window.location.href="#/login";
+         //this.props.history.push('/login');
       }
   }
   
    logoutHandler = (e) => {
       localStorage.removeItem('jwtToken');   
       localStorage.removeItem('loggedInUser');   
-      localStorage.setItem('isLoggedIn',0);        
+      localStorage.setItem('isLoggedIn',0);
+      localStorage.removeItem('userId');
+	  localStorage.removeItem('userEmail');
+	  localStorage.removeItem('userName');        
       this.props.history.push('/login');
    };
   
@@ -57,28 +60,34 @@ class Header extends Component {
 	}
 	
 	searchCategory = (search,categoryName)=>{
-		this.setState({searchData:search.key})
-		//console.log('dddddddddd',this.state.searchData);
+		this.setState({searchData:search.key})		
 	};
   
   componentWillMount(){
 	  	if(localStorage.getItem('jwtToken') !== null){	
-			axios.get('/user/getLoggedInUser').then(result => {			
-				this.setState({ 
-					user:result.data.result,
-				})	
-				localStorage.setItem('loggedInUser',result.data.result._id);
-				localStorage.setItem('userId',result.data.result._id);
-				localStorage.setItem('userEmail',result.data.result.email);
-				localStorage.setItem('userName',result.data.result.userName);			
-				localStorage.setItem('isLoggedIn',1);
+			axios.get('/user/getLoggedInUser').then(result => {						
+				if(result.data.code === 200){					
+					this.setState({ 
+						user:result.data.result,
+					})	
+					localStorage.setItem('loggedInUser',result.data.result._id);
+					localStorage.setItem('userId',result.data.result._id);
+					localStorage.setItem('userEmail',result.data.result.email);
+					localStorage.setItem('userName',result.data.result.userName);								
+					if((result.data.result.emailVerified == "1") && (result.data.result.subscriptionStatus =="1")){
+						localStorage.setItem('isLoggedIn',1);
+					}else{
+						localStorage.setItem('isLoggedIn',0);
+					}					
+				}else{
+					 this.props.history.push('/login');
+				}
 			})
 		}
 	}
   
   componentDidMount() {
-	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
-	console.log("jwtToken",localStorage.getItem('jwtToken'))
+	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');	
 	if(localStorage.getItem('jwtToken') !== null){		
 		//~ axios.get('/user/getLoggedInUser').then(result => {			
 			//~ this.setState({ 
@@ -99,7 +108,7 @@ class Header extends Component {
 			totalNotifications:result.data.totalNotifications
 		  })	
 		})
-
+	console.log("localStorage",localStorage.getItem('isLoggedIn'));
 	}
 	
 	
@@ -135,7 +144,7 @@ class Header extends Component {
                return(
                 <header>
                     <figure className="logo">
-                     <If condition={this.state.user && this.state.user.userName!=''} >
+                     <If condition={localStorage.getItem('isLoggedIn') == "1"} >
 						<Then>
 							<Link to={'/dashboard'}><img src={Logo} alt='logo' /></Link>
                         </Then>
@@ -164,7 +173,7 @@ class Header extends Component {
                        <input type="submit" value="search" onClick={this.onSearchHandler.bind(this)} className="search-icon" />
                        <div className="cl"></div>                        
                     </div>
-                    <If condition={this.state.user && this.state.user.userName!=''} >
+                    <If condition={localStorage.getItem('isLoggedIn') == "1"} >
                     <Then>
                     <nav className="after-login">
 					 <ul>
