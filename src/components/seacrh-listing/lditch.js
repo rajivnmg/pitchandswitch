@@ -123,7 +123,7 @@ class viewPitchPopup extends Component {
         <form className="pure-form pure-form-stacked" onChange={this.onChange}>
 			<div className="header">Choose products to <span className="yellow">Pitch</span> on 
 			<div className="select-box top-right">
-				 <select id="select"  onChange={this.handleFormInputChange}>
+				 <select id="select" innerRef={input => (this.condition = input)} className="form-control" onChange={this.handleFormInputChange}>
 					{optionTemplate}
 				</select>
 			</div>
@@ -153,6 +153,7 @@ class viewPitchPopup extends Component {
 						 <If condition={this.state.getAllProduct.length > 0}>
 							<Then>
 							{ this.state.getAllProduct.map((productsListing, index) => {
+								
 								var count = index+1;
 								var productImages = (productsListing.productImages)?(productsListing.productImages[0]):'';
 								return(
