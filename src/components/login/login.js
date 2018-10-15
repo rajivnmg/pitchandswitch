@@ -112,9 +112,9 @@ class Register extends React.Component {
     showFormSuccess: false
   };
   componentDidMount(){
-		console.log("COmponentDIDmaount to verify email")
+		//console.log("COmponentDIDmaount to verify email")
 		if(this.props.match.params.id){
-			console.log("PARAm",this.props.match.params.id)
+		//	console.log("PARAm",this.props.match.params.id)
 			axios.get('/user/verifyUserEmail/'+this.props.match.params.id).then(result => {
 				//	console.log("result", result)
 				 if(result.data.code === 200){
@@ -138,7 +138,9 @@ class Register extends React.Component {
     updatedFormElement.value = event.target.value;
     updatedFormElement.touched = true;
     updatedForm[inputIdentifier] = updatedFormElement;    
-    this.setState({ loginForm: updatedForm }, function(){console.log(this.state.loginForm)});
+    this.setState({ loginForm: updatedForm }, function(){
+		//console.log(this.state.loginForm)
+		});
   };
   
   submit = () => {	  	
@@ -149,7 +151,7 @@ class Register extends React.Component {
          if(result.data.code === 200){		  
           localStorage.setItem('jwtToken', result.data.token);
           this.setState({ message: '' });          
-			console.log("result",result.data.result)
+			//console.log("result",result.data.result)
 			if(result.data.result.subscriptionStatus === '0'){
 				window.location.href='/subscription';
 			}else{

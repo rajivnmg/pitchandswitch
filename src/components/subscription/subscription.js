@@ -17,8 +17,8 @@ class Subscription extends React.Component {
 		}
 	}	
 	handleSubscription(e) {		
-		let data = {};
-		data.subscription = e.currentTarget.dataset.id
+		let data = {};		
+		data.subscriptionId = e.currentTarget.dataset.id
 		data.userId = localStorage.getItem('userId')
 		data.userName = localStorage.getItem('userName')		
 		axios.post('/subscription/saveUserSubscriptionPlan',data).then(result => {
@@ -26,8 +26,9 @@ class Subscription extends React.Component {
 				if(result.data.code === 200){
 					this.setState({showFormError: false,showFormSuccess: true})
 					 setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});
-						 window.location.href='/dashboard';
-				    }, 1000);
+						 localStorage.removeItem('jwtToken'); 
+						 window.location.href='/login';
+				    }, 12000);
 					
 				}else{
 					this.setState({showFormError: true})
@@ -48,7 +49,7 @@ class Subscription extends React.Component {
  _renderSuccessMessage() {
     return (
       <div className={"alert alert-success mt-4"} role="alert">
-      Congratulation!!! You have successfully subscribe the plan <Link to={'/dashboard'}> Go to dashboard </Link> Or it will automaticaly redirect in 10 second.
+      Congratulation!!! You have successfully subscribe the plan <Link to={'/login'}> Go to login </Link> Or it will automaticaly redirect in 10 second.
         
       </div>
     );

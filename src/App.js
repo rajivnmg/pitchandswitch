@@ -9,6 +9,7 @@ import MyTrades from './components/myTrades/MyTrades';
 import MyTradesDetail from './components/myTrades/MyTradesDetail';
 import Home from './components/home/home';
 import Login from './components/login/login'
+import Logout from './components/login/logout'
 import Register from './components/register/register'
 import Forget from './components/forgotPassword/forget'
 import Reset from './components/resetPassword/reset'
@@ -60,6 +61,7 @@ class App extends Component {
                         <Switch>
                             <Route exact path="/" component={Home} />
                             <Route exact path='/login' component={Login} />
+                            <Route exact path='/logout' component={Logout} />
                             <Route exact path='/register' component={Register} />
                             <Route exact path='/forget' component={Forget} />
                             <Route exact path='/reset/:id?' component={Reset} />   

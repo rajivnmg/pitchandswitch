@@ -101,7 +101,6 @@ class subscriptionBasic extends Component {
 		console.log("userData",localStorage.getItem('userId'),localStorage.getItem('userEmail'))
 	}
 	
-	
 	inputChangedHandler = (event, inputIdentifier) => {
 		//console.log("event",event.target.value)
 			const paymentForm = {
@@ -129,7 +128,8 @@ class subscriptionBasic extends Component {
 				isProcess:false
 			  });	
 			  setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});
-						 window.location.href='/dashboard';
+						 localStorage.removeItem('jwtToken'); 
+						 window.location.href='/login';
 			 }, 12000);		  
 			}else{
 			  this.setState({
@@ -152,7 +152,7 @@ class subscriptionBasic extends Component {
  _renderSuccessMessage() {
     return (   
       <div className={"alert alert-success mt-4"} role="alert">
-      Congratulation!!! You have successfully subscribe the plan <Link to={'/dashboard'}> Go to dashboard </Link> Or it will automaticaly redirect in 10 second.            
+      Congratulation!!! You have successfully subscribe the plan <Link to={'/login'}> Go to Login </Link> Or it will automaticaly redirect in 10 second.            
       </div>
     );
   
@@ -182,7 +182,7 @@ render() {
 								<div className="form-row brdr-row">
 									<div className="plan"><strong>{this.state.subscription.subscriptionName}</strong> <span className="right">${this.state.subscription.price}</span></div>
 									<p>For 1 year <br/>
-									{(this.state.subscription.subscription.totalTradePermitted === 9999)?'Unlimited':this.state.subscription.subscription.totalTradePermitted} Free Trade, {(this.state.subscription.subscription.totalInventoryAllowed === 9999)?'Unlimited':this.state.subscription.subscription.totalInventoryAllowed} Inventory, Unlimited Wishlist</p>
+									{(this.state.subscription.totalTradePermitted === 9999)?'Unlimited':this.state.subscription.totalTradePermitted} Free Trade, {(this.state.subscription.totalInventoryAllowed === 9999)?'Unlimited':this.state.subscription.totalInventoryAllowed} Inventory, Unlimited Wishlist</p>
 								</div>
 								<div className="form-row brdr-row">
 								<p className="bold fr">Oct 1, 2018<br/>7353795</p>

@@ -108,7 +108,7 @@ class Register extends React.Component {
 	
 	handleChangeCountry(event) {
 	
-    console.log("handleChangeCountry",event.target.value)
+    //console.log("handleChangeCountry",event.target.value)
     this.setState({countryId:event.target.value})
     if(event.target.value !== "0"){
      axios.get('/location/getState/'+event.target.value).then(result =>{
@@ -120,7 +120,7 @@ class Register extends React.Component {
   }
 	handleChangeState(event) {
 	this.setState({stateId:event.target.value})
-    console.log("handleChangeState",event.target.value)
+    //console.log("handleChangeState",event.target.value)
     if(event.target.value !== "0"){
 		axios.get('/location/getCity/'+event.target.value).then(result =>{
 			 //console.log("city",result.data.result)
@@ -139,7 +139,7 @@ class Register extends React.Component {
     this.setState({state: event.target.value});
   }
   	componentDidMount(){
-		console.log("COmponentDIDmaount")
+		//console.log("COmponentDIDmaount")
 		axios.get('/location/getLocation').then(result => {
 			//	console.log("result", result)
 				this.setState({countries:result.data.result})
@@ -167,14 +167,16 @@ class Register extends React.Component {
     updatedFormElement.value = event.target.value;
     updatedFormElement.touched = true;
     NewUserForm[inputIdentifier] = updatedFormElement;    
-    this.setState({ registerForm: NewUserForm }, function(){console.log(this.state.registerForm)});
+    this.setState({ registerForm: NewUserForm }, function(){
+		//console.log(this.state.registerForm)
+		});
   };
   
   submit = () => {
 	// console.log("PROPS",this.state.registerForm);
 	 
 	 const data =new FD()
-	 console.log("this.firstName.value",this.state.registerForm.name.value)
+	// console.log("this.firstName.value",this.state.registerForm.name.value)
         data.append('firstName', (this.state.registerForm.name)?this.state.registerForm.name.value:''),
         data.append('middleName', ''),
         data.append('lastName',''),
@@ -189,11 +191,11 @@ class Register extends React.Component {
         data.append('state', this.state.stateId),
         data.append('country', this.state.countryId),
         data.append('zipCode', (this.state.registerForm.zipCode)?this.state.registerForm.zipCode.value:''),
-        data.append('subscriptionPlan','')
+       // data.append('subscriptionPlan','')
         data.append('userStatus','1')
-        console.log("data",data,this.state)
+        //console.log("data",data,this.state)
         axios.post('/user/userSignup', data).then(result => {
-          console.log('USER DATA', data)
+         // console.log('USER DATA', data)
          if(result.data.code ==200){			    
 			  this.setState({
 				message: result.data.message,
@@ -201,6 +203,7 @@ class Register extends React.Component {
 				showFormSuccess: true,
 				showFormError: false
 			  });
+			  window.scrollTo(0, 0)
 			}else{
 			  this.setState({
 				message: result.data.message,
@@ -211,7 +214,7 @@ class Register extends React.Component {
 			}
 		  })
 		  .catch((error) => {
-			console.log('error', error);
+			//console.log('error', error);
 			if (!error.status) {
 				 this.setState({ showFormError: true,showFormSuccess: false,message: 'Login failed. Username or Email not match' });
 				// network error

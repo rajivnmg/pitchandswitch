@@ -14,10 +14,10 @@ import ReturnInfo1 from '../payShopPopup1'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
-class Dashboard extends Component {
-	
+class Dashboard extends Component {	
 	constructor(props){
     super(props);
+   	localStorage.setItem('isLoggedIn',1);
     this.state = {
 		currentUser:{
 			 email:'',
@@ -36,7 +36,7 @@ class Dashboard extends Component {
   
   componentWillMount() {
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
-		 if(localStorage.getItem('jwtToken') !== null){
+		 if(localStorage.getItem('jwtToken') !== null){		
 			axios.get('/user/getLoggedInUser').then(result => {
 				//console.log("result",result)
 				this.setState({ 
@@ -56,12 +56,10 @@ class Dashboard extends Component {
   }
   
   
-   componentDidMount() {
+   componentWillMount() {
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 		 if(localStorage.getItem('jwtToken') !== null){
-			 
-			axios.get('/user/userTradeStates').then(result => {
-				console.log("userTradeStates",localStorage.getItem('jwtToken'))
+			axios.get('/user/userTradeStates').then(result => {				
 				//console.log("userTradeStates",result)
 				this.setState({ 					
 					totalInvemtory:result.data.totalInvemtory,
@@ -79,22 +77,19 @@ class Dashboard extends Component {
 Capitalize(str){
 	return str.charAt(0).toUpperCase() + str.slice(1);
 } 
-	
-	
-	
     render() {
 		console.log(this.state)
         return (
-                <div className="dashboard">
+                <div className="dashboard">                
                     <div className="container">
-                     <If condition={this.state.totalInvemtory && this.state.totalInvemtory == 0} >
+                     <If condition={this.state.totalInvemtory === 0} >
 						<Then>
 							<div className="msgSuccess">                        
                        			<a href="#" className="close">x</a>You're almost there, upload your first item to get trading							
 							</div>
                         </Then>
 					</If>
-                        <div className="heading-row">.
+                        <div className="heading-row">
                             <Link to={'/donate-product'} className="more-items">Donate Now</Link>
                             <h1>Welcome, {this.Capitalize(this.state.currentUser.firstName)}{' '}{this.Capitalize(this.state.currentUser.lastName)}.</h1>
                             <p className="subheading">There is a list of some latest and tranding itmes on pitch and switch </p>
