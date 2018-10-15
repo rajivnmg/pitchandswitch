@@ -5,9 +5,11 @@ import { SketchPicker } from 'react-color'
 import PicturesWall from '../common/picturesWall';
 import CategorySelectBox from '../../components/CategorySelectBox/CategorySelectBox';
 import axios from 'axios'
+var FD = require('form-data');
+var fs = require('fs');
 class ColorPicker extends React.Component {
    render() {
-    return <SketchPicker />
+	return <SketchPicker />
   }
 }
 class Form extends React.Component {
@@ -72,45 +74,54 @@ class Form extends React.Component {
     );
   }
 }
-class Register extends React.Component {
-  state = {
-	 selectedFiles: '',
-	   addProductForm: {
-			productName:'',
-			description:'',
-			productCategory:'',
-			size:'',
-			color:'',
-			brand:'',
-			productAge:'',
-			condition:'',
-			productImages:'',
-			productStatus:'0'
-		},
-	   Categories: [],
-	   brands: [],
-	   sizes: [],
-	   conditions: [],
-	   categoryValue: '',
-	   background: '#fff',
-	   validation:{
-		productName:{
-		  rules: {
-			notEmpty: {
-			  message: 'Product name field can\'t be left blank',
-			  valid: false
-			}
-		  },
-		  valid: null,
-		  message: ''
-		},
-		 showFormSuccess: false
-	  }
-	};
-
-	constructor(props){
+class DonateProduct extends React.Component {
+  constructor(props){
 		super(props);
-	}
+		  this.state = {
+			 selectedFiles: '',
+			   addProductForm: {
+					productName:'',
+					description:'',
+					productCategory:'',
+					size:'',
+					color:'',
+					brand:'',
+					productAge:'',
+					condition:'',
+					productImages:'',
+					productStatus:'0'
+				},
+			   Categories: [],
+			   brands: [],
+			   sizes: [],
+			   conditions: [],
+			   user:[],
+			   countryId :'',
+				stateId :'',
+				cityId : '',
+				countries:[{_id:'',countryName:''}],
+				states:[{_id:'',stateName:''}],
+				cities:[{_id:'0',cityName:'Select City'}],
+			   categoryValue: '',
+			   background: '#fff',
+			   validation:{
+				productName:{
+				  rules: {
+					notEmpty: {
+					  message: 'Product name field can\'t be left blank',
+					  valid: false
+					}
+				  },
+				  valid: null,
+				  message: ''
+				},
+				 showFormSuccess: false
+			  }
+			};		
+			this.handleChangeCountry = this.handleChangeCountry.bind(this);
+			this.handleChangeState = this.handleChangeState.bind(this);
+			this.handleChangeCity = this.handleChangeCity.bind(this);	
+	}	
   handleCategory = (category) => {
 			const productForm = {
 			  ...this.state.addProductForm
@@ -148,6 +159,49 @@ class Register extends React.Component {
 			this.setState({ addProductForm: productForm });
 		};		
 		
+		handleChangeCountry(event) {
+			console.log("handleChangeCountry",event.target.value)	    
+			this.setState({countryId:event.target.value})
+			if(event.target.value !== "0"){
+			 axios.get('/location/getState/'+event.target.value).then(result =>{		
+					this.setState({states:result.data.result,cities:[{_id:'',cityName:''}]})		 
+				 })
+			 }
+		}
+		handleChangeState(event) {
+			this.setState({stateId:event.target.value})    
+			if(event.target.value !== "0"){
+				axios.get('/location/getCity/'+event.target.value).then(result =>{
+				
+						this.setState({cities:result.data.result,})
+						if(result.data.result.length){
+							this.setState({state:result.data.result[0]._id})
+							this.setState({cityId:result.data.result[0]._id})
+						}
+					 })
+				
+			}
+		}
+	
+		handleChangeCity(event) {  
+			this.setState({cityId:event.target.value})
+			this.setState({state: event.target.value});
+		}
+  	
+		
+		componentWillMount(){
+			if(localStorage.getItem('jwtToken') !== null){	
+				axios.get('/user/getLoggedInUser').then(result => {						
+					if(result.data.code === 200){					
+						this.setState({ 
+							user:result.data.result,
+						});											
+					}
+				})
+			}
+			
+		}
+		
 		componentDidMount() {
 			//GET ALL Brand
 			axios.get('/brand/listingbrand').then(result => {
@@ -161,6 +215,11 @@ class Register extends React.Component {
 			axios.get('/size/listingsize').then(result => {
 				this.setState({sizes:result.data.result})
 			})
+			// function to get location
+			axios.get('/location/getLocation').then(result => {			
+				this.setState({countries:result.data.result})
+			})		
+		  
 		}
 
 		inputChangedHandler = (event, inputIdentifier) => {
@@ -171,8 +230,46 @@ class Register extends React.Component {
 			this.setState({ addProductForm: productForm });
 		};
   submit = () => {
-    this.setState({showFormSuccess: true});
-    setTimeout(() => {this.setState({showFormSuccess: false});}, 5000)
+   const data =new FD()
+        const formData = this.state.addProductForm;
+		for (let [key, value] of Object.entries(formData)) {
+		  if(key == 'productImages'){
+			  if(this.state.selectedFiles){
+				data.append('files', this.state.selectedFiles);
+			  } 
+		  }else if(key == 'userId'){
+			  data.append('userId', '1');	
+		  }else{
+			  data.append(key, value);
+		  }
+		}
+   axios.post('/donation/donateProduct', data).then(result => {
+          console.log('donateProduct DATA', data)
+         if(result.data.code ==200){
+			  this.setState({
+				message: result.data.message,
+				code :result.data.code,
+				showFormSuccess: true,
+				showFormError: false
+			  });
+			  this.props.history.push("/my-treasure-chest");
+			}else{
+			  this.setState({
+				message: result.data.messaage,
+				code :result.data.code,
+				showFormError: true,
+				showFormSuccess: false,
+			  });
+			}
+		  })
+		  .catch((error) => {
+			console.log('error', error);
+			if (!error.status) {
+				 this.setState({ showFormError: true,showFormSuccess: false,message: 'ERROR in Adding Product, Please try again!!!' });
+
+			}
+		  });
+    setTimeout(() => {this.setState({showFormSuccess: false,showFormError: false});}, 12000);
   }
   _renderSuccessMessage() {
     return (
@@ -197,16 +294,15 @@ class Register extends React.Component {
                                 <h3>Donate Product</h3>
             </div>
           
-              <Form submit={this.submit}>
-                 
+              <Form submit={this.submit}>                 
                 <div className="form-row">
-                <div className="invalid-feedback validation"> </div>   
-                <span className="astrik">*</span>
-                  <label className="label" htmlFor={"name"}>Product name</label>
-                  <input id={"name"} className={"form-control textBox"} required={true} name={"name"} type={"name"} placeholder="Enter your name" defaultValue="" />
+					<div className="invalid-feedback validation"> </div>   
+					<span className="astrik">*</span>
+					<label className="label" htmlFor={"name"}>Product name</label>
+					<input id={"name"} className={"form-control textBox"} required={true} name={"productName"} type={"productName"} placeholder="Enter your name" onChange={(e) => this.inputChangedHandler(e, 'productName')} defaultValue="" />
                 </div>
-                        <div className="form-row">
-                        <div className="invalid-feedback validation"> </div>
+                <div className="form-row">
+                <div className="invalid-feedback validation"> </div>
                 <span className="astrik">*</span>
                   <label className="label"
                     htmlFor={"description"}
@@ -219,20 +315,21 @@ class Register extends React.Component {
                     required={true}
                     name={"description"}
                     type={"description"}
+                    onChange={(e) => this.inputChangedHandler(e, 'description')}
                     placeholder="" defaultValue=""
                     ></textarea>
                   
                 </div>
                 <div className="form-row">
                   <label className="label">Add product a photo</label>
-                  <PicturesWall />
+                 <PicturesWall multiple={false} onHandlePicture={this.handlePictureChange}/>
                 </div>
                 <div className="form-row">
                   <label className="label">Color</label>
                     <div className="select-box">
-                  <select required={true} name={"category"} defaultValue="">
-                  <option >Red</option>
-                  <option >Green</option>
+                  <select required={true} name={"color"} name={"color"} defaultValue="" onChange={(e) => this.inputChangedHandler(e, 'color')}>
+                  <option value="red">Red</option>
+                  <option value="green">Green</option>
                   </select>
                   </div>
                   
@@ -243,26 +340,69 @@ class Register extends React.Component {
                 <span className="astrik">*</span>
                   <label className="label" htmlFor={"category"}>Category</label>
                   
-                  <CategorySelectBox onSelectCategory={this.handleCategory}/>
+                 <CategorySelectBox onSelectCategory={this.handleCategory}/>
                   
                 </div>
                  
-                  <div className="form-row">
-                  <div className="colum">
-        <div className="invalid-feedback validation"> </div>             
-        <span className="astrik">*</span>
-                  <label className="label" htmlFor={"size"}>Size</label>
-                  <input id={"size"} className={"form-control textBox"} required={true} name={"size"} type={"text"} placeholder="" defaultValue="" /></div>
-                  <div className="colum right">
-        <div className="invalid-feedback validation"> </div>             
-        <span className="astrik">*</span>
-                  <label className="label" htmlFor={"brand"}>Brand</label>
-                  <input id={"brand"} className={"form-control textBox"} required={true} name={"brand"} type={"text"} placeholder="" defaultValue="barbie" /></div>
-                  <div className="cl"></div>
-                  
+		<div className="form-row">
+			<div className="colum">
+				<div className="invalid-feedback validation"> </div>             
+				<span className="astrik">*</span>
+				<label className="label" htmlFor={"size"}>Size</label>
+				<div className="select-box">
+				<select required={true} name={"size"} id={"size"}  onChange={(e) => this.inputChangedHandler(e, 'size')}>
+						<option value="">Select Brand</option>
+						{
+							this.state.sizes.map(size =>{
+								return(<option key={size._id} value={size._id}>{size.size}</option>)
+							})
+						}
+			   </select>
+			   </div>
+			</div>
+			<div className="colum right">
+				<div className="invalid-feedback validation"> </div>             
+				<span className="astrik">*</span>
+				<label className="label" htmlFor={"brand"}>Brand</label>
+				<div className="select-box">
+				<select required={true} name={"brand"}  id={"brand"} onChange={(e) => this.inputChangedHandler(e, 'brand')}>
+						<option value="">Select Brand</option>
+						{
+							this.state.brands.map(brand =>{
+								return (<option key={brand._id} value={brand._id}>{brand.brandName}</option>)
+							})
+						}
+			   </select>
+			   </div>
+			</div>
+			<div className="cl"></div>
+		</div>
+		<div className="form-row">
+         <h2 className="heading2"> Pickup address  </h2>
+        <div className="cl"></div>
         </div>
-        <h5 className="heading2">Pickup address</h5>
+       
+        
         <div className="form-row">
+        <span className="astrik">*</span>
+         <label className="label" htmlFor={"age"}>Name:</label>
+         <input id={"fullname"} className={"form-control textBox"} required={true} name={"fullname"} type={"text"} placeholder="" defaultValue="Marcus" />
+        <div className="cl"></div>
+        </div>
+        <div className="form-row">
+        <span className="astrik">*</span>
+         <label className="label" htmlFor={"age"}>Email:</label>
+         <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="2865" />
+        <div className="cl"></div>
+        </div>
+        <div className="form-row">
+        <span className="astrik">*</span>
+         <label className="label" htmlFor={"age"}>Contact Number:</label>
+         <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="2865" />
+        <div className="cl"></div>
+        </div>
+        <div className="form-row">
+        <span className="astrik">*</span>
          <label className="label" htmlFor={"age"}>Address Line 1:</label>
          <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="2865" />
         <div className="cl"></div>
@@ -276,44 +416,69 @@ class Register extends React.Component {
                   <div className="colum">
                   <div className="invalid-feedback validation"> </div>   
         <span className="astrik">*</span>
-                  <label className="label" htmlFor={"age"}>City</label>
-                  <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="New York" /></div>
-                  <div className="colum right">
-         <div className="invalid-feedback validation"> </div>          
-        <span className="astrik">*</span>
-                  <label className="label" htmlFor={"condition"}>State</label>
-                   <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="NY" /></div>
-                  <div className="cl"></div>
-                  
-        </div><div className="form-row">
-                  <div className="colum">
-                  <div className="invalid-feedback validation"> </div>   
-        <span className="astrik">*</span>
-                  <label className="label" htmlFor={"age"}>ZIP / Postal Code:</label>
-                  <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="6 months" /></div>
-                  <div className="colum right">
-         <div className="invalid-feedback validation"> </div>          
-        <span className="astrik">*</span>
-                  <label className="label" htmlFor={"condition"}>Country</label>
+                  <label className="label" htmlFor={"age"}>Country</label>
                   <div className="select-box">
-                  <select required={true} name={"condition"}  defaultValue="Good">
-                  <option>Select</option>
-                  <option>Good</option>
-                  </select>
-                  </div></div>
+					  <select type="select" name="country" id="country" onChange={this.handleChangeCountry}>
+								<option value="0">Select Country</option>
+								{
+									this.state.countries.map( function(country,index) { 
+									return(<option key={index} value={country._id}>{country.countryName}</option>);
+								})
+								}
+						</select>
+					</div>
+                  </div>
+                  <div className="colum right">
+         <div className="invalid-feedback validation"> </div>          
+        <span className="astrik">*</span>
+                  <label className="label" htmlFor={"condition"}>State</label>   
+                  <div className="select-box">               
+						<select name="state" id="state"  onChange={this.handleChangeState}>
+						<option value="0">Select State</option>
+						{
+							this.state.states.map( function(state,index){ 
+							return(<option key={index} value={state._id}>{state.stateName}</option>);
+						})
+						}
+					  </select>
+                   </div>
+                   </div>
                   <div className="cl"></div>
                   
         </div>
-         
-                
-                 <div className="form-row no-padding">
+			<div className="form-row">
+					<div className="colum">
+						<div className="invalid-feedback validation"> </div>          
+						<span className="astrik">*</span>
+						<label className="label" htmlFor={"condition"}>City</label>
+						<div className="select-box">						
+							  <select  name="city" id="city"  onChange={this.handleChangeCity}>
+							  {
+									this.state.cities.map( function(city,index) { 
+										return(<option key={index} value={city._id}>{city.cityName}</option>);
+									})
+								}
+							  </select>
+						</div>
+					</div>
+				
+                  <div className="colum right">
+						<div className="invalid-feedback validation"> </div>   
+						<span className="astrik">*</span>
+						<label className="label" htmlFor={"age"}>ZIP / Postal Code:</label>
+						<input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="6 months" />
+                  </div>		
+				
+				<div className="cl"></div>
+		 </div>
+           <div className="form-row no-padding">
                     <button
                       type={"submit"}
                       className={"submitBtn"}
                       >
                     Save
                     </button>
-                  </div>
+              </div>
                 
               </Form>
             </div>
@@ -324,4 +489,4 @@ class Register extends React.Component {
   }
 }
  
-export default Register;
+export default DonateProduct;

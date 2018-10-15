@@ -23,12 +23,14 @@ class viewPitchPopup extends Component {
 		this.state = {				
 			offerTrade:this.props.offerTrade,
 			offerTradeProducts:[],
-			checkedBoxes :[]
+			checkedBoxes :[],
+			stateChange:[]
 		}				
 	 }  
 	 
 	 
 	 handleFormInputChange(e) {
+		   var stateChange = []
 		    var el = e.target.value
 			var name = el.name
 			var type = el.type
@@ -48,9 +50,6 @@ class viewPitchPopup extends Component {
 			stateChange[name] = checkedBoxes
 			this.setState({stateChange:stateChange})
         }
-	 
-	 
-	 
 	 
 	 handleOnChange = (chosenValue) => {
 		 console.log('chosenValue',chosenValue.target.value)

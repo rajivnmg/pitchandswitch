@@ -92,7 +92,7 @@ class donatedProducts extends Component {
                             </ul>
                         </div>
                         <div className="heading-row">.
-                            <Link to={'/donate-product'} className="more-items"> Donate a product</Link>
+                            <Link to={(localStorage.getItem('isLoggedIn') == "1")?'/donate-product':'/login'} className="more-items"> Donate a product</Link>
                             <h1>Donated Products</h1>
                             <p className="subheading">Recently donated products by pitch and swicth members</p>
                             <div className="cl"></div>
@@ -123,10 +123,10 @@ class donatedProducts extends Component {
                                             <h4><a href="/my-trade-detail">{donatedProduct.productName}</a></h4>
                                             <a href="#" className="catLink"> {(donatedProduct.productCategory)?donatedProduct.productCategory.title:''}</a>           
                                         </div>
-                                        <div className="userdiv">
+                                        {/*<div className="userdiv">
                                             <div className="user-pic"><img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} /></div>
                                             <div className="user-name">{(donatedProduct.userId)?donatedProduct.userId.userName:''}</div>
-                                        </div>
+                                        </div>*/}
                                     </div>
                                             )
                             })}
