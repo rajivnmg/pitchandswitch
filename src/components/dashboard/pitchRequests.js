@@ -65,8 +65,8 @@ class PitchRequests extends React.Component {
 			<If condition={this.state.pitches.length === 0 && this.state.showLoader === false}>
 				<Then>					
 					<Alert
-					  message="Informational Notes"
-					  description="Additional description and informations about copywriting."
+					  message="Data Status"
+					  description="No Record Found."
 					  type="info"
 					  showIcon
 					/>				

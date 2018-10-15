@@ -9,6 +9,7 @@ class Switched extends React.Component {
      constructor() {
         super();
         this.state = {
+			showLoader :  true,
             switches: [
             //~ {
                     //~ id: 1,
@@ -49,7 +50,8 @@ class Switched extends React.Component {
 				  console.log("SWITCH RESPONCE",result.data.result)
 				this.setState({
 					switches: result.data.result,
-					currentUser: result.data.currentUser				  
+					currentUser: result.data.currentUser,
+					showLoader : false					  
 				});
 			  }
 			})
@@ -61,17 +63,28 @@ class Switched extends React.Component {
 	}
    render() {
         return (<div>
-					<If condition={this.state.switches.length === 0}>
-								<Then>
-									 <Spin tip="Loading...">
-										<Alert
-										  message="Data Loading "
-										  description="Please wait..."
-										  type="info"
-										/>
-									  </Spin>
-								</Then>							
-							</If>
+					<If condition={this.state.switches.length === 0 && this.state.showLoader === true}>
+				<Then>
+					<Spin tip="Loading...">
+					<Alert
+						message="Data Loading "
+						description="Please wait..."
+						type="info"
+					/>
+					</Spin>
+				</Then>	
+							
+			</If>
+			<If condition={this.state.switches.length === 0 && this.state.showLoader === false}>
+				<Then>					
+					<Alert
+					  message="Data Status"
+					  description="No Record Found."
+					  type="info"
+					  showIcon
+					/>				
+				</Then>								
+			</If>
 							
             {this.state.switches.map((pitch, index) => {
                             let ditchClasses = ['ditch'];
