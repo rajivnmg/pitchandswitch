@@ -22,44 +22,31 @@ class viewPitchPopup extends Component {
 		super(props);
 		this.state = {				
 			offerTrade:this.props.offerTrade,
-			offerTradeProducts:[]
+			offerTradeProducts:[],
+			checkedBoxes :[]
 		}				
 	 }  
 	 
 	 
 	 handleFormInputChange(e) {
-		  var el = e.target.value
+		    var el = e.target.value
 			var name = el.name
 			var type = el.type
-			 var stateChange = {}		
-			  var l = 3;
-			   var selectedOptions = []
-				for(var i = 1; i <= l; i++) {					
-				    //console.log('asdf',el);
-					selectedOptions.push(el)
-					console.log('selectedOptions',selectedOptions)
-			    }
-			  //~ else if (type == 'checkbox') {
-				//~ var objType = Object.prototype.toString.call(el.form.elements[name])
-				//~ if (objType == '[object RadioNodeList]' || objType == '[object NodeList]' || objType == '[object HTMLCollection]') {
-				  //~ var checkedBoxes = (Array.isArray(this.state[name]) ? this.state[name].slice() : [])
-				  //~ if (el.checked) {
-					//~ checkedBoxes.push(el.value)
-				  //~ }
-				  //~ else {
-					//~ checkedBoxes.splice(checkedBoxes.indexOf(el.value), 1)
-				  //~ }
-				  //~ stateChange[name] = checkedBoxes
-				//~ }
-				//~ else {
-				  //~ stateChange[name] = el.checked
-				//~ }
-			  //~ }
-			  //~ else {
-				//~ stateChange[name] = el.value
-			  //~ }
-//~ 
-			  //~ this.setState(stateChange)
+			var selectedOptions = []
+			console.log('el',el)
+			 if(el.checked){
+				selectedOptions.push(el)
+			  }
+			   console.log('selectedOptions',selectedOptions)
+				var checkedBoxes = (Array.isArray(this.state[name]) ? this.state[name].slice() : [])
+				if (el.checked) {
+				  checkedBoxes.push(el.value)
+				}
+				else {
+				  checkedBoxes.splice(checkedBoxes.indexOf(el.value), 1)
+				}
+			stateChange[name] = checkedBoxes
+			this.setState({stateChange:stateChange})
         }
 	 
 	 
@@ -157,20 +144,20 @@ class viewPitchPopup extends Component {
 								var count = index+1;
 								var productImages = (productsListing.productImages)?(productsListing.productImages[0]):'';
 								return(
-								<div className="switch-product-box">
-								<div className="switch-product-image-box">
-								 <img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
-								 <div className="switch-option-mask">
-									<div className="check-box">
-									   <input id={"pitch"+count} type="checkbox" name="productIDS"  value={productsListing._id} onChange={this.handleFormInputChange}/>
+								<div className="switch-product-box selected">
+									<div className="switch-product-image-box">
+										<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+										<div className="switch-option-mask">
+										<div className="check-box">
+										<input id={"pitch"+count} type="checkbox" name="productIDS"  value={productsListing._id} onChange={this.handleFormInputChange}/>
 										 <label htmlFor={"pitch"+count}>&nbsp;</label>
 									   </div>
 									 </div>
 								</div>
 								<div className="switch-product-content-box">
-								  <h4>{productsListing.productName?productsListing.productName:""}</h4>
-								   <a className="catLink" href="/">{productsListing.productCategory?productsListing.productCategory.title:""}</a>
-								</div>
+									  <h4>{productsListing.productName?productsListing.productName:""}</h4>
+									   <a className="catLink" href="/">{productsListing.productCategory?productsListing.productCategory.title:""}</a>
+									</div>
 								</div>
 								  )
 								})
