@@ -17,6 +17,7 @@ class Switched extends React.Component {
         super(props);
 
         this.state = {
+			showLoader :  true,
             completedPitches: [
             //~ {
                     //~ id: 1,
@@ -41,7 +42,8 @@ class Switched extends React.Component {
 			  if(result.data.code === 200){
 				this.setState({
 					completedPitches: result.data.result,
-					currentUser: result.data.currentUser				  
+					currentUser: result.data.currentUser,
+					showLoader : false					  
 				});
 			  }
 			})
@@ -53,17 +55,28 @@ class Switched extends React.Component {
 	}
     render() {
         return (<div>
-        <If condition={this.state.completedPitches.length === 0}>
-								<Then>
-									 <Spin tip="Loading...">
-										<Alert
-										  message="Data Loading "
-										  description="Please wait..."
-										  type="info"
-										/>
-									  </Spin>
-								</Then>							
-							</If>
+       <If condition={this.state.completedPitches.length === 0 && this.state.showLoader === true}>
+				<Then>
+					<Spin tip="Loading...">
+					<Alert
+						message="Data Loading "
+						description="Please wait..."
+						type="info"
+					/>
+					</Spin>
+				</Then>	
+							
+			</If>
+			<If condition={this.state.completedPitches.length === 0 && this.state.showLoader === false}>
+				<Then>					
+					<Alert
+					  message="Data Status"
+					  description="No Record Found."
+					  type="info"
+					  showIcon
+					/>				
+				</Then>								
+			</If>
 					{this.state.completedPitches.map((pitch, index) => {
 						let ditchClasses = ['ditch'];
 						//ditchClasses.push(pitch.action.replace(/\s/g, '').toLowerCase());

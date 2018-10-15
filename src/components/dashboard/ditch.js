@@ -7,7 +7,8 @@ class Ditch extends React.Component {
     constructor() {
         super();		
         this.state = {
-           currentUser:'',		
+           currentUser:'',
+           showLoader :  true,		
 			ditchedPitches: []
         }
     }
@@ -18,7 +19,8 @@ class Ditch extends React.Component {
 			  console.log("result.data.result",result.data.result)
 			this.setState({
 				ditchedPitches:result.data.result,
-				currentUser: result.data.currentUser				  
+				currentUser: result.data.currentUser,
+				showLoader : false				  
 			});
 		  }
 		})
@@ -30,17 +32,28 @@ class Ditch extends React.Component {
 	}
     render() {
         return (<div>
-						<If condition={this.state.ditchedPitches.length == 0}>
-								<Then>
-									 <Spin tip="Loading...">
-										<Alert
-										  message="Data Loading "
-										  description="Please wait..."
-										  type="info"
-										/>
-									  </Spin>
-								</Then>							
-							</If>
+			<If condition={this.state.ditchedPitches.length === 0 && this.state.showLoader === true}>
+				<Then>
+					<Spin tip="Loading...">
+					<Alert
+						message="Data Loading "
+						description="Please wait..."
+						type="info"
+					/>
+					</Spin>
+				</Then>	
+							
+			</If>
+			<If condition={this.state.ditchedPitches.length === 0 && this.state.showLoader === false}>
+				<Then>					
+					<Alert
+					  message="Data Status"
+					  description="No Record Found."
+					  type="info"
+					  showIcon
+					/>				
+				</Then>								
+			</If>
 					{this.state.ditchedPitches.map((pitch, index) => {
 							var send = (pitch.pitchUserId && pitch.pitchUserId._id == this.state.currentUser)?1:0;		let ditchClasses = ['ditch'];                                                       
                             var ditch = 'Ditched';
