@@ -69,7 +69,7 @@ class viewPitchPopup extends Component {
 		    })
       } 
 	  
-	 
+	 //componentWillMount state it always execute before render the page
 	componentWillMount(){
 		this.setState({offerTradeId:this.props.offerTrade._id})
 		   axios.get('/trade/getAllProduct/').then(result => {
@@ -82,9 +82,11 @@ class viewPitchPopup extends Component {
 			  this.setState({categoryActive:result.data.result})				
 		   }
 		})	
-   }
- 
+    }
+	//componentWillMount methos end 
+
 changeEvent(event){
+
   let checkedArray = this.state.optionsChecked;	
 	let selectedValue = event.target.value;	
 	   if(event.target.checked === true) {	

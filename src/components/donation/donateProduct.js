@@ -7,11 +7,11 @@ import CategorySelectBox from '../../components/CategorySelectBox/CategorySelect
 import axios from 'axios'
 var FD = require('form-data');
 var fs = require('fs');
-class ColorPicker extends React.Component {
-   render() {
-	return <SketchPicker />
-  }
-}
+//~ class ColorPicker extends React.Component {
+   //~ render() {
+	//~ return <SketchPicker />
+  //~ }
+//~ }
 class Form extends React.Component {
   state = {
     isValidated: false
@@ -79,7 +79,7 @@ class DonateProduct extends React.Component {
 		super(props);
 		  this.state = {
 			 selectedFiles: '',
-			   addProductForm: {
+			   donateProductForm: {
 					productName:'',
 					description:'',
 					productCategory:'',
@@ -89,7 +89,13 @@ class DonateProduct extends React.Component {
 					productAge:'',
 					condition:'',
 					productImages:'',
-					productStatus:'0'
+					productStatus:'0',
+					name:'',
+					email:'',
+					contactNumber:'',
+					address1:'',
+					address2:'',
+					zipCode:''
 				},
 			   Categories: [],
 			   brands: [],
@@ -122,22 +128,19 @@ class DonateProduct extends React.Component {
 			this.handleChangeState = this.handleChangeState.bind(this);
 			this.handleChangeCity = this.handleChangeCity.bind(this);	
 	}	
-  handleCategory = (category) => {
+		handleCategory = (category) => {
 			const productForm = {
-			  ...this.state.addProductForm
+			  ...this.state.donateProductForm
 			};
 			productForm['productCategory'] = category;    
-			this.setState({ addProductForm: productForm });
-		}
-		cancelHandler(){
-			this.props.history.push("/my-treasure-chest");
+			this.setState({ donateProductForm: productForm });
 		}
 
 		// set the selected file in to state
 		handlePictureChange = (event) => {
 		  let oldFiles = [];
 		  event.map((file) => {
-			console.log('FIle', file);
+			//console.log('FIle', file);
 			if (file.response && file.response.code === 200) {
 			  // Component will show file.url as link
 			  oldFiles.push({
@@ -153,10 +156,10 @@ class DonateProduct extends React.Component {
 		// Set The cureent color on change color
 		handleChangeComplete = (color) => {
 			const productForm = {
-			  ...this.state.addProductForm
+			  ...this.state.donateProductForm
 			};
 			productForm['color'] = color.hex;    
-			this.setState({ addProductForm: productForm });
+			this.setState({ donateProductForm: productForm });
 		};		
 		
 		handleChangeCountry(event) {
@@ -171,8 +174,7 @@ class DonateProduct extends React.Component {
 		handleChangeState(event) {
 			this.setState({stateId:event.target.value})    
 			if(event.target.value !== "0"){
-				axios.get('/location/getCity/'+event.target.value).then(result =>{
-				
+				axios.get('/location/getCity/'+event.target.value).then(result =>{				
 						this.setState({cities:result.data.result,})
 						if(result.data.result.length){
 							this.setState({state:result.data.result[0]._id})
@@ -187,8 +189,6 @@ class DonateProduct extends React.Component {
 			this.setState({cityId:event.target.value})
 			this.setState({state: event.target.value});
 		}
-  	
-		
 		componentWillMount(){
 			if(localStorage.getItem('jwtToken') !== null){	
 				axios.get('/user/getLoggedInUser').then(result => {						
@@ -222,55 +222,59 @@ class DonateProduct extends React.Component {
 		  
 		}
 
-		inputChangedHandler = (event, inputIdentifier) => {
-			const productForm = {
-			  ...this.state.addProductForm
-			};
-			productForm[inputIdentifier] = event.target.value;    
-			this.setState({ addProductForm: productForm });
+	inputChangedHandler = (event, inputIdentifier) => {
+		const productForm = {
+		  ...this.state.donateProductForm
 		};
-  submit = () => {
-   const data =new FD()
-        const formData = this.state.addProductForm;
+		productForm[inputIdentifier] = event.target.value;    
+		this.setState({ donateProductForm: productForm });
+	};
+	submit = () => {
+	const data =new FD()
+	const formData = this.state.donateProductForm;
 		for (let [key, value] of Object.entries(formData)) {
 		  if(key == 'productImages'){
-			  if(this.state.selectedFiles){
-				data.append('files', this.state.selectedFiles);
+			  if(this.state.selectedFiles){				
+				data.append('files', this.state.selectedFiles);				
 			  } 
 		  }else if(key == 'userId'){
 			  data.append('userId', '1');	
 		  }else{
+			   
 			  data.append(key, value);
 		  }
 		}
-   axios.post('/donation/donateProduct', data).then(result => {
-          console.log('donateProduct DATA', data)
-         if(result.data.code ==200){
-			  this.setState({
-				message: result.data.message,
-				code :result.data.code,
-				showFormSuccess: true,
-				showFormError: false
-			  });
-			  this.props.history.push("/my-treasure-chest");
-			}else{
-			  this.setState({
-				message: result.data.messaage,
-				code :result.data.code,
-				showFormError: true,
-				showFormSuccess: false,
-			  });
-			}
-		  })
-		  .catch((error) => {
-			console.log('error', error);
-			if (!error.status) {
-				 this.setState({ showFormError: true,showFormSuccess: false,message: 'ERROR in Adding Product, Please try again!!!' });
+		data.append('city', this.state.cityId),
+        data.append('state', this.state.stateId),
+        data.append('country', this.state.countryId),
+		console.log("city,state,country",this.state.cityId,this.state.stateId,this.state.countryId)
+	   axios.post('/donation/donateProduct', data).then(result => {         
+			 if(result.data.code ==200){
+				  this.setState({
+					message: result.data.message,
+					code :result.data.code,
+					showFormSuccess: true,
+					showFormError: false
+				  });
+				  this.props.history.push("/donated-products");
+				}else{
+				  this.setState({
+					message: result.data.messaage,
+					code :result.data.code,
+					showFormError: true,
+					showFormSuccess: false,
+				  });
+				}
+			  })
+			  .catch((error) => {
+				console.log('error', error);
+				if (!error.status) {
+					 this.setState({ showFormError: true,showFormSuccess: false,message: 'ERROR in Adding Product, Please try again!!!' });
 
-			}
-		  });
-    setTimeout(() => {this.setState({showFormSuccess: false,showFormError: false});}, 12000);
-  }
+				}
+			  });
+		setTimeout(() => {this.setState({showFormSuccess: false,showFormError: false});}, 12000);
+	  }
   _renderSuccessMessage() {
     return (
       <div className={"alert alert-success mt-4"} role="alert">
@@ -291,33 +295,21 @@ class DonateProduct extends React.Component {
           <div className="add-product">
            {this.state.showFormSuccess ? this._renderSuccessMessage() : null}
             <div className="form-row">
-                                <h3>Donate Product</h3>
-            </div>
-          
+               <h3>Donate Product</h3>
+            </div>          
               <Form submit={this.submit}>                 
                 <div className="form-row">
 					<div className="invalid-feedback validation"> </div>   
 					<span className="astrik">*</span>
 					<label className="label" htmlFor={"name"}>Product name</label>
-					<input id={"name"} className={"form-control textBox"} required={true} name={"productName"} type={"productName"} placeholder="Enter your name" onChange={(e) => this.inputChangedHandler(e, 'productName')} defaultValue="" />
+					<input id={"name"} className={"form-control textBox"} required={true} name={"productName"} type={"productName"} placeholder="Enter product name" onChange={(e) => this.inputChangedHandler(e, 'productName')} defaultValue="" />
                 </div>
                 <div className="form-row">
                 <div className="invalid-feedback validation"> </div>
                 <span className="astrik">*</span>
-                  <label className="label"
-                    htmlFor={"description"}
-                    >
-                   Description
-                  </label>
-                  <textarea
-                    id={"description"}
-                    className={"form-control textBox"}
-                    required={true}
-                    name={"description"}
-                    type={"description"}
-                    onChange={(e) => this.inputChangedHandler(e, 'description')}
-                    placeholder="" defaultValue=""
-                    ></textarea>
+                  <label className="label" htmlFor={"description"}>Description</label>
+                  <textarea id={"description"} className={"form-control textBox"} required={true} name={"description"}
+                    type={"description"} onChange={(e) => this.inputChangedHandler(e, 'description')} placeholder="" defaultValue=""></textarea>
                   
                 </div>
                 <div className="form-row">
@@ -338,12 +330,9 @@ class DonateProduct extends React.Component {
                  <div className="form-row">
                  <div className="invalid-feedback validation"> </div>   
                 <span className="astrik">*</span>
-                  <label className="label" htmlFor={"category"}>Category</label>
-                  
-                 <CategorySelectBox onSelectCategory={this.handleCategory}/>
-                  
-                </div>
-                 
+                  <label className="label" htmlFor={"category"}>Category</label>                  
+					<CategorySelectBox onSelectCategory={this.handleCategory}/>                  
+                </div>                 
 		<div className="form-row">
 			<div className="colum">
 				<div className="invalid-feedback validation"> </div>             
@@ -385,31 +374,31 @@ class DonateProduct extends React.Component {
         
         <div className="form-row">
         <span className="astrik">*</span>
-         <label className="label" htmlFor={"age"}>Name:</label>
-         <input id={"fullname"} className={"form-control textBox"} required={true} name={"fullname"} type={"text"} placeholder="" defaultValue="Marcus" />
+         <label className="label" htmlFor={"name"}>Name:</label>
+         <input id={"name"} className={"form-control textBox"} required={true} name={"name"} type={"text"} placeholder="" defaultValue="" onChange={(e) => this.inputChangedHandler(e, 'name')}/>
         <div className="cl"></div>
         </div>
         <div className="form-row">
         <span className="astrik">*</span>
-         <label className="label" htmlFor={"age"}>Email:</label>
-         <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="2865" />
+         <label className="label" htmlFor={"email"}>Email:</label>
+         <input id={"email"} className={"form-control textBox"} required={true} name={"email"} type={"email"} placeholder="" defaultValue="" onChange={(e) => this.inputChangedHandler(e, 'email')}/>
         <div className="cl"></div>
         </div>
         <div className="form-row">
         <span className="astrik">*</span>
-         <label className="label" htmlFor={"age"}>Contact Number:</label>
-         <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="2865" />
+         <label className="label" htmlFor={"contactNumber"}>Contact Number:</label>
+         <input id={"contactNumber"} className={"form-control textBox"} required={true} name={"contactNumber"} type={"number"} placeholder="" defaultValue="" onChange={(e) => this.inputChangedHandler(e, 'contactNumber')} />
         <div className="cl"></div>
         </div>
         <div className="form-row">
         <span className="astrik">*</span>
-         <label className="label" htmlFor={"age"}>Address Line 1:</label>
-         <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="2865" />
+         <label className="label" htmlFor={"address1"}>Address Line 1:</label>
+         <input id={"address1"} className={"form-control textBox"} required={true} name={"address1"} type={"text"} placeholder="" defaultValue="" onChange={(e) => this.inputChangedHandler(e, 'address1')}/>
         <div className="cl"></div>
         </div>
         <div className="form-row">
-         <label className="label" htmlFor={"age"}>Address Line 2:</label>
-         <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="Geraldine Lane" />
+         <label className="label" htmlFor={"address1"}>Address Line 2:</label>
+         <input id={"address2"} className={"form-control textBox"} name={"address2"} type={"text"} placeholder="" defaultValue="" onChange={(e) => this.inputChangedHandler(e, 'address2')} />
         <div className="cl"></div>
         </div>
         <div className="form-row">
@@ -460,13 +449,12 @@ class DonateProduct extends React.Component {
 								}
 							  </select>
 						</div>
-					</div>
-				
+					</div>				
                   <div className="colum right">
 						<div className="invalid-feedback validation"> </div>   
 						<span className="astrik">*</span>
-						<label className="label" htmlFor={"age"}>ZIP / Postal Code:</label>
-						<input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="6 months" />
+						<label className="label" htmlFor={"zipCode"}>ZIP / Postal Code:</label>
+						<input id={"zipCode"} className={"form-control textBox"} required={true} name={"zipCode"} type={"text"} placeholder="90001" defaultValue="" onChange={(e) => this.inputChangedHandler(e, 'zipCode')} />
                   </div>		
 				
 				<div className="cl"></div>

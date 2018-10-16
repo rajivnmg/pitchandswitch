@@ -5,6 +5,7 @@ import userPicture from '../../images/user-pic.png';
 import Select from 'react-select';
 import axios from 'axios';
 import { Popconfirm, message, Button } from 'antd';
+import { Spin, Icon, Alert } from 'antd';
 //~ const categoryFilter = [
     //~ {label: "Select", value: 1},
     //~ {label: "Games", value: 2},
@@ -57,22 +58,7 @@ class myTreasureChest extends Component {
             currentCategory:'',
             currentshortBy:1,
             filterOpt : {category: "", sortBy: 1},
-            myTreasureChests: [{
-                    "title": "Call of Duty : Infinate Warfare More",
-                    "image": popularItemImg,
-                    "category": "Games",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars",
-                    "userId":{
-						 email:'',
-						 firstName:'J',
-						 lastName:'J',
-						 middleName:'',
-						 profilePic:'',
-						 userName:'Robert'
-					}
-                }
-            ],
+            myTreasureChests: [],
            showFormSuccess : false
         }  
               
@@ -94,7 +80,7 @@ class myTreasureChest extends Component {
               approve: false
             });
             this.setState({showFormSuccess: true});
-			setTimeout(() => {this.setState({showFormSuccess: false});}, 5000)
+			setTimeout(() => {this.setState({showFormSuccess: false});}, 12000)
           }
         });
 	}
@@ -118,7 +104,7 @@ class myTreasureChest extends Component {
 			
 	}	
    
-    componentDidMount(){
+	componentDidMount(){
 			axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');			
 			if(localStorage.getItem('jwtToken') !== null){
 				axios.get('/user/getLoggedInUser').then(result => {					
@@ -141,15 +127,18 @@ class myTreasureChest extends Component {
 				});
 			});
 	}
-	
-   Capitalize(str){
+Capitalize(str){
 	return str.charAt(0).toUpperCase() + str.slice(1);
 } 
-
  _renderSuccessMessage() {
     return (
       <div className={"alert alert-danger mt-4"} role="alert">
-       Product Has been deleted successfully!
+       <Alert
+      message="Success"
+      description="Product has been deleted successfully"
+      type="success"
+      showIcon
+    />
       </div>
     );
   }
