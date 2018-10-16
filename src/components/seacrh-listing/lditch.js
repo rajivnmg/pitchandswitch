@@ -8,12 +8,18 @@ import userPic from '../../images/user-pic.png';
 import rejected from '../../images/rejected.png';
 import { Scrollbars } from 'react-custom-scrollbars';
 import axios from 'axios';
+import {
+  Badge,
+  Button
+} from 'reactstrap';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+var FD = require('form-data');
+var fs = require('fs');
 
 const constant = require('../../config/constant')
-const contentStyle = {
-maxWidth: "900px",
-width: "90%"
+ const contentStyle = {
+ maxWidth: "900px",
+ width: "90%"
 };
 
 
@@ -30,7 +36,7 @@ constructor(props) {
 
 
  
-changeEvent(event) {
+changeEvent(event){
   let checkedArray = this.state.optionsChecked;	
 	let selectedValue = event.target.value;	
 	   if(event.target.checked === true) {	
@@ -41,24 +47,32 @@ changeEvent(event) {
 			   optionsChecked: checkedArray
 		     });
 	     } else {
+			 checkedArray.push(selectedValue);
 			 this.setState({ disabled: true });  
 		 } 
 	 }
-	 else {
-		let valueIndex = checkedArray.indexOf(selectedValue);
-		checkedArray.splice(valueIndex, 1);
+	 else {		
 		this.setState({	optionsChecked: checkedArray });
 		this.setState({ disabled: false }); 
 	}
-	 axios.post('/trade/submitPitchProduct/').then(result => {
-	  if(result.data.code === 200){
-		this.setState({getAllProduct:result.data.result})				
-	  }
-   })
+	//console.log('optionsChecked',this.state.optionsChecked)
 }
 
-	handleOnChange = (chosenValue) => {
-	 console.log('chosenValue',chosenValue.target.value)
+   submitHandler(e){
+	    const data = new FD();
+        data.append('productIDS', this.state.optionsChecked)
+        data.append('switchProId', this.props.offerTrade._id)
+	    axios.post('/trade/submitPitchProduct/',data).then(result => {
+		  console.log('result',result)
+		  if(result.data.code === 200){
+			//this.setState({getAllProduct:result.data.result})				
+			 window.location.href = "/dashboard";
+		  }
+      })  
+   }
+
+
+  handleOnChange = (chosenValue) => {	 
 	   this.setState({ categoriesValues: chosenValue.target.value})
 		 axios.get('/trade/getProductByCategory/'+chosenValue.target.value).then(result => {
 		   if(result.data.code === 200){
@@ -69,27 +83,28 @@ changeEvent(event) {
 	} 
 
 
-componentWillMount(){
-    this.setState({offerTradeId:this.props.offerTrade._id})
-    axios.get('/trade/getAllProduct/').then(result => {
-	  if(result.data.code === 200){
-		this.setState({getAllProduct:result.data.result})				
-	}
-})
-axios.get('/category/categoriesActive/').then(result => {
-	if(result.data.code === 200){
-	  this.setState({categoryActive:result.data.result})				
-   }
- })	
-}
-
-componentDidMount(){
-	axios.get('/trade/offerTradeProduct/'+this.props.offerTrade._id).then(result => {
+	componentWillMount(){
+	   this.setState({offerTradeId:this.props.offerTrade._id})
+		axios.get('/trade/getAllProduct/').then(result => {
+		  if(result.data.code === 200){
+			this.setState({getAllProduct:result.data.result})				
+		}
+	})
+	
+	axios.get('/category/categoriesActive/').then(result => {
 		if(result.data.code === 200){
-		  this.setState({offerTradeProducts:result.data.result})
-	   }
-	})	
-}
+		  this.setState({categoryActive:result.data.result})				
+	    }
+	  })	
+	}
+
+	componentDidMount(){
+		axios.get('/trade/offerTradeProduct/'+this.props.offerTrade._id).then(result => {
+			if(result.data.code === 200){
+			  this.setState({offerTradeProducts:result.data.result})
+		   }
+		})	
+	}
 
 render() {
 let optionTemplate;
@@ -171,8 +186,8 @@ contentStyle = {contentStyle}  lockScroll >
 				</If>
 				 </Scrollbars>
 				  <div className="btm-btns">
-				   <a className="more-items" href="#">Pitch Now</a>
-			   <a className="ditch cancel-ditch"> Cancel Pitch </a>
+				  <Button onClick={(e)=>this.submitHandler(e)} color="success" className="more-items">Pitch Now</Button>
+			      <Button><a className="ditch cancel-ditch close"> Cancel Pitch </a></Button>
 			 </div>
 			</div>
 		</div>
