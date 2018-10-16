@@ -24,16 +24,65 @@ const constant = require('../../config/constant')
 
 
 class viewPitchPopup extends Component {
-constructor(props) {
-  super(props);
-	this.state = {				
-		offerTrade:this.props.offerTrade,
-		offerTradeProducts:[],
-		checkedBoxes :[],
-		optionsChecked: [],
-	 }				
-}  
 
+	constructor(props) {
+		super(props);
+		this.state = {				
+			offerTrade:this.props.offerTrade,
+			offerTradeProducts:[],
+			checkedBoxes :[],
+			stateChange:[],
+			optionsChecked: []
+		}				
+	 }  
+	 
+	 
+	 handleFormInputChange(e) {
+		   var stateChange = []
+		    var el = e.target.value
+			var name = el.name
+			var type = el.type
+			var selectedOptions = []
+			console.log('el',el)
+			 if(el.checked){
+				selectedOptions.push(el)
+			  }
+			   console.log('selectedOptions',selectedOptions)
+				var checkedBoxes = (Array.isArray(this.state[name]) ? this.state[name].slice() : [])
+				if (el.checked) {
+				  checkedBoxes.push(el.value)
+				}
+				else {
+				  checkedBoxes.splice(checkedBoxes.indexOf(el.value), 1)
+				}
+			stateChange[name] = checkedBoxes
+			this.setState({stateChange:stateChange})
+        }
+	 
+	 handleOnChange = (chosenValue) => {
+		 console.log('chosenValue',chosenValue.target.value)
+           this.setState({ categoriesValues: chosenValue.target.value})
+		     axios.get('/trade/getProductByCategory/'+chosenValue.target.value).then(result => {
+			 if(result.data.code === 200){
+			    this.setState({getAllProduct:result.data.result})	
+			    console.log('getAllProduct',this.state.getAllProduct);
+		        }
+		    })
+      } 
+	  
+	 
+	componentWillMount(){
+		this.setState({offerTradeId:this.props.offerTrade._id})
+		   axios.get('/trade/getAllProduct/').then(result => {
+			  if(result.data.code === 200){
+			    this.setState({getAllProduct:result.data.result})				
+		    }
+		})
+		axios.get('/category/categoriesActive/').then(result => {
+			if(result.data.code === 200){
+			  this.setState({categoryActive:result.data.result})				
+		   }
+		})	
 
  
 changeEvent(event){

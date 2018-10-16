@@ -219,9 +219,6 @@ class Register extends React.Component {
 			}
 		  });
     setTimeout(() => {this.setState({showFormSuccess: false,showFormError: false});}, 12000);
-
-    this.setState({showFormSuccess: true});
-    setTimeout(() => {this.setState({showFormSuccess: false});}, 5000)
   }
   _renderSuccessMessage() {
     return (
@@ -353,7 +350,7 @@ class Register extends React.Component {
 			</div>
 			<div className="cl"></div>
 		</div>
-		<div className="form-row">
+		{/*<div className="form-row">
 			<div className="colum">
 				<div className="invalid-feedback validation"> </div>
 				<span className="astrik">*</span>
@@ -367,7 +364,7 @@ class Register extends React.Component {
 			</div>
 			<div className="colum right">&nbsp;</div>
 			<div className="cl"></div>
-		</div>
+		</div> */}
 		<div className="form-row no-padding">
 			<button
 				type={"submit"}
