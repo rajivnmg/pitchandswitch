@@ -16,6 +16,7 @@ import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
 import ProductPitchPopup from './pitchProductPopup';
 import ViewPitchPopup from './viewPitchPopup';
+
 import LastPitchPopup from './lditch'
 const constant = require('../../config/constant')
 
@@ -38,23 +39,23 @@ class MyTrades extends React.Component {
 	   componentWillMount(){		
 	      axios.get('/product/productDetails/'+ this.state.productId).then(result => {			
 		    this.setState({resultData:result.data.result,mainImages:result.data.result.productImages?result.data.result.     productImages[0]:""});
-		})
+	  })
 		
-	   axios.get('/donation/getConstant').then(result => {
-           this.setState({conditions: result.data.result});            
-       });
+			axios.get('/donation/getConstant').then(result => {
+				this.setState({conditions: result.data.result});            
+			});
        
-       if(localStorage.getItem('jwtToken') !== null){	
+           if(localStorage.getItem('jwtToken') !== null){	
 			axios.get('/user/getLoggedInUser').then(result => {			
 				this.setState({ 
 					user:result.data.result,
 				})	
-				localStorage.setItem('loggedInUser',result.data.result._id);
-				localStorage.setItem('userId',result.data.result._id);
-				localStorage.setItem('userName',result.data.result.userName);			
-				localStorage.setItem('isLoggedIn',1);
-			})
-		}
+			localStorage.setItem('loggedInUser',result.data.result._id);
+			localStorage.setItem('userId',result.data.result._id);
+			localStorage.setItem('userName',result.data.result.userName);			
+			localStorage.setItem('isLoggedIn',1);
+		  })
+	   }
 	   
      }
 	
