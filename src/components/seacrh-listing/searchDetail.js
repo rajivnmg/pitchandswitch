@@ -16,7 +16,6 @@ import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
 import ProductPitchPopup from './pitchProductPopup';
 import ViewPitchPopup from './viewPitchPopup';
-
 import LastPitchPopup from './lditch'
 const constant = require('../../config/constant')
 
@@ -39,24 +38,23 @@ class MyTrades extends React.Component {
 	   componentWillMount(){		
 	      axios.get('/product/productDetails/'+ this.state.productId).then(result => {			
 		    this.setState({resultData:result.data.result,mainImages:result.data.result.productImages?result.data.result.     productImages[0]:""});
-	  })
+		})
 		
-			axios.get('/donation/getConstant').then(result => {
-				this.setState({conditions: result.data.result});            
-			});
+	   axios.get('/donation/getConstant').then(result => {
+           this.setState({conditions: result.data.result});            
+       });
        
-           if(localStorage.getItem('jwtToken') !== null){	
+       if(localStorage.getItem('jwtToken') !== null){	
 			axios.get('/user/getLoggedInUser').then(result => {			
 				this.setState({ 
 					user:result.data.result,
 				})	
-			localStorage.setItem('loggedInUser',result.data.result._id);
-			localStorage.setItem('userId',result.data.result._id);
-			localStorage.setItem('userName',result.data.result.userName);			
-			localStorage.setItem('isLoggedIn',1);
-		  })
-	   }
-	   
+				localStorage.setItem('loggedInUser',result.data.result._id);
+				localStorage.setItem('userId',result.data.result._id);
+				localStorage.setItem('userName',result.data.result.userName);			
+				localStorage.setItem('isLoggedIn',1);
+			})
+		}
      }
 	
     render() {	
@@ -79,13 +77,13 @@ class MyTrades extends React.Component {
 			<div className="pic">			
 			  <ThumbGallery galleriesID={this.state.productId} galleriesImg= {this.state.mainImages} />
 			</div>
-			<If condition={this.state.resultData.length === 0}>
+			<If condition = {this.state.resultData.length === 0}>
 			<Then><Spin /></Then>
 			<Else>
 				<div className="details">
-				<div className="linkRow">
-				   <a href="#" className="back-page" onClick={history.goBack}>Back</a>
-				<div className="cl"></div>
+				  <div className="linkRow">
+				    <a href="#" className="back-page" onClick={history.goBack}>Back</a>
+				  <div className="cl"></div>
 				</div>            
 				<p className="tagsrow">{this.state.resultData.productCategory?this.state.resultData.productCategory.title:""}</p>
 				<h1>{this.state.resultData.productName}</h1>
@@ -105,6 +103,7 @@ class MyTrades extends React.Component {
 					</div>
 				<div className="btnRow">
 				<a href="#" className="ditch">
+				 
 				   <LastPitchPopup offerTrade={this.state.resultData}/>
 				</a>
 				<a href="#" className="ditch add-wishlist">Add to Wishlist</a>
