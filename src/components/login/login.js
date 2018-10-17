@@ -59,6 +59,20 @@ class Form extends Component {
       return true;
     }
   };
+  
+  
+  showHide(e){
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({
+      type: this.state.type === 'input' ? 'password' : 'input'
+    })  
+  }
+  
+   state = {
+    showFormSuccess: false
+  };
+  
   submitHandler = event => {
     event.preventDefault();
     if (this.validate()) {
@@ -111,12 +125,10 @@ class Register extends React.Component {
   state = {
     showFormSuccess: false
   };
+  
   componentDidMount(){
-		//console.log("COmponentDIDmaount to verify email")
 		if(this.props.match.params.id){
-		//	console.log("PARAm",this.props.match.params.id)
 			axios.get('/user/verifyUserEmail/'+this.props.match.params.id).then(result => {
-				//	console.log("result", result)
 				 if(result.data.code === 200){
 					this.setState({user:result.data.result})
 					this.setState({
@@ -209,16 +221,16 @@ class Register extends React.Component {
     return (
        <div className="login-container">
         <div  className="container">        	
-           <a href="/" className="backBtn">&nbsp;</a>
-        <div className="cl"></div>
+         <a href="/" className="backBtn">&nbsp;</a>
+          <div className="cl"></div>
           <div className="login">
            {this.state.showEmailVerification ? this._renderEmailVerificationSuccessMessage() : null}
            {this.state.showFormSuccess ? this._renderSuccessMessage() : null}          
             <div className="form-row login-row">
-                                <img className='login-icon' src={loginIcon} alt="" />
-                                <h3>Login</h3>
-                                <p>Please login to your Pitch and Switch account</p>
-                            </div>
+				<img className='login-icon' src={loginIcon} alt="" />
+				<h3>Login</h3>
+				<p>Please login to your Pitch and Switch account</p>
+				</div>
             <div>
               <Form submit={this.submit}>
                 <div>
@@ -262,7 +274,7 @@ class Register extends React.Component {
                       type={this.state.type} 
                     />
                      <span className={this.state.type === 'input' ? 'password_show Hide' : 'password_show'} onClick={this.showHide}>{this.state.type === 'input' ? 'Hide' : 'Show'}</span>
-                  <small className="small-instruction">Must be at least 6 characters long, contain letters and numbers</small>
+                    <small className="small-instruction">Must be at least 6 characters long, contain letters and numbers</small>
                   
                 </div>
                  <div className="form-row">
@@ -271,9 +283,9 @@ class Register extends React.Component {
                     </button> 
                   </div>
                  <div className="form-row no-padding">
-                            <p className="no-account">Don't have an account? <Link to="/register">Register now</Link></p>
-                                <Link to="/forget">Forgot password?</Link>                                
-                            </div>
+                    <p className="no-account">Don't have an account? <Link to="/register">Register now</Link></p>
+                        <Link to="/forget">Forgot password?</Link>                                
+                     </div>
               </Form>
             </div>
           </div>

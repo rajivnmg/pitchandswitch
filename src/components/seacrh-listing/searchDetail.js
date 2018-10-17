@@ -17,6 +17,7 @@ import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label
 import ProductPitchPopup from './pitchProductPopup';
 import ViewPitchPopup from './viewPitchPopup';
 import LastPitchPopup from './lditch'
+import LoginPopup from './LoginPopup'
 const constant = require('../../config/constant')
 
 const history = createHistory();
@@ -46,9 +47,7 @@ class MyTrades extends React.Component {
        
        if(localStorage.getItem('jwtToken') !== null){	
 			axios.get('/user/getLoggedInUser').then(result => {			
-				this.setState({ 
-					user:result.data.result,
-				})	
+				this.setState({ user:result.data.result })	
 				localStorage.setItem('loggedInUser',result.data.result._id);
 				localStorage.setItem('userId',result.data.result._id);
 				localStorage.setItem('userName',result.data.result.userName);			
@@ -63,7 +62,7 @@ class MyTrades extends React.Component {
 			let conditionsList = this.state.conditions;
 				conditionsList.map((key, index) => {  if(key.id==4){  optionTemplate = key.name;  }
 			})
-         }
+        }
 		let img = this.state.resultData.userId ? this.state.resultData.userId.profilePic:"";
 		let description = this.state.resultData.description?this.state.resultData.description:"";
         return (
@@ -103,11 +102,26 @@ class MyTrades extends React.Component {
 					</div>
 				<div className="btnRow">
 				<a href="#" className="ditch">
-				 
-				   <LastPitchPopup offerTrade={this.state.resultData}/>
+                   <If condition={localStorage.getItem('isLoggedIn') == "1"} >
+						<Then>
+						    <LastPitchPopup offerTrade={this.state.resultData}/>
+                        </Then>
+                        <Else>
+							<LoginPopup  offerTrade={this.state.resultData}/>
+                       </Else>
+                    </If>                  
 				</a>
-				<a href="#" className="ditch add-wishlist">Add to Wishlist</a>
-				<div className="cl"></div>
+				<a href="#" className="ditch add-wishlist">
+				 <If condition={localStorage.getItem('isLoggedIn') == "1"} >
+						<Then>
+						    Add to Wishlist
+                        </Then>
+                        <Else>
+							 Add to Wishlist							 
+                       </Else>
+                    </If>
+				</a>
+				    <div className="cl"></div>
 				</div>
 			
 				<div className="productDetails">

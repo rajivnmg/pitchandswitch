@@ -101,14 +101,13 @@ class Header extends Component {
 		//~ })
 		
 		axios.get('/user/frontNotification').then(result => {
-		this.setState({ 
-			//user:result.data.result,
+		this.setState({ 			
 			notification_type:result.data.notification_type,
 			notifications :result.data.notifications,
 			totalNotifications:result.data.totalNotifications
 		  })	
 		})
-	console.log("localStorage",localStorage.getItem('isLoggedIn'));
+	   console.log("localStorage",localStorage.getItem('isLoggedIn'));
 	}
 	
 	
