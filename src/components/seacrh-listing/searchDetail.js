@@ -16,9 +16,12 @@ import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
 import ProductPitchPopup from './pitchProductPopup';
 import ViewPitchPopup from './viewPitchPopup';
+import AgainPitchPopup from './againditch';
 import LastPitchPopup from './lditch'
 import LoginPopup from './LoginPopup'
 const constant = require('../../config/constant')
+var FD = require('form-data');
+var fs = require('fs');
 
 const history = createHistory();
 class MyTrades extends React.Component {
@@ -28,6 +31,7 @@ class MyTrades extends React.Component {
         let productId = props.match.params.id; 
         this.state = {
             resultData: "",
+            checkData: "",
             productId: productId,
             mainImages: "",
             productImagesResult:"",
@@ -36,14 +40,14 @@ class MyTrades extends React.Component {
         };
     }
 	
-	   componentWillMount(){		
+	   componentWillMount(){       
 	      axios.get('/product/productDetails/'+ this.state.productId).then(result => {			
-		    this.setState({resultData:result.data.result,mainImages:result.data.result.productImages?result.data.result.     productImages[0]:""});
+		    this.setState({resultData:result.data.result,mainImages:result.data.result.productImages?result.data.result.productImages[0]:""});
 		})
 		
-	   axios.get('/donation/getConstant').then(result => {
-           this.setState({conditions: result.data.result});            
-       });
+		   axios.get('/donation/getConstant').then(result => {
+			   this.setState({conditions: result.data.result});            
+		   });
        
        if(localStorage.getItem('jwtToken') !== null){	
 			axios.get('/user/getLoggedInUser').then(result => {			
@@ -52,9 +56,29 @@ class MyTrades extends React.Component {
 				localStorage.setItem('userId',result.data.result._id);
 				localStorage.setItem('userName',result.data.result.userName);			
 				localStorage.setItem('isLoggedIn',1);
+				//this.setState({resultData:result.data.result});
+				this.setState({resultData:result.data.result});
 			})
 		}
-     }
+		 const data = new FD();		   
+			data.append('productId', this.state.productId)
+			data.append('pitchUserID', localStorage.getItem('loggedInUser'))
+			console.log('data',data);
+			axios.post('/product/checkExists/',data).then(result => {			
+			  console.log('redddddd',result)
+		    }) 
+        }
+	
+	 componentDidMount(){
+		 const data = new FD();		    
+			data.append('productId', this.state.productId)
+			data.append('pitchUserID', localStorage.getItem('loggedInUser'))
+			console.log('data',data);
+			axios.post('/product/checkExists/',data).then(result => {
+				//console.log('checkData',result.data.result.length)			
+			  this.setState({checkData:result.data.result});
+		    }) 
+        }
 	
     render() {	
 		 let optionTemplate;
@@ -86,7 +110,7 @@ class MyTrades extends React.Component {
 				</div>            
 				<p className="tagsrow">{this.state.resultData.productCategory?this.state.resultData.productCategory.title:""}</p>
 				<h1>{this.state.resultData.productName}</h1>
-				<div className="productId">Product ID: <strong>{this.state.resultData._id}</strong> 
+				<div className="productId">Product ID: <strong>{this.state.productId}</strong> 
 				  <span className="postedDate">Posted date:{Moment(this.state.resultData.createdAt).format('Y-M-D') }</span>
 				</div>
 				<div className="brdr-top no-padding "><div className="ratingRow"><p className="postedBy">Posted by:</p>
@@ -102,9 +126,17 @@ class MyTrades extends React.Component {
 					</div>
 				<div className="btnRow">
 				<a href="#" className="ditch">
+				{console.log('discount',constant.ditchCount)}
                    <If condition={localStorage.getItem('isLoggedIn') == "1"} >
 						<Then>
-						    <LastPitchPopup offerTrade={this.state.resultData}/>
+						 <If condition={this.state.checkData && this.state.checkData.length>0} >
+						  <Then>
+						      Already Pitched
+						  </Then>
+						  <Else>
+						       <LastPitchPopup offerTrade={this.state.resultData} proID ={this.state.productId}/>
+						  </Else>
+						 </If>
                         </Then>
                         <Else>
 							<LoginPopup  offerTrade={this.state.resultData}/>

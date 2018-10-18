@@ -18,23 +18,23 @@ var FD = require('form-data');
 var fs = require('fs');
 
 const constant = require('../../config/constant')
- const contentStyle = {
- maxWidth: "900px",
- width: "90%"
-};
+const modalStyle = {  maxWidth: "460px",  width: "90%"};  
+const contentStyle = { maxWidth: "900px", width: "90%" };
+
 
 
 class viewPitchPopup extends Component {
-
 	constructor(props) {
 		super(props);
 		this.state = {				
 			offerTrade:this.props.offerTrade,
+			proID:this.props.proID,
 			offerTradeProducts:[],
 			checkedBoxes :[],
 			stateChange:[],
 			optionsChecked: []
-		}				
+		}	
+		console.log('proID',this.props.proID)			
 	 }  
 	 
 	 
@@ -71,7 +71,8 @@ class viewPitchPopup extends Component {
 	  
 	 //componentWillMount state it always execute before render the page
 	componentWillMount(){
-		this.setState({offerTradeId:this.props.offerTrade._id})
+		console.log('proID',this.props.proID)
+		this.setState({offerTradeId:this.props.proID})
 		   axios.get('/trade/getAllProduct/').then(result => {
 			  if(result.data.code === 200){
 			    this.setState({getAllProduct:result.data.result})				
@@ -105,14 +106,14 @@ changeEvent(event){
 		this.setState({	optionsChecked: checkedArray });
 		this.setState({ disabled: false }); 
 	}
-	//console.log('optionsChecked',this.state.optionsChecked)
 }
 
    submitHandler(e){
 	    const data = new FD();
         data.append('productIDS', this.state.optionsChecked)
-        data.append('switchProId', this.props.offerTrade._id)
-	    axios.post('/trade/submitPitchProduct/',data).then(result => {		  
+        data.append('switchProId', this.props.proID)
+	    axios.post('/trade/submitPitchProduct/',data).then(result => {
+		console.log('result',result)		  
 		  if(result.data.code === 200){			  			
 			 this.setState({
 				message: result.data.message,
@@ -121,10 +122,9 @@ changeEvent(event){
 				showFormError: false,
 				isProcess:false
 			  });	
-			  setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});
-				localStorage.removeItem('jwtToken'); 
-				window.location.href='/login';
-			 }, 12000);	
+			   setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});			
+				window.location.href='/my-trades';
+			 }, 99912000);	
 		  }
       })  
    }
@@ -141,37 +141,37 @@ changeEvent(event){
 	} 
 
 
-	componentWillMount(){
-	   this.setState({offerTradeId:this.props.offerTrade._id})
-		axios.get('/trade/getAllProduct/').then(result => {
-		  if(result.data.code === 200){
-			this.setState({getAllProduct:result.data.result})				
-		}
-	})
-	
-	axios.get('/category/categoriesActive/').then(result => {
-		if(result.data.code === 200){
-		  this.setState({categoryActive:result.data.result})				
+	  componentWillMount(){
+		   this.setState({offerTradeId:this.props.proID})
+			axios.get('/trade/getAllProduct/').then(result => {
+			  if(result.data.code === 200){
+				this.setState({getAllProduct:result.data.result})				
+			}
+	  })
+	  axios.get('/category/categoriesActive/').then(result => {
+		   if(result.data.code === 200){
+				this.setState({categoryActive:result.data.result})				
+				}
+			})	
+	  }
+		
+	   componentDidMount(){
+			 axios.get('/trade/offerTradeProduct/'+this.props.proID).then(result => {
+				if(result.data.code === 200){
+				  this.setState({offerTradeProducts:result.data.result})
+			   }
+			})	
 	    }
-	  })	
-	}
-
-	componentDidMount(){
-		axios.get('/trade/offerTradeProduct/'+this.props.offerTrade._id).then(result => {
-			if(result.data.code === 200){
-			  this.setState({offerTradeProducts:result.data.result})
-		   }
-		})	
-	}
 
 render() {
  let optionTemplate;
  if(this.state.categoryActive){
-  let conditionsList = this.state.categoryActive;
-	  //console.log('conditionsList',conditionsList)
+  let conditionsList = this.state.categoryActive;	  
 	  optionTemplate = conditionsList.map(v => (<option key={v._id} value={v._id}>{v.title}</option>));
    }
   let img = this.props.offerTrade.userId?this.props.offerTrade.userId.profilePic:"";
+  
+  
   let productImg = 
   this.props.offerTrade.productImages?this.props.offerTrade.productImages[0]:"";
   return(
@@ -215,7 +215,7 @@ render() {
 				<img src={constant.BASE_IMAGE_URL+'Products/'+productImg} alt="recieved-product image" />
 				</div>
 				<div className="received-product-content-box">
-				<span>Product ID: <strong>{this.props.offerTrade._id}</strong></span>
+				<span>Product ID: <strong>{this.props.proID}</strong></span>
 				<h4>{this.props.offerTrade.productName}</h4>
 				<a className="catLink" href="/">{this.props.offerTrade.description}</a>
 				<div className="ratingRow">
@@ -229,13 +229,12 @@ render() {
 				<div className="cl"></div>
 				<div className="switch-product-section choose-product-div border-top">
 				<Scrollbars className="Scrollsdiv" style={{height: 585 }}>
-				<If condition={this.state.getAllProduct.length > 0}>
+				<If condition={this.state.getAllProduct && this.state.getAllProduct.length > 0}>
 				<Then>
 					{ this.state.getAllProduct.map((productsListing, index) => {								
 					var count = index+1;
 					var productImages = (productsListing.productImages)?(productsListing.productImages[0]):'';
-					return(
-				
+					return(				
 				<div className="switch-product-box selected">
 				<div className="switch-product-image-box">
 				<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
@@ -253,7 +252,7 @@ render() {
 				</div>
 				)
 				})
-				}					  
+				 }					  
 				</Then>							
 				<Else>
 				<p>No Data Available</p>
