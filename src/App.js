@@ -20,10 +20,12 @@ import SearchDetail from './components/seacrh-listing/searchDetail';
 import AddNewProduct from './components/addNewProduct/addnewproduct';
 import EditProduct from './components/addNewProduct/editproduct';
 import myTreasureChest from './components/myTreasureChest/myTreasureChest';
+import TradeMatch from './components/myTreasureChest/trade-match';
 import donatedProducts from './components/donation/donatedProducts';
 import DonateProduct from './components/donation/donateProduct';
 import Wishlist from './components/wishList/wishlist';
 import EmptyWishlist from './components/wishList/clearWishlist';
+import Help from './components/pages/contactUs';
 import contactUs from './components/pages/contactUs';
 import privacy from './components/pages/privacy';
 import term from './components/pages/terms';
@@ -78,10 +80,12 @@ class App extends Component {
                             <Route exact path='/my-trade-detail/:id?' component={MyTradesDetail} />
                             <Route exact path='/my-trade-detail' component={MyTradesDetail} />
                             <Route exact path="/my-treasure-chest" component={myTreasureChest} />
+                            <Route exact path="/trade-match" component={TradeMatch} />
                             <Route exact path='/donated-products' component={donatedProducts} />
                             <Route exact path='/donate-product' component={DonateProduct} />
                             <Route exact path='/wishlist' component={Wishlist} />
                             <Route exact path='/empty-wishlist' component={EmptyWishlist} />
+                            <Route exact path="/help" component={Help} />
                             <Route exact path='/about-us' component={aboutUs} />
                             <Route exact path='/contact-us' component={contactUs} />
                             <Route exact path='/privacy-policy' component={privacy} /> 

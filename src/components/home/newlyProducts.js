@@ -87,7 +87,7 @@ class NewlyProducts extends Component {
                           })
                         }
                     </Slider>
-                    <Link to='/' className='more-items'>More items</Link>
+                   {/* <Link to='/' className='more-items'>More items</Link> */}
                     </div>
                 </div>
               );

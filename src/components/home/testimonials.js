@@ -74,7 +74,7 @@ class Testimonials extends Component {
                         })
                         }
                     </Slider>
-                    <Link to='/' className='more-items'>See More</Link>
+                    {/*<Link to='/' className='more-items'>See More</Link> */}
                 </div>
                 </div>
                             );

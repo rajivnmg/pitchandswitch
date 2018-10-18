@@ -6,15 +6,28 @@ import Style from './home.css';
 //import "~slick-carousel/slick/slick-theme.css"; 
 import Slider from "react-slick";
 import axios from 'axios';
+import moreIcon from '../../images/more-icon.png'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import popularItemImg from '../../images/popular-item1.jpg';
 const constant = require("../../config/constant");
+
 class PopularItems extends Component {
   constructor(props)
     {
        super(props);
         this.state = {
-            popularItems: []
+            popularItems: [],
+            morePopularItem:[{
+				
+                    "title": "More products you may be intrested",
+                    "image":  moreIcon,
+                    "category": "",
+                    "userPic" : "",
+                    "userName" : "",
+                    "className" : "moreItem"
+                
+				}]
         }
        ;
        console.log("STATE ",this.state, this.props)
@@ -94,8 +107,30 @@ class PopularItems extends Component {
 									)
                         })
                         }
+                        <If condition={this.state.popularItems.length > 10}>
+							<Then>                         
+                        {this.state.morePopularItem.map(function (slide) {
+                                        return (
+                                                <div className={"slides-div " + slide.className } key={slide}>
+                                                    <div key={slide}>
+                                                    <div className='pic'><Link to="/my-trade-detail" ><img src={slide.image} /></Link></div>
+                                                        <div className='details'>
+                                                        <h4><a href="/my-trade-detail" >{slide.title}</a></h4>
+                                                            <span className="catLink" >{slide.category}</span>
+                                                        </div>
+                                                    <div className="userdiv">
+                                                        <div className="user-pic"><img src={slide.userPic} /></div>
+                                                        <div className="user-name">{slide.userName}</div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                )
+                        })                        
+                        }
+                        </Then>
+                      </If>
                     </Slider>
-                    <Link to='/' className='more-items'>More items</Link>
+                   {/* <Link to='/' className='more-items'>More items</Link> */}
                 
                 </div>
                             );
