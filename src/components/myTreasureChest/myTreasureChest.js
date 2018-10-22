@@ -84,26 +84,6 @@ class myTreasureChest extends Component {
           }
         });
 	}
-	
-	finterByCategory(categoryId){						
-		this.setState({filterOpt:{category:categoryId,sortBy:this.state.currentshortBy},sortBy:this.state.currentshortBy})
-		  axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
-				this.setState({
-					myTreasureChests : result.data.result
-				});
-		  });
-	}
-	
-	sortBy(id){						
-		this.setState({filterOpt:{category:this.state.currentCategory,sortBy:id},currentshortBy:id})		
-		axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
-			this.setState({
-				myTreasureChests : result.data.result
-			});
-		});
-			
-	}	
-   
 	componentDidMount(){
 			axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');			
 			if(localStorage.getItem('jwtToken') !== null){
@@ -126,6 +106,25 @@ class myTreasureChest extends Component {
 					categories : result.data.result
 				});
 			});
+	}
+	
+	finterByCategory(categoryId){						
+		this.setState({filterOpt:{category:categoryId,sortBy:this.state.currentshortBy},sortBy:this.state.currentshortBy})
+		  axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
+				this.setState({
+					myTreasureChests : result.data.result
+				});
+		  });
+	}
+	
+	sortBy(id){						
+		this.setState({filterOpt:{category:this.state.currentCategory,sortBy:id},currentshortBy:id})		
+		axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
+			this.setState({
+				myTreasureChests : result.data.result
+			});
+		});
+			
 	}
 Capitalize(str){
 	return str.charAt(0).toUpperCase() + str.slice(1);

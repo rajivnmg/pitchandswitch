@@ -92,9 +92,9 @@ class WhatOtherSwitched extends Component {
 						</div>
 						</div>
 						<div className="back">
-						<div className='pic'><Link to="/my-trade-detail" ><img src={constant.BASE_IMAGE_URL+'Products/'+imagePathPitch} /></Link></div>
+						<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+imagePathPitch} /></div>
 						<div className='details'>
-						<h4><a href="/my-trade-detail" >{switched.tradePitchProductId?switched.tradePitchProductId.productName:''}</a></h4>
+						<h4>{switched.tradePitchProductId?switched.tradePitchProductId.productName:''}</h4>
 						<Link className="catLink" replace to='/'>{switched.tradePitchProductId?switched.tradePitchProductId.productCategory.title:'NA'}</Link>
 						</div>
 						<div className="userdiv">

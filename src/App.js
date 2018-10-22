@@ -30,6 +30,7 @@ import SettingProfile from './components/setting-profile';
 import SettingSubscription from './components/setting-subscription';
 import SettingEmailNotification from './components/setting-email-notification';
 import PublicProfile from './components/myTreasureChest/public_profile';
+import SettingPassword from './components/setting-change-password';
 import PublicReviews from './components/myTreasureChest/public_reviews';
 import Help from './components/pages/contactUs';
 import contactUs from './components/pages/contactUs';
@@ -94,6 +95,8 @@ class App extends Component {
                             <Route exact path="/setting-profile" component={SettingProfile} />
                             <Route exact path="/setting-subscription" component={SettingSubscription} />
                             <Route exact path="/setting-email-notification" component={SettingEmailNotification} />
+                            <Route exact path="/setting-change-password" component={SettingPassword} />
+                            <Route exact path="/public-profile/:id?" component={PublicProfile} />
                             <Route exact path="/public-profile" component={PublicProfile} />
                             <Route exact path="/public-reviews" component={PublicReviews} />
                             <Route exact path="/help" component={Help} />

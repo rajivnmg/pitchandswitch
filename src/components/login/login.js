@@ -175,7 +175,8 @@ class Register extends React.Component {
 			this.setState({ message: result.data.message });			
 		}else{			
           this.setState({
-            showFormError: true
+            showFormError: true,
+            message: result.data.message
           });          
         }
       })
@@ -198,7 +199,7 @@ class Register extends React.Component {
   _renderErrorMessage() {
     return (
       <div align="center" className={"alert alert-danger mt-4 inactiveUserError"} role="alert">
-        Oops! Something Went wrong!!!
+         {this.state.message}
       </div>
     );
   }

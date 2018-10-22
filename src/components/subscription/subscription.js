@@ -95,7 +95,7 @@ class Subscription extends React.Component {
 								</div> */}
 									<h4 className="price">{(subscription.price === "0")?'Free':'$'+subscription.price}<sub>/y</sub></h4>
 									
-									{(subscription.price === "0")?<span className='getStarted-btn' onClick={this.handleSubscription.bind(this)} data-id={subscription._id}>Get Started</span>: <GetStarted  subscription={subscription}/>}
+									{(subscription.price < 1)?<span className='getStarted-btn' onClick={this.handleSubscription.bind(this)} data-id={subscription._id}>Get Started</span>: <GetStarted  subscription={subscription}/>}
 							</div>)
 							})
 						}

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import ReactDOM from "react-dom";
-import Style from './dashboard.css';
+//import ReactDOM from "react-dom";
+//import Style from './dashboard.css';
 import Slider from "react-slick";
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import popularItemImg from '../../images/popular-item1.jpg';
-import userPicture from '../../images/user-pic.png';
+import { Link } from 'react-router-dom';
+//import popularItemImg from '../../images/popular-item1.jpg';
+//import userPicture from '../../images/user-pic.png';
 import axios from 'axios'
 
 const constant = require('../../config/constant')

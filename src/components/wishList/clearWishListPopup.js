@@ -1,11 +1,9 @@
-import React, { Component }
-from 'react';
-import Warper from "../common/Warper";
+import React, { Component } from 'react';
 import Popup from "reactjs-popup";
 import axios from 'axios'
 import jquery from 'jquery'
-import { Route, Redirect } from 'react-router'
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import { Redirect } from 'react-router'
+import { If, Then} from 'react-if-elseif-else-render';
 import createHistory from "history/createBrowserHistory" 
 const contentStyle = {
 	maxWidth: "560px",
