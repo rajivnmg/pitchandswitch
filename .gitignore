@@ -7,6 +7,7 @@ sessions/*
 common/constant.js
 src/config/constant.js
 config222/*
+scripts222/*
 # production
 /build
 
