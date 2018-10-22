@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Popup from 'react-popup';
 import Style from './App.css';
+import './App.scss';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Header from './components/header';
 import Footer from './components/footer';
@@ -25,6 +26,11 @@ import donatedProducts from './components/donation/donatedProducts';
 import DonateProduct from './components/donation/donateProduct';
 import Wishlist from './components/wishList/wishlist';
 import EmptyWishlist from './components/wishList/clearWishlist';
+import SettingProfile from './components/setting-profile';
+import SettingSubscription from './components/setting-subscription';
+import SettingEmailNotification from './components/setting-email-notification';
+import PublicProfile from './components/myTreasureChest/public_profile';
+import PublicReviews from './components/myTreasureChest/public_reviews';
 import Help from './components/pages/contactUs';
 import contactUs from './components/pages/contactUs';
 import privacy from './components/pages/privacy';
@@ -85,6 +91,11 @@ class App extends Component {
                             <Route exact path='/donate-product' component={DonateProduct} />
                             <Route exact path='/wishlist' component={Wishlist} />
                             <Route exact path='/empty-wishlist' component={EmptyWishlist} />
+                            <Route exact path="/setting-profile" component={SettingProfile} />
+                            <Route exact path="/setting-subscription" component={SettingSubscription} />
+                            <Route exact path="/setting-email-notification" component={SettingEmailNotification} />
+                            <Route exact path="/public-profile" component={PublicProfile} />
+                            <Route exact path="/public-reviews" component={PublicReviews} />
                             <Route exact path="/help" component={Help} />
                             <Route exact path='/about-us' component={aboutUs} />
                             <Route exact path='/contact-us' component={contactUs} />

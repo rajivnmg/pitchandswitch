@@ -5,7 +5,7 @@ import Popup from "reactjs-popup";
 import Style from './subscription/subscription.css';
 import subscribeImg1 from './../images/subscription-pic1.png';
 import subscribeImg2 from './../images/subscription-pic2.png';
-import GetStarted from './subscription-basic/subscription-basic'
+import GetStarted from './subscription/subscription-basic'
 const contentStyle = {
     maxWidth: "700px",
     width: "90%"

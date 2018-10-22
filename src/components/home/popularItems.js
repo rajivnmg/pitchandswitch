@@ -18,8 +18,7 @@ class PopularItems extends Component {
        super(props);
         this.state = {
             popularItems: [],
-            morePopularItem:[{
-				
+            morePopularItem:[{				
                     "title": "More products you may be intrested",
                     "image":  moreIcon,
                     "category": "",

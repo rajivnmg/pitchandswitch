@@ -183,7 +183,7 @@ class Header extends Component {
 							<li><Link to={'/wishlist'} className="wishlist-icon">Wishlist</Link></li>
 							<li><Link to={'/trade-match'} className="trade-match-icon">Trade Match</Link></li>
 							<li><Link to={'/my-treasure-chest'} className="my-chest-icon">My Treasure Chest</Link></li>
-							<li><a href="#" className="settings-icon">Settings</a></li>
+							<li><Link to={'/setting-profile'} className="settings-icon">Settings</Link></li>
 							<li><Link to={'/help'} className="help-icon">Help</Link></li>
 							<li><Link to={''} onClick={this.logoutHandler} className="login-link">Logout</Link></li>
 						</ul>
