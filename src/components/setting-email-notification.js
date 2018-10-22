@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
-import Style from './myTreasureChest.css';
-import popularItemImg from '../../images/popular-item1.jpg';
-import userPicture from '../../images/user-pic.png';
+import Style from './myTreasureChest/myTreasureChest.css';
+import popularItemImg from '../images/popular-item1.jpg';
+import userPicture from '../images/user-pic.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import Select from 'react-select';
-import axios from 'axios'
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 library.add(faHeart);
 
-const constant = require('../../config/constant')
+
+
 const categoryFilter = [
     {label: "Select", value: 1},
     {label: "Games", value: 2},
-    {label: "Toy", value: 3} 
+    {label: "Toy", value: 3}
 ];
-const App1 = () => ( 
+const App1 = () => (
             <div className="app">
                 <div className="container">
                     <Select value="Newly Added" options={categoryFilter} />
@@ -26,7 +26,7 @@ const newlyAdded = [
     {label: "Newly Added", value: 1},
     {label: "A - Z", value: 2},
     {label: "Z - A", value: 3},
-    {label: "Nearest", value: 4}
+    {label: "Nearest", value: 3}
 ];
 const App2 = () => (
             <div className="app">
@@ -36,7 +36,7 @@ const App2 = () => (
             </div>
             );
 
-class tradeMatch extends Component {
+class myTreasureChest extends Component {
     onLoadMore = () => {
         this.setState((old) => ({limit: old.limit + 10}));
     }
@@ -46,11 +46,6 @@ class tradeMatch extends Component {
         this.state = {
             limit: 10,
             loadMore: true,
-            tradeMatches : [],
-            categories : [{label: "Select", value: 1}],
-            currentCategory:'',
-            currentshortBy:1,
-            filterOpt : {category: "", sortBy: 1},
             slides: [{
                     "title": "Call of Duty : Infinate Warfare More",
                     "image": popularItemImg,
@@ -194,97 +189,87 @@ class tradeMatch extends Component {
 
         }
         ;
-    } 
-	
-	finterByCategory(categoryId){						
-		this.setState({filterOpt:{category:categoryId,sortBy:this.state.currentshortBy},sortBy:this.state.currentshortBy})
-		  axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
-				this.setState({
-					tradeMatches : result.data.result
-				});
-		  });
-	}
-	
-	sortBy(id){						
-		this.setState({filterOpt:{category:this.state.currentCategory,sortBy:id},currentshortBy:id})		
-		axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
-			this.setState({
-				tradeMatches : result.data.result
-			});
-		});
-			
-	}
-	
-	componentWillMount(){
-		// API to get All the product list
-		axios.get('/product/listProduct').then(result => {		 
-		   console.log("componentWillMount TradeMatch listProduct ",result.data.result)
-		   this.setState({tradeMatches:result.data.result})
-		})
-		// API to get All the category list		
-		axios.get('/category/listCategory').then(result =>{			
-			this.setState({
-				categories : result.data.result
-			});
-		});
-	}
-		
-	componentDidMount(){						
-			console.log("componentDidMount from trade match")
-	}
-	
+    }
+
     render() {
         return (
                 <div className="myTreasure">
                     <div className="container">
                         <div className="breadcrumb">
                             <ul>
-                                <li><a href="/">Home</a></li> <li>Trade Match</li>
+                                <li><a href="/">Home</a></li> <li>Settings</li>
                             </ul>
                         </div>
-                        <div className="heading-row">                        
-                            <h1>Trade Match</h1>
-                            <div className="cl"></div>
-                        </div>
-                        <div className="search-row">
-                            <div className="category-left">
-                                <span>Category:</span>                                 
-                                <div className="categoryFilter">
-                                    <div ><Select options={this.state.categories} defaultValue={this.state.categories[0]} onChange={opt => this.finterByCategory(opt.value)} /></div>
-                                </div>
+                
+                
+                        <div className="setting-container">
+                            <div className="left-container">
+                                <ul>
+                                    <li><a href="/setting-profile">Profile Info</a></li>   
+                                    <li><a href="/setting-change-password">Change Password</a></li>   
+                                    <li><a href="/setting-subscription">Subscription Management</a></li>   
+                                    <li><a href="/setting-email-notification" className="active">Email Notifications</a></li>   
+                                </ul>
                             </div>
-                            <div className="sort-by right">
-                                <span>Sort by:</span> 
-                                <div className="newly-add">
-                                    <div className="search"><Select options={newlyAdded} defaultValue={newlyAdded[0]}   onChange={opt => this.sortBy(opt.value)/*console.log(opt.label, opt.value)*/} /></div>
-                                </div>
-                            </div>
-                            <div className="cl"></div>
-                        </div>
-                        <div className="item-listing">
-                            {this.state.tradeMatches.slice(0, this.state.limit).map((tradeMatch, index) => {
-									var userImage = tradeMatch.user?tradeMatch.user[0].profilePic:null
-                                    return(<div className="Items" key={index}>
-                                        <div className="pic"><div className="overlay"><a href="#" className="favourite"><FontAwesomeIcon icon="heart" title="Add to wishlist"/> fav</a></div><img src={constant.BASE_IMAGE_URL+'Products/'+tradeMatch.productImages} alt="" /></div>
-                                        <div className="details">
-                                            <h4><a href="/my-trade-detail">{tradeMatch.productName}</a></h4>
-                                            <a href="#" className="catLink"> {(tradeMatch.category && (tradeMatch.category.length > 0))?tradeMatch.category[0].title:''}</a>           
+                            <div className="right-container">
+                                <div className="change-password">
+    
+            
+    
+                                    <div className="form-row login-row no-margin">
+                                    <div className="radioRight fr">
+        <input type="checkbox" value="None" id="checkbox-toggle-with-text" className="checkbox-toggle" name="checkbox-toggle-with-text" />
+            <label className="checkbox-toggle-label" htmlFor="checkbox-toggle-with-text"> <span className="on">ON</span><span className="off">OFF</span></label> 
+        </div>
+                                        <h3>Email Notifications</h3>
+                                        <p className="brdr-btm">You can select the notifications which you wants to receive through checkbox.</p>
+                                    </div>
+                                    <div>
+                                    <div className="checkbox-row">
+                                        <div className="check-box ">
+                                            <input name="Lenovo" id="cat1" type="checkbox" />
+                                            <label htmlFor="cat1">New message received</label>
                                         </div>
-                                        <div className="userdiv">
-                                            <div className="user-pic"> <FontAwesomeIcon icon="heart-o" /> <img className="userProfile" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage}  /></div>
-                                            <div className="user-name">{(tradeMatch.user)?tradeMatch.user[0].userName:''}</div>
+                                        </div>
+                                        <div className="checkbox-row active">
+                                        <div className="check-box ">
+                                        <input name="Lenovo" id="cat2" type="checkbox" defaultChecked />
+                                            <label htmlFor="cat2">New trade request</label>
+                                        </div>
+                                        </div>
+                                        <div className="checkbox-row">
+                                        <div className="check-box ">
+                                            <input name="Lenovo" id="cat3" type="checkbox" />
+                                            <label htmlFor="cat3">Trade rejected</label>
+                                        </div>
+                                        </div>
+                                        <div className="checkbox-row">
+                                        <div className="check-box ">
+                                            <input name="Lenovo" id="cat4" type="checkbox" />
+                                            <label htmlFor="cat4">Updates on shipping status</label>
+                                        </div>
+                                        </div>
+                                        <div className="checkbox-row">
+                                        <div className="check-box ">
+                                            <input name="Lenovo" id="cat5" type="checkbox" />
+                                            <label htmlFor="cat5">Pitch and Switch Update Communications</label>
+                                        </div>
+                                        </div>
+                                         <div>
+                                            &nbsp;
+                                        </div>
+                                        <div className="form-row">
+                                            <button type={"submit"} className={"submitBtn fl"} >Change</button>
                                         </div>
                                     </div>
-                                            )
-                            })}
+                                    <div className="cl"> </div>
+                                </div>
+                            </div>
                             <div className="cl"></div>
                         </div>
-                        {this.state.tradeMatches.length > this.state.limit ? <div>{this.state.loadMore ? <a className="more-items" href="javascript:void()" onClick={this.onLoadMore}>Load more</a> : ''}</div> : '' } 
-                        <div>&nbsp;</div>
-                
                     </div>
                 </div>
-                    );
+                );
     }
 }
-export default tradeMatch;
+export default myTreasureChest;

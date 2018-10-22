@@ -6,7 +6,6 @@ package-lock.json
 sessions/*
 common/constant.js
 src/config/constant.js
-
 # production
 /build
 

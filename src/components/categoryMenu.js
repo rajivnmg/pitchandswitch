@@ -98,20 +98,20 @@ class categoryMenu extends Component {
 						this.state.category.map((slide, index) => {
 							return(
 								<li key={slide.value} className={ (slide.children && slide.children.length)? "submenu" : null }> 
-								<img src={icon} style= { menuHide } alt={icon} /> <a href="#">{slide.title}</a>
+								<img src={icon} style= { menuHide } alt={icon} /> <a href={'/search-listing/'+slide._id}>{slide.title}</a>
 								{ 
 									(slide.children && slide.children.length) ? 
 									<ul>
 									{
 										slide.children.map((subMenu, i) => {
 											return (
-												<li  key={subMenu.value}  className={ (subMenu.children && subMenu.children.length)? "submenu" : null }><a href="#">{subMenu.title}</a>
+												<li  key={subMenu.value}  className={ (subMenu.children && subMenu.children.length)? "submenu" : null }><a href={'/search-listing/'+subMenu._id}>{subMenu.title}</a>
 												{ (subMenu.children && subMenu.children.length)? 
 												<ul>
 												{
 													subMenu.children.map((subMenu, i) => {
 													return (
-														<li key={subMenu.value}><a href="#">{subMenu.title}</a></li>
+														<li key={subMenu.value}><a href={'/search-listing/'+subMenu._id}>{subMenu.title}</a></li>
 													)
 													})
 

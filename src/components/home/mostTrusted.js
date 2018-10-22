@@ -22,7 +22,7 @@ class mostTrusted extends Component {
         };
     }
         
-	componentDidMount(){
+	componentWillMount(){
 	  axios.get('/user/mostTrustedUsers').then(result => {		 
 		 console.log("most",result);
 			this.setState({mosttrustedUsers:result.data.result});
@@ -64,17 +64,18 @@ class mostTrusted extends Component {
                     <Slider {...settings}>
                         {this.state.mosttrustedUsers.map(function (slide) {
 						var userImage = slide._id?slide._id.profilePic:'';
-                                        return (
-                                                <div className="slides-div"  key={slide}>
-                                                    <div key={slide}>
-                                                    <div className='pic'> <img src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage}/> </div>
-                                                        <div className='details'>
-                                                        <h4><a href="/my-trade-detail" >{(slide._id)?slide._id.userName:''}</a></h4>
-                                                            <div className="ratingRow">{slide.totalRating}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                )
+						var userUrl = (slide._id)?'/public-profile/'+slide._id._id:'#';
+						return (
+								<div className="slides-div"  key={slide}>
+									<div key={slide}>
+									<div className='pic'><Link to={userUrl} ><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage}/></Link> </div>
+										<div className='details'>
+										<h4><Link to={userUrl} >{(slide._id)?slide._id.userName:''}</Link></h4>
+											<div className="ratingRow">{slide.totalRating}</div>
+										</div>
+									</div>
+								</div>
+								)
                         })
                         }
                     </Slider>

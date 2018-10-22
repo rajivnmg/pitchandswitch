@@ -3,12 +3,10 @@ import iconFB from '../images/icon-facebook.png';
 import iconLI from '../images/icon-linkedin.png';
 import iconTW from '../images/icon-twitter.png';
 import { Link } from 'react-router-dom';
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import { If, Then} from 'react-if-elseif-else-render';
 
 class Footer extends Component {
-	constructor(props){
-		super(props)		
-	}	
+	
     render() {
 		let  isLoggedIn = (localStorage.getItem('jwtToken') === null)?false:true;
         return(

@@ -18,8 +18,7 @@ class PopularItems extends Component {
        super(props);
         this.state = {
             popularItems: [],
-            morePopularItem:[{
-				
+            morePopularItem:[{				
                     "title": "More products you may be intrested",
                     "image":  moreIcon,
                     "category": "",
@@ -83,8 +82,9 @@ class PopularItems extends Component {
                     <Slider {...settings}>
                         {this.state.popularItems.map(function (item) {							
 							var productImage = item._id?item._id.productImages[0]:'';	
-							var userImage = item._id?item._id.userId.profilePic:'';							
-							var productUrl = (localStorage.getItem('isLoggedIn') == 1)?'/my-trade-detail/'+(item._id)?item._id._id:'0':'/search-result/'+(item._id)?item._id._id:'0'
+							var userImage = item._id?item._id.userId.profilePic:'';	
+							var productUrl = (localStorage.getItem('isLoggedIn') == 1)?'/my-trade-detail/'+item._id._id:'/search-result/'+item._id._id					
+							
 							return (
 									<div className="slides-div" key={item}>
 										<div key={item}>

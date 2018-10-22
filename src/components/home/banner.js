@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import bannerImg from '../../images/banner.jpg';
-import Style from './home.css';
 import { Link } from 'react-router-dom';
 
 class Banner extends Component {
