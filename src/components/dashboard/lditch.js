@@ -13,7 +13,6 @@ const contentStyle = {
     maxWidth: "900px",
     width: "90%"
 };
-
 const CustomModal = () => (
 <Popup trigger={<a className= 'ditch'> Last Pitch </a>} modal contentStyle = {contentStyle}  lockScroll >
     {  close => ( <div className="modal">  <a className="close" onClick={close}>   &times;  </a>

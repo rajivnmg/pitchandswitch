@@ -22,7 +22,6 @@ const modalStyle = {  maxWidth: "460px",  width: "90%"};
 const contentStyle = { maxWidth: "900px", width: "90%" };
 
 
-
 class viewPitchPopup extends Component {
 	constructor(props) {
 		super(props);
@@ -30,6 +29,7 @@ class viewPitchPopup extends Component {
 			offerTrade:this.props.offerTrade,
 			proID:this.props.proID,
 			offerTradeProducts:[],
+			productData:[],
 			checkedBoxes :[],
 			stateChange:[],
 			optionsChecked: []
@@ -124,21 +124,21 @@ changeEvent(event){
 			  });	
 			   setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});			
 				window.location.href='/my-trades';
-			 }, 99912000);	
+			 }, 12000);	
 		  }
       })  
    }
 
 
-  handleOnChange = (chosenValue) => {	 
-	   this.setState({ categoriesValues: chosenValue.target.value})
-		 axios.get('/trade/getProductByCategory/'+chosenValue.target.value).then(result => {
-		   if(result.data.code === 200){
-			  this.setState({getAllProduct:result.data.result})	
-			     console.log('getAllProduct',this.state.getAllProduct);
-			}
-		})
-	} 
+	  handleOnChange = (chosenValue) => {	 
+		   this.setState({ categoriesValues: chosenValue.target.value})
+			 axios.get('/trade/getProductByCategory/'+chosenValue.target.value).then(result => {
+			   if(result.data.code === 200){
+				  this.setState({getAllProduct:result.data.result})	
+					 console.log('getAllProduct',this.state.getAllProduct);
+				}
+			})
+		} 
 
 
 	  componentWillMount(){
@@ -146,6 +146,7 @@ changeEvent(event){
 			axios.get('/trade/getAllProduct/').then(result => {
 			  if(result.data.code === 200){
 				this.setState({getAllProduct:result.data.result})				
+				console.log('getAllProduct',this.state.getAllProduct)
 			}
 	  })
 	  axios.get('/category/categoriesActive/').then(result => {
@@ -153,27 +154,37 @@ changeEvent(event){
 				this.setState({categoryActive:result.data.result})				
 				}
 			})	
+	
+		
 	  }
 		
-	   componentDidMount(){
-			 axios.get('/trade/offerTradeProduct/'+this.props.proID).then(result => {
-				if(result.data.code === 200){
-				  this.setState({offerTradeProducts:result.data.result})
-			   }
-			})	
-	    }
-
+	  componentDidMount(){
+		axios.get('/trade/offerTradeProduct/'+this.props.proID).then(result => {
+			if(result.data.code === 200){
+				console.log('result',result.data.result);
+			  this.setState({offerTradeProducts:result.data.result})
+		   }
+		})	
+		
+		axios.get('/product/viewProduct/'+this.props.proID).then(result => {
+			if(result.data.code === 200){
+				console.log('dddddddddd',result.data.result)				
+			  this.setState({productData:result.data.result})
+		   }
+		})
+			
+	  }
+       
 render() {
  let optionTemplate;
  if(this.state.categoryActive){
   let conditionsList = this.state.categoryActive;	  
 	  optionTemplate = conditionsList.map(v => (<option key={v._id} value={v._id}>{v.title}</option>));
    }
-  let img = this.props.offerTrade.userId?this.props.offerTrade.userId.profilePic:"";
-  
+  let img = this.state.productData.userId?this.state.productData.userId.profilePic:"";
   
   let productImg = 
-  this.props.offerTrade.productImages?this.props.offerTrade.productImages[0]:"";
+  this.state.productData.productImages?this.state.productData.productImages[0]:"";
   return(
     <Popup trigger={<a href='#' className= 'ditch'>Pitch Now</a>}
 		modal contentStyle = {contentStyle}  lockScroll >
@@ -198,7 +209,6 @@ render() {
 					</div>
 				  </Then>	
 			  <Else>
-			
 			<form className="pure-form pure-form-stacked" onChange={this.onChange}>
 				<div className="header">Choose products to <span className="yellow">Pitch</span> on 
 				<div className="select-box top-right">
@@ -216,11 +226,11 @@ render() {
 				</div>
 				<div className="received-product-content-box">
 				<span>Product ID: <strong>{this.props.proID}</strong></span>
-				<h4>{this.props.offerTrade.productName}</h4>
-				<a className="catLink" href="/">{this.props.offerTrade.description}</a>
+				<h4>{this.state.productData.productName}</h4>
+				<a className="catLink" href="/">{this.state.productData.description}</a>
 				<div className="ratingRow">
 				<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} alt="" /></div>
-				<p>{this.props.offerTrade.description}</p>
+				<p>{this.state.productData.description}</p>
 				<div className="rated">4</div>
 				<div className="cl"></div>
 				</div> 

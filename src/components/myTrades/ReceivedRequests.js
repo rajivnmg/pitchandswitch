@@ -6,25 +6,15 @@ import CancelPitchPopup from './cancelPitch'
 import LastPitchPopup from './lditch'
 import ViewPitchPopup from './viewPitchPopup'
 import axios from 'axios'
+import { Spin, Icon, Alert } from 'antd';
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+
 class PitchRequests extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
 			currentUser:'',
-            pitches: [{
-                    id: 1,
-                    pitchType: true,
-                    user: "Chritstina Morilio",
-                    status: "received",
-                    action: "Ditch",
-                    messageShow: 0,
-                    messageType: false,
-                    isMessage: true,
-                    message: [{username:"213496"},
-                        {message: "Pitch and Switch connects thoughtful consumers around the world with creative entrepreneurs."}
-                    ]
-                }
-            ]
+            pitches: []
         }
     };
         
@@ -40,8 +30,9 @@ class PitchRequests extends React.Component {
 			  if(result.data.code === 200){				  
 				this.setState({
 					pitches: result.data.result,
-					currentUser: result.data.currentUser				  
+					currentUser: result.data.currentUser	  
 				});
+									console.log('currentUser',this.state.currentUser)
 			  }
 			})
 			.catch((error) => {		
@@ -54,7 +45,18 @@ class PitchRequests extends React.Component {
     
     render() {
         return (<div>
+       <If condition={this.state.pitches.length == 0}>
+				<Then>					
+					<Alert
+					  message="Data Status"
+					  description="No Record Found."
+					  type="info"
+					  showIcon
+					/>				
+				</Then>								
+			</If>
 			{this.state.pitches.map((pitch, index) => {
+				
 				if(pitch.SwitchUserId &&  pitch.SwitchUserId._id == this.state.currentUser){
 					var send = (pitch.SwitchUserId &&  pitch.SwitchUserId._id == this.state.currentUser)?0:1;
 					let ditchClasses = ['ditch'];                                                       

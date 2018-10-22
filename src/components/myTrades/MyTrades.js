@@ -26,7 +26,8 @@ class MyTrades extends Component {
 			<div  className="container">
 				<div className="breadcrumb">
 					<ul>
-						<li><a href="/">Home</a></li><li>My Trades</li>
+						<li><a href="/">Home</a></li>
+						<li>My Trades</li>
 					</ul>
 				</div>
 				<div className="cl"></div>
@@ -96,12 +97,11 @@ class MyTrades extends Component {
 									</ul>
 								</div>     
 								<h4>Ditched</h4>
-								<Ditch />
-								<a className="more-items" href="#">More result</a>
+								<Ditch />								
 							</TabPanel>
-                      </Tabs>
+                        </Tabs>
 					</div>
-				</div>
+				  </div>
 				<div className="cl"> </div>
 			</div>
 		</div>

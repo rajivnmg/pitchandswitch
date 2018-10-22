@@ -46,9 +46,7 @@ render() {
         <a className="close" onClick={close}>
             &times;
         </a>
-        <div className="header">Pitch sent on <input className="ditch-btn" value="Cancel Pitch" type="submit" />
-				<div className="cl"></div>
-			</div>
+        <div className="header">Pitch sent on</div>
           <div className="content">
 			<div className="received-product">
 			<div className="received-product-box">
@@ -75,30 +73,28 @@ render() {
 			<div className="cl"></div>
 			</p>
 
-        <If condition={this.state.offerTradeProducts.length > 0}>
+        <If condition={this.state.offerTradeProducts}>
 			<Then>
-			 {  this.state.offerTradeProducts.map((productList, index) => {
-				 console.log('productList',productList)
-				 //~ var productImages = (offerTradeProduct._id)?offerTradeProduct.productImages[0]:'';
-				 //~ {console.log("ajsdlfjalsdjfasdfasdfasddfsfd",offerTradeProduct)}
-				 //~ return(<div className="switch-product-box">
-					//~ <div className="switch-product-image-box">
-					//~ <img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
-						//~ <div className="switch-option-mask">
-							//~ <a className="view-btn margin-top1" href="/">View</a>
-							//~ ditch-btn
-						//~ </div>
-					//~ </div>
-					//~ <div className="switch-product-content-box">
-						//~ <h4>{offerTradeProduct.productName}</h4>
-						//~ <a className="catLink" href="/">{offerTradeProduct.productCategory.title}</a>
-					//~ </div>
-				//~ </div>)
-		      })
+			  { this.state.offerTradeProducts.products.map((productList, index) => {			
+				 var productImages = (productList.productImages)?productList.productImages[0]:'';
+				 return(<div className="switch-product-box">
+					<div className="switch-product-image-box">
+					<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+						<div className="switch-option-mask">
+							<a className="view-btn margin-top1" href={'/search-listing/'+productList._id}>View</a>
+							ditch-btn
+						</div>
+					</div>
+					<div className="switch-product-content-box">
+						<h4>{productList.productName}</h4>
+						<a className="catLink" href={'/search-listing/'+productList._id}>{productList.productCategory.title}</a>
+					</div>
+				</div>)
+		       })
 		     }
 		    </Then>							
 		<Else>
-		  <p>No Image Available</p>
+		  <p>No Data Available</p>
 		</Else>
 	</If>
 </div>

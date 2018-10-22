@@ -42,7 +42,7 @@ class MyTrades extends React.Component {
 	
 	   componentWillMount(){       
 	      axios.get('/product/productDetails/'+ this.state.productId).then(result => {			
-		    this.setState({resultData:result.data.result,mainImages:result.data.result.productImages?result.data.result.productImages[0]:""});
+		    this.setState({resultData:result.data.result,mainImages:result.data.result?result.data.result.productImages[0]:""});
 		})
 		
 		   axios.get('/donation/getConstant').then(result => {
