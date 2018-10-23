@@ -16,6 +16,7 @@ class PitchRequests extends React.Component {
 			currentUser:'',
             pitches: []
         }
+        console.log('pppppppp',props)
     };
         
 	TrackHandler = (id) => {
@@ -53,8 +54,9 @@ class PitchRequests extends React.Component {
 					  showIcon
 					/>				
 				</Then>								
-			</If>
+		    <Else>
 			{ this.state.pitches.map((pitch, index) => {
+				{console.log('pitch',pitch.pitchUserId._id)}				
 				   if(pitch.pitchUserId &&  pitch.pitchUserId._id == this.state.currentUser){	
 					var send = (pitch.pitchUserId &&  pitch.pitchUserId._id == this.state.currentUser)?1:0;
 					let ditchClasses = ['ditch'];                                                       
@@ -70,7 +72,7 @@ class PitchRequests extends React.Component {
 							{ (pitch.pitchUserId &&  pitch.pitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
 							<div className="colum user"> <span>{pitch.SwitchUserId?pitch.SwitchUserId.userName:'N/A'}</span>
 							</div>
-							<div className="colum status"><span className='sent'>Send</span></div>
+							<div className="colum status"><span className='sent'>Send ddddddddddddd</span></div>
 							<div className="colum"><a href="#" className="view-pitch">
 								<ViewPitchPopup offerTrade={pitch}/></a></div>
 							<div className="colum"></div>
@@ -83,6 +85,8 @@ class PitchRequests extends React.Component {
 				  } 
 				}
              )}
+             </Else>
+            </If>
         </div>
        );
     }

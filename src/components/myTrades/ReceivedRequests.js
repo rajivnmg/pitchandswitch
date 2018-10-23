@@ -16,6 +16,7 @@ class PitchRequests extends React.Component {
 			currentUser:'',
             pitches: []
         }
+         console.log('vvvvvvv',props)
     };
         
 	TrackHandler = (id) => {
@@ -32,7 +33,7 @@ class PitchRequests extends React.Component {
 					pitches: result.data.result,
 					currentUser: result.data.currentUser	  
 				});
-									console.log('currentUser',this.state.currentUser)
+				console.log('currentUser',this.state.currentUser)
 			  }
 			})
 			.catch((error) => {		
@@ -46,14 +47,14 @@ class PitchRequests extends React.Component {
     render() {
         return (<div>
        <If condition={this.state.pitches.length == 0}>
-				<Then>					
-					<Alert
-					  message="Data Status"
-					  description="No Record Found."
-					  type="info"
-					  showIcon
-					/>				
-				</Then>								
+			  <Then>					
+				<Alert
+				  message="Data Status"
+				  description="No Record Found."
+				  type="info"
+				  showIcon
+				/>				
+			   </Then>								
 			</If>
 			{this.state.pitches.map((pitch, index) => {
 				
@@ -72,7 +73,7 @@ class PitchRequests extends React.Component {
 							<div className="colum user">
 							   <span>{pitch.pitchUserId?pitch.pitchUserId.userName:'N/A'}</span>
 							</div>
-							<div className="colum status"><span className='received'>Received</span></div>
+							<div className="colum status"><span className='received'>Received ddddddddddddd</span></div>
 							<div className="colum"><a href="#" className="view-pitch"><ViewPitchPopup offerTrade={pitch}/></a></div>
 							<div className="colum"></div>
 							<div className="colum message"></div>  
