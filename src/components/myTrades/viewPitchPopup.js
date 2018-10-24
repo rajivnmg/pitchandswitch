@@ -20,6 +20,7 @@ class viewPitchPopup extends Component {
 			offerTrade:this.props.offerTrade,
 			offerTradeProducts:[]
 		}
+		console.log('mmmmmmmmm',this.props);
 	}
 	
 	componentWillMount(){		
@@ -28,21 +29,22 @@ class viewPitchPopup extends Component {
 	
 	componentDidMount(){
 		axios.get('/trade/tradingProduct/'+this.state.offerTrade._id).then(result => {
-		  console.log('rrrrrrrrrr',result);
-			if(result.data.code === 200){					
-				this.setState({offerTradeProducts:result.data.result})
-				console.log('offerTradeProducts',this.state.offerTradeProducts)				
+			if(result.data.code === 200){		
+				
+				this.setState({offerTradeProducts:result.data.result})				
 			}
 		})
 	}
 	
 	
 render() {
+	const proImg = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
+	const productIMG = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.profilePic:"";
+	
    return (
-		<Popup trigger={<a className= 'view-pitch'> View Pitch </a>} modal contentStyle = {contentStyle} lockScroll > 
-
+	<Popup trigger={<a className= 'view-pitch'> View Pitch </a>} modal contentStyle = {contentStyle} lockScroll > 
 	{ close => (
-    <div className="modal">
+      <div className="modal">
         <a className="close" onClick={close}>
             &times;
         </a>
@@ -51,16 +53,16 @@ render() {
 			<div className="received-product">
 			<div className="received-product-box">
 			<div className="received-product-image-box">
-			<img src={rcvProduct} alt="recieved-product image" />
+			  <img src={constant.BASE_IMAGE_URL+'Products/'+proImg} alt="recieved-product image" />
 			</div>
 			<div className="received-product-content-box">
-			<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId._id}</strong></span>
-			<h4>Product Name: {this.state.offerTrade.SwitchUserProductId.productName}  </h4>
-			<span> {this.state.offerTrade.SwitchUserProductId.description} </span>
-			<a className="catLink" href="/">{this.state.offerTrade.SwitchUserProductId.productCategory}</a>
+			<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId._id:""}</strong></span>
+			<h4>Product Name: {this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productName:""}  </h4>
+			<span> {this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.description:""} </span>
+			<a className="catLink" href="/">{this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productCategory:""}</a>
 			<div className="ratingRow">
-			<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+this.state.offerTrade.SwitchUserId.profilePic} alt="" /></div>
-			<p>{this.state.offerTrade.SwitchUserId.userName}</p>
+			<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+productIMG} alt="" /></div>
+			<p>{this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.userName:""}</p>
 			<div className="rated">4</div>
 			<div className="cl"></div>
 			</div>
@@ -69,29 +71,14 @@ render() {
 			<div className="cl"></div>
 			<div className="switch-product-section">
 			<p>Offered products for switch:
-			<span className="pitch-offered"><span className="pitch-offer">Pitch offered To </span> {(this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:''}</span>
+			<span className="pitch-offered">
+			<span className="pitch-offer">Pitch offered To </span> {(this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:''}</span>
 			<div className="cl"></div>
 			</p>
 
         <If condition={this.state.offerTradeProducts}>
 			<Then>
-			  { this.state.offerTradeProducts.products.map((productList, index) => {			
-				 var productImages = (productList.productImages)?productList.productImages[0]:'';
-				 return(<div className="switch-product-box">
-					<div className="switch-product-image-box">
-					<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
-						<div className="switch-option-mask">
-							<a className="view-btn margin-top1" href={'/search-listing/'+productList._id}>View</a>
-							ditch-btn
-						</div>
-					</div>
-					<div className="switch-product-content-box">
-						<h4>{productList.productName}</h4>
-						<a className="catLink" href={'/search-listing/'+productList._id}>{productList.productCategory.title}</a>
-					</div>
-				</div>)
-		       })
-		     }
+			   <p>No Data Available</p>
 		    </Then>							
 		<Else>
 		  <p>No Data Available</p>

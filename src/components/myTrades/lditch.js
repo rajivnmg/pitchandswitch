@@ -20,7 +20,6 @@ const CustomModal = () => (
     modal
     contentStyle = {contentStyle}
     lockScroll 
-          
     >
     {
         close => (
