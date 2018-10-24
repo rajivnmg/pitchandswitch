@@ -1,195 +1,50 @@
 import React, { Component } from 'react';
-import Style from './myTreasureChest/myTreasureChest.css';
+import { Link } from 'react-router-dom';
 import popularItemImg from '../images/popular-item1.jpg';
 import userPicture from '../images/user-pic.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import Select from 'react-select';
+import axios from 'axios'
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 library.add(faHeart);
 
-
-
-const categoryFilter = [
-    {label: "Select", value: 1},
-    {label: "Games", value: 2},
-    {label: "Toy", value: 3}
-];
-const App1 = () => (
-            <div className="app">
-                <div className="container">
-                    <Select value="Newly Added" options={categoryFilter} />
-                </div>
-            </div>
-            );
-const newlyAdded = [
-    {label: "Newly Added", value: 1},
-    {label: "A - Z", value: 2},
-    {label: "Z - A", value: 3},
-    {label: "Nearest", value: 3}
-];
-const App2 = () => (
-            <div className="app">
-                <div className="container">
-                    <Select value="Newly Added" options={newlyAdded} />
-                </div>
-            </div>
-            );
-
-class myTreasureChest extends Component {
+class settingEmailNotification extends Component {
     onLoadMore = () => {
         this.setState((old) => ({limit: old.limit + 10}));
     }
-    constructor(props)
+     constructor(props)
     {
         super(props);
         this.state = {
-            limit: 10,
-            loadMore: true,
-            slides: [{
-                    "title": "Call of Duty : Infinate Warfare More",
-                    "image": popularItemImg,
-                    "category": "Games",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Leander : Cradle, Crib, High Chair, Changing",
-                    "image": "https://api.androidhive.info/json/movies/3.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Holy Crap! This wooden rocket has some",
-                    "image": "https://api.androidhive.info/json/movies/4.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/5.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/6.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Call of Duty : Infinate Warfare More",
-                    "image": "https://api.androidhive.info/json/movies/1.jpg",
-                    "category": "Games",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Leander : Cradle, Crib, High Chair, Changing",
-                    "image": "https://api.androidhive.info/json/movies/3.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Holy Crap! This wooden rocket has some",
-                    "image": "https://api.androidhive.info/json/movies/4.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                }, {
-                    "title": "Call of Duty : Infinate Warfare More",
-                    "image": popularItemImg,
-                    "category": "Games",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Leander : Cradle, Crib, High Chair, Changing",
-                    "image": "https://api.androidhive.info/json/movies/3.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Holy Crap! This wooden rocket has some",
-                    "image": "https://api.androidhive.info/json/movies/4.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/5.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/6.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Call of Duty : Infinate Warfare More",
-                    "image": "https://api.androidhive.info/json/movies/1.jpg",
-                    "category": "Games",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Leander : Cradle, Crib, High Chair, Changing",
-                    "image": "https://api.androidhive.info/json/movies/3.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Holy Crap! This wooden rocket has some",
-                    "image": "https://api.androidhive.info/json/movies/4.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                }
-            ],
-
-        }
-        ;
+			user : {}  
+        };
     }
+	
+  componentWillMount(){
+		if(localStorage.getItem('jwtToken') !== null){	
+			axios.get('/user/getLoggedInUser').then(result => {						
+				if(result.data.code === 200){					
+					this.setState({ 
+						user:result.data.result,
+					})	
+					localStorage.setItem('loggedInUser',result.data.result._id);
+					localStorage.setItem('userId',result.data.result._id);
+					localStorage.setItem('userEmail',result.data.result.email);
+					localStorage.setItem('userName',result.data.result.userName);								
+					if((result.data.result.emailVerified == "1") && (result.data.result.subscriptionStatus =="1")){
+						localStorage.setItem('isLoggedIn',1);
+					}else{
+						localStorage.setItem('isLoggedIn',0);
+					}					
+				}else{
+					 this.props.history.push('/logout');
+				}
+			})
+		}else{
+			 this.props.history.push('/logout');
+		}
+	}
 
     render() {
         return (
@@ -197,7 +52,7 @@ class myTreasureChest extends Component {
                     <div className="container">
                         <div className="breadcrumb">
                             <ul>
-                                <li><a href="/">Home</a></li> <li>Settings</li>
+                                <li><a href={'/dashboard'}>Home</a></li> <li>Settings</li>
                             </ul>
                         </div>
                 
@@ -205,10 +60,10 @@ class myTreasureChest extends Component {
                         <div className="setting-container">
                             <div className="left-container">
                                 <ul>
-                                    <li><a href="/setting-profile">Profile Info</a></li>   
-                                    <li><a href="/setting-change-password">Change Password</a></li>   
-                                    <li><a href="/setting-subscription">Subscription Management</a></li>   
-                                    <li><a href="/setting-email-notification" className="active">Email Notifications</a></li>   
+                                    <li><Link to={'/setting-profile'}>Profile Info</Link></li>   
+                                    <li><Link to={'/setting-change-password'}>Change Password</Link></li>   
+                                    <li><Link to={'/setting-subscription'}>Subscription Management</Link></li>   
+                                    <li><Link to={'/setting-email-notification'}  className="active">Email Notifications</Link></li>   
                                 </ul>
                             </div>
                             <div className="right-container">
@@ -272,4 +127,4 @@ class myTreasureChest extends Component {
                 );
     }
 }
-export default myTreasureChest;
+export default settingEmailNotification;

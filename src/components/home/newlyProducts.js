@@ -65,10 +65,10 @@ class NewlyProducts extends Component {
            <div className="container">
                <h3> Newly added products</h3>
                     <Slider {...settings}>
-                        {this.state.newlyProducts.map(function (newlyProduct,index) {
-							
+                        {this.state.newlyProducts.map(function (newlyProduct,index) {							
 							var userImage = newlyProduct.user?newlyProduct.user[0].profilePic:null
-							var productUrl = (localStorage.getItem('isLoggedIn') == 1)?'/my-trade-detail/'+newlyProduct._id:'/search-result/'+newlyProduct._id
+							var userIds =(newlyProduct.user)?newlyProduct.user[0]._id:'0'
+							var productUrl = (localStorage.getItem('isLoggedIn') == 1 && localStorage.getItem('userId') == userIds)?'/my-trade-detail/'+newlyProduct._id:'/search-result/'+newlyProduct._id
 						return (
 							<div className="slides-div" key={index}>
 								<div key={newlyProduct}>

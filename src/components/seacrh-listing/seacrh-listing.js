@@ -480,12 +480,11 @@ class Register extends React.Component {
 					let img = results.userId?results.userId.profilePic:"";						
 					return (
 					<div className="Items" key={index}><div>
-					<Link className="catLink" to={'/search-result/'+results._id}>
+					<Link to={'/search-result/'+results._id}>
 					    <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+results.productImages} /></div>
-					</Link>
-					
+					</Link>					
 					<div className='details'>
-					<h4><Link className="catLink" to={'/search-result/'+results._id}>{results.productName}</Link></h4>
+					<h4><Link to={'/search-result/'+results._id}>{results.productName}</Link></h4>
 					  <Link className="catLink" to={'/search-result/'+results._id}>{((results.productCategory)?results.productCategory.title:"")}</Link>
 					</div>
 					<div className="userdiv">

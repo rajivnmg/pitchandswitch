@@ -15,6 +15,7 @@ module.exports = {
     'product_path': '/var/www/html/Node_ReactProject/admin/public/assets/uploads/Products/',
     'advertisementimage_path': '/var/www/html/Node_ReactProject/admin/public/assets/uploads/AdvertisementImage/',
     'notification_type':[{'id':'1','name':'New User Created'},{'id':'2','name':'New Trade Requested'},{'id':'3','name':'Trade Rejected'},{'id':'4','name':'New Message Received'}],
-    'donation_conditions':[{'id':'1','name':'New'},{'id':'2','name':'old'},{'id':'3','name':'Excellent'},{'id':'4','name':'Very Old'}]
+    'donation_conditions':[{'id':'1','name':'New'},{'id':'2','name':'old'},{'id':'3','name':'Excellent'},{'id':'4','name':'Very Old'}],
+    'sortBy':[{'value':'1','label':'Newly Added'},{'value':'2','label':'A - Z'},{'value':'3','label':'Z - A'},{'value':'4','label':'Nearest'}]
 
 };

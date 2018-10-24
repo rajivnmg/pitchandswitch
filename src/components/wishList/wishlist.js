@@ -44,8 +44,7 @@ class wishList extends Component {
 
     constructor(props)
     {
-
-        super(props);
+	 super(props);
         this.state = {
             limit: 10,
             loadMore: true,
@@ -53,8 +52,7 @@ class wishList extends Component {
             total :10
 
         };
-    } 
-    
+    }     
 	componentWillMount(){
 		axios.get('/product/wishList').then(wishlists =>{
 				if(wishlists.data.code === 200){
@@ -72,8 +70,7 @@ class wishList extends Component {
                                 <li><a href="/">Home</a></li><li>My Wishlist</li>
                             </ul>
                         </div>
-                        <div className="heading-row">
-                            
+                        <div className="heading-row">                            
                             <ClearWishListPopup />
                             <h1>My Wishlist</h1>
                             <div className="cl"></div>
@@ -100,8 +97,8 @@ class wishList extends Component {
 							</If>
                         <div className="item-listing donateProducts">
                             {this.state.wishlists.slice(0, this.state.limit).map((wishlist, index) => {
-								var productImages = (wishlist._id)?wishlist.productId.productImages[0]:'';
-								var userImage = (wishlist._id)?wishlist.userId.profilePic:'';
+								var productImages = (wishlist.productId)?wishlist.productId.productImages[0]:'';
+								var userImage = (wishlist.userId)?wishlist.userId.profilePic:'';
                                     return(<div className="Items" key={index}>
                                     <div className="pic"> <img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="" /></div>
                                         <div className="details">

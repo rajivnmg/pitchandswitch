@@ -6,16 +6,8 @@ import Select from 'react-select';
 import axios from 'axios';
 import { Popconfirm, message, Button } from 'antd';
 import { Spin, Icon, Alert } from 'antd';
-//~ const categoryFilter = [
-    //~ {label: "Select", value: 1},
-    //~ {label: "Games", value: 2},
-    //~ {label: "Toy", value: 3} 
-//~ ];
-
 const constant = require("../../config/constant");
-
 const text = 'Are you sure to delete this?';
-
 const App1 = () => ( 
             <div className="app">
                 <div className="container">
@@ -23,24 +15,17 @@ const App1 = () => (
                 </div>
             </div>
             );
-const newlyAdded = [
-    {label: "Newly Added", value: 1},
-    {label: "A - Z", value: 2},
-    {label: "Z - A", value: 3},
-    {label: "Nearest", value: 4}
-];
+
 const App2 = () => (
             <div className="app">
                 <div className="container">
-                    <Select value="Newly Added" options={newlyAdded} />
+                    <Select value="Newly Added" options={this.state.newlyAdded} />
                 </div>
             </div>
             );
 
-class myTreasureChest extends Component {
-   
-    constructor(props)
-    
+class myTreasureChest extends Component {   
+    constructor(props)    
     {
         super(props);
         this.state = {
@@ -52,6 +37,7 @@ class myTreasureChest extends Component {
 				 profilePic:'',
 				 userName:'Robert'
 			},
+			newlyAdded : [],
             limit: 5,
             loadMore: true,
             categories : [{label: "Select", value: 1}],
@@ -84,6 +70,10 @@ class myTreasureChest extends Component {
           }
         });
 	}
+	
+	componentWillMount(){
+		this.setState({newlyAdded:constant.sortBy},function(){console.log("newlyAdded",this.state.newlyAdded[0])})
+	}
 	componentDidMount(){
 			axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');			
 			if(localStorage.getItem('jwtToken') !== null){
@@ -106,6 +96,7 @@ class myTreasureChest extends Component {
 					categories : result.data.result
 				});
 			});
+			
 	}
 	
 	finterByCategory(categoryId){						
@@ -165,7 +156,7 @@ Capitalize(str){
                             <div className="sort-by right">
                                 <span>Sort by:</span> 
                                 <div className="newly-add">
-                                    <div className="search"><Select options={newlyAdded} defaultValue={newlyAdded[0]}   onChange={opt => this.sortBy(opt.value)/*console.log(opt.label, opt.value)*/} /></div>
+                                    <div className="search"><Select options={this.state.newlyAdded} defaultValue={this.state.newlyAdded[0]}   onChange={opt => this.sortBy(opt.value)/*console.log(opt.label, opt.value)*/} /></div>
                                 </div>
                             </div>
                             <div className="cl"></div>
