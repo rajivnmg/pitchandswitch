@@ -86,7 +86,7 @@ class PitchRequests extends React.Component {
 							{ (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
 							<div className="colum user width1"> <span>{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}</span></div>
 							<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>							
-							<div className="colum action"><span className="view-pitch pointer">
+							<div className="colum action"><span className="view-pitch pointer cursorPointer">
 							<If condition={send === 1}>
 								<Then>
 									 <ViewPitchPopup offerTrade={pitch}/>										 

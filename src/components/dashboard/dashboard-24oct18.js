@@ -12,11 +12,8 @@ import Ditch from './ditch'
 import ReturnInfo from '../payShopPopup'
 import ReturnInfo1 from '../payShopPopup1'
 import axios from 'axios';
-import { Scrollbars } from 'react-custom-scrollbars';
-import UpgradePlan from '../upgradePlanPopup'
 import { Link } from 'react-router-dom';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
-var moment = require('moment');
 class Dashboard extends Component {	
 	constructor(props){
     super(props);
@@ -29,8 +26,7 @@ class Dashboard extends Component {
 			 middleName:'',
 			 profilePic:'',
 			 userName:''
-			},
-			userSubscription:{}		
+			}			
 	 }    
   
     if(localStorage.getItem('jwtToken') === null){
@@ -56,20 +52,11 @@ class Dashboard extends Component {
 					//~ tradeLeft:result.data.tradeLeft			
 				})			
 			})	
-			
-			// function to get user subscription details : 			
-			axios.get('/user/userSubscription').then(sresult => {	
-				console.log("sresult",sresult.data.userSubacriptions[0])			
-					this.setState({ 					
-						userSubscription:sresult.data.userSubacriptions[0]		
-					})
-			})
-			
 		}	
-			
   }
-    
-   componentDidMount() {
+  
+  
+   componentWillMount() {
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 		 if(localStorage.getItem('jwtToken') !== null){
 			axios.get('/user/userTradeStates').then(result => {				
@@ -83,9 +70,6 @@ class Dashboard extends Component {
 					tradeLeft:result.data.tradeLeft			
 				})			
 			})	
-						
-		
-			
 		}		
   }
   
@@ -177,85 +161,13 @@ Capitalize(str){
                             </div>
                         </div>
                         <div className="dashboardRight">
-                           {/* <div className="tradeText topMargin">
+                            <div className="tradeText topMargin">
                                 <span className="largeTxt">{this.state.tradeLeft}</span>
                                 Trade left
                             </div>
                             <div className="tradeText">
                                 <span className="largeTxt">{this.state.inventoryLeft}</span>
                                Inventory left
-                            </div> */}
-                            <div className="tradeText topMargin">
-                                <h4>Current Plan</h4>
-                                <Scrollbars className="Scrollsdiv" style={{height:402}} >
-                                    <div className="brdrBox">
-                                        <div className="row">
-                                            <div className="left-div bold">
-                                                {(this.state.userSubscription.subscriptionId)?this.state.userSubscription.subscriptionId.subscriptionName:'Basic'} 
-                                            </div>
-                                            <div className="rightDiv bold green">
-                                                {(this.state.userSubscription.subscriptionId && this.state.userSubscription.subscriptionId.price > 0)?this.state.userSubscription.subscriptionId.price:'Free'} 
-                                            </div>
-                                            <div className="cl"></div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="left-div ">
-                                                Trade 
-                                            </div>
-                                            <div className="rightDiv">
-                                               {(this.state.userSubscription.subscriptionId)?this.state.userSubscription.subscriptionId.totalTradePermitted:'0'} 
-                                            </div>
-                                            <div className="cl"></div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="left-div">
-                                                Inventory
-                                            </div>
-                                            <div className="rightDiv pink">
-                                                {(this.state.userSubscription.subscriptionId)?this.state.userSubscription.subscriptionId.totalInventoryAllowed:'0'}
-                                            </div>
-                                            <div className="cl"></div>
-                                        </div>
-                                        <div className="topbrdr-row">
-                                            <p>Start date: <span>{moment((this.state.userSubscription.subscriptionId)?this.state.userSubscription.subscriptionId.createdAt:Date()).format('LL')}</span></p>
-                                            <p>End date: <span>{moment((this.state.userSubscription.subscriptionId)?this.state.userSubscription.subscriptionId.createdAt:Date()).add(1, 'years').format('LL')}</span></p>
-                                             <UpgradePlan />
-                                             <div className="cl"></div>
-                                        </div>
-                                    </div>
-                                    <div className="brdrBox">
-                                        <div className="row">
-                                            <div className="left-div bold">
-                                                Add-on
-                                            </div>
-                                            <div className="rightDiv bold green">
-                                                $1
-                                            </div>
-                                            <div className="cl"></div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="left-div ">
-                                                Trade 
-                                            </div>
-                                            <div className="rightDiv">
-                                                5
-                                            </div>
-                                            <div className="cl"></div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="left-div">
-                                                Inventory
-                                            </div>
-                                            <div className="rightDiv">
-                                                8
-                                            </div>
-                                            <div className="cl"></div>
-                                        </div>
-                                        <div className="topbrdr-row no-padding">
-                                            <p>Vailidity:  <span>Lifetime</span></p>
-                                        </div>
-                                    </div>
-                                </Scrollbars> 
                             </div>
                         </div>
                         <div className="cl"></div>

@@ -1,18 +1,3 @@
-.subscription-container { background-color: #f1f1f1; padding:70px 0; background-size:100% auto}
-.subscription-container .container { max-width: 1140px; margin: 0 auto; text-align: center}
-.subscription-container .subHeading { text-align: center;color: #969696;font-size: 16px;font-weight: 400; padding-bottom:45px; }
-.subscription-container h3 { padding-bottom:25px; color: #414141;font-size: 30px;font-weight: 700; }
-.subscription-container .colum-basic { display:inline-block; width:280px; background: #fff;border: 1px solid #e5e5e5;border-radius: 4px; margin-right: 52px; text-align: center; padding:20px 12px 30px; }
-.subscription-container .colum-basic.gold { margin-right: 0} 
-.subscription-container .colum-basic .pic-row { min-height: 142px; padding-bottom: 12px; vertical-align: bottom}
-.subscription-container .colum-basic .pic-row img { vertical-align: bottom; display: inline}
-
-.subscription-container .colum-basic .row-div {padding:0; border-bottom:1px solid  #f3e0e0; color: #969696;font-weight: 400; }
-.subscription-container .colum-basic .row-div strong {color: #414141;font-size: 15px;line-height: 36px;}
-.subscription-container .colum-basic h4 {color: #d0a518;font-size: 30px;font-weight: 400; padding-bottom: 25px;  border-bottom:1px solid  #f3e0e0; }
-.subscription-container .colum-basic h4.price {color: #3ab03a;font-size: 36px;font-weight: 700; border-bottom:0; padding:25px 0 25px  }
-.subscription-container .colum-basic h4.price sub {font-size: 18px;font-weight: 700;} 
-.subscription-container .colum-basic .getStarted-btn {width: 193px;height: 46px; line-height: 46px; border-radius: 23px;background-color: #dcb73f; display: block;color: #ffffff;font-size: 20px;font-weight: 700; text-decoration:none; margin: 0 auto; cursor: pointer }
 
 .popup-overlay { overflow: auto!important; padding:70px 0}
 .modal {  font-size: 12px; text-align: left}
