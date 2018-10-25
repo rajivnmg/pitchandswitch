@@ -30,6 +30,7 @@ class viewPitchPopup extends Component {
 	
 	componentDidMount(){
 		axios.get('/trade/offerTradeProduct/'+this.state.offerTrade._id).then(result => {
+			console.log("result.data.result",result.data.result)
 				if(result.data.code === 200){
 					this.setState({offerTradeProducts:result.data.result})				
 				}
