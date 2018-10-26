@@ -58,13 +58,14 @@
 .switch-product-section .pitch-offered {float: right; color: #dcb73f;}
 .switch-product-section .pitch-offered .pitch-offer { font-family: Helvetica;font-size: 14px;color: #b2b2b2;}
 
-.choose-product-div .switch-product-box { width:22%; max-width:199px }
+.choose-product-div .switch-product-box { width:24%; max-width:206px }
 .choose-product-div .switch-product-box:nth-child(4n+4) { margin-right: 0}
 .choose-product-div .switch-product-box.rejected { position: relative;}
 .choose-product-div .switch-product-box.rejected .switch-product-image-box { position:initial;}
 .choose-product-div .switch-product-box.rejected .switch-product-image-box .switch-option-mask { opacity: 1; background:rgba(255,255,255,0.6) }
-
-.switch-product-box{display: inline-block; vertical-align: top; width:30.3%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); border-radius: 4px; background-color: #ffffff; margin-right: 26px; margin-top: 15px}
+.choose-product-div .switch-product-box.selected {border-radius: 4px;border: 3px solid #dcb73f; box-sizing: border-box}
+.choose-product-div .switch-product-box.selected .switch-option-mask { opacity:1; background: none;}
+.switch-product-box{display: inline-block; vertical-align: top; width:30.3%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); border-radius: 4px; background-color: #ffffff; margin-right: 20px; margin-top: 15px}
 .switch-product-box:last-child{margin-right: 0px;}
 .switch-product-image-box{position: relative; max-height: 244px;}
 .switch-option-mask{position: absolute; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.40); opacity:0; padding-top: 45px; box-shadow: inset 0 0 0 110px rgba(0,0,0, 0.4) inset;
@@ -102,8 +103,8 @@
 .productId {font-size: 13px;font-family: "Roboto";font-weight: 400; padding-bottom:14px;}
 .productId strong {font-weight:700;}
 .detail-div .btnRow { padding-bottom: 22px}
-.detail-div .btnRow .ditch {border-radius: 25px;    padding: 10px 25px;    background: #dcb73f; color: #fff; text-align: center;display:inline-block; max-width: 170px; text-decoration: none; font-family: Roboto; font-size: 20px; }
-.detail-div .btnRow .ditch.add-wishlist { background: #ffffff url(../../images/add-wishlist.png) no-repeat 22px 17px; color: #ff7979; padding-left: 55px; margin-left:20px;}
+.detail-div .btnRow .ditch {border-radius: 25px;   padding: 10px 25px;    background: #dcb73f; color: #fff; text-align: center;display:inline-block; max-width: 170px; text-decoration: none; font-family: Roboto; font-size: 20px;margin-right:20px; }
+.detail-div .btnRow .ditch.add-wishlist { background: #ffffff url(../../images/add-wishlist.png) no-repeat 22px 17px; color: #ff7979; padding-left: 55px; margin-left: 0; margin-right: 0 }
 .productDetails {border-top:1px solid #d8d8d8; padding-top: 15px;}
 .productDetails h5 {color: #414141;font-family: "Roboto";font-size: 13px;font-weight: 700;line-height:15px; padding-bottom: 8px;}
 .productDetails table {border:0; border-collapse:collapse;}
@@ -121,7 +122,8 @@
 .choose-product-div .switch-option-mask .check-box input[type=checkbox]:checked + label:before { background-color:#dab439; background-position: 5px 5px;}
 .btm-btns { padding: 25px 0 0; text-align: center; border-top:1px solid #dadada; margin-top:15px}
 .btm-btns .more-items {     display: inline-block; margin: 0 25px 0 0; min-width: 130px;}
-
+.btm-btns .more-items.no-margin { margin-right: 0}
+.btm-btns.no-brdr { border-top:0}
 .choose-shippinh-type { padding:0 }
 .choose-shippinh-type ul { list-style: none;}
 .choose-shippinh-type ul li {border-radius: 12px;border: 4px solid #d6d6d6;background-color: #ffffff;width: 225px;height: 225px; line-height: 278px;  text-align: center; display:inline-block; margin-right:30px; cursor: pointer}
@@ -145,9 +147,11 @@
 .my-trades-container .brdr-top .ratingRow .rated { float:left; color: #414141; background:url(../../images/rated-star.png) no-repeat 0 0; padding: 2px 10px 2px 5px; min-width: 16px;  color: #fff;  margin: 7px 0 0 7px;}
 .my-trades-container .brdr-top .ratingRow p.postedBy {color: #414141;font-family: Roboto;font-size: 13px;font-weight: 400; margin-right: 15px;}
 
-/*---------code added by karnika-----------------------------*/
-.tradeSent{ color:#dcb73f !important; }
-.tradeall { color:#414141!important; font-weight: 700 !important; font-size: 16px !important;}
-.tabsent { color: #d0a518!important;}
-.tabreceived {color :#d0a518!important;}
+.topMsg { position: absolute; top:20px;width: 320px; left: 50%; margin-left:-160px; height: 49px; line-height: 49px;border-radius: 4px;background-color: rgba(0,0,0,0.7); text-align: center;color: #ffffff;font-family: Roboto;font-size: 16px;font-weight: 400;}
 
+.modal > .header.centerheading { text-align: center; font-weight:normal;}
+.modal > .header.centerheading span { color: #d0a518;}
+.modal > .textSuccessful { text-align: center; color: #414141;font-size: 13px; padding: 0 25px 45px; font-weight: 700; line-height: 18px;}
+.modal > .textSuccessful span {color: #969696; display: block}
+
+.successIcon { text-align: center;}

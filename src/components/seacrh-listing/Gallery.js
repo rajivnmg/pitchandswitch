@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import ImageGallery from 'react-image-gallery';
 import "../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
 import axios from 'axios';	
-const PREFIX_URL = 'http://newmediaguru.co/html/pitchandswitch/gallery/';
 const constant = require('../../config/constant')
-
+const PREFIX_URL = 'http://newmediaguru.co/html/pitchandswitch/gallery/';
 class ThumbGallery extends React.Component {
 
   constructor(props) {
@@ -25,34 +24,41 @@ class ThumbGallery extends React.Component {
       thumbnailPosition: 'bottom',
       showVideo: {},
       resultData: "",
-      mainImages: "",
-      productImagesResult:""
+      mainImages: "default_product_img@3x.png",
+      productImagesResult:"",
+      imageLoaded : false     
     };
+    console.log("galleriesImg",this.props)
   }
   
-  componentWillMount(){		  
+ 
+  componentWillMount(){		
+	  let basicIMG = `${constant.BASE_IMAGE_URL}`; 
+	  let imgD = '' 	  
 	  console.log('imgases',this.props)
 	     axios.get('/product/productDetails/'+ this.props.galleriesID).then(results => {	
-			this.setState({mainImages:results.data.result?results.data.result.productImages[0]:""});
+			this.setState({mainImages:results.data.result?results.data.result.productImages[0]:"",imageLoaded:true});					
 		})
 	     axios.get('/product/productImages/'+ this.props.galleriesID).then(results => {	
 			this.setState({productImagesResult:results.data.result});			
-		})
-		    let basicIMG = `${constant.BASE_IMAGE_URL}`;
-		     this.images = [
+		})   
+		
+		this.images = [
 			  {
 				//original: basicIMG+this.state.mainImages,
-				original: basicIMG,
-				thumbnail: basicIMG,
+				original: basicIMG+'Products/'+this.props.galleriesImg,
+				thumbnail: basicIMG+'Products/'+this.props.galleriesImg,
 			  },
-			  {
-				original: `${PREFIX_URL}1.jpg`,
-				thumbnail: `${PREFIX_URL}1t.jpg`,
-				originalClass: 'featured-slide',
-				thumbnailClass: 'featured-thumb'      
-			  },
+			  //~ {
+				//~ original: `${constant.BASE_IMAGE_URL}default_product_img@3x.png`,
+				//~ thumbnail: `${constant.BASE_IMAGE_URL}default_product_img@3x.png`,
+				//~ originalClass: 'featured-slide',
+				//~ thumbnailClass: 'featured-thumb'      
+			  //~ },
 			].concat(this._getStaticImages());
-  }
+	}
+  
+  
    componentDidUpdate(prevProps, prevState) {
     if (this.state.slideInterval !== prevState.slideInterval ||
         this.state.slideDuration !== prevState.slideDuration) {
