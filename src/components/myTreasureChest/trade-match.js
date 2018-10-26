@@ -47,27 +47,44 @@ class tradeMatch extends Component {
                 }
             ],
 
-        }
-        ;
+        };
+        this.UpdateWishListProduct = this.UpdateWishListProduct.bind()
     } 
 	// function to get product filter by categoory
 	finterByCategory(categoryId){						
-		this.setState({filterOpt:{category:categoryId,sortBy:this.state.currentshortBy},sortBy:this.state.currentshortBy})
-		  axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
+		this.setState({filterOpt:{category:categoryId,sortBy:this.state.currentshortBy},sortBy:this.state.currentshortBy},
+		function(){		
+		  axios.post('/product/tradeMatchFilterBy',this.state.filterOpt).then(result =>{				
 				this.setState({
 					tradeMatches : result.data.result
 				});
 		  });
+	  });
 	}
 	// function to get product filter by data	
 	sortBy(id){						
-		this.setState({filterOpt:{category:this.state.currentCategory,sortBy:id},currentshortBy:id})		
-		axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
+		this.setState({filterOpt:{category:this.state.currentCategory,sortBy:id},currentshortBy:id},
+		function(){		
+		axios.post('/product/tradeMatchFilterBy',this.state.filterOpt).then(result =>{				
 			this.setState({
 				tradeMatches : result.data.result
 			});
 		});
+	});
 			
+	}	
+	
+	UpdateWishListProduct = (productid,action) => {
+		let newWishlistProducts = []
+		newWishlistProducts = [...this.state.wishlistProducts]; // make a separate copy of the array
+		if(action =='Remove'){		  
+		   var index = newWishlistProducts.indexOf(productid)
+		   newWishlistProducts.splice(index, 1);
+		   this.setState({wishlistProducts: newWishlistProducts});
+		}else{		 
+			  newWishlistProducts.push(productid)
+			  this.setState({wishlistProducts: newWishlistProducts});
+		}
 	}
 	
 	addToWishList(productId){		
@@ -75,24 +92,23 @@ class tradeMatch extends Component {
 		data.userId = localStorage.getItem('userId');
 		data.productId = productId;
 		axios.post('/product/addToWishList',data).then(result => {			
-			this.setState({product:result.data.result,isAlreadyInWishlist:true,showFormSuccess:true,message:'Added successfully'})					
+			this.setState({product:result.data.result,isAlreadyInWishlist:true,showFormSuccess:true,message:'Added successfully'},this.UpdateWishListProduct(productId,'Add'))					
 		})			
 		setTimeout(() => {this.setState({showFormSuccess: false});}, 12000)
-	}
-	
+	}			
 	removeFromWishList(productId){		
 		let data = {};
 		data.userId = localStorage.getItem('userId');
 		data.productId = productId;
-		axios.post('/product/addToWishList',data).then(result => {			
-			this.setState({product:result.data.result,isAlreadyInWishlist:true,showFormSuccess:true,message:'Removed successfully'})					
+		axios.post('/product/removeFromWishList',data).then(result => {			
+			this.setState({product:result.data.result,isAlreadyInWishlist:true,showFormSuccess:true,message:'Removed successfully'},this.UpdateWishListProduct(productId,'Remove'))
 		})			
 		setTimeout(() => {this.setState({showFormSuccess: false});}, 12000)
 	}
 	
 	componentWillMount(){
 		// API to get All the product list
-		axios.get('/product/listProduct').then(result => {		 		  
+		axios.get('/product/tradeMatch').then(result => {		 		  
 		   this.setState({tradeMatches:result.data.result})
 		})
 		// API to get All the category list		
@@ -102,12 +118,11 @@ class tradeMatch extends Component {
 			});
 		});
 	}
-			
+	
 	componentDidMount(){						
 		if(localStorage.getItem('jwtToken') !== null){	
 			axios.get('/user/getUserWishListProducts/'+localStorage.getItem('userId')).then(result => {					
-				if(result.data.code === 200){	
-					console.log("arrOfVals:",result.data.wishlistProducts)				
+				if(result.data.code === 200){					
 					this.setState({ 
 						user:result.data.result,
 						wishlistProducts:result.data.wishlistProducts
@@ -154,13 +169,13 @@ class tradeMatch extends Component {
                             </div>
                             <div className="cl"></div>
                         </div>
-                        <div className="item-listing">
+                        <div className="item-listing">                        
+                        
                             {this.state.tradeMatches.slice(0, this.state.limit).map((tradeMatch, index) => {
-									var userImage = tradeMatch.user?tradeMatch.user[0].profilePic:null
+									var userImage = tradeMatch.userId?tradeMatch.userId.profilePic:null
                                     return(<div className="Items" key={index}>
                                         <div className="pic">
-											<div className="overlay">
-											
+											<div className="overlay">											
 											<If condition ={this.state.wishlistProducts.indexOf(tradeMatch._id) > -1}>	
 												<Then>
 													<a href="#"  onClick={()=>this.removeFromWishList(tradeMatch._id)} className={(this.state.wishlistProducts.indexOf(tradeMatch._id) > -1)?"favourite active":"favourite"}>
@@ -178,18 +193,22 @@ class tradeMatch extends Component {
 										</div>
                                         <div className="details">
                                             <h4><a href="/my-trade-detail">{tradeMatch.productName}</a></h4>
-                                            <a href="#" className="catLink"> {(tradeMatch.category && (tradeMatch.category.length > 0))?tradeMatch.category[0].title:''}</a>           
-                                        </div>
+                                            <a href="#" className="catLink"> {(tradeMatch.productCategory)?tradeMatch.productCategory.title:''}</a>
+                                       </div>
                                         <div className="userdiv">
                                             <div className="user-pic"> <FontAwesomeIcon icon="heart-o" /> <img className="userProfile" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage}  /></div>
-                                            <div className="user-name">{(tradeMatch.user)?tradeMatch.user[0].userName:''}</div>
+                                            <div className="user-name">{(tradeMatch.userId)?tradeMatch.userId.userName:''}</div>
                                         </div>
                                     </div>
                                             )
                             })}
                             <div className="cl"></div>
                         </div>
+                         {(!this.state.tradeMatches.length) ? <div> <Alert message="No Record Found" type="success"/></div> : '' } 
+                       
                         {this.state.tradeMatches.length > this.state.limit ? <div>{this.state.loadMore ? <a className="more-items" href="javascript:void()" onClick={this.onLoadMore}>Load more</a> : ''}</div> : '' } 
+                        
+                        
                         <div>&nbsp;</div>
                 
                     </div>
