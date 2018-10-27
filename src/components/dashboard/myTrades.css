@@ -64,8 +64,8 @@
 .choose-product-div .switch-product-box.rejected .switch-product-image-box .switch-option-mask { opacity: 1; background:rgba(255,255,255,0.6) }
 
 .switch-product-box{display: inline-block; vertical-align: top; width:30.3%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); border-radius: 4px; background-color: #ffffff; margin-right: 26px; margin-top: 15px}
-.switch-product-box:last-child{margin-right: 0px;}
-.switch-product-image-box{position: relative; max-height: 244px;}
+.switch-product-box:last-child{margin-right: 0px;min-height: 246px;}
+.switch-product-image-box{position: relative; max-height: 244px;min-height: 240px;}
 .switch-option-mask{position: absolute; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.40); opacity:0; padding-top: 45px; box-shadow: inset 0 0 0 110px rgba(0,0,0, 0.4) inset;
                     -webkit-transition: all 0.4s ease-in-out; -moz-transition: all 0.4s ease-in-out; -o-transition: all 0.4s ease-in-out; -ms-transition: all 0.4s ease-in-out; transition: all 0.4s ease-in-out; padding-left:15px; padding-right:15px; box-sizing: border-box; }
 .switch-product-box:hover .switch-option-mask{opacity: 1;}
