@@ -25,7 +25,6 @@ class viewDitchPopup extends Component {
 	
 	componentWillMount(){		
 		this.setState({offerTradeId:this.state.offerTrade._id})
-		
 	}
 	 
 	componentDidMount(){

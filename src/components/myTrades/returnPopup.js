@@ -32,8 +32,7 @@ class ReturnPopup extends Component {
 		this.state = {				
 			offerTradeProducts:[],
 			offerTrade:this.props.offerTrade,				
-		}
-		console.log('offerTrade',this.state.offerTrade);
+		}		
 	}
 	
 	componentWillMount(){		
@@ -73,7 +72,6 @@ class ReturnPopup extends Component {
 		data.append('Description', this.state.comments);
 		data.append('ProposedSolution', this.state.proposedSolutions);
 		data.append('status', 1);
-		
         axios.post('/trade/returnTrade', data).then(result => {					
           if(result.data.code === 200){
               this.setState({
@@ -85,7 +83,7 @@ class ReturnPopup extends Component {
 			  });	
 			   setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});			
 				window.location.href='/my-trades';
-			 }, 12000);	
+			 }, 8000);	
            }
         });     
      }

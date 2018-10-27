@@ -17,7 +17,7 @@ class mostTrusted extends Component {
     }
         
 	componentWillMount(){
-	  axios.get('/user/mostTrustedUsers').then(result => {		 		
+	  axios.get('/user/mostTrustedUsers').then(result => {		 
 			this.setState({mosttrustedUsers:result.data.result});
 		 })
      }
@@ -52,6 +52,7 @@ class mostTrusted extends Component {
         };
 
       return (
+
                 <div className="mostTrusted">
         <h3> Most <strong>trusted users</strong> </h3>
                     <Slider {...settings}>
@@ -75,7 +76,7 @@ class mostTrusted extends Component {
                      
                 
                 </div>
-                            );
+                )
             }
-        }
-        export default mostTrusted;
+      }
+export default mostTrusted;
