@@ -3,6 +3,7 @@ import DitchPopup from './shippingTypePopup'
 import axios from 'axios';
 import { Spin, Icon, Alert } from 'antd';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+
 class Ditch extends React.Component {
     constructor() {
         super();		

@@ -7,24 +7,17 @@ import popularItemImg from '../../images/popular-item1.jpg';
 import axios from 'axios';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 const constant = require("../../config/constant");
-class mostTrusted extends Component {
-	
+class mostTrusted extends Component {	
    constructor(props)
     {
         super(props);
         this.state = {           
-            mosttrustedUsers: [{
-                    "userName": "Sasha Neplokhov",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "totalRating": "4.8"
-                }
-            ]
+            mosttrustedUsers: []
         };
     }
         
 	componentWillMount(){
-	  axios.get('/user/mostTrustedUsers').then(result => {		 
-		 console.log("most",result);
+	  axios.get('/user/mostTrustedUsers').then(result => {		 		
 			this.setState({mosttrustedUsers:result.data.result});
 		 })
      }
@@ -62,7 +55,7 @@ class mostTrusted extends Component {
                 <div className="mostTrusted">
         <h3> Most <strong>trusted users</strong> </h3>
                     <Slider {...settings}>
-                        {this.state.mosttrustedUsers.map(function (slide) {
+                        {this.state.mosttrustedUsers?this.state.mosttrustedUsers.map(function (slide) {
 						var userImage = slide._id?slide._id.profilePic:'';
 						var userUrl = (slide._id)?'/public-profile/'+slide._id._id:'#';
 						return (
@@ -76,7 +69,7 @@ class mostTrusted extends Component {
 									</div>
 								</div>
 								)
-                        })
+                        }):''
                         }
                     </Slider>
                      

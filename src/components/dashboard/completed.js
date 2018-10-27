@@ -87,8 +87,8 @@ class Switched extends React.Component {
 							<div className="colum user"><span>{(send===1)?(pitch.offerTradeId)?pitch.offerTradeId.SwitchUserId.userName:'N/A':(pitch.offerTradeId)?pitch.offerTradeId.pitchUserId.userName:'N/A'}</span></div>
 							<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
 							<div className="colum complete-date">{Moment(pitch.updatedAt).format('LL')} </div>
-							<div className="colum trade-info"><PostReview /> </div>  
-							<div className="colum action"><ReturnInfo /> </div>
+							<div className="colum trade-info"> <PostReview offerTrade={pitch}/> </div>  
+							<div className="colum action"><ReturnInfo offerTrade={pitch}/> </div>
 
 							</div>
 
