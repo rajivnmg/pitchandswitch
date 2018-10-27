@@ -24,15 +24,15 @@ class PitchAgainPopup extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {				
-			offerTrade:this.props.offerTrade,
-			proID:this.props.proID,
+		 offerTrade:this.props.offerTrade,
+			proID:this.props.offerTrade.SwitchUserProductId._id,
 			offerTradeProducts:[],
 			productData:[],
 			checkedBoxes :[],
 			stateChange:[],
 			optionsChecked: []
 		}	
-		console.log('proIDddddddddddd',this.props.offerTrade.SwitchUserProductId._id)			
+		console.log('ooooooooooooo',this.state.offerTrade);
 	 }  
 	 
 	 
@@ -57,7 +57,6 @@ class PitchAgainPopup extends Component {
      }
 	 
 	 handleOnChange = (chosenValue) => {
-		 console.log('chosenValue',chosenValue.target.value)
            this.setState({ categoriesValues: chosenValue.target.value})
 		     axios.get('/trade/getProductByCategory/'+chosenValue.target.value).then(result => {
 			 if(result.data.code === 200){
@@ -68,7 +67,6 @@ class PitchAgainPopup extends Component {
       } 
 	
 	componentWillMount(){
-		console.log('proID',this.props.offerTrade.SwitchUserProductId._id)
 		this.setState({offerTradeId:this.props.offerTrade._id})
 		   axios.get('/trade/getAllProduct/').then(result => {
 			  if(result.data.code === 200){
@@ -141,29 +139,33 @@ changeEvent(event){
 		   this.setState({offerTradeId:this.props.offerTrade.SwitchUserProductId._id})
 			axios.get('/trade/getAllProduct/').then(result => {
 			  if(result.data.code === 200){
-				this.setState({getAllProduct:result.data.result})				
-				console.log('getAllProduct',this.state.getAllProduct)
+				this.setState({getAllProduct:result.data.result})
 			}
 	  })
-	  axios.get('/category/categoriesActive/').then(result => {
+	    axios.get('/category/categoriesActive/').then(result => {
 		   if(result.data.code === 200){
 				this.setState({categoryActive:result.data.result})				
 				}
-			})	
+			})
+		axios.get('/trade/switchedProduct/'+this.state.offerTrade._id).then(result => {			
+			if(result.data.code === 200){		
+				this.setState({switchedProducts:result.data.result})				
+			}			
+			
+		})	
 	  }
 		
 	  componentDidMount(){
 		axios.get('/trade/offerTradeProduct/'+this.props.offerTrade.SwitchUserProductId._id).then(result => {
-			if(result.data.code === 200){
-				console.log('result',result.data.result);
+			if(result.data.code === 200){			
 			  this.setState({offerTradeProducts:result.data.result})
 		   }
-		})	
+		})
 		
 		axios.get('/product/viewProduct/'+this.props.offerTrade.SwitchUserProductId._id).then(result => {
 			if(result.data.code === 200){
 			  this.setState({productData:result.data.result})
-		   }
+		   }		  
 		})
 			
 	  }
@@ -175,7 +177,6 @@ render() {
 	  optionTemplate = conditionsList.map(v => (<option key={v._id} value={v._id}>{v.title}</option>));
    }
   let img = this.state.productData.userId?this.state.productData.userId.profilePic:"";
-  
   let productImg = 
   this.state.productData.productImages?this.state.productData.productImages[0]:"";
   return(
@@ -204,12 +205,12 @@ render() {
 							<img src={constant.BASE_IMAGE_URL+'Products/'+productImg} alt="recieved-product image" />
 						</div>
 						<div className="received-product-content-box">
-							<span>Product ID: <strong>{this.props.proID}</strong></span>
+							<span>Product ID: <strong>{this.state.proID}</strong></span>
 							<h4>{this.state.productData.productName}</h4>
-							<a className="catLink" href="/">{this.state.productData.description}</a>
+							<a className="catLink" href="/">{this.state.productData.productCategory.title}</a>
 							<div className="ratingRow">
 							<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} alt="" /></div>
-							<p>{this.state.productData.description}</p>
+							<p>{this.state.productData.userId.firstName}</p>
 							<div className="rated">4</div>
 							<div className="cl"></div>
 							</div>
@@ -218,96 +219,42 @@ render() {
 					<div className="cl"></div>
 					<div className="switch-product-section choose-product-div border-top">
                       <Scrollbars className="Scrollsdiv" style={{height: 585 }}>
-						<div className="switch-product-box">
+                       <If condition={this.state.getAllProduct && this.state.getAllProduct.length > 0}>
+						<Then>
+							{ this.state.getAllProduct.map((productsListing, index) => {								
+							var count = index+1;
+							var productImages = (productsListing.productImages)?(productsListing.productImages[0]):'';
+							return(
+											
+							<div className="switch-product-box rejected">
 							<div className="switch-product-image-box">
-								<img src={offerProduct1} alt="recieved-product image" />
-                                 <div className="switch-option-mask"> <div className="check-box"><input id="pitch1" type="checkbox" /><label for="pitch1">&nbsp;</label></div> </div>
+							<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+							<div className="switch-option-mask">
+							<div className="check-box">
+							<input name="Apple" value={productsListing._id}  id={"pitch"+count} type="checkbox" name="productIDS" value={productsListing._id} onChange={this.changeEvent.bind(this)}  disabled={this.state.disabled}/>
+							<label htmlFor={"pitch"+count}>&nbsp;</label>
+							</div>
+							</div>
 							</div>
 							<div className="switch-product-content-box">
-								<h4>Call of Duty: Infinite Warfare More</h4>
-								<a className="catLink" href="/">Games</a>
+							<h4>{productsListing.productName?productsListing.productName:""}</h4>
+							<a className="catLink" href="/">{productsListing.productCategory?productsListing.productCategory.title:""}</a>
 							</div>
-						</div>
-						<div className="switch-product-box rejected">
-							<div className="switch-product-image-box">
-								<img src={offerProduct3} alt="recieved-product image" />
-								<div className="switch-option-mask">
-                                   <img src={rejected} alt="" />
-								</div>
 							</div>
-							<div className="switch-product-content-box">
-								<h4>Shopkins Shoppies - Bubbleisha</h4>
-								<a className="catLink" href="/">Toy</a>
-							</div>
-						</div>
+							 )
+							})
+						  }					  
+						</Then>							
+						<Else>
+						<p>No Data Available</p>
+						</Else>
+					   </If>
+                      
 						
-						
-						<div className="switch-product-box">
-							<div className="switch-product-image-box">
-								<img src={offerProduct1} alt="recieved-product image" />
-								 <div className="switch-option-mask"> <div className="check-box"><input id="pitch2" type="checkbox" /><label for="pitch2">&nbsp;</label></div> </div>
-							</div>
-							<div className="switch-product-content-box">
-								<h4>Leander: Cradle, Crib, High Chair, Chang...</h4>
-								<a className="catLink" href="/">Baby Products</a>
-							</div>
-						</div>
-                                                <div className="switch-product-box rejected">
-							<div className="switch-product-image-box">
-								<img src={offerProduct1} alt="recieved-product image" />
-								<div className="switch-option-mask">
-                                                                <img src={rejected} alt="" />
-									 
-								</div>
-							</div>
-							<div className="switch-product-content-box">
-								<h4>Leander: Cradle, Crib, High Chair, Chang...</h4>
-								<a className="catLink" href="/">Baby Products</a>
-							</div>
-						</div>
-                                                <div className="switch-product-box">
-							<div className="switch-product-image-box">
-								<img src={offerProduct1} alt="recieved-product image" />
-								 <div className="switch-option-mask"> <div className="check-box"><input id="pitch3" type="checkbox" /><label for="pitch3">&nbsp;</label></div> </div>
-							</div>
-							<div className="switch-product-content-box">
-								<h4>Call of Duty: Infinite Warfare More</h4>
-								<a className="catLink" href="/">Games</a>
-							</div>
-						</div>
-						<div className="switch-product-box">
-							<div className="switch-product-image-box">
-								<img src={offerProduct3} alt="recieved-product image" />
-								 <div className="switch-option-mask"> <div className="check-box"><input id="pitch4" type="checkbox" /><label for="pitch4">&nbsp;</label></div> </div>
-							</div>
-							<div className="switch-product-content-box">
-								<h4>Shopkins Shoppies - Bubbleisha</h4>
-								<a className="catLink" href="/">Toy</a>
-							</div>
-						</div>
-						<div className="switch-product-box">
-							<div className="switch-product-image-box">
-								<img src={offerProduct1} alt="recieved-product image" />
-								 <div className="switch-option-mask"> <div className="check-box"><input id="pitch5" type="checkbox" /><label for="pitch5">&nbsp;</label></div> </div>
-							</div>
-							<div className="switch-product-content-box">
-								<h4>Leander: Cradle, Crib, High Chair, Chang...</h4>
-								<a className="catLink" href="/">Baby Products</a>
-							</div>
-						</div>
-                                                <div className="switch-product-box">
-							<div className="switch-product-image-box">
-								<img src={offerProduct1} alt="recieved-product image" />
-								 <div className="switch-option-mask"> <div className="check-box"><input id="pitch6" type="checkbox" /><label for="pitch6">&nbsp;</label></div> </div>
-							</div>
-							<div className="switch-product-content-box">
-								<h4>Leander: Cradle, Crib, High Chair, Chang...</h4>
-								<a className="catLink" href="/">Baby Products</a>
-							</div>
-						</div>
+					
 					</Scrollbars>
 					<div className="btm-btns">
-					<a className="more-items" href="#">Pitch Now</a>
+					<Button onClick={(e)=>this.submitHandler(e)} color="success" className="more-items">Pitch Now</Button>
 					<a className="ditch cancel-ditch"> Cancel Pitch </a>
                 </div>
 					</div>

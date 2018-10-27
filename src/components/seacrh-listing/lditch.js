@@ -34,7 +34,7 @@ class viewPitchPopup extends Component {
 			stateChange:[],
 			optionsChecked: []
 		}	
-		console.log('proID',this.props.proID)			
+		console.log('offerTrade',this.state.offerTrade)
 	 }  
 	 
 	 
@@ -71,7 +71,6 @@ class viewPitchPopup extends Component {
 	  
 	 //componentWillMount state it always execute before render the page
 	componentWillMount(){
-		console.log('proID',this.props.proID)
 		this.setState({offerTradeId:this.props.proID})
 		   axios.get('/trade/getAllProduct/').then(result => {
 			  if(result.data.code === 200){
@@ -87,7 +86,6 @@ class viewPitchPopup extends Component {
 	//componentWillMount methos end 
 
 changeEvent(event){
-
   let checkedArray = this.state.optionsChecked;	
 	let selectedValue = event.target.value;	
 	   if(event.target.checked === true) {	
@@ -154,8 +152,6 @@ changeEvent(event){
 				this.setState({categoryActive:result.data.result})				
 				}
 			})	
-	
-		
 	  }
 		
 	  componentDidMount(){
@@ -168,7 +164,6 @@ changeEvent(event){
 		
 		axios.get('/product/viewProduct/'+this.props.proID).then(result => {
 			if(result.data.code === 200){
-				console.log('dddddddddd',result.data.result)				
 			  this.setState({productData:result.data.result})
 		   }
 		})
