@@ -196,7 +196,7 @@ render() {
 						</a>
 						<div className="header centerheading"><span>Pitch</span> Successful<div className="cl"></div></div>
 						<p className="textSuccessful"><span classNamne="gray">You have successfully pitched on</span>
-						    {this.props.offerTrade.productName} ~ {this.props.offerTrade.description} 
+						    {this.props.offerTrade.productName} ~ {this.props.offerTrade.productCategory?this.props.offerTrade.productCategory.description:""} 
 						</p>
 						<div class="successIcon">
 						    <img src={successPic} alt="" />
@@ -205,14 +205,8 @@ render() {
 				  </Then>	
 			  <Else>
 			<form className="pure-form pure-form-stacked" onChange={this.onChange}>
-				<div className="header">Choose products to <span className="yellow">Pitch</span> on 
-				<div className="select-box top-right">
-				<select id="select" innerRef={input => (this.condition = input)} className="form-control" onChange={this.handleOnChange}>
-				   {optionTemplate}
-				</select>
-				</div>
-				<div className="cl"></div>
-				</div>
+			     <div className="header">Choose products to <span className="yellow">Pitch</span> on 				 
+		         <div className="cl"></div></div>
 				<div className="content">
 				<div className="received-product">
 				<div className="received-product-box">
@@ -231,6 +225,11 @@ render() {
 				</div> 
 				</div>
 				</div>
+				 <div className="select-box top-right">
+					<select id="select" innerRef={input => (this.condition = input)} className="form-control" onChange={this.handleOnChange}>
+						   {optionTemplate}
+					</select>
+				 </div>
 				<div className="cl"></div>
 				<div className="switch-product-section choose-product-div border-top">
 				<Scrollbars className="Scrollsdiv" style={{height: 585 }}>
@@ -240,7 +239,7 @@ render() {
 					var count = index+1;
 					var productImages = (productsListing.productImages)?(productsListing.productImages[0]):'';
 					return(				
-				<div className="switch-product-box selected">
+				<div className="switch-product-box ">
 				<div className="switch-product-image-box">
 				<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
 				<div className="switch-option-mask">

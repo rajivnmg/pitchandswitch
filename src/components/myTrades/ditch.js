@@ -57,7 +57,7 @@ class Ditch extends React.Component {
 				<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
 				<div className="colum"><ViewDitchPopup offerTrade={pitch}/> </div>
 				<div className="colum message"> </div>
-				 <div className="colum action">{pitch.ditchCount > 3 ? 
+				 <div className="colum action">{pitch.ditchCount > 2 ? 
 					 <a href="#" className={'ditch blocked '}>{ditch}</a> : 
 					  <If condition={send ==1 && pitch.ditchCount > 0 && pitch.ditchCount < 2}>
 					   <Then>
@@ -65,8 +65,7 @@ class Ditch extends React.Component {
 					   </Then>
 					   <Else If condition={send ==1 && pitch.ditchCount == 2}>
 					      <Then>
-					         var ditch = 'Last Ditch'
-					         <a href="#" className={'ditch '}>'Last Ditch'</a>
+					         <a href="#" className={'ditch '}>Last Ditch</a>
 					      </Then>
 					   </Else>
 					  </If>
