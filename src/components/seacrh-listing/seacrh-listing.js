@@ -57,6 +57,8 @@ class Register extends React.Component {
     {
         super(props);        
         let categoryId = props.match.params.id; 
+		let latitude = props.match.params.latitude; 
+		let longitude = props.match.params.longitude; 
         this.state = {
             resultData: [{
 				"id": "",
@@ -92,6 +94,8 @@ class Register extends React.Component {
             result: [],
             query: '',
             categoryId: categoryId,
+			latitude: latitude,
+			longitude: longitude,
             optionsChecked: [],
             ids :[],
             showFormSuccess : false
@@ -252,7 +256,10 @@ class Register extends React.Component {
     
     
      componentDidMount(){
-	     axios.get('/product/searchresult/'+ this.state.categoryId).then(result => {
+		 
+		 
+		 
+	     axios.get('/product/searchresult/'+this.state.categoryId+'/'+this.state.latitude+'/'+this.state.longitude).then(result => {
 			 this.setState({resultData:result.data.result});				 
 			 console.log('resultData',this.state.resultData);
 		})
@@ -477,7 +484,7 @@ class Register extends React.Component {
 				
 				<div className="item-listing"  results={this.state.results}>
 				   { this.state.resultData.map(function (results,index) {
-					let img = results.userId?results.userId.profilePic:"";						
+					let img = results.userId?results.userId[0].profilePic:"";						
 					return (
 					<div className="Items" key={index}><div>
 					<Link to={'/search-result/'+results._id}>
@@ -485,13 +492,13 @@ class Register extends React.Component {
 					</Link>					
 					<div className='details'>
 					<h4><Link to={'/search-result/'+results._id}>{results.productName}</Link></h4>
-					  <Link className="catLink" to={'/search-result/'+results._id}>{((results.productCategory)?results.productCategory.title:"")}</Link>
+					  <Link className="catLink" to={'/search-result/'+results._id}>{((results.productCategory)?results.productCategory[0].title:"")}</Link>
 					</div>
 					<div className="userdiv">
 					<div className="user-pic">
 					   <img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} />
 					</div>
-					   <div className="user-name">{results.userId?results.userId.firstName:""}</div>
+					   <div className="user-name">{results.userId?results.userId[0].firstName:""}</div>
 					</div>
 					</div>
 					</div>
