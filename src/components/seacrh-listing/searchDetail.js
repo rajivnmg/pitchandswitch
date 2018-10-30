@@ -64,7 +64,6 @@ class MyTrades extends React.Component {
 				localStorage.setItem('userId',result.data.result._id);
 				localStorage.setItem('userName',result.data.result.userName);			
 				localStorage.setItem('isLoggedIn',1);
-				//this.setState({resultData:result.data.result});
 				this.setState({resultData:result.data.result});
 			})
 		}
@@ -82,8 +81,7 @@ class MyTrades extends React.Component {
 			data.append('productId', this.state.productId)
 			data.append('pitchUserID', localStorage.getItem('loggedInUser'))
 			console.log('data',data);
-			axios.post('/product/checkExists/',data).then(result => {
-				//console.log('checkData',result.data.result.length)			
+			axios.post('/product/checkExists/',data).then(result => {						
 			  this.setState({checkData:result.data.result});
 		    }) 
         }
@@ -121,13 +119,11 @@ class MyTrades extends React.Component {
 					<div className="topMsg">You have already pitched on this product</div>
 				</Then>
 			</If>
-				
 			<div className="container">
 			<div className="breadcrumb">
 			<ul><li><a href="/">Home</a></li><li>My Trades</li></ul>
 			</div>
 			<div className="detail-div">
-			
 			<If condition = {this.state.resultData.length === 0}>
 			<Then><Spin /></Then>
 			<Else>
@@ -157,37 +153,46 @@ class MyTrades extends React.Component {
 					</div>
 				<div className="btnRow">
 				{this.state.showFormSuccess ? this._renderSuccessMessage() : null} 
-				<a href="#" className="ditch">				
+				
                    <If condition={localStorage.getItem('isLoggedIn') == "1"} >
 						<Then>
 						 <If condition={this.state.checkData && this.state.checkData.length>0} >
 						  <Then>
-						      Already Pitched
+						      <a href="#" className="ditch">Already Pitched</a>
 						  </Then>
 						  <Else>
-						       <LastPitchPopup offerTrade={this.state.resultData} proID ={this.state.productId}/>
+						     <If condition={userid !=="" && localStorage.getItem('userId') !== userid} >
+						       <Then>
+						        <a href="#" className="ditch">	
+						           <LastPitchPopup offerTrade={this.state.resultData} proID = {this.state.productId}/>
+						         </a>
+						       </Then>
+						      </If>
 						  </Else>
 						 </If>
                         </Then>
                         <Else>
-							<LoginPopup  offerTrade={this.state.resultData}/>
+							<a href="#" className="ditch">	<LoginPopup offerTrade={this.state.resultData}/></a>
                        </Else>
-                    </If>                  
-				</a>
-				  
+                    </If>                   
+				
 				<If condition={this.state.isAlreadyInWishlist === false}>
 					<Then>	
-							<If condition ={localStorage.getItem('isLoggedIn') == "1"}>
-								<Then>
-									<a href="#" className="ditch add-wishlist" onClick={()=>this.addToWishList()}>Add to Wishlist</a>
-								</Then>
-								<Else>
-									<LoginPopup  offerTrade={this.state.resultData}/>
-								</Else>
-							</If>						
+						<If condition ={localStorage.getItem('isLoggedIn') == "1"}>
+							<Then>
+								<a href="#" className="ditch add-wishlist" onClick={()=>this.addToWishList()}>Add to Wishlist</a>
+							</Then>
+							<Else>
+								<LoginPopup offerTrade={this.state.resultData}/>
+							</Else>
+						</If>						
 					</Then>	
-					<Else>											
+					<Else>
+					<If condition={userid !=="" && localStorage.getItem('userId') !== userid} >
+					  <Then>											
 						<span className="ditch add-wishlist">Added in Wishlist</span>
+					  </Then>
+					 </If>
 					</Else>
 							
 				</If>
