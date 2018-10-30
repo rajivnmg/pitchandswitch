@@ -135,7 +135,7 @@ class MyTrades extends React.Component {
                                 <p className="tagsrow">Sports &amp; Fitness / Cycling / Cycles / Hero Cycles</p>
                                 <h1>God of War 3 ~ Download Full Version PC third-person action-adventure video game</h1>
                                 <div className="productId">Product ID: <strong>PS2152436</strong></div>
-                                <div className="btnRow">
+                                {/*<div className="btnRow">
 									
 									   {this.state.showFormSuccess ? this._renderSuccessMessage() : null}  
 									<If condition={this.state.isAlreadyPitched === false}>
@@ -159,7 +159,7 @@ class MyTrades extends React.Component {
 									</If>
 									
                                     <div className="cl"></div>
-                                </div>
+                                </div>*/}
                                 <div className="productDetails">
                                     <h5>Product Details</h5>
                                     <table cellPadding="0" cellSpacing="0" width="100%">
@@ -181,8 +181,7 @@ class MyTrades extends React.Component {
                                             </tr>
                                         </tbody>
                                     </table>
-                                </div>
-                
+                                </div>                
                             </div>
                             <div className="cl"></div>
                         </div>
@@ -190,6 +189,7 @@ class MyTrades extends React.Component {
                         <div className="my-trades white-background">
                             <h3>My Trades</h3>
                             <PitchRequests />
+                            
                             <a className="more-items" href="#">More result</a>
                         </div>
                         <div className="cl"> </div>

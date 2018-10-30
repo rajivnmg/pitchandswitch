@@ -4,11 +4,33 @@ import popularItemImg from '../../images/popular-item1.jpg';
 import emptyArt from '../../images/empty_art.png';
 import Select from 'react-select';
 import DitchPopup from './clearWishListPopup'
-
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import axios from 'axios'
+import { Route, Redirect } from 'react-router'
 class myTreasureChest extends Component {
+	constructor(props){
+		super(props)
+		this.state = {
+			   wishlists : []
+			}
+	}
+	
+	componentWillMount(){		
+		axios.get('/product/wishList').then(wishlists =>{
+				if(wishlists.data.code === 200){
+					this.setState({wishlists:wishlists.data.result,total:wishlists.data.result.length})
+				}
+			});
+	}
+	
     render() {
-        return (
+        return (				
                 <div className="myTreasure">
+				<If condition={this.state.total > 0}>
+					<Then>
+						<Redirect push to="/wishlist" />
+					</Then>							
+				</If>	
                     <div className="container">
                         <div className="breadcrumb">
                             <ul>

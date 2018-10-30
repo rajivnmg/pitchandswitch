@@ -23,14 +23,12 @@ class viewPitchPopup extends Component {
 		console.log(" viewPitchPopup props", this.props)
 	}
 	
-	componentWillMount(){
-		console.log('viewPitchPopup componentWillMount',this.state.offerTrade)
+	componentWillMount(){		
 			this.setState({offerTradeId:this.state.offerTrade._id})
 	}
 	
 	componentDidMount(){
-		axios.get('/trade/offerTradeProduct/'+this.state.offerTrade._id).then(result => {
-			console.log("result.data.result",result.data.result)
+		axios.get('/trade/offerTradeProduct/'+this.state.offerTrade._id).then(result => {			
 				if(result.data.code === 200){
 					this.setState({offerTradeProducts:result.data.result})				
 				}
@@ -47,10 +45,9 @@ render() {
         <a className="close" onClick={close}>
             &times;
         </a>
-        <div className="header">Pitch sent on <input className="ditch-btn" value="Cancel Pitch" type="submit" />
+        <div className="header">Pitch sent on <input className="ditch-btn" value={(this.props.pitchAgain=="1")?'Pitch again':"Cancel Pitch"} type="submit" />
 				<div className="cl"></div>
 			</div>
-
 			<div className="content">
 				<div className="received-product">
 					<div className="received-product-box">
@@ -87,13 +84,12 @@ render() {
 										<div className="switch-product-image-box">
 										<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
 											<div className="switch-option-mask">
-												<a className="view-btn margin-top1" href="/">View</a>
-												ditch-btn
+												<a className="view-btn margin-top1" href={'/search-result/'+offerTradeProduct._id}>View</a>												
 											</div>
 										</div>
 										<div className="switch-product-content-box">
 											<h4>{offerTradeProduct.productName}</h4>
-											<a className="catLink" href="/">{offerTradeProduct.productCategory.title}</a>
+											<a className="catLink" href={'/search-listing/'+offerTradeProduct.productCategory._id}>{offerTradeProduct.productCategory.title}</a>
 										</div>
 									</div>)
 									 

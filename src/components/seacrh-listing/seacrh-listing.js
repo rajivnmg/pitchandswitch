@@ -21,7 +21,6 @@ import {
 
 const constant = require('../../config/constant')
 
-
 const Hide = {
     display: "none"
 }
@@ -100,7 +99,6 @@ class Register extends React.Component {
             ids :[],
             showFormSuccess : false
         };
-        
          this.changeContanst = this.changeContanst.bind(this);
     }	
  

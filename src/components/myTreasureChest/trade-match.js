@@ -6,35 +6,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import Select from 'react-select';
 import axios from 'axios'
+import { If, Then, Else } from 'react-if-elseif-else-render';
+import { Alert,Icon } from 'antd';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 library.add(faHeart);
 
 const constant = require('../../config/constant')
-const categoryFilter = [
-    {label: "Select", value: 1},
-    {label: "Games", value: 2},
-    {label: "Toy", value: 3} 
-];
-const App1 = () => ( 
-            <div className="app">
-                <div className="container">
-                    <Select value="Newly Added" options={categoryFilter} />
-                </div>
-            </div>
-            );
+
 const newlyAdded = [
     {label: "Newly Added", value: 1},
     {label: "A - Z", value: 2},
     {label: "Z - A", value: 3},
     {label: "Nearest", value: 4}
 ];
-const App2 = () => (
-            <div className="app">
-                <div className="container">
-                    <Select value="Newly Added" options={newlyAdded} />
-                </div>
-            </div>
-            );
 
 class tradeMatch extends Component {
     onLoadMore = () => {
@@ -47,9 +31,12 @@ class tradeMatch extends Component {
             limit: 10,
             loadMore: true,
             tradeMatches : [],
+            wishlistProducts:[],
             categories : [{label: "Select", value: 1}],
             currentCategory:'',
             currentshortBy:1,
+            message:'',
+            showFormSuccess:false,
             filterOpt : {category: "", sortBy: 1},
             slides: [{
                     "title": "Call of Duty : Infinate Warfare More",
@@ -57,168 +44,71 @@ class tradeMatch extends Component {
                     "category": "Games",
                     "userPic": userPicture,
                     "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Leander : Cradle, Crib, High Chair, Changing",
-                    "image": "https://api.androidhive.info/json/movies/3.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Holy Crap! This wooden rocket has some",
-                    "image": "https://api.androidhive.info/json/movies/4.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/5.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/6.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Call of Duty : Infinate Warfare More",
-                    "image": "https://api.androidhive.info/json/movies/1.jpg",
-                    "category": "Games",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Leander : Cradle, Crib, High Chair, Changing",
-                    "image": "https://api.androidhive.info/json/movies/3.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Holy Crap! This wooden rocket has some",
-                    "image": "https://api.androidhive.info/json/movies/4.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                }, {
-                    "title": "Call of Duty : Infinate Warfare More",
-                    "image": popularItemImg,
-                    "category": "Games",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Leander : Cradle, Crib, High Chair, Changing",
-                    "image": "https://api.androidhive.info/json/movies/3.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Holy Crap! This wooden rocket has some",
-                    "image": "https://api.androidhive.info/json/movies/4.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/5.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/6.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Call of Duty : Infinate Warfare More",
-                    "image": "https://api.androidhive.info/json/movies/1.jpg",
-                    "category": "Games",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Leander : Cradle, Crib, High Chair, Changing",
-                    "image": "https://api.androidhive.info/json/movies/3.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Holy Crap! This wooden rocket has some",
-                    "image": "https://api.androidhive.info/json/movies/4.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
                 }
             ],
 
-        }
-        ;
+        };
+        this.UpdateWishListProduct = this.UpdateWishListProduct.bind()
     } 
-	
+	// function to get product filter by categoory
 	finterByCategory(categoryId){						
-		this.setState({filterOpt:{category:categoryId,sortBy:this.state.currentshortBy},sortBy:this.state.currentshortBy})
-		  axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
+		this.setState({filterOpt:{category:categoryId,sortBy:this.state.currentshortBy},sortBy:this.state.currentshortBy},
+		function(){		
+		  axios.post('/product/tradeMatchFilterBy',this.state.filterOpt).then(result =>{				
 				this.setState({
 					tradeMatches : result.data.result
 				});
 		  });
+	  });
 	}
-	
+	// function to get product filter by data	
 	sortBy(id){						
-		this.setState({filterOpt:{category:this.state.currentCategory,sortBy:id},currentshortBy:id})		
-		axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
+		this.setState({filterOpt:{category:this.state.currentCategory,sortBy:id},currentshortBy:id},
+		function(){		
+		axios.post('/product/tradeMatchFilterBy',this.state.filterOpt).then(result =>{				
 			this.setState({
 				tradeMatches : result.data.result
 			});
 		});
+	});
 			
+	}	
+	
+	UpdateWishListProduct = (productid,action) => {
+		let newWishlistProducts = []
+		newWishlistProducts = [...this.state.wishlistProducts]; // make a separate copy of the array
+		if(action =='Remove'){		  
+		   var index = newWishlistProducts.indexOf(productid)
+		   newWishlistProducts.splice(index, 1);
+		   this.setState({wishlistProducts: newWishlistProducts});
+		}else{		 
+			  newWishlistProducts.push(productid)
+			  this.setState({wishlistProducts: newWishlistProducts});
+		}
+	}
+	
+	addToWishList(productId){		
+		let data = {};
+		data.userId = localStorage.getItem('userId');
+		data.productId = productId;
+		axios.post('/product/addToWishList',data).then(result => {			
+			this.setState({product:result.data.result,isAlreadyInWishlist:true,showFormSuccess:true,message:'Added successfully'},this.UpdateWishListProduct(productId,'Add'))					
+		})			
+		setTimeout(() => {this.setState({showFormSuccess: false});}, 12000)
+	}			
+	removeFromWishList(productId){		
+		let data = {};
+		data.userId = localStorage.getItem('userId');
+		data.productId = productId;
+		axios.post('/product/removeFromWishList',data).then(result => {			
+			this.setState({product:result.data.result,isAlreadyInWishlist:true,showFormSuccess:true,message:'Removed successfully'},this.UpdateWishListProduct(productId,'Remove'))
+		})			
+		setTimeout(() => {this.setState({showFormSuccess: false});}, 12000)
 	}
 	
 	componentWillMount(){
 		// API to get All the product list
-		axios.get('/product/listProduct').then(result => {		 
-		   console.log("componentWillMount TradeMatch listProduct ",result.data.result)
+		axios.get('/product/tradeMatch').then(result => {		 		  
 		   this.setState({tradeMatches:result.data.result})
 		})
 		// API to get All the category list		
@@ -228,9 +118,26 @@ class tradeMatch extends Component {
 			});
 		});
 	}
-		
+	
 	componentDidMount(){						
-			console.log("componentDidMount from trade match")
+		if(localStorage.getItem('jwtToken') !== null){	
+			axios.get('/user/getUserWishListProducts/'+localStorage.getItem('userId')).then(result => {					
+				if(result.data.code === 200){					
+					this.setState({ 
+						user:result.data.result,
+						wishlistProducts:result.data.wishlistProducts
+					})					
+				}
+			})
+		}else{
+			 this.props.history.push('/logout');
+		}
+	}
+	
+	_renderSuccessMessage() {
+		return (
+		  <Alert message={this.state.message} type="success successDiv" showIcon />
+		);
 	}
 	
     render() {
@@ -246,6 +153,7 @@ class tradeMatch extends Component {
                             <h1>Trade Match</h1>
                             <div className="cl"></div>
                         </div>
+                        {this.state.showFormSuccess ? this._renderSuccessMessage() : null}
                         <div className="search-row">
                             <div className="category-left">
                                 <span>Category:</span>                                 
@@ -256,30 +164,51 @@ class tradeMatch extends Component {
                             <div className="sort-by right">
                                 <span>Sort by:</span> 
                                 <div className="newly-add">
-                                    <div className="search"><Select options={newlyAdded} defaultValue={newlyAdded[0]}   onChange={opt => this.sortBy(opt.value)/*console.log(opt.label, opt.value)*/} /></div>
+                                    <div className="search"><Select options={constant.sortBy} defaultValue={constant.sortBy[0]}   onChange={opt => this.sortBy(opt.value)/*console.log(opt.label, opt.value)*/} /></div>
                                 </div>
                             </div>
                             <div className="cl"></div>
                         </div>
-                        <div className="item-listing">
+                        <div className="item-listing">                        
+                        
                             {this.state.tradeMatches.slice(0, this.state.limit).map((tradeMatch, index) => {
-									var userImage = tradeMatch.user?tradeMatch.user[0].profilePic:null
+									var userImage = tradeMatch.userId?tradeMatch.userId.profilePic:null
                                     return(<div className="Items" key={index}>
-                                        <div className="pic"><div className="overlay"><a href="#" className="favourite"><FontAwesomeIcon icon="heart" title="Add to wishlist"/> fav</a></div><img src={constant.BASE_IMAGE_URL+'Products/'+tradeMatch.productImages} alt="" /></div>
+                                        <div className="pic">
+											<div className="overlay">											
+											<If condition ={this.state.wishlistProducts.indexOf(tradeMatch._id) > -1}>	
+												<Then>
+													<a href="#"  onClick={()=>this.removeFromWishList(tradeMatch._id)} className={(this.state.wishlistProducts.indexOf(tradeMatch._id) > -1)?"favourite active":"favourite"}>
+													<FontAwesomeIcon icon="heart" title="Add to wishlist"/> fav
+													</a>
+												</Then>												
+											   <Else>
+												<a href="#"  onClick={()=>this.addToWishList(tradeMatch._id)} className="favourite">
+													<FontAwesomeIcon icon="heart" title="Add to wishlist"/> fav
+													</a>
+											   </Else>
+											 </If>
+											</div>
+												<img src={constant.BASE_IMAGE_URL+'Products/'+tradeMatch.productImages} alt="" />
+										</div>
                                         <div className="details">
                                             <h4><a href="/my-trade-detail">{tradeMatch.productName}</a></h4>
-                                            <a href="#" className="catLink"> {(tradeMatch.category && (tradeMatch.category.length > 0))?tradeMatch.category[0].title:''}</a>           
-                                        </div>
+                                            <a href="#" className="catLink"> {(tradeMatch.productCategory)?tradeMatch.productCategory.title:''}</a>
+                                       </div>
                                         <div className="userdiv">
                                             <div className="user-pic"> <FontAwesomeIcon icon="heart-o" /> <img className="userProfile" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage}  /></div>
-                                            <div className="user-name">{(tradeMatch.user)?tradeMatch.user[0].userName:''}</div>
+                                            <div className="user-name">{(tradeMatch.userId)?tradeMatch.userId.userName:''}</div>
                                         </div>
                                     </div>
                                             )
                             })}
                             <div className="cl"></div>
                         </div>
+                         {(!this.state.tradeMatches.length) ? <div> <Alert message="No Record Found" type="success"/></div> : '' } 
+                       
                         {this.state.tradeMatches.length > this.state.limit ? <div>{this.state.loadMore ? <a className="more-items" href="javascript:void()" onClick={this.onLoadMore}>Load more</a> : ''}</div> : '' } 
+                        
+                        
                         <div>&nbsp;</div>
                 
                     </div>

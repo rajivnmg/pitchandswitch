@@ -9,6 +9,8 @@ import axios from 'axios'
 import successPic from '../../images/successful_img.png';
 import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import ShippingTypePopup from './shippingTypePopup'
+
 const constant = require('../../config/constant')
 
 const contentStyle = {
@@ -36,18 +38,15 @@ class viewReceivedPopup extends Component {
 		this.setState({offerTradeId:this.state.offerTrade._id})
 	}
 	
-	
     submitHandler(proID){	   
-	   console.log('proID',proID);
+	    //console.log('proID',proID);
 	    const data = new FD();
         data.append('offerTradeId', this.state.offerTrade._id)
         data.append('tradePitchProductId', proID)
         data.append('tradeSwitchProductId', this.state.offerTrade.SwitchUserProductId._id)
         data.append('switchDate',date)
         data.append('status', 1)
-        
 	    axios.post('/trade/submitTradeProduct/',data).then(result => {	
-			console.log('rrrrrr',result.data.result)		  
 		  if(result.data.code === 200){			  			
 			 this.setState({
 				message: result.data.message,
@@ -104,14 +103,14 @@ return (
 				</div>
 			  </Then>	
 		<Else>        
-		<div className="header">Pitch recieved on <input className="ditch-btn" value="ditch" type="submit" />
+		<div className="header">Pitch recieved on
 		<div className="cl"></div>
 		</div>
 		<div className="content">
 		<div className="received-product">
 		<div className="received-product-box">
 		<div className="received-product-image-box">
-		<img src={constant.BASE_IMAGE_URL+'Products/'+proImg} alt="recieved-product image" />
+		   <img src={constant.BASE_IMAGE_URL+'Products/'+proImg} alt="recieved-product image" />
 		</div>
 		<div className="received-product-content-box">
 		<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId._id}</strong></span>
@@ -122,7 +121,7 @@ return (
 		</div>
 		<div className="cl"></div>
 		<div className="switch-product-section">
-			<p>Offered products for switch:
+		<p>Offered products for switch:
 			<span class="pitch-offered"><span class="pitch-offer">Pitch offered by </span>{this.state.offerTrade.SwitchUserId.userName} </span>
 		<div className="cl"></div>
 		</p>
@@ -136,7 +135,9 @@ return (
 			<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
 			<div className="switch-option-mask">
 			<a className="view-btn" href={'/search-listing/'+productList._id}>View</a>
-			   <Button className="switch-btn" onClick={(e)=>this.submitHandler(productList._id)}>Switch</Button>
+			   <Button className="switch-btn" >
+			      <ShippingTypePopup productID={productList._id} offerTrade={this.state.offerTrade}/>
+			   </Button>			   
 			</div>
 			</div>
 			<div className="switch-product-content-box">
@@ -149,7 +150,7 @@ return (
 		}
 		</Then>							
 		<Else>
-		<p>No Data Available</p>
+		  <p>No Data Available</p>
 		</Else>
 		</If>
 		</div>
