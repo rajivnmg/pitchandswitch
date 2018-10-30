@@ -11,6 +11,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {  fasTag, faTag, faGrinAlt, faFrownOpen, faEnvelope, faTruck, faClock, faTimesCircle, faCog,faIcon } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import PlacesAutocomplete from 'react-places-autocomplete';
+import {
+  geocodeByAddress,
+  geocodeByPlaceId,
+  getLatLng,
+} from 'react-places-autocomplete'
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 const constant = require('../config/constant')
 const Option = AutoComplete.Option;
@@ -35,6 +41,8 @@ class Header extends Component {
 	     searchData:"",
 	     searchD :"",
 	     categoryId :"",
+		 latitude:"",
+		 longitude:"",
 	}	
      this.logoutHandler = this.logoutHandler.bind(this); 
      this.onSearchHandler = this.searchHandler.bind(this); 
@@ -43,6 +51,24 @@ class Header extends Component {
          //this.props.history.push('/login');
       }
   }
+  
+   handleChange = address => {
+    this.setState({ address });
+  };
+  handleSelect = address => {
+    this.setState({address:address});
+    
+    
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => {
+        
+        this.setState({latitude:latLng['lat'] ,longitude:latLng['lng']});
+		
+        
+    })
+      .catch(error => console.error('Error', error));
+  };
   
    logoutHandler = (e) => {
       localStorage.removeItem('jwtToken');   
@@ -56,7 +82,36 @@ class Header extends Component {
   
     searchHandler = () =>
     {
-	   window.location = constant.PUBLIC_URL+'search-listing/'+this.state.searchData;
+		
+		if (this.state.latitude && this.state.longitude) {
+			 var searchData = " ";
+			if(this.state.searchData){
+			this.setState({searchData:this.state.searchData});
+			searchData = this.state.searchData;
+			}
+			else{
+			   this.setState({searchData:" "});
+	 
+			}
+			
+          window.location = constant.PUBLIC_URL+'search-listing/'+searchData+'/'+this.state.latitude+'/'+this.state.longitude;
+  } else {
+	   var searchData = " ";
+	  if(this.state.searchData){
+		  searchData = this.state.searchData;
+			this.setState({searchData:this.state.searchData});
+			}
+			else{
+			   this.setState({searchData:" "});
+	 
+			}
+	  this.setState({latitude:" " ,longitude:" "});
+	  var latitude = " ";
+	   var longitude = " ";
+    window.location = constant.PUBLIC_URL+'search-listing/'+searchData+'/'+latitude+'/'+longitude;
+  }
+		
+		
 	}
 	
 	searchCategory = (search,categoryName)=>{
@@ -153,13 +208,67 @@ class Header extends Component {
                      </If>
                     </figure>
                     <CategoryMenu />
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
                     <div className="search-container">
+					
+					
+					
+					
                         <div className="location">
-                           <AutoComplete
-							  style={{ width:85 }}
-							  dataSource={optionsAll}
-							  placeholder="Search"
-							  />
+                           <input className={"form-control textBox hide2"} value={this.state.latitude} name={"latitude"} type={"text"} placeholder="" />
+                 <input className={"form-control textBox hide2"} value={this.state.longitude}  name={"longitude"} type={"text"} placeholder="" />
+					<PlacesAutocomplete
+        value={this.state.address} 
+        onChange={this.handleChange}
+        onSelect={this.handleSelect}
+        name={"address"}
+      >
+	  
+        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+		
+          <div>
+            <input 
+              {...getInputProps({
+                placeholder: 'Search Places ...',
+                className: 'location-search-input form-control'			
+				})}
+				required={true}
+            />
+            <div className="autocomplete-dropdown-container">
+              {loading && <div>Loading...</div>}
+              {suggestions.map(suggestion => {
+                const className = suggestion.active
+                  ? 'suggestion-item--active'
+                  : 'suggestion-item';
+                // inline style for demonstration purpose
+                const style = suggestion.active
+                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                return (
+                  <div
+                    {...getSuggestionItemProps(suggestion, {
+                      className,
+                      style,
+                    })}
+                  >
+                    <span>{suggestion.description}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </PlacesAutocomplete> 
                         </div>                       
                         <div className="search">
                               <AutoComplete
