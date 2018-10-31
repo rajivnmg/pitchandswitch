@@ -100,12 +100,12 @@ class myTreasureChest extends Component {
 	}
 	
 	finterByCategory(categoryId){						
-		this.setState({filterOpt:{category:categoryId,sortBy:this.state.currentshortBy},sortBy:this.state.currentshortBy})
+		this.setState({filterOpt:{category:categoryId,sortBy:this.state.currentshortBy},sortBy:this.state.currentshortBy}, function(){
 		  axios.post('/product/filterBy',this.state.filterOpt).then(result =>{				
 				this.setState({
 					myTreasureChests : result.data.result
 				});
-		  });
+		  })});
 	}
 	
 	sortBy(id){						

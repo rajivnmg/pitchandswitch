@@ -1,9 +1,16 @@
 module.exports = {
 	'PUBLIC_URL':'http://localhost:3002/',
+<<<<<<< HEAD
 	'BASE_ADMIN_URL':'http://localhost:3006/',
 	'BASE_SERVER_URL':'http://localhost:5001',
 		//'BASE_IMAGE_URL':'http://localhost:3006/assets/uploads/',
 		'BASE_IMAGE_URL':'http://node.newmediaguru.co:3006/assets/uploads/',
+=======
+	'BASE_ADMIN_URL':'http://localhost:3006/',	
+	'BASE_SERVER_URL':'http://localhost:5001',	
+	//'BASE_IMAGE_URL':'http://localhost:3006/assets/uploads/',
+'BASE_IMAGE_URL':'http://node.newmediaguru.co:3006/assets/uploads/',	
+>>>>>>> 03c258b300be116d1daf36730918b83bd8cfc039
     'PER_PAGE_RECORD': 10,
     'SMTP_HOST':'smtp.sendgrid.net',
     'SMTP_PORT': 587,
@@ -18,6 +25,7 @@ module.exports = {
     'notification_type':[{'id':'1','name':'New User Created'},{'id':'2','name':'New Trade Requested'},{'id':'3','name':'Trade Rejected'},{'id':'4','name':'New Message Received'}],
     'donation_conditions':[{'id':'1','name':'New'},{'id':'2','name':'old'},{'id':'3','name':'Excellent'},{'id':'4','name':'Very Old'}],
     'sortBy':[{'value':'1','label':'Newly Added'},{'value':'2','label':'A - Z'},{'value':'3','label':'Z - A'},{'value':'4','label':'Nearest'}],
+<<<<<<< HEAD
 		'returnReason':[
 			{'id':'0','name':'Item Defective'},
 			{'id':'1','name':'Bought By Mistake'},
@@ -26,5 +34,9 @@ module.exports = {
 			{'id':'4','name':'Ordered In wrong size'},
 			{"id":"5","name":"Product not as expected"}
 		]
+=======
+	'returnReason':[{'id':'0','name':'Item Defective'},{'id':'1','name':'Bought By Mistake'},{'id':'2','name':'No longer needed'},{'id':'3','name':'Too small'},{'id':'4','name':'Ordered In wrong size'},{'id':'5','name':'Product not as expected'}]
+
+>>>>>>> 03c258b300be116d1daf36730918b83bd8cfc039
 
 };

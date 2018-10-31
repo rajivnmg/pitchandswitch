@@ -7,6 +7,7 @@ import CancelPitchPopup from './cancelPitchPopup'
 import ViewPitchPopup from './viewPitchPopup'
 import LastPitchPopup from './lditch'
 import ViewReceivedPitch from './viewReceivedPitch'
+import PitchAgainPopup from './PitchAgainPopup'
 import axios from 'axios'
 import { Spin, Icon, Alert } from 'antd';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
@@ -21,14 +22,6 @@ class PitchRequests extends React.Component {
             showLoader :  true
         }
     };
-    
-    TrackHandler = (id) => {
-		let pitches = this.state.pitches;
-		let index = pitches.findIndex(pitch => pitch.id === id);
-		pitches[index].messageShow = 1 - parseInt(pitches[index].messageShow);
-		this.setState({pitches: pitches});
-	};
-    
     componentWillMount(){		
 		axios.get('/trade/offerTrades').then(result => {
 		  if(result.data.code === 200){				  
@@ -45,10 +38,10 @@ class PitchRequests extends React.Component {
 	   }
 	  });
 	}
-
-    
     
      render() {
+		 let countSend = 0;
+		 let countReceived = 0;
         return (<div>
 			<If condition={this.state.pitches.length === 0 && this.state.showLoader === true}>
 				<Then>
@@ -60,7 +53,6 @@ class PitchRequests extends React.Component {
 					/>
 					</Spin>
 				</Then>	
-							
 			</If>
 			<If condition={this.state.pitches.length === 0 && this.state.showLoader === false}>
 				<Then>					
@@ -80,30 +72,55 @@ class PitchRequests extends React.Component {
 						var ditch = 'Cancel Pitch';
 					} else if(send===0 && pitch.ditchCount > 3){
 						var ditch = 'Last Ditch';
-					} 					
-					return (<div className="pitch-row" key={index}>
+					} 
+					
+					if(send==1 && (pitch.status=="0" || pitch.status=="3")){
+						countSend = countSend +1;
+					}else{
+						countReceived = countReceived +1;	
+					}
+					
+					return (<div>
+					<If condition={send==1 && (pitch.status=="0" || pitch.status=="3")}>
+						<Then>			
+						<div className="pitch-row" key={index}>	
 						<div className="pitch-div">
 							{ (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
 							<div className="colum user width1"> <span>{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}</span></div>
-							<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>							
+							<div className="colum status"><span className={'sent'}>{'Send'}</span></div>			
 							<div className="colum action"><span className="view-pitch pointer cursorPointer">
-							<If condition={send === 1}>
-								<Then>
-									 <ViewPitchPopup offerTrade={pitch}/>										 
-								</Then>	
-								<Else>						
-									<ViewReceivedPitch offerTrade={pitch}/>
-								</Else>						
-							</If>                                    
+							<ViewPitchPopup offerTrade={pitch} pitchAgain={(pitch.status =="3")?"1":"0"}/>
 							</span></div> 
 							<div className="colum message"></div>  
 							<div className="colum action">
-							 {send == 0? <DitchPopup offerTrade={pitch}/> :<CancelPitchPopup offerTrade={pitch}/>}
+							 
+							 {send == 0 && pitch.status=="0"? <DitchPopup offerTrade={pitch}/> : (pitch.status =="3")?<div class="colum action"><a href="#" class="ditch ditched">Cancelled</a></div>:<CancelPitchPopup offerTrade={pitch}/>}
 							</div>
 						</div>
-						{(pitch.messageShow) ? <Messages /> : ''}
-								
-					</div>)
+						</div>
+					</Then>
+					<ElseIf condition={send===0 && (pitch.status=="0")}>
+					    <div className="pitch-row" key={index}>				
+						<div className="pitch-div">
+							{ (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
+							<div className="colum user width1"> <span>{(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}</span></div>
+							<div className="colum status"><span className={'received'}>{'Received'}</span></div>
+							<div className="colum action"><span className="view-pitch pointer cursorPointer">
+							<ViewReceivedPitch offerTrade={pitch} pitchAgain={(pitch.status =="3")?"1":"0"}/>
+							</span></div> 
+							<div className="colum message"></div>  
+							<div className="colum action">
+							 
+							 {pitch.status=="0"? <DitchPopup offerTrade={pitch}/> : (pitch.status =="3")?<div class="colum action"><a href="#" class="ditch ditched">Cancelled</a></div>:<CancelPitchPopup offerTrade={pitch}/>}
+							</div>
+						</div>
+						</div>				
+					</ElseIf>
+					<ElseIf condition={countReceived == 0 && countSend == 0}>					
+						No Record Found
+					</ElseIf>
+				</If>
+				</div>)
                   }
             )}
         </div>

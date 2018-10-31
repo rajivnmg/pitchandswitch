@@ -19,19 +19,23 @@ class DitchPopup extends Component {
 	}
 	
 	componentDidMount(){
-			this.setState({offerTradeId:this.props.offerTrade?this.props.offerTrade._id:""})
+		this.setState({offerTradeId:this.props.offerTrade?this.props.offerTrade._id:""})
 	}
 	
 	ditchPitch(offerTrade){
 		let data = {}
 		data._id = offerTrade._id	
 		data.ditchCount = parseInt(offerTrade.ditchCount)+1
-		console.log("data",data)
 		axios.post('trade/ditchOfferTrade',data).then(result => {
 			if(result.data.code === 200){
-				console.log("ditched result",result)	
+				this.setState({
+				message: result.data.message,
+			  });	
+			    setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});			
+				window.location.href='/my-trades';
+			    }, 4000);	
 				jquery('.cancel-btn').click();				
-			}else{
+			} else{
 				
 			}
 		})

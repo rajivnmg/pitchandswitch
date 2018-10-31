@@ -25,6 +25,7 @@ class viewDitchPopup extends Component {
 	
 	componentWillMount(){		
 		this.setState({offerTradeId:this.state.offerTrade._id})
+		
 	}
 	 
 	componentDidMount(){
@@ -71,7 +72,7 @@ render() {
 			<div className="cl"></div>
 			<div className="switch-product-section">
 			<p>Offered products for switch:
-			<span className="pitch-offered">  
+			<span className="pitch-offered">
 			<span className="pitch-offer">Pitch offered To </span> {(this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:''}</span>
 			<div className="cl"></div>
 			</p>
@@ -97,7 +98,7 @@ render() {
 				})
 		       }
 		    </Then>							
-		  <Else>
+		<Else>
 		  <p>No Data Available</p>
 		</Else>
 	</If>

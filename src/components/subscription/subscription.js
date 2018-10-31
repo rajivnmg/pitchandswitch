@@ -13,7 +13,8 @@ class Subscription extends React.Component {
 		this.state = {
 				subscriptions : [],
 				showFormError: false,
-				showFormSuccess:false
+				showFormSuccess:false,
+				message:''
 		}
 	}	
 	handleSubscription(e) {		
@@ -31,8 +32,10 @@ class Subscription extends React.Component {
 				    }, 12000);
 					
 				}else{
-					this.setState({showFormError: true})
-					window.location.href='/subscription';
+					this.setState({showFormError: true,message:result.data.result.message},function(){						
+						window.location.href='/subscription';
+					},500);
+					
 				}
 		})
 		 setTimeout(() => {this.setState({showFormError: false});}, 12000);
@@ -58,7 +61,7 @@ class Subscription extends React.Component {
  _renderErrorMessage() {
     return (
       <div align="center" className={"alert alert-danger mt-4"} role="alert">
-        Oops! Something Went wrong!!!
+        {this.state.message}
       </div>
     );
   }

@@ -38,16 +38,14 @@ class viewReceivedPopup extends Component {
 		this.setState({offerTradeId:this.state.offerTrade._id})
 	}
 	
-	
     submitHandler(proID){	   
-	    console.log('proID',proID);
+	    //console.log('proID',proID);
 	    const data = new FD();
         data.append('offerTradeId', this.state.offerTrade._id)
         data.append('tradePitchProductId', proID)
         data.append('tradeSwitchProductId', this.state.offerTrade.SwitchUserProductId._id)
         data.append('switchDate',date)
         data.append('status', 1)
-        
 	    axios.post('/trade/submitTradeProduct/',data).then(result => {	
 		  if(result.data.code === 200){			  			
 			 this.setState({

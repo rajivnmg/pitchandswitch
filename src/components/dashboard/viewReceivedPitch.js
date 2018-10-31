@@ -1,100 +1,166 @@
-import React, { Component }
-from 'react';
+import React, { Component } from 'react';
 import Warper from "../common/Warper";
 import Popup from "reactjs-popup";
 import rcvProduct from '../../images/rcv-product-img.jpg'
 import offerProduct1 from '../../images/offer-product-img1.jpg'
 import offerProduct3 from '../../images/offer-product-img3.jpg'
+import userPic from '../../images/user-pic.png'
+import axios from 'axios'
+import successPic from '../../images/successful_img.png';
+import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import ShippingTypePopup from './shippingTypePopup'
 
-//
+const constant = require('../../config/constant')
 
 const contentStyle = {
     maxWidth: "660px",
     width: "90%"
 };
+var FD = require('form-data');
+var fs = require('fs');
+var tempDate = new Date();
+var date = tempDate.getFullYear() + '-' + (tempDate.getMonth()+1) + '-' + tempDate.getDate() +' '+ tempDate.getHours()+':'+ tempDate.getMinutes()+':'+ tempDate.getSeconds();
 
-const CustomModal = () => (
+
+class viewReceivedPopup extends Component {
+	constructor(props) {
+	  super(props);
+		this.state = {				
+			offerTrade:this.props.offerTrade,
+			offerTradeProducts:[]
+		}
+	}
+	
+	
+	
+	componentWillMount(){		
+		this.setState({offerTradeId:this.state.offerTrade._id})
+	}
+	
+    submitHandler(proID){	   
+	    //console.log('proID',proID);
+	    const data = new FD();
+        data.append('offerTradeId', this.state.offerTrade._id)
+        data.append('tradePitchProductId', proID)
+        data.append('tradeSwitchProductId', this.state.offerTrade.SwitchUserProductId._id)
+        data.append('switchDate',date)
+        data.append('status', 1)
+	    axios.post('/trade/submitTradeProduct/',data).then(result => {	
+		  if(result.data.code === 200){			  			
+			 this.setState({
+				message: result.data.message,
+				code :result.data.code,
+				showFormSuccess: true,
+				showFormError: false,
+				isProcess:false
+			  });	
+			   setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});			
+				window.location.href='/my-trades';
+			 }, 12000);	
+		  }
+      })  
+   }
+	
+	
+	componentDidMount(){
+		axios.get('/trade/tradingProduct/'+this.state.offerTrade._id).then(result => {
+			if(result.data.code === 200){					
+				this.setState({offerTradeProducts:result.data.result})				
+			}
+		})
+	}
+
+render() {
+	const proImg = this.state.offerTrade.SwitchUserProductId.productImages?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
+	
+	
+	
+return (
 <Popup
     trigger={<a className= 'TradeInfobtn'> View Pitch</a>}
     modal
     contentStyle = {contentStyle}
     lockScroll 
-          
     >
     {
-        close => (
+   close => (
     <div className="modal">
-        <a className="close" onClick={close}>
-            &times;
-        </a>
-        <div className="header">Pitch recieved on <input className="ditch-btn" value="ditch" type="submit" />
-				<div className="cl"></div>
-			</div>
-
-			<div className="content">
-				<div className="received-product">
-					<div className="received-product-box">
-						<div className="received-product-image-box">
-							<img src={rcvProduct} alt="recieved-product image" />
-						</div>
-						<div className="received-product-content-box">
-							<span>Product ID: <strong>PS2152436</strong></span>
-							<h4>God of War 3 ~ Download Full Version PC third-person action-adventure video game</h4>
-							<a className="catLink" href="/">Baby Products</a>
-						</div>
-					</div>
-					<div className="cl"></div>
-					<div className="switch-product-section">
-						<p>Offered products for switch:
-                                                <span class="pitch-offered"><span class="pitch-offer">Pitch offered by </span> Godisable Jacob</span>
-							<div className="cl"></div>
-						</p>
-						<div className="switch-product-box">
-							<div className="switch-product-image-box">
-								<img src={offerProduct1} alt="recieved-product image" />
-								<div className="switch-option-mask">
-									<a className="view-btn" href="/my-trade-detail#">View</a>
-									<a className="switch-btn" href="/">Switch</a>
-								</div>
-							</div>
-							<div className="switch-product-content-box">
-								<h4>Call of Duty: Infinite Warfare More</h4>
-								<a className="catLink" href="/">Games</a>
-							</div>
-						</div>
-						<div className="switch-product-box">
-							<div className="switch-product-image-box">
-								<img src={offerProduct3} alt="recieved-product image" />
-								<div className="switch-option-mask">
-									<a className="view-btn" href="/">View</a>
-									<a className="switch-btn" href="/">Switch</a>
-								</div>
-							</div>
-							<div className="switch-product-content-box">
-								<h4>Shopkins Shoppies - Bubbleisha</h4>
-								<a className="catLink" href="/">Toy</a>
-							</div>
-						</div>
-						<div className="switch-product-box">
-							<div className="switch-product-image-box">
-								<img src={offerProduct1} alt="recieved-product image" />
-								<div className="switch-option-mask">
-									<a className="view-btn" href="/">View</a>
-									<a className="switch-btn" href="/">Switch</a>
-								</div>
-							</div>
-							<div className="switch-product-content-box">
-								<h4>Leander: Cradle, Crib, High Chair, Chang...</h4>
-								<a className="catLink" href="/">Baby Products</a>
-							</div>
-						</div>
+        <a className="close" onClick={close}>&times;</a>
+         <If condition={this.state.showFormSuccess === true}>
+			<Then>
+				<div className="modal pitchSuccessful">
+					<a className="close" onClick={close}>
+					&times;
+					</a>
+					<div className="header centerheading"><span>Switch</span> Successful<div className="cl"></div></div>
+					<p className="textSuccessful"><span classNamne="gray">You have successfully Switch on</span>
+						{this.props.offerTrade.productName} ~ {this.props.offerTrade.description} 
+					</p>
+					<div class="successIcon">
+						<img src={successPic} alt="" />
 					</div>
 				</div>
+			  </Then>	
+		<Else>        
+		<div className="header">Pitch recieved on
+		<div className="cl"></div>
+		</div>
+		<div className="content">
+		<div className="received-product">
+		<div className="received-product-box">
+		<div className="received-product-image-box">
+		   <img src={constant.BASE_IMAGE_URL+'Products/'+proImg} alt="recieved-product image" />
+		</div>
+		<div className="received-product-content-box">
+		<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId._id}</strong></span>
+		<h4>{this.state.offerTrade.SwitchUserProductId.productName} </h4>
+		<span> {this.state.offerTrade.SwitchUserProductId.description} </span>
+		<a className="catLink" href="/">{this.state.offerTrade.SwitchUserProductId.productCategory}</a>
+		</div>
+		</div>
+		<div className="cl"></div>
+		<div className="switch-product-section">
+		<p>Offered products for switch:
+			<span class="pitch-offered"><span class="pitch-offer">Pitch offered by </span>{this.state.offerTrade.SwitchUserId.userName} </span>
+		<div className="cl"></div>
+		</p>
+		<If condition={this.state.offerTradeProducts}>
+		<Then>
+		{ this.state.offerTradeProducts.products.map((productList, index) => {			
+		var productImages = (productList.productImages)?productList.productImages[0]:'';
+		return(
+		<div className="switch-product-box">
+			<div className="switch-product-image-box">
+			<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+			<div className="switch-option-mask">
+			<a className="view-btn" href={'/search-listing/'+productList._id}>View</a>
+			   <Button className="switch-btn" >
+			      <ShippingTypePopup productID={productList._id} offerTrade={this.state.offerTrade}/>
+			   </Button>			   
 			</div>
-
+			</div>
+			<div className="switch-product-content-box">
+			<h4>{productList.productName}</h4>
+			<a className="catLink" href="/">{productList.productCategory.title}</a>
+			</div>
+		</div>
+		)
+		})
+		}
+		</Then>							
+		<Else>
+		  <p>No Data Available</p>
+		</Else>
+		</If>
+		</div>
+		</div>
+		</div>
+		</Else>
+	</If>
     </div>
     )}
 </Popup>
-);
-
-export default Warper(CustomModal);
+)}
+}
+export default viewReceivedPopup;
