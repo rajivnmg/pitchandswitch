@@ -70,6 +70,14 @@ class Header extends Component {
       .catch(error => console.error('Error', error));
   };
   
+  formatEndpoint = () => {
+    
+	let endpoint = this.state.longitude;
+	if(endpoint==""){
+		this.setState({address:""});
+	}
+	};
+  
    logoutHandler = (e) => {
       localStorage.removeItem('jwtToken');   
       localStorage.removeItem('loggedInUser');   
@@ -242,6 +250,7 @@ class Header extends Component {
                 placeholder: 'Search Places ...',
                 className: 'location-search-input form-control'			
 				})}
+				onBlur={this.formatEndpoint} 
 				required={true}
             />
             <div className="autocomplete-dropdown-container">
