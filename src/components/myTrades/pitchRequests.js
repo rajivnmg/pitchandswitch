@@ -46,8 +46,7 @@ class PitchRequests extends React.Component {
 	}
     render() {
         return (<div>
-           
-			{console.log('length',this.state.pitches.length)}
+			{console.log('length',this.state.pitches)}
 			<If condition={this.state.pitches.length == 0}>
 				<Then>					
 					<Alert
@@ -75,12 +74,12 @@ class PitchRequests extends React.Component {
 				<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
 				<div className="colum"><a href="#" className="view-pitch">
 				<If condition={send === 1}>
-						<Then>
-							 <ViewPitchPopup offerTrade={pitch}/>										 
-						</Then>	
-						<Else>						
-							<ViewReceivedPitch offerTrade={pitch}/>
-						</Else>						
+					<Then>
+						<ViewPitchPopup offerTrade={pitch}/>										 
+					</Then>	
+					<Else>						
+						<ViewReceivedPitch offerTrade={pitch}/>
+					</Else>						
 				 </If>
 				</a></div>
 				<div className="colum"></div>

@@ -8,7 +8,7 @@ import colorOrange from '../../images/color-orange.png';
 import UserPic from '../../images/user-pic.png';
 import NewlyProducts from './newlyProducts';
 import ThumbGallery from '../../components/seacrh-listing/Gallery';
-import axios from 'axios';	
+import axios from 'axios';
 import Moment from 'moment';
 import ReadMoreReact from 'read-more-react';
 import { Spin, Alert} from 'antd';
@@ -27,8 +27,8 @@ const history = createHistory();
 class MyTrades extends React.Component {
   constructor(props)
     {
-        super(props);        
-        let productId = props.match.params.id; 
+        super(props);
+        let productId = props.match.params.id;
         this.state = {
             resultData: "",
             checkData: "",
@@ -42,9 +42,9 @@ class MyTrades extends React.Component {
 			showFormSuccess : false
         };
     }
-	
-	 componentWillMount(){       
-	      axios.get('/product/productDetails/'+ this.state.productId).then(result => {				
+
+	 componentWillMount(){
+	      axios.get('/product/productDetails/'+ this.state.productId).then(result => {
 		    this.setState({
 				resultData:result.data.result,
 				mainImages:result.data.result?result.data.result.productImages[0]:"default_product_img@3x.png",
@@ -52,51 +52,49 @@ class MyTrades extends React.Component {
 				isAlreadyInWishlist:result.data.wishListProduct
 				});
 		})
-	
+
 	   axios.get('/donation/getConstant').then(result => {
-		   this.setState({conditions: result.data.result});            
+		   this.setState({conditions: result.data.result});
 	   });
-   
-       if(localStorage.getItem('jwtToken') !== null){	
-			axios.get('/user/getLoggedInUser').then(result => {			
-				this.setState({ user:result.data.result })	
+
+       if(localStorage.getItem('jwtToken') !== null){
+			axios.get('/user/getLoggedInUser').then(result => {
+				this.setState({ user:result.data.result })
 				localStorage.setItem('loggedInUser',result.data.result._id);
 				localStorage.setItem('userId',result.data.result._id);
-				localStorage.setItem('userName',result.data.result.userName);			
+				localStorage.setItem('userName',result.data.result.userName);
 				localStorage.setItem('isLoggedIn',1);
-				//this.setState({resultData:result.data.result});
 				this.setState({resultData:result.data.result});
 			})
-		}		
+		}
     }
-	
+
 	 componentDidMount(){
-		 const data = new FD();		    
+		 const data = new FD();
 			data.append('productId', this.state.productId)
 			data.append('pitchUserID', localStorage.getItem('loggedInUser'))
-			//console.log('data',data);
+			console.log('data',data);
 			axios.post('/product/checkExists/',data).then(result => {
-				//console.log('checkData',result.data.result.length)			
 			  this.setState({checkData:result.data.result});
-		    }) 
+		    })
         }
-	
-	addToWishList(){		
+
+	addToWishList(){
 		let data = {};
 		data.userId = localStorage.getItem('userId');
 		data.productId = this.state.productId;
-		axios.post('/product/addToWishList',data).then(result => {			
-			this.setState({product:result.data.result,isAlreadyInWishlist:true,showFormSuccess:true})					
-		})			
+		axios.post('/product/addToWishList',data).then(result => {
+			this.setState({product:result.data.result,isAlreadyInWishlist:true,showFormSuccess:true})
+		})
 		setTimeout(() => {this.setState({showFormSuccess: false});}, 12000)
 	}
 
 	_renderSuccessMessage() {
-		return (      
+		return (
 		   <Alert message="Added Successfully in wishlist" type="success"/>
 		);
   }
-    render() {	
+    render() {
 		 let optionTemplate;
 	     if(this.state.conditions){
 			let conditionsList = this.state.conditions;
@@ -107,34 +105,32 @@ class MyTrades extends React.Component {
 		let description = this.state.resultData.description?this.state.resultData.description:"";
 		let userid = (this.state.resultData.userId)?this.state.resultData.userId._id:''
         return (
-            <div>    				
-			<div className="my-trades-container">									
+            <div>
+			<div className="my-trades-container">
 			<If condition={this.state.isAlreadyPitched}>
 				<Then>
 					<div className="topMsg">You have already pitched on this product</div>
 				</Then>
 			</If>
-				
 			<div className="container">
 			<div className="breadcrumb">
 			<ul><li><a href="/">Home</a></li><li>My Trades</li></ul>
 			</div>
 			<div className="detail-div">
-			
 			<If condition = {this.state.resultData.length === 0}>
 			<Then><Spin /></Then>
 			<Else>
-				<div className="pic">			
+				<div className="pic">
 					<ThumbGallery galleriesID={this.state.productId} galleriesImg={this.state.mainImages} />
 				</div>
 				<div className="details">
 				  <div className="linkRow">
 				    <a href="#" className="back-page" onClick={history.goBack}>Back</a>
 				  <div className="cl"></div>
-				</div>            
+				</div>
 				<p className="tagsrow">{this.state.resultData.productCategory?this.state.resultData.productCategory.title:""}</p>
 				<h1>{this.state.resultData.productName}</h1>
-				<div className="productId">Product ID: <strong>{this.state.productId}</strong> 
+				<div className="productId">Product ID: <strong>{this.state.productId}</strong>
 				  <span className="postedDate">Posted date:{Moment(this.state.resultData.createdAt).format('Y-M-D') }</span>
 				</div>
 				<div className="brdr-top no-padding "><div className="ratingRow"><p className="postedBy">Posted by:</p>
@@ -149,44 +145,53 @@ class MyTrades extends React.Component {
 					  <ReadMoreReact className="readmore" text={description} min={1}  ideal={15} max={15} />
 					</div>
 				<div className="btnRow">
-				{this.state.showFormSuccess ? this._renderSuccessMessage() : null} 
-				<a href="#" className="ditch">				
+				{this.state.showFormSuccess ? this._renderSuccessMessage() : null}
+
                    <If condition={localStorage.getItem('isLoggedIn') == "1"} >
 						<Then>
 						 <If condition={this.state.checkData && this.state.checkData.length>0} >
 						  <Then>
-						      Already Pitched
+						      <a href="#" className="ditch">Already Pitched</a>
 						  </Then>
 						  <Else>
-						       <LastPitchPopup offerTrade={this.state.resultData} proID ={this.state.productId}/>
+						     <If condition={userid !=="" && localStorage.getItem('userId') !== userid} >
+						       <Then>
+						        <a href="#" className="ditch">
+						           <LastPitchPopup offerTrade={this.state.resultData} proID = {this.state.productId}/>
+						         </a>
+						       </Then>
+						      </If>
 						  </Else>
 						 </If>
                         </Then>
                         <Else>
-							<LoginPopup  offerTrade={this.state.resultData}/>
+							<a href="#" className="ditch">	<LoginPopup offerTrade={this.state.resultData}/></a>
                        </Else>
-                    </If>                  
-				</a>
-				  
+                    </If>
+
 				<If condition={this.state.isAlreadyInWishlist === false}>
-					<Then>	
-							<If condition ={localStorage.getItem('isLoggedIn') == "1"}>
-								<Then>
-									<a href="#" className="ditch add-wishlist" onClick={()=>this.addToWishList()}>Add to Wishlist</a>
-								</Then>
-								<Else>
-									<LoginPopup  offerTrade={this.state.resultData}/>
-								</Else>
-							</If>						
-					</Then>	
-					<Else>											
+					<Then>
+						<If condition ={localStorage.getItem('isLoggedIn') == "1"}>
+							<Then>
+								<a href="#" className="ditch add-wishlist" onClick={()=>this.addToWishList()}>Add to Wishlist</a>
+							</Then>
+							<Else>
+								<LoginPopup offerTrade={this.state.resultData}/>
+							</Else>
+						</If>
+					</Then>
+					<Else>
+					<If condition={userid !=="" && localStorage.getItem('userId') !== userid} >
+					  <Then>
 						<span className="ditch add-wishlist">Added in Wishlist</span>
+					  </Then>
+					 </If>
 					</Else>
-							
+
 				</If>
 				    <div className="cl"></div>
 				</div>
-			
+
 				<div className="productDetails">
 				<h5>Product Details</h5>
 				<table cellPadding="0" cellSpacing="0" width="100%">

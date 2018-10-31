@@ -1,0 +1,48 @@
+.color_check p{ display:inline-block; padding:0; margin:2px;}
+.color_check .rc-checkbox-inner{ border:0; border-radius:0; width:20px; height:20px; }
+.color_check p:nth-child(1) .rc-checkbox-inner{ background:#200a2d;}
+.color_check p:nth-child(2) .rc-checkbox-inner{ background:#501136;}
+.color_check p:nth-child(3) .rc-checkbox-inner{ background:#9d294a;}
+.color_check p:nth-child(4) .rc-checkbox-inner{ background:#c12e5d;}
+.color_check p:nth-child(5) .rc-checkbox-inner{ background:#ff5819;}
+.color_check p:nth-child(6) .rc-checkbox-inner{ background:#9dd526;}
+.color_check p:nth-child(7) .rc-checkbox-inner{ background:#0c1907;}
+.color_check p:nth-child(8) .rc-checkbox-inner{ background:#d71a02;}
+.color_check p:nth-child(9) .rc-checkbox-inner{ background:#b27f59;}
+.color_check p:nth-child(10) .rc-checkbox-inner{ background:#9a9a8a;}
+.color_check p:nth-child(11) .rc-checkbox-inner{ background:#b2b1a6;}
+.color_check p:nth-child(12) .rc-checkbox-inner{ background:#6cab47;}
+.color_check p:nth-child(13) .rc-checkbox-inner{ background:#dfe0db;}
+.color_check p:nth-child(14) .rc-checkbox-inner{ background:#783c18;}
+.color_check .rc-checkbox-inner:after{top:3px; left:7px; display:none;
+ -webkit-animation-timing-function: none;
+    animation-timing-function: none;
+    -webkit-animation-duration: 0s;
+    animation-duration:0s;
+    -webkit-animation-name: amCheckboxOut;
+    animation-name: amCheckboxOut;}
+.color_check .rc-checkbox-checked .rc-checkbox-inner:after{ top:3px; left:7px; display:block; transition: unset;}
+
+
+.rc-collapse-content{ overflow:inherit !important}
+
+.control:hover {
+  cursor: pointer;
+}
+.content {
+  width: 200px;
+  height: 200px;
+  background: yellow;
+}
+.invisible {
+  display: none;
+}
+
+
+.searchBox{ top:265px;}
+
+button.moreCat{ background:none; border:0; cursor:pointer;}
+button.moreCat:focus{outline: none;}
+
+
+.age_select_user{ position:relative;}

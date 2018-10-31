@@ -3,6 +3,12 @@ import Style from './register.css';
 import registerIcon from '../../images/register-icon.png';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import PlacesAutocomplete from 'react-places-autocomplete';
+import {
+  geocodeByAddress,
+  geocodeByPlaceId,
+  getLatLng,
+} from 'react-places-autocomplete';
 import { Label, Input } from 'reactstrap';
 var FD = require('form-data');
 var fs = require('fs');
@@ -11,6 +17,9 @@ var fs = require('fs');
  * It executes the form's checkValidity
  **/
 class Form extends Component {
+    
+    
+    
   state = {
     isValidated: false
   };
@@ -79,6 +88,7 @@ class Register extends React.Component {
     super(props);
 		this.state = {
 		  type: 'password',
+          address: '' ,
 		  score: 'null',
 		  countryId :'',
 		  stateId :'',
@@ -92,8 +102,10 @@ class Register extends React.Component {
 			phone: '',
 			password:'', 
 			C_password:'',
-			address:'',
+			//address:'',
 			address1:'',
+                        latitude:'',
+                        longitude:'',
 			country:'',
 			state:'',
 			city:'',
@@ -105,6 +117,36 @@ class Register extends React.Component {
 	    this.handleChangeState = this.handleChangeState.bind(this);
 	    this.handleChangeCity = this.handleChangeCity.bind(this);
 	}
+        
+        handleChange = address => {
+			const regForm = {...this.state.registerForm};
+        
+			regForm.latitude = "";
+        regForm.longitude = "";
+        
+        this.setState({registerForm:regForm});
+    this.setState({ address });
+  };
+  handleSelect = address => {
+      
+   const registForm = {...this.state.registerForm};
+    registForm.address = address;
+    this.setState({registerForm:registForm});
+    this.setState({address:address});
+    
+    
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => {
+        const regForm = {...this.state.registerForm};
+        
+        regForm.latitude = latLng['lat'];
+        regForm.longitude = latLng['lng'];
+        console.log('HERE',  latLng['short_name'])
+        this.setState({registerForm:regForm});
+    })
+      .catch(error => console.error('Error', error));
+  };
 	
 	handleChangeCountry(event) {
 	
@@ -186,8 +228,11 @@ class Register extends React.Component {
         data.append('profilePic', ''),
         data.append('phoneNumber',(this.state.registerForm.phoneNumber)?this.state.registerForm.phoneNumber.value:''),
         data.append('dob', ''), 
-        data.append('address',(this.state.registerForm.address)?this.state.registerForm.address.value:''),
+        data.append('address',(this.state.registerForm.address)?this.state.registerForm.address:''),
+		data.append('latitude',(this.state.registerForm.latitude)?this.state.registerForm.latitude:''),
+		data.append('longitude',(this.state.registerForm.longitude)?this.state.registerForm.longitude:''),
         data.append('city', this.state.cityId),
+		// data.append('address', this.state.address),
         data.append('state', this.state.stateId),
         data.append('country', this.state.countryId),
         data.append('zipCode', (this.state.registerForm.zipCode)?this.state.registerForm.zipCode.value:''),
@@ -230,6 +275,17 @@ class Register extends React.Component {
       </div>
     );
   }
+  
+  formatEndpoint = () => {
+    const form = [...this.state.registerForm];
+	let endpoint = this.state.registerForm.longitude;
+	//alert(endpoint)
+	if(endpoint==""){
+		this.setState({address:""});
+	}
+	
+    
+  };
     _renderErrorMessage() {
     return (
       <div align="center" className={"alert alert-danger mt-4"} role="alert">
@@ -240,6 +296,8 @@ class Register extends React.Component {
   render() {
     return (
             <div className="login-container">
+    
+          
         <div  className="container">
            <a href="/" className="backBtn">&nbsp;</a>
         <div className="cl"></div>
@@ -253,7 +311,9 @@ class Register extends React.Component {
           
               <Form submit={this.submit}>
                  {this.state.showFormError ? this._renderErrorMessage() : null}
-                <div className="form-row">
+                 
+        
+        <div className="form-row">
                 <div className="invalid-feedback validation"> </div>   
                 <span className="astrik">*</span>
                   <label className="label" htmlFor={"name"}>Name</label>
@@ -302,12 +362,62 @@ class Register extends React.Component {
                   <small className="small-instruction">Must be at least 6 characters long, contain letters and numbers</small>
                   
                 </div>
-                 <div className="form-row">
+				{/*<div className="form-row">
                  <div className="invalid-feedback validation"> </div>   
                 <span className="astrik">*</span>
-                  <label className="label" htmlFor={"address"}>Address Line 1</label>
-                  <input id={"address"} className={"form-control textBox"} onChange={(e) => this.inputChangedHandler(e, 'address')} required={true} name={"address"} type={"text"} placeholder="" />
-                </div>
+                  <label className="label" htmlFor={"addressss"}>Address Line Geo</label>
+                  <input id={"address"} className={"form-control textBox"} onChange={(e) => this.inputChangedHandler(e, 'addressss')} required={true} name={"address"} type={"text"} placeholder="" />
+                </div>*/}
+				<input className={"form-control textBox hide2"} value={this.state.registerForm.latitude} name={"latitude"} type={"text"} placeholder="" />
+                 <input className={"form-control textBox hide2"} value={this.state.registerForm.longitude}  name={"longitude"} type={"text"} placeholder="" />
+				<div className="form-row">
+				<div className="invalid-feedback validation"> </div>   
+                <span className="astrik">*</span>
+                  <label className="label" htmlFor={"addressss"}>Address Line1</label>
+        <PlacesAutocomplete
+        value={this.state.address} 
+        onChange={this.handleChange}
+        onSelect={this.handleSelect}
+        name={"address"}
+      >
+	  
+        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+		
+          <div>
+            <input 
+              {...getInputProps({
+                placeholder: 'Search Places ...',
+                className: 'location-search-input form-control'			
+				})}
+				onBlur={this.formatEndpoint}
+				required={true}
+            />
+            <div className="autocomplete-dropdown-container">
+              {loading && <div>Loading...</div>}
+              {suggestions.map(suggestion => {
+                const className = suggestion.active
+                  ? 'suggestion-item--active'
+                  : 'suggestion-item';
+                // inline style for demonstration purpose
+                const style = suggestion.active
+                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                return (
+                  <div
+                    {...getSuggestionItemProps(suggestion, {
+                      className,
+                      style,
+                    })}
+                  >
+                    <span>{suggestion.description}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </PlacesAutocomplete>        
+        </div>
                  <div className="form-row">
                 <label className="label" htmlFor={"address1"}>Address Line 2</label>
                   <input id={"address1"} className={"form-control textBox"}  onChange={(e) => this.inputChangedHandler(e, 'address1')} name={"address1"} type={"text"} placeholder="" />

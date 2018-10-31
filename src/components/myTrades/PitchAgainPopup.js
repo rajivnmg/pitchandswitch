@@ -199,11 +199,9 @@ render() {
             &times;
         </a>
          <If condition={this.state.showFormSuccess === true}>
-				<Then>
-					<div className="modal pitchSuccessful">
-						<a className="close" onClick={close}>
-						&times;
-						</a>
+			<Then>
+				<div className="modal pitchSuccessful">
+					<a className="close" onClick={close}>&times;</a>
 						<div className="header centerheading"><span>Pitch Again 
 						</span> Successfully<div className="cl"></div></div>
 						<p className="textSuccessful"><span classNamne="gray">You have successfully pitched Again to same Product.</span>
@@ -253,8 +251,7 @@ render() {
 								<div className={"switch-product-box " +className+" "}>
 								<div className="switch-product-image-box">
 								<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
-								
-							   <div className="switch-option-mask">
+								 <div className="switch-option-mask">
 								<If condition={(this.state.switchedProductsID.indexOf(productsListing._id) !== -1 )} >
 								 <Then> 
 								  <img src={rejected} alt="recieved-product image" />
