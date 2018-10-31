@@ -43,7 +43,10 @@ class UserAutosearch extends React.Component {
     }
 
     handleAddition(tag) {
-        this.setState(state => ({ tags: [...state.tags, tag] }));
+        this.setState(state => ({ tags: [...state.tags, tag] }), () => {
+          this.props.onUserChange(this.state.tags);
+        });
+
     }
 
     handleDrag(tag, currPos, newPos) {

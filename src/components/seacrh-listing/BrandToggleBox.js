@@ -34,19 +34,22 @@ class BrandToggleBox extends Component {
   }
 
   render() {
-    const brandList = this.state.filteredBrands.map((item, index) => {
-      if(item.id === ""){
-        return (<li key={index}><h5>{item.brandName}</h5></li>);
-      }else {
-      return (<li key={index}>
-          <div className="check-box"><input checked={item.checked}  brandName="brand" id={'cat-' + item._id} onChange={(e) => this.props.changeToCheck(e)} value={item._id} type="checkbox" />
-            <label htmlFor={'cat-' + item._id}>
-              {item.brandName}
-            </label>
-          </div>
-        </li>);
-      }
-    });
+    let brandList = null;
+    if(this.state.filteredBrands.length){
+        brandList = this.state.filteredBrands.map((item, index) => {
+        if(item.id === ""){
+          return (<li key={index}><h5>{item.brandName}</h5></li>);
+        }else {
+        return (<li key={index}>
+            <div className="check-box"><input checked={item.checked}  name="brand" id={'cat-' + item._id} onChange={(e) => this.props.changeToCheck(e)} value={item._id} type="checkbox" />
+              <label htmlFor={'cat-' + item._id}>
+                {item.brandName}
+              </label>
+            </div>
+          </li>);
+        }
+      });
+    }
     return (
       <div className="App">
         <p className="App-intro">

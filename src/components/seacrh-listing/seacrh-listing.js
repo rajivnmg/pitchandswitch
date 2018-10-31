@@ -101,8 +101,8 @@ class Register extends React.Component {
   constructor(props){
     super(props);
     let categoryId = props.match.params.id;
-	let latitude = props.match.params.latitude; 
-    let longitude = props.match.params.longitude; 
+	let latitude = props.match.params.latitude;
+    let longitude = props.match.params.longitude;
     this.state = {
       time: random(),
       accordion: false,
@@ -244,8 +244,6 @@ class Register extends React.Component {
       selectedUserAges:[],
       selectedSizes:[]
     };
-
-    this.changeContanst = this.changeContanst.bind(this);
   }
   onChange = (activeKey) => {
       this.setState({
@@ -281,85 +279,85 @@ class Register extends React.Component {
 
 
 
-changeBrand(brand) {
-    let checkedArray = this.state.optionsChecked;
-    let selectedValue = brand.target.value;
-      if (brand.target.checked === true) {
-      	checkedArray.push(selectedValue);
-          this.setState({
-            optionsChecked: checkedArray
-          });
-      }
-      else {
-      	let valueIndex = checkedArray.indexOf(selectedValue);
-		checkedArray.splice(valueIndex, 1);
-          this.setState({
-            optionsChecked: checkedArray
-          });
-      }
-      const data = new FD();
-      data.append('ids',this.state.optionsChecked)
-      data.append('type','brand')
-      console.log('aaaa',this.state.optionsChecked);
-      axios.post('/product/filterBycategory',data).then(result =>{
-		this.setState({
-			resultData : result.data.result
-		});
-	});
-  }
+// changeBrand(brand) {
+//     let checkedArray = this.state.optionsChecked;
+//     let selectedValue = brand.target.value;
+//       if (brand.target.checked === true) {
+//       	checkedArray.push(selectedValue);
+//           this.setState({
+//             optionsChecked: checkedArray
+//           });
+//       }
+//       else {
+//       	let valueIndex = checkedArray.indexOf(selectedValue);
+// 		checkedArray.splice(valueIndex, 1);
+//           this.setState({
+//             optionsChecked: checkedArray
+//           });
+//       }
+  //     const data = new FD();
+  //     data.append('ids',this.state.optionsChecked)
+  //     data.append('type','brand')
+  //     console.log('aaaa',this.state.optionsChecked);
+  //     axios.post('/product/filterBycategory',data).then(result =>{
+	// 	this.setState({
+	// 		resultData : result.data.result
+	// 	});
+	// });
+//   }
 
-changeContanst(constantV) {
-    let checkedArray = this.state.optionsChecked;
-    let selectedValue = constantV.target.value;
-      if (constantV.target.checked === true) {
-      	checkedArray.push(selectedValue);
-          this.setState({
-            optionsChecked: checkedArray
-          });
-      }
-      else {
-        let valueIndex = checkedArray.indexOf(selectedValue);
-		checkedArray.splice(valueIndex, 1);
-          this.setState({
-            optionsChecked: checkedArray
-          });
-      }
-      const dataConstant = new FD();
-      dataConstant.append('ids',this.state.optionsChecked)
-      dataConstant.append('type','condition')
-      axios.post('/product/filterBycategory',dataConstant).then(result =>{
-		this.setState({
-			resultData : result.data.result
-		});
-	});
-  }
+// changeContanst(constantV) {
+//     let checkedArray = this.state.optionsChecked;
+//     let selectedValue = constantV.target.value;
+//       if (constantV.target.checked === true) {
+//       	checkedArray.push(selectedValue);
+//           this.setState({
+//             optionsChecked: checkedArray
+//           });
+//       }
+//       else {
+//         let valueIndex = checkedArray.indexOf(selectedValue);
+// 		checkedArray.splice(valueIndex, 1);
+//           this.setState({
+//             optionsChecked: checkedArray
+//           });
+//       }
+    //   const dataConstant = new FD();
+    //   dataConstant.append('ids',this.state.optionsChecked)
+    //   dataConstant.append('type','condition')
+    //   axios.post('/product/filterBycategory',dataConstant).then(result =>{
+		// this.setState({
+		// 	resultData : result.data.result
+		// });
+// 	});
+//   }
 
 
 
-  changeUser(userList){
-	let userValue = userList.value;
-    const userdata = new FD();
-      userdata.append('ids',userList.value)
-      userdata.append('type','userId')
-      console.log('aaaa',userdata);
-    axios.post('/product/filterBycategory',userdata).then(result =>{
-	    this.setState({
-			resultData : result.data.result
-		});
-	 });
-}
+//   changeUser(userList){
+// 	let userValue = userList.value;
+    // const userdata = new FD();
+    //   userdata.append('ids',userList.value)
+    //   userdata.append('type','userId')
+    //   console.log('aaaa',userdata);
+    // axios.post('/product/filterBycategory',userdata).then(result =>{
+	  //   this.setState({
+		// 	resultData : result.data.result
+		// });
+// 	 });
+// }
 
-  changeCity(cityList){
-    const citydata = new FD();
-      citydata.append('ids',cityList.target.value)
-      citydata.append('type','city')
-      console.log('citydata',citydata)
-    axios.post('/user/searchCity',citydata).then(result =>{
-	    this.setState({
-			resultData : result.data.result
-		});
-	 });
-}
+//   changeCity(cityList){
+//     const citydata = new FD();
+//       citydata.append('ids',cityList.target.value)
+//       citydata.append('type','city')
+//       console.log('citydata',citydata)
+//     axios.post('/user/searchCity',citydata).then(result =>{
+// 	    this.setState({
+// 			resultData : result.data.result
+// 		});
+// 	 });
+// }
 
   changeSize(sizeList){
     const sizedata = new FD();
@@ -413,23 +411,37 @@ changeContanst(constantV) {
       data.append('ids', checkedArray);
       data.append('type','productCategory');
       axios.post('/product/filterBycategory',data).then(result =>{
-    		this.setState({
-    			resultData : result.data.result
-    		});
+        console.log('RRRR', result)
+    		// this.setState({
+    		// 	resultData : result.data.result
+    		// });
       });
     });
   };
   brandUpdate = (e) => {
     const brands = [...this.state.brandsList];
     let showBrandCount = 0;
+    let selectedBrands = [];
     brands.map((item, index) => {
       if(brands[index].checked == undefined) brands[index].checked = false;
       if(item._id === e.target.value){
         brands[index].checked = !brands[index].checked;
       }
-      if(brands[index].checked) showBrandCount++;
+      if(brands[index].checked){
+        showBrandCount++;
+        selectedBrands.push(item._id);
+      }
     });
-    this.setState({brandsList: brands, showBrandCount:showBrandCount });
+    this.setState({brandsList: brands, showBrandCount:showBrandCount }, () =>{
+        const data = new FD();
+        data.append('ids', selectedBrands)
+        data.append('type','brand')
+        axios.post('/product/filterBycategory',data).then(result =>{
+          this.setState({
+            resultData : result.data.result
+          });
+        });
+    });
   };
   isBrandOpenFun = (value) =>{
     const openClose = this.state.isBrandOpen;
@@ -453,8 +465,16 @@ changeContanst(constantV) {
       }
     });
     this.setState({colors: colors }, function(){
-      console.log('Selected Colors', this.state.colors)
-    });
+        //console.log('Selected Colors', this.state.colors)
+        const dataConstant = new FD();
+        dataConstant.append('ids',this.state.colors)
+        dataConstant.append('type','condition')
+        axios.post('/product/filterBycategory',dataConstant).then(result =>{
+          this.setState({
+            resultData : result.data.result
+          });
+        });
+      });
   };
    componentDidMount(){
       axios.all([
@@ -535,6 +555,16 @@ changeContanst(constantV) {
      this.setState({constantList: contants});
    };
 
+   onUserChange = (tags) => {
+       if(tags){
+          const userdata = new FD();
+          userdata.append('ids', tags)
+          userdata.append('type','userId')
+          axios.post('/product/filterBycategory',userdata).then(result =>{
+            this.setState({ resultData : result.data.result});
+          });
+     }
+   };
   getItems() {
       const items = [];
       if(this.state.constantList.length){
@@ -612,6 +642,7 @@ changeContanst(constantV) {
                                     <div className="usersearch">
                                       <UserAutosearch
                                         userList={this.state.usersList}
+                                        onUserChange={this.state.onUserChange}
                                        />
                                     </div>
                                     <div className="taglinerow">
@@ -741,6 +772,32 @@ changeContanst(constantV) {
           const accordion = this.state.accordion;
           const btn = accordion ? 'Mode: accordion' : 'Mode: collapse';
           const activeKey = this.state.activeKey;
+
+          let searchItems = null;
+          console.log('RENDER', this.state.resultData);
+          if(this.state.resultData.length){
+            searchItems = this.state.resultData.map(function (item,index) {
+             let img = item.userId?<img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+item.userId[0].profilePic} />:null;
+             return (
+             <div className="Items" key={index}><div>
+             <Link to={'/search-result/'+item._id}>
+                 <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+item.productImages} /></div>
+             </Link>
+             <div className='details'>
+             <h4><Link to={'/search-result/'+item._id}>{item.productName}</Link></h4>
+               <Link className="catLink" to={'/search-result/'+item._id}>{((item.productCategory)?item.productCategory[0].title:"")}</Link>
+             </div>
+             <div className="userdiv">
+             <div className="user-pic">
+                {img}
+             </div>
+                <div className="user-name">{item.userId?item.userId[0].firstName:""}</div>
+             </div>
+             </div>
+             </div>
+             )
+           });
+         }
           return (<div className="search-page">
         		<div className="container">
         			<div className="lft-section">
@@ -766,29 +823,8 @@ changeContanst(constantV) {
          					<div className="cl"></div>
          				</div>
 
-         				<div className="item-listing"  results={this.state.results}>
-         				   { this.state.resultData.map(function (results,index) {
-         					let img = results.userId?results.userId[0].profilePic:"";
-         					return (
-         					<div className="Items" key={index}><div>
-         					<Link to={'/search-result/'+results._id}>
-         					    <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+results.productImages} /></div>
-         					</Link>
-         					<div className='details'>
-         					<h4><Link to={'/search-result/'+results._id}>{results.productName}</Link></h4>
-         					  <Link className="catLink" to={'/search-result/'+results._id}>{((results.productCategory)?results.productCategory[0].title:"")}</Link>
-         					</div>
-         					<div className="userdiv">
-         					<div className="user-pic">
-         					   <img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} />
-         					</div>
-         					   <div className="user-name">{results.userId?results.userId[0].firstName:""}</div>
-         					</div>
-         					</div>
-         					</div>
-         					)
-         				})
-         				}
+         				<div className="item-listing">
+         				   { searchItems}
          				</div>
          				<div className="cl"></div>
          			</div>
