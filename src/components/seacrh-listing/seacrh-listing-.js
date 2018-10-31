@@ -57,8 +57,6 @@ class Register extends React.Component {
     {
         super(props);
         let categoryId = props.match.params.id;
-		let latitude = props.match.params.latitude; 
-		let longitude = props.match.params.longitude;
         this.state = {
             resultData: [],
              items: [],
@@ -78,8 +76,6 @@ class Register extends React.Component {
             result: [],
             query: '',
             categoryId: categoryId,
-			latitude: latitude,
-			longitude: longitude,
             optionsChecked: [],
             ids :[],
             showFormSuccess : false
@@ -240,8 +236,8 @@ class Register extends React.Component {
 
 
      componentDidMount(){
-	     axios.get('/product/searchresult/'+this.state.categoryId+'/'+this.state.latitude+'/'+this.state.longitude).then(result => {
-			 this.setState({resultData:result.data.result});				 
+	     axios.get('/product/searchresult/'+ this.state.categoryId).then(result => {
+			 this.setState({resultData:result.data.result});
 			 console.log('resultData',this.state.resultData);
 		})
 	     axios.get('/category/categoriesActive/').then(rs => {
