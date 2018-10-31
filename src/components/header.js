@@ -43,6 +43,7 @@ class Header extends Component {
 	     categoryId :"",
 		 latitude:"",
 		 longitude:"",
+		 gmapsLoaded: false
 	}	
      this.logoutHandler = this.logoutHandler.bind(this); 
      this.onSearchHandler = this.searchHandler.bind(this); 
@@ -51,6 +52,13 @@ class Header extends Component {
          //this.props.history.push('/login');
       }
   }
+  
+  initMap = () => {
+  this.setState({
+    gmapsLoaded: true,
+  })
+}
+
   
    handleChange = address => {
     this.setState({ address });
@@ -151,6 +159,14 @@ class Header extends Component {
 	}
   
   componentDidMount() {
+	
+	
+	//code for google places api 
+	window.initMap = this.initMap
+	const gmapScriptEl = document.createElement(`script`)
+	gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyA_Is11HwzMFGIFAU-q78V2kQUiT9OQiZI&libraries=places&callback=initMap`
+	document.querySelector(`body`).insertAdjacentElement(`beforeend`, gmapScriptEl)
+
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');	
 	if(localStorage.getItem('jwtToken') !== null){		
 		//~ axios.get('/user/getLoggedInUser').then(result => {			
@@ -218,67 +234,57 @@ class Header extends Component {
                     </figure>
                     <CategoryMenu />
 					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
                     <div className="search-container">
-					
-					
-					
 					
                         <div className="location">
                            <input className={"form-control textBox hide2"} value={this.state.latitude} name={"latitude"} type={"text"} placeholder="" />
                  <input className={"form-control textBox hide2"} value={this.state.longitude}  name={"longitude"} type={"text"} placeholder="" />
+                 {this.state.gmapsLoaded && (
 					<PlacesAutocomplete
-        value={this.state.address} 
-        onChange={this.handleChange}
-        onSelect={this.handleSelect}
-        name={"address"}
-      >
-	  
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-		
-          <div>
-            <input 
-              {...getInputProps({
-                placeholder: 'Search Places ...',
-                className: 'location-search-input form-control'			
-				})}
-				onBlur={this.formatEndpoint} 
-				required={true}
-            />
-            <div className="autocomplete-dropdown-container">
-              {loading && <div>Loading...</div>}
-              {suggestions.map(suggestion => {
-                const className = suggestion.active
-                  ? 'suggestion-item--active'
-                  : 'suggestion-item';
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                return (
-                  <div
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style,
-                    })}
-                  >
-                    <span>{suggestion.description}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
+					value={this.state.address} 
+					onChange={this.handleChange}
+					onSelect={this.handleSelect}
+					name={"address"}
+					>
+
+				{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+				
+				  <div>
+					<input 
+					  {...getInputProps({
+						placeholder: 'Search Places ...',
+						className: 'location-search-input form-control'			
+						})}
+						required={true}
+					/>
+					<div className="autocomplete-dropdown-container">
+					  {loading && <div>Loading...</div>}
+					  {suggestions.map(suggestion => {
+						const className = suggestion.active
+						  ? 'suggestion-item--active'
+						  : 'suggestion-item';
+						// inline style for demonstration purpose
+						const style = suggestion.active
+						  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+						  : { backgroundColor: '#ffffff', cursor: 'pointer' };
+						return (
+						  <div
+							{...getSuggestionItemProps(suggestion, {
+							  className,
+							  style,
+							})}
+						  >
+							<span>{suggestion.description}</span>
+						  </div>
+						);
+					  })}
+					</div>
+				  </div>
+				)}
+
       </PlacesAutocomplete> 
+	)}
+					
                         </div>                       
                         <div className="search">
                               <AutoComplete

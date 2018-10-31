@@ -98,7 +98,7 @@ render() {
 								<div className="example"><Spin /></div>
 							</Then>							
 						</If>
-						<div className="content">
+						<div className="content upgradePlan">
 							<div className="subscription-container">
 								<div className="container">
 								{
