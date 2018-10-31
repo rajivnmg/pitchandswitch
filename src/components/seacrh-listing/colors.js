@@ -4,10 +4,6 @@ import Checkbox from 'rc-checkbox';
 import 'rc-checkbox/assets/index.css';
 import Style from './color.css';
 
-function onChange(e) {
-  console.log('Checkbox checked:', (e.target.checked));
-}
-
 class Colors extends React.Component {
   constructor(props){
     super(props);

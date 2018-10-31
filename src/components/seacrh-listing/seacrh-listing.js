@@ -74,15 +74,15 @@ const Hide = {
 }
 const searchUser = [
   {label: "Shopkins", value: 1},
-{label: "Shoppies ", value: 2},
-{label: "Bubblesiha", value: 3},
-{label: "Leander ", value: 4},
-{label: "Cradle", value: 5},
-{label: "Crib", value: 6},
-{label: "High Chair", value: 7},
-{label: "Call of Duty", value: 8},
-{label: "Infinate ", value: 9},
-{label: "Warfare More", value: 10},
+  {label: "Shoppies ", value: 2},
+  {label: "Bubblesiha", value: 3},
+  {label: "Leander ", value: 4},
+  {label: "Cradle", value: 5},
+  {label: "Crib", value: 6},
+  {label: "High Chair", value: 7},
+  {label: "Call of Duty", value: 8},
+  {label: "Infinate ", value: 9},
+  {label: "Warfare More", value: 10},
 
 ];
 const App = () => (
