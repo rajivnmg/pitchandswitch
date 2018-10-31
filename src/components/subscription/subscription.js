@@ -102,27 +102,6 @@ class Subscription extends React.Component {
 							</div>)
 							})
 						}
-                       
-                      {/* 
-                        <div className="colum-basic gold">
-                            <div className="pic-row">
-                                <img src={subscribeImg2} />
-                            </div>
-                            <h4>Gold</h4>
-                            <div className="row-div">
-                            <strong>Unlimited </strong> Trade
-                            </div>
-                            <div className="row-div">
-                                <strong>Unlimited </strong> Storage 
-                            </div>
-                            <div className="row-div">
-                                <strong>Unlimited </strong> Wishlist
-                            </div>
-                            <h4 className="price">$25<sub>/y</sub></h4>
-                             <GetStarted />
-                        </div>
-                      
-                      */}
                       
                         <div className="cl"></div>
                     </div>

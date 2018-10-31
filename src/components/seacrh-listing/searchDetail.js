@@ -67,21 +67,14 @@ class MyTrades extends React.Component {
 				//this.setState({resultData:result.data.result});
 				this.setState({resultData:result.data.result});
 			})
-		}
-		 const data = new FD();		   
-			data.append('productId', this.state.productId)
-			data.append('pitchUserID', localStorage.getItem('loggedInUser'))
-			console.log('data',data);
-			axios.post('/product/checkExists/',data).then(result => {			
-			  console.log('redddddd',result)
-		    }) 
-        }
+		}		
+    }
 	
 	 componentDidMount(){
 		 const data = new FD();		    
 			data.append('productId', this.state.productId)
 			data.append('pitchUserID', localStorage.getItem('loggedInUser'))
-			console.log('data',data);
+			//console.log('data',data);
 			axios.post('/product/checkExists/',data).then(result => {
 				//console.log('checkData',result.data.result.length)			
 			  this.setState({checkData:result.data.result});

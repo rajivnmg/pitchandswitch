@@ -9,6 +9,9 @@ import PitchRequests from './pitchRequests'
 import Switched from './switched'
 import Completed from './completed'
 import Ditch from './ditch'
+import SubscriptionAddonsPupup from '../subscriptionAddonsPupup'
+import ProductShippingCostPopup from '../productShippingCostPopup'
+
 import ReturnInfo from '../payShopPopup'
 import ReturnInfo1 from '../payShopPopup1'
 import axios from 'axios';
@@ -30,9 +33,9 @@ class Dashboard extends Component {
 			 profilePic:'',
 			 userName:''
 			},
-			userSubscription:{}		
-	 }    
-  
+			userSubscription:{},
+			userSubscriptionAddons : {}
+	}
     if(localStorage.getItem('jwtToken') === null){
        window.location.href="#/login";
     }
@@ -40,30 +43,41 @@ class Dashboard extends Component {
   
   componentWillMount() {
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
-		 if(localStorage.getItem('jwtToken') !== null){		
-			axios.get('/user/getLoggedInUser').then(result => {
-				//console.log("result",result)
-				this.setState({ 
-					currentUser:result.data.result,
-					notification_type:result.data.notification_type,
-					notifications:result.data.notifications,
-					totalNotifications:result.data.totalNotifications
-					//~ totalInvemtory:result.data.totalInvemtory,
-					//~ totalInventoryAllowed:result.data.totalInventoryAllowed,
-					//~ totalTradePermitted:result.data.totalTradePermitted,
-					//~ totalTrade:result.data.totalTrade,
-					//~ inventoryLeft:result.data.inventoryLeft,
-					//~ tradeLeft:result.data.tradeLeft			
-				})			
-			})	
-			
-			// function to get user subscription details : 			
-			axios.get('/user/userSubscription').then(sresult => {	
-				console.log("sresult",sresult.data.userSubacriptions[0])			
-					this.setState({ 					
-						userSubscription:sresult.data.userSubacriptions[0]		
-					})
-			})
+		 if(localStorage.getItem('jwtToken') !== null){		 		
+			//~ axios.get('/user/getLoggedInUser').then(result => {				
+				//~ this.setState({ 
+					//~ currentUser:result.data.result,
+					//~ notification_type:result.data.notification_type,
+					//~ notifications:result.data.notifications,
+					//~ totalNotifications:result.data.totalNotifications							
+				//~ })			
+			//~ })			
+			//~ // function to get user subscription details : 			
+			//~ axios.get('/user/userSubscription').then(sresult => {	
+				//~ console.log("sresult",sresult.data.userSubacriptions[0])			
+					//~ this.setState({ 					
+						//~ userSubscription:sresult.data.userSubacriptions[0]		
+					//~ })
+			//~ })
+			  axios.all([
+				 axios.get('/user/getLoggedInUser'),
+				 axios.get('/user/userSubscription'),
+				 axios.get('/user/userSubscriptionAddon')
+			   ])
+			   .then(axios.spread((user, sresult,saresult) => {
+				   if(user.data.code === 200){					 
+					   this.setState({ 
+							currentUser:user.data.result,
+							notification_type:user.data.notification_type,
+							notifications:user.data.notifications,
+							totalNotifications:user.data.totalNotifications,
+							userSubscription:sresult.data.userSubacriptions[0],
+							userSubscriptionAddons:saresult.data.userSubacriptionAddons[0]						
+						})	
+				   }				 			 	
+			   }))
+			   //.then(response => this.setState({ vehicles: response.data }))
+			   .catch(error => console.log(error));
 			
 		}	
 			
@@ -83,9 +97,6 @@ class Dashboard extends Component {
 					tradeLeft:result.data.tradeLeft			
 				})			
 			})	
-						
-		
-			
 		}		
   }
   
@@ -129,7 +140,8 @@ Capitalize(str){
                                         </div>                            
                                         <h4>Pitch Requests</h4>
                                         <PitchRequests />
-                                        <ReturnInfo1 />
+                                       {/* <ReturnInfo1 /> */}
+                                        <ProductShippingCostPopup />
                                     </TabPanel>
                                     <TabPanel>
                                         <div className="message-filter">
@@ -150,7 +162,8 @@ Capitalize(str){
                                                 </TabList>
                                                 <TabPanel>
                                                     <Switched />
-                                                    <ReturnInfo />
+                                                   {/* <ReturnInfo/> */}
+                                                    <SubscriptionAddonsPupup />
                                                 </TabPanel>
                                                 <TabPanel>
                                                     <Completed />
@@ -223,38 +236,42 @@ Capitalize(str){
                                              <div className="cl"></div>
                                         </div>
                                     </div>
-                                    <div className="brdrBox">
-                                        <div className="row">
-                                            <div className="left-div bold">
-                                                Add-on
-                                            </div>
-                                            <div className="rightDiv bold green">
-                                                $1
-                                            </div>
-                                            <div className="cl"></div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="left-div ">
-                                                Trade 
-                                            </div>
-                                            <div className="rightDiv">
-                                                5
-                                            </div>
-                                            <div className="cl"></div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="left-div">
-                                                Inventory
-                                            </div>
-                                            <div className="rightDiv">
-                                                8
-                                            </div>
-                                            <div className="cl"></div>
-                                        </div>
-                                        <div className="topbrdr-row no-padding">
-                                            <p>Vailidity:  <span>Lifetime</span></p>
-                                        </div>
-                                    </div>
+                                    <If condition = {this.state.userSubscriptionAddons}>
+										<Then>
+											<div className="brdrBox">
+												<div className="row">
+													<div className="left-div bold">
+														Add-on
+													</div>
+													<div className="rightDiv bold green">
+														${(this.state.userSubscriptionAddons && this.state.userSubscriptionAddons.addonId)?this.state.userSubscription.addonId.price:'0'}
+													</div>
+													<div className="cl"></div>
+												</div>
+												<div className="row">
+													<div className="left-div ">
+														Trade 
+													</div>
+													<div className="rightDiv">
+														{(this.state.userSubscriptionAddons && this.state.userSubscriptionAddons.addonId)?this.state.userSubscriptionAddons.addonId.totalTradePermitted:'0'} 
+													</div>
+													<div className="cl"></div>
+												</div>
+												<div className="row">
+													<div className="left-div">
+														Inventory
+													</div>
+													<div className="rightDiv">
+														 {(this.state.userSubscriptionAddons && this.state.userSubscriptionAddons.addonId)?this.state.userSubscriptionAddons.addonId.totalInventoryAllowed:'0'}
+													</div>
+													<div className="cl"></div>
+												</div>
+												<div className="topbrdr-row no-padding">
+													<p>Vailidity:  <span>Lifetime</span></p>
+												</div>
+											</div>
+										</Then>
+                                    </If>
                                 </Scrollbars> 
                             </div>
                         </div>

@@ -200,8 +200,7 @@ class Register extends React.Component {
 		let userValue = userList.value;
 	    const userdata = new FD();        
         userdata.append('ids',userList.value)
-        userdata.append('type','userId')
-        console.log('aaaa',userdata);
+        userdata.append('type','userId')        
 	    axios.post('/product/filterBycategory',userdata).then(result =>{				
 		    this.setState({
 				resultData : result.data.result
@@ -212,8 +211,7 @@ class Register extends React.Component {
     changeCity(cityList){	    			
 	    const citydata = new FD();        
         citydata.append('ids',cityList.target.value)
-        citydata.append('type','city')
-        console.log('citydata',citydata)
+        citydata.append('type','city')        
 	    axios.post('/user/searchCity',citydata).then(result =>{				
 		    this.setState({
 				resultData : result.data.result
@@ -251,8 +249,7 @@ class Register extends React.Component {
     
      componentDidMount(){
 	     axios.get('/product/searchresult/'+ this.state.categoryId).then(result => {
-			 this.setState({resultData:result.data.result});				 
-			 console.log('resultData',this.state.resultData);
+			 this.setState({resultData:result.data.result});				 			 
 		})
 	     axios.get('/category/categoriesActive/').then(rs => {
 			 this.setState({categoryList:rs.data.result});
@@ -290,8 +287,8 @@ class Register extends React.Component {
 				   <h4>All categories</h4> 
 						{this.state.categoryList.slice(0, this.state.visible).map((listing, index) => {						
 						return (
-						 <div className="check-box">
-							<input name="Apple" value={listing._id} id={"cat"+index} type="checkbox" onChange={this.changeEvent.bind(this)}/>
+						 <div className="check-box" key={index}>
+							<input name="Apple" key={index} value={listing._id} id={"cat"+index} type="checkbox" onChange={this.changeEvent.bind(this)}/>
 							<label htmlFor={"cat"+index}>{listing.title}</label>
 						  </div>
 						  )
@@ -308,7 +305,7 @@ class Register extends React.Component {
 					<div className="taglinerow">
 					 { this.state.usersList.map(function (userlisting,index) {					
 						return (	
-						  <span href="javascript:void(0)" className="tagline">{userlisting.firstName}
+						  <span href="javascript:void(0)" className="tagline" key={index}>{userlisting.firstName}
 						  <a href="#" className="close">#</a></span>
 						  )
 					    })
@@ -323,7 +320,7 @@ class Register extends React.Component {
 						<select onChange={this.changeCity.bind(this)}>
 						{ this.state.citiesList.map(function (citylisting,index) {
 							return (	
-							    <option value={citylisting._id}>{citylisting.cityName}</option>
+							    <option key={index} value={citylisting._id}>{citylisting.cityName}</option>
 							)
 					    })
                        }
@@ -347,7 +344,7 @@ class Register extends React.Component {
 							<option>Select</option>
 							{ this.state.sizeList.map(function (sizelisting,index) {
 							return (	
-							    <option value={sizelisting._id}>{sizelisting.size}</option>
+							    <option key={index} value={sizelisting._id}>{sizelisting.size}</option>
 							 )
 					      })
                         }
@@ -362,7 +359,7 @@ class Register extends React.Component {
 					<h4>Brands</h4>
 					{this.state.brandsList.slice(0, this.state.visible).map((bListing, index) => {						
 					return (
-						<div className="check-box">
+						<div className="check-box" key={index}>
 							<input name="Apple" value={bListing._id} type="checkbox" onChange={this.changeBrand.bind(this)} id={"apple"+index} type="checkbox" />
 							<label htmlFor={"apple"+index}>{bListing.brandName}</label>
 						</div>
@@ -378,7 +375,7 @@ class Register extends React.Component {
 					<h4>Condition</h4>
 					 { this.state.constantList.slice(0, this.state.visible).map((constantList, index) => {	
 						return (
-							<div className="check-box">
+							<div className="check-box" key={index}>
 								<input name="New" value={constantList.id} onChange={this.changeContanst.bind(this)} id={"new"+index} type="checkbox" />
 								<label htmlFor={"new"+index}>{constantList.name}</label>
 							</div>

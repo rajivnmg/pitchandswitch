@@ -80,7 +80,7 @@ class PitchRequests extends React.Component {
 						countReceived = countReceived +1;	
 					}
 					
-					return (<div>
+					return (<div key={index}>
 					<If condition={send==1 && (pitch.status=="0" || pitch.status=="3")}>
 						<Then>			
 						<div className="pitch-row" key={index}>	

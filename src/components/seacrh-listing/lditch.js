@@ -34,7 +34,7 @@ class viewPitchPopup extends Component {
 			stateChange:[],
 			optionsChecked: []
 		}	
-		console.log('offerTrade',this.state.offerTrade)
+		//console.log('offerTrade',this.state.offerTrade)
 	 }  
 	 
 	 
@@ -59,7 +59,7 @@ class viewPitchPopup extends Component {
         }
 	 
 	 handleOnChange = (chosenValue) => {
-		 console.log('chosenValue',chosenValue.target.value)
+		// console.log('chosenValue',chosenValue.target.value)
            this.setState({ categoriesValues: chosenValue.target.value})
 		     axios.get('/trade/getProductByCategory/'+chosenValue.target.value).then(result => {
 			 if(result.data.code === 200){
@@ -111,7 +111,7 @@ changeEvent(event){
         data.append('productIDS', this.state.optionsChecked)
         data.append('switchProId', this.props.proID)
 	    axios.post('/trade/submitPitchProduct/',data).then(result => {
-		console.log('result',result)		  
+		//console.log('result',result)		  
 		  if(result.data.code === 200){			  			
 			 this.setState({
 				message: result.data.message,
@@ -132,8 +132,7 @@ changeEvent(event){
 		   this.setState({ categoriesValues: chosenValue.target.value})
 			 axios.get('/trade/getProductByCategory/'+chosenValue.target.value).then(result => {
 			   if(result.data.code === 200){
-				  this.setState({getAllProduct:result.data.result})	
-					 console.log('getAllProduct',this.state.getAllProduct);
+				  this.setState({getAllProduct:result.data.result})						 
 				}
 			})
 		} 
@@ -143,8 +142,7 @@ changeEvent(event){
 		   this.setState({offerTradeId:this.props.proID})
 			axios.get('/trade/getAllProduct/').then(result => {
 			  if(result.data.code === 200){
-				this.setState({getAllProduct:result.data.result})				
-				console.log('getAllProduct',this.state.getAllProduct)
+				this.setState({getAllProduct:result.data.result})
 			}
 	  })
 	  axios.get('/category/categoriesActive/').then(result => {
@@ -156,8 +154,7 @@ changeEvent(event){
 		
 	  componentDidMount(){
 		axios.get('/trade/offerTradeProduct/'+this.props.proID).then(result => {
-			if(result.data.code === 200){
-				console.log('result',result.data.result);
+			if(result.data.code === 200){				
 			  this.setState({offerTradeProducts:result.data.result})
 		   }
 		})	

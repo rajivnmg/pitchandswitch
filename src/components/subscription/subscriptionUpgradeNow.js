@@ -12,7 +12,10 @@ const contentStyle = {
     maxWidth: "560px",
     width: "90%"
 };
-
+const heardeStyle = {
+	    fontSize: "22px",
+    color: "#0a0a0a"
+}
 class Form extends Component {
   state = {
     isValidated: false
@@ -76,7 +79,7 @@ class Form extends Component {
   }
 }
 
-class subscriptionBasic extends Component {
+class subscriptionUpgradeNow extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -129,9 +132,10 @@ class subscriptionBasic extends Component {
 			  });	
 			  setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});
 						 localStorage.removeItem('jwtToken'); 
-						 window.location.href='/login';
+						 window.location.href='/logout';
 			 }, 12000);		  
 			}else{
+				console.log("result.data.result.messaage",result.data.result.message)
 			  this.setState({
 				message: result.data.result.message,
 				code :result.data.code,
@@ -169,7 +173,7 @@ class subscriptionBasic extends Component {
 render() {
    return (
 <Popup
-    trigger={<a className= 'getStarted-btn'>Get Started</a>} modal contentStyle = {contentStyle} lockScroll>
+    trigger={<a className= 'getStarted-btn'>Upgrade Now</a>} modal contentStyle = {contentStyle} lockScroll>
     {
         close => (
     <div className="modal">
@@ -216,7 +220,8 @@ render() {
 					&times;
 				</a>
 				<Form submit={this.submit}>
-					<div className="header"> Enter payment details </div>
+					<div className="header paymentHeader" align="center"><h2 className={heardeStyle}> Enter payment details</h2> </div>
+					                  
 					<div className="content">
 						<div className="form-row">
 							<label className="label"> You have selected:</label>
@@ -278,4 +283,4 @@ render() {
 </Popup>
 )}
 }
-export default subscriptionBasic;
+export default subscriptionUpgradeNow;

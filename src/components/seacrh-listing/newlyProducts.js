@@ -25,8 +25,7 @@ class NewlyProducts extends Component {
       
      componentDidMount(){
 		 axios.get('/product/relatedCategoryProduct/'+this.props.productID).then(result => {	
-			this.setState({relatedProduct:result.data.result})
-			console.log('pppppppppppppr',this.state.relatedProduct)
+			this.setState({relatedProduct:result.data.result})		
 		})
 	  }
     
@@ -63,8 +62,7 @@ class NewlyProducts extends Component {
           <div className="container">
 			<Slider {...settings}>
 				{   this.state.relatedProduct.map(function (products) {
-					var userImage = products.userId?products.userId.profilePic:"";
-					console.log('products')
+					var userImage = products.userId?products.userId.profilePic:"";					
 					return (
 					<div className="slides-div" key={products}>
 					<div key={products}>
