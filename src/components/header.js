@@ -71,11 +71,12 @@ class Header extends Component {
   };
   
   formatEndpoint = () => {
-    
-	let endpoint = this.state.longitude;
+    let endpoint = this.state.longitude;
+	
 	if(endpoint==""){
 		this.setState({address:""});
 	}
+	
 	};
   
    logoutHandler = (e) => {
