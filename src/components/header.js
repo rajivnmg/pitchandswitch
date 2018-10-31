@@ -78,6 +78,15 @@ class Header extends Component {
       .catch(error => console.error('Error', error));
   };
   
+  formatEndpoint = () => {
+    let endpoint = this.state.longitude;
+	
+	if(endpoint==""){
+		this.setState({address:""});
+	}
+	
+	};
+  
    logoutHandler = (e) => {
       localStorage.removeItem('jwtToken');   
       localStorage.removeItem('loggedInUser');   
@@ -225,22 +234,9 @@ class Header extends Component {
                     </figure>
                     <CategoryMenu />
 					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
                     <div className="search-container">
 					
-					
-					
-					
-                        <div className="location">
+		                <div className="location">
                            <input className={"form-control textBox hide2"} value={this.state.latitude} name={"latitude"} type={"text"} placeholder="" />
                  <input className={"form-control textBox hide2"} value={this.state.longitude}  name={"longitude"} type={"text"} placeholder="" />
                  {this.state.gmapsLoaded && (
@@ -251,40 +247,42 @@ class Header extends Component {
 					name={"address"}
 					>
 	  
-				{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-				
-				  <div>
-					<input 
-					  {...getInputProps({
-						placeholder: 'Search Places ...',
-						className: 'location-search-input form-control'			
-						})}
-						required={true}
-					/>
-					<div className="autocomplete-dropdown-container">
-					  {loading && <div>Loading...</div>}
-					  {suggestions.map(suggestion => {
-						const className = suggestion.active
-						  ? 'suggestion-item--active'
-						  : 'suggestion-item';
-						// inline style for demonstration purpose
-						const style = suggestion.active
-						  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-						  : { backgroundColor: '#ffffff', cursor: 'pointer' };
-						return (
-						  <div
-							{...getSuggestionItemProps(suggestion, {
-							  className,
-							  style,
-							})}
-						  >
-							<span>{suggestion.description}</span>
-						  </div>
-						);
-					  })}
-					</div>
-				  </div>
-				)}
+
+        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+		
+          <div>
+            <input 
+              {...getInputProps({
+                placeholder: 'Search Places ...',
+                className: 'location-search-input form-control'			
+				})}
+				onBlur={this.formatEndpoint} 
+				required={true}
+            />
+            <div className="autocomplete-dropdown-container">
+              {loading && <div>Loading...</div>}
+              {suggestions.map(suggestion => {
+                const className = suggestion.active
+                  ? 'suggestion-item--active'
+                  : 'suggestion-item';
+                // inline style for demonstration purpose
+                const style = suggestion.active
+                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                return (
+                  <div
+                    {...getSuggestionItemProps(suggestion, {
+                      className,
+                      style,
+                    })}
+                  >
+                    <span>{suggestion.description}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </PlacesAutocomplete> 
 	)}
 					
