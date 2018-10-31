@@ -1,0 +1,23 @@
+.rc-tree-select .rc-tree-select-selection__choice{padding: 0 5px 0 10px;
+    margin: 5px 5px 0 0;
+    color: #fff;
+    background: #dab439;
+    border-radius: 25px;
+    font-size: 13px;
+    display: inline-block;
+    text-align: center;
+    line-height: 20px;}
+	
+	.rc-tree-select .rc-tree-select-selection__choice__remove{float: right;
+    margin-right: 0;
+    color: #fff;
+    color: #ffffff;
+    font-size: 16px;
+    border-radius: 50%;
+    border: 0;
+    width: 14px;
+    height: 16px;
+    text-decoration: none;
+    line-height: 16px;
+    margin-top: 2px;
+    margin-left: 4px;}

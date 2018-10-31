@@ -53,13 +53,14 @@ axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken'
 class App extends Component {
 	constructor(props){
     super(props);
+		console.log('Version', React.version);
 	//console.log('TOken', localStorage.getItem('jwtToken'));
     if(localStorage.getItem('jwtToken') === null){
        window.location.href="#/login";
     }
   }
   componentDidMount() {
-	//the function call just after render the html	
+	//the function call just after render the html
   }
     render() {
         return(
@@ -73,8 +74,8 @@ class App extends Component {
                             <Route exact path='/logout' component={Logout} />
                             <Route exact path='/register' component={Register} />
                             <Route exact path='/forget' component={Forget} />
-                            <Route exact path='/reset/:id?' component={Reset} />   
-                            <Route exact path='/verifyUserEmail/:id?' component={Login} />                          
+                            <Route exact path='/reset/:id?' component={Reset} />
+                            <Route exact path='/verifyUserEmail/:id?' component={Login} />
                             <Route exact path='/subscription' component={Subscription} />
                             <Route exact path='/dashboard' component={Dashboard} />
                             <Route exact path='/search-listing/:id?' component={SearchListing} />
@@ -102,8 +103,8 @@ class App extends Component {
                             <Route exact path="/help" component={Help} />
                             <Route exact path='/about-us' component={aboutUs} />
                             <Route exact path='/contact-us' component={contactUs} />
-                            <Route exact path='/privacy-policy' component={privacy} /> 
-                            <Route exact path='/term-and-condition' component={term} />                           
+                            <Route exact path='/privacy-policy' component={privacy} />
+                            <Route exact path='/term-and-condition' component={term} />
                             <Route path="*" component={NotFound} />
                         </Switch>
                         </div>

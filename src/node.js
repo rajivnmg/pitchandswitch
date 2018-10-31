@@ -47,7 +47,7 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 
- 
+
 app.use(morgan('dev'));
 
 //Exoress session object
@@ -65,7 +65,7 @@ app.use(session({
 
 app.use((req, res, next) => {
     if (req.cookies.userId && !req.session.user) {
-        res.clearCookie('user_sid');        
+        res.clearCookie('user_sid');
     }
     next();
 });
