@@ -30,9 +30,9 @@ var fs = require('fs');
 const treeData = [{
   label: 'month - 6 month',
   value: '0-0',
-  key: '0-0',
-
-}, {
+  key: '0-0'
+  },
+  {
   label: '6 month - 1 year',
   value: '0-1',
   key: '0-1',
@@ -64,9 +64,9 @@ var Style1 = {columnCount: 7}
 var Style2 = {minWidth: 1610}
 
 const options = [
-{ value: 'Texes', label: 'Texes' },
-{ value: 'Delhi', label: 'Delhi' },
-{ value: 'Haryana', label: 'Haryana' }
+  { value: 'Texes', label: 'Texes' },
+  { value: 'Delhi', label: 'Delhi' },
+  { value: 'Haryana', label: 'Haryana' }
 ];
 
 const Hide = {
@@ -276,31 +276,6 @@ class Register extends React.Component {
   }
 
 
-changeEvent(event) {
-    let checkedArray = this.state.optionsChecked;
-    let selectedValue = event.target.value;
-      if (event.target.checked === true) {
-      	checkedArray.push(selectedValue);
-          this.setState({
-            optionsChecked: checkedArray
-          });
-      }
-      else {
-      	let valueIndex = checkedArray.indexOf(selectedValue);
-		checkedArray.splice(valueIndex, 1);
-          this.setState({
-            optionsChecked: checkedArray
-          });
-      }
-      const data = new FD();
-      data.append('ids',this.state.optionsChecked)
-      data.append('type','productCategory')
-      axios.post('/product/filterBycategory',data).then(result =>{
-		this.setState({
-			resultData : result.data.result
-		});
-	});
-  }
 
 changeBrand(brand) {
     let checkedArray = this.state.optionsChecked;
@@ -420,14 +395,25 @@ changeContanst(constantV) {
   changeToCheckUncheck = (e) => {
     const categories = [...this.state.categoryList];
     let showMoreCount = 0;
+    let checkedArray = [];
     categories.map((item, index) => {
       if(categories[index].checked == undefined) categories[index].checked = false;
       if(item._id === e.target.value){
         categories[index].checked = !categories[index].checked;
       }
+      if(item.checked) checkedArray.push(item._id);
       if(categories[index].checked) showMoreCount++;
     });
-    this.setState({categoryList: categories, showMoreCount:showMoreCount });
+    this.setState({categoryList: categories, showMoreCount:showMoreCount }, () => {
+      const data = new FD();
+      data.append('ids', checkedArray);
+      data.append('type','productCategory');
+      axios.post('/product/filterBycategory',data).then(result =>{
+    		this.setState({
+    			resultData : result.data.result
+    		});
+      });
+    });
   };
   brandUpdate = (e) => {
     const brands = [...this.state.brandsList];
@@ -455,7 +441,6 @@ changeContanst(constantV) {
     this.setState({ selectedSizes: value });
   };
   changeThisColor = (e) => {
-    console.log('changeThisColor', e.target.value)
     const colors = this.state.colors;
     colors.map((item, index) => {
       if(colors[index].checked == undefined) colors[index].checked = false;
@@ -482,7 +467,22 @@ changeContanst(constantV) {
           this.setState({resultData:rs1.data.result});
         }
         if(rs2.data.code === 200){
-          this.setState({categoryList:rs2.data.result});
+          this.setState({categoryList:rs2.data.result}, () => {
+            const categories = [...this.state.categoryList];
+            if(this.state.categoryId){
+              let showMoreCount = 0;
+              let checkedArray = [];
+              categories.map((item, index) => {
+                if(categories[index].checked == undefined) categories[index].checked = false;
+                if(item._id === this.state.categoryId){
+                  categories[index].checked = !categories[index].checked;
+                }
+                if(item.checked) checkedArray.push(item._id);
+                if(categories[index].checked) showMoreCount++;
+              });
+              this.setState({categoryList: categories, showMoreCount:showMoreCount });
+            }
+          });
         }
         if(rs3.data.code === 200){
           this.setState({usersList:rs3.data.result});
@@ -514,6 +514,7 @@ changeContanst(constantV) {
 
       //.then(response => this.setState({ vehicles: response.data }))
       .catch(error => console.log(error));
+
    }
 
    onAgeChange = (value) => {
