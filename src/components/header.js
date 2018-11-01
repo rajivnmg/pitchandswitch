@@ -44,62 +44,62 @@ class Header extends Component {
 		 latitude:"",
 		 longitude:"",
 		 gmapsLoaded: false
-	}	
-     this.logoutHandler = this.logoutHandler.bind(this); 
-     this.onSearchHandler = this.searchHandler.bind(this); 
+	}
+     this.logoutHandler = this.logoutHandler.bind(this);
+     this.onSearchHandler = this.searchHandler.bind(this);
      if(localStorage.getItem('jwtToken') === null){
          //window.location.href="#/login";
          //this.props.history.push('/login');
       }
   }
-  
+
   initMap = () => {
   this.setState({
     gmapsLoaded: true,
   })
 }
 
-  
+
    handleChange = address => {
     this.setState({ address });
   };
   handleSelect = address => {
     this.setState({address:address});
-    
-    
+
+
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => {
-        
+
         this.setState({latitude:latLng['lat'] ,longitude:latLng['lng']});
-		
-        
+
+
     })
       .catch(error => console.error('Error', error));
   };
-  
+
   formatEndpoint = () => {
     let endpoint = this.state.longitude;
-	
+
 	if(endpoint==""){
 		this.setState({address:""});
 	}
-	
+
 	};
-  
+
    logoutHandler = (e) => {
-      localStorage.removeItem('jwtToken');   
-      localStorage.removeItem('loggedInUser');   
+      localStorage.removeItem('jwtToken');
+      localStorage.removeItem('loggedInUser');
       localStorage.setItem('isLoggedIn',0);
       localStorage.removeItem('userId');
 	  localStorage.removeItem('userEmail');
-	  localStorage.removeItem('userName');        
+	  localStorage.removeItem('userName');
       this.props.history.push('/login');
    };
-  
+
     searchHandler = () =>
     {
-		
+
 		if (this.state.latitude && this.state.longitude) {
 			 var searchData = " ";
 			if(this.state.searchData){
@@ -108,10 +108,13 @@ class Header extends Component {
 			}
 			else{
 			   this.setState({searchData:" "});
-	 
+
 			}
-			
+			if(searchData === null || this.state.latitude === null || this.state.longitude === null){
+        window.location = constant.PUBLIC_URL+'search-listing';
+      }else{
           window.location = constant.PUBLIC_URL+'search-listing/'+searchData+'/'+this.state.latitude+'/'+this.state.longitude;
+      }
   } else {
 	   var searchData = " ";
 	  if(this.state.searchData){
@@ -120,104 +123,108 @@ class Header extends Component {
 			}
 			else{
 			   this.setState({searchData:" "});
-	 
+
 			}
 	  this.setState({latitude:" " ,longitude:" "});
-	  var latitude = " ";
-	   var longitude = " ";
-    window.location = constant.PUBLIC_URL+'search-listing/'+searchData+'/'+latitude+'/'+longitude;
+	  var latitude = "";
+	   var longitude = "";
+    if(searchData === ""){
+      window.location = constant.PUBLIC_URL+'search-listing';
+    }else{
+      window.location = constant.PUBLIC_URL+'search-listing/'+searchData;
+    }
   }
-		
-		
+
+
 	}
-	
+
 	searchCategory = (search,categoryName)=>{
-		this.setState({searchData:search.key})		
+		this.setState({searchData:search.key})
 	};
-  
+
   componentWillMount(){
-	  	if(localStorage.getItem('jwtToken') !== null){	
-			axios.get('/user/getLoggedInUser').then(result => {						
-				if(result.data.code === 200){					
-					this.setState({ 
+	  	if(localStorage.getItem('jwtToken') !== null){
+			axios.get('/user/getLoggedInUser').then(result => {
+				if(result.data.code === 200){
+					this.setState({
 						user:result.data.result,
-					})	
+					})
 					localStorage.setItem('loggedInUser',result.data.result._id);
 					localStorage.setItem('userId',result.data.result._id);
 					localStorage.setItem('userEmail',result.data.result.email);
-					localStorage.setItem('userName',result.data.result.userName);								
+					localStorage.setItem('userName',result.data.result.userName);
 					if((result.data.result.emailVerified == "1") && (result.data.result.subscriptionStatus =="1")){
 						localStorage.setItem('isLoggedIn',1);
 					}else{
 						localStorage.setItem('isLoggedIn',0);
-					}					
+					}
 				}else{
 					 this.props.history.push('/login');
 				}
 			})
 		}
 	}
-  
+
   componentDidMount() {
-	
-	
-	//code for google places api 
+
+
+	//code for google places api
 	window.initMap = this.initMap
 	const gmapScriptEl = document.createElement(`script`)
 	gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyA_Is11HwzMFGIFAU-q78V2kQUiT9OQiZI&libraries=places&callback=initMap`
 	document.querySelector(`body`).insertAdjacentElement(`beforeend`, gmapScriptEl)
 
-	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');	
-	if(localStorage.getItem('jwtToken') !== null){		
-		//~ axios.get('/user/getLoggedInUser').then(result => {			
-			//~ this.setState({ 
+	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
+	if(localStorage.getItem('jwtToken') !== null){
+		//~ axios.get('/user/getLoggedInUser').then(result => {
+			//~ this.setState({
 				//~ user:result.data.result,
-			//~ })	
+			//~ })
 			//~ // setter method for loggedin user
 			//~ localStorage.setItem('loggedInUser',result.data.result._id);
 			//~ localStorage.setItem('userId',result.data.result._id);
-			//~ localStorage.setItem('userName',result.data.result.userName);			
+			//~ localStorage.setItem('userName',result.data.result.userName);
 			//~ localStorage.setItem('isLoggedIn',1);
 		//~ })
-		
+
 		axios.get('/user/frontNotification').then(result => {
-		this.setState({ 			
+		this.setState({
 			notification_type:result.data.notification_type,
 			notifications :result.data.notifications,
 			totalNotifications:result.data.totalNotifications
-		  })	
+		  })
 		})
 	   console.log("localStorage",localStorage.getItem('isLoggedIn'));
 	}
-	
-	
-	axios.get('/location/listingCity').then(result => {			  
+
+
+	axios.get('/location/listingCity').then(result => {
 		this.setState({
-			options: result.data.result, 
-		});	  
-	})	
-		
-	axios.get('/product/activeProducts').then(rs => {			   			 
+			options: result.data.result,
+		});
+	})
+
+	axios.get('/product/activeProducts').then(rs => {
 		this.setState({
-		    productsListing: rs.data.result,           
-		});  							  
+		    productsListing: rs.data.result,
+		});
 	  })
     }
-	
+
    Capitalize(str){
       return str.charAt(0).toUpperCase() + str.slice(1);
-   } 
-	
+   }
+
      render() {
-		   let optionsLists; 
+		   let optionsLists;
 		    let optionsAll;
 			    if(this.state.productsListing){
-				  let optionsList = this.state.productsListing; 
+				  let optionsList = this.state.productsListing;
 				    optionsLists = optionsList.map(s => <li onClick={this.searchCategory.bind(s.productCategory._id)} key={s.productCategory._id}>{s.productName + ' - ' +s.productCategory.title} </li>);
 			    }
                 if(this.state.options){
-				    let optionsListing = this.state.options; 
-				    optionsAll = optionsListing.map(p => <li key={p._id}>{p.cityName + ' - ' + p.stateSelect.stateName}</li>); 
+				    let optionsListing = this.state.options;
+				    optionsAll = optionsListing.map(p => <li key={p._id}>{p.cityName + ' - ' + p.stateSelect.stateName}</li>);
 			    }
 			   let matchingData = this.state.notification_type;
                return(
@@ -233,27 +240,27 @@ class Header extends Component {
                      </If>
                     </figure>
                     <CategoryMenu />
-					
+
                     <div className="search-container">
-					
+
                         <div className="location">
                            <input className={"form-control textBox hide2"} value={this.state.latitude} name={"latitude"} type={"text"} placeholder="" />
                  <input className={"form-control textBox hide2"} value={this.state.longitude}  name={"longitude"} type={"text"} placeholder="" />
                  {this.state.gmapsLoaded && (
 					<PlacesAutocomplete
-					value={this.state.address} 
+					value={this.state.address}
 					onChange={this.handleChange}
 					onSelect={this.handleSelect}
 					name={"address"}
 					>
 
 				{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-				
+
 				  <div>
-					<input 
+					<input
 					  {...getInputProps({
 						placeholder: 'Search Places ...',
-						className: 'location-search-input form-control'			
+						className: 'location-search-input form-control'
 						})}
 						required={true}
 					/>
@@ -282,10 +289,10 @@ class Header extends Component {
 				  </div>
 				)}
 
-      </PlacesAutocomplete> 
+      </PlacesAutocomplete>
 	)}
-					
-                        </div>                       
+
+                        </div>
                         <div className="search">
                               <AutoComplete
 								  style={{ width:410 }}
@@ -295,7 +302,7 @@ class Header extends Component {
 							  />
                            </div>
                        <input type="submit" value="search" onClick={this.onSearchHandler.bind(this)} className="search-icon" />
-                       <div className="cl"></div>                        
+                       <div className="cl"></div>
                     </div>
                     <If condition={localStorage.getItem('isLoggedIn') == "1"} >
                     <Then>
@@ -316,7 +323,7 @@ class Header extends Component {
 				    <li className="notification "><a href="#"><i className="icon"></i></a>
 					<ul className="dashboard-subnav notification-show">
 					   <li><h3>Notifications {this.state.totalNotifications}</h3></li>
-						<li><div className="scroll-div"> 
+						<li><div className="scroll-div">
 						  { this.state.notifications.map((notificationValue, i) => {
 							    const notifyHeading = this.state.notification_type.find(notify => notify.id === notificationValue.notificationTypeId)
 							     return (<div key={notificationValue.notificationTypeId} className="row unread"><FontAwesomeIcon icon="tag" />{i+1+') '+notifyHeading.name} </div>
@@ -325,7 +332,7 @@ class Header extends Component {
 					       }
                           </div>
 						</li>
-					</ul>                    
+					</ul>
 				</li>
 			</ul>
 		    </nav>
@@ -337,7 +344,7 @@ class Header extends Component {
               </nav>
            </Else>
 		   </If>
-              <div className="cl"></div>        
+              <div className="cl"></div>
            </header>
        )
     }

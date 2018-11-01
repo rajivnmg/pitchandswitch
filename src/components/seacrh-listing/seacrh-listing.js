@@ -101,8 +101,18 @@ class Register extends React.Component {
   constructor(props){
     super(props);
     let categoryId = props.match.params.id;
-	let latitude = props.match.params.latitude;
+  	let latitude = props.match.params.latitude;
+    if(latitude != undefined){
+        latitude = latitude.replace(" ", "");
+    }else{
+      latitude = '';
+    }
     let longitude = props.match.params.longitude;
+    if(longitude != undefined){
+        longitude = longitude.replace(" ", "");
+    }else{
+      longitude = '';
+    }
     this.state = {
       time: random(),
       accordion: false,
@@ -125,9 +135,20 @@ class Register extends React.Component {
       constantList:[],
       result: [],
       query: '',
+      filters: {
+        selectedCategories : [],
+        selectedUsers: [],
+        selectedLocations: [],
+        selectedSizes:[],
+        selectedBrands: [],
+        selectedConditions: [],
+        selectedColors: [],
+        selectedAges:[],
+        selectedRatings: []
+      },
       categoryId: categoryId,
-	  latitude: latitude,
-	  longitude: longitude,
+      latitude: latitude,
+      longitude: longitude,
       optionsChecked: [],
       ids :[],
       colors: [
@@ -235,12 +256,12 @@ class Register extends React.Component {
         {id: 2, value: 2, checked: false},
         {id: 1, value: 1, checked: false}
       ],
-      checkedCategories : [],
       showFormSuccess : false,
       showMoreCategories: false,
       showMoreCount : 0,
       showBrandCount: 0,
       isBrandOpen: false,
+      checkedCategories : [],
       selectedUserAges:[],
       selectedSizes:[]
     };
@@ -277,76 +298,6 @@ class Register extends React.Component {
       })
   }
 
-
-
-// changeBrand(brand) {
-//     let checkedArray = this.state.optionsChecked;
-//     let selectedValue = brand.target.value;
-//       if (brand.target.checked === true) {
-//       	checkedArray.push(selectedValue);
-//           this.setState({
-//             optionsChecked: checkedArray
-//           });
-//       }
-//       else {
-//       	let valueIndex = checkedArray.indexOf(selectedValue);
-// 		checkedArray.splice(valueIndex, 1);
-//           this.setState({
-//             optionsChecked: checkedArray
-//           });
-//       }
-  //     const data = new FD();
-  //     data.append('ids',this.state.optionsChecked)
-  //     data.append('type','brand')
-  //     console.log('aaaa',this.state.optionsChecked);
-  //     axios.post('/product/filterBycategory',data).then(result =>{
-	// 	this.setState({
-	// 		resultData : result.data.result
-	// 	});
-	// });
-//   }
-
-// changeContanst(constantV) {
-//     let checkedArray = this.state.optionsChecked;
-//     let selectedValue = constantV.target.value;
-//       if (constantV.target.checked === true) {
-//       	checkedArray.push(selectedValue);
-//           this.setState({
-//             optionsChecked: checkedArray
-//           });
-//       }
-//       else {
-//         let valueIndex = checkedArray.indexOf(selectedValue);
-// 		checkedArray.splice(valueIndex, 1);
-//           this.setState({
-//             optionsChecked: checkedArray
-//           });
-//       }
-    //   const dataConstant = new FD();
-    //   dataConstant.append('ids',this.state.optionsChecked)
-    //   dataConstant.append('type','condition')
-    //   axios.post('/product/filterBycategory',dataConstant).then(result =>{
-		// this.setState({
-		// 	resultData : result.data.result
-		// });
-// 	});
-//   }
-
-
-
-//   changeUser(userList){
-// 	let userValue = userList.value;
-    // const userdata = new FD();
-    //   userdata.append('ids',userList.value)
-    //   userdata.append('type','userId')
-    //   console.log('aaaa',userdata);
-    // axios.post('/product/filterBycategory',userdata).then(result =>{
-	  //   this.setState({
-		// 	resultData : result.data.result
-		// });
-// 	 });
-// }
-
 //   changeCity(cityList){
 //     const citydata = new FD();
 //       citydata.append('ids',cityList.target.value)
@@ -358,17 +309,6 @@ class Register extends React.Component {
 // 		});
 // 	 });
 // }
-
-  changeSize(sizeList){
-    const sizedata = new FD();
-      sizedata.append('ids',sizeList.target.value)
-      sizedata.append('type','size')
-    axios.post('/product/filterBycategory',sizedata).then(result =>{
-	    this.setState({
-			resultData : result.data.result
-		});
-	});
-}
 
    onLoadMore = () => {
       this.setState((old) => ({limit: old.limit + 10}));
@@ -406,15 +346,22 @@ class Register extends React.Component {
       if(item.checked) checkedArray.push(item._id);
       if(categories[index].checked) showMoreCount++;
     });
-    this.setState({categoryList: categories, showMoreCount:showMoreCount }, () => {
+    let filters = {...this.state.filters};
+    filters.selectedCategories = checkedArray;
+    this.setState({categoryList: categories, showMoreCount:showMoreCount, filters: filters}, () => {
       const data = new FD();
       data.append('ids', checkedArray);
       data.append('type','productCategory');
       axios.post('/product/filterBycategory',data).then(result =>{
-        console.log('RRRR', result)
-    		// this.setState({
-    		// 	resultData : result.data.result
-    		// });
+        if(result.data.code === 200){
+      		this.setState({
+      			resultData : result.data.result
+      		});
+        }else{
+          this.setState({
+      			resultData : []
+      		});
+        }
       });
     });
   };
@@ -432,14 +379,22 @@ class Register extends React.Component {
         selectedBrands.push(item._id);
       }
     });
-    this.setState({brandsList: brands, showBrandCount:showBrandCount }, () =>{
+    let filters = {...this.state.filters};
+    filters.selectedBrands = selectedBrands;
+    this.setState({brandsList: brands, showBrandCount:showBrandCount, filters: filters }, () =>{
         const data = new FD();
         data.append('ids', selectedBrands)
         data.append('type','brand')
         axios.post('/product/filterBycategory',data).then(result =>{
-          this.setState({
-            resultData : result.data.result
-          });
+          if(result.data.code === 200){
+        		this.setState({
+        			resultData : result.data.result
+        		});
+          }else{
+            this.setState({
+        			resultData : []
+        		});
+          }
         });
     });
   };
@@ -453,32 +408,64 @@ class Register extends React.Component {
   }
 
   doSizeSelect = (value) => {
-    //console.log('onChange ', value, arguments);
-    this.setState({ selectedSizes: value });
+  //  console.log('doSizeSelect ', value);
+    let filters = {...this.state.filters};
+    filters.selectedSizes = value;
+    this.setState({ filters: filters }, () => {
+      const sizedata = new FD();
+      sizedata.append('ids', this.state.filters.selectedSizes)
+      sizedata.append('type','size');
+      axios.post('/product/filterBycategory',sizedata).then(result =>{
+        if(result.data.code === 200){
+          this.setState({
+            resultData : result.data.result
+          });
+        }else{
+          this.setState({
+            resultData : []
+          });
+        }
+      });
+    });
   };
   changeThisColor = (e) => {
     const colors = this.state.colors;
+    let selectedColors = [];
     colors.map((item, index) => {
       if(colors[index].checked == undefined) colors[index].checked = false;
       if(item.id === e.target.value){
         colors[index].checked = !colors[index].checked;
       }
+      if(colors[index].checked) selectedColors.push(item.id);
     });
-    this.setState({colors: colors }, function(){
+    let filters = {...this.state.filters};
+    filters.selectedColors = selectedColors;
+    this.setState({filters: filters, colors: colors }, function(){
         //console.log('Selected Colors', this.state.colors)
         const dataConstant = new FD();
-        dataConstant.append('ids',this.state.colors)
+        dataConstant.append('ids',this.state.filters.selectedColors)
         dataConstant.append('type','condition')
         axios.post('/product/filterBycategory',dataConstant).then(result =>{
-          this.setState({
-            resultData : result.data.result
-          });
+          if(result.data.code === 200){
+        		this.setState({
+        			resultData : result.data.result
+        		});
+          }else{
+            this.setState({
+        			resultData : []
+        		});
+          }
         });
       });
   };
    componentDidMount(){
+      let url = '/product/searchresult';
+      if(this.state.categoryId != undefined) url += '/'+ this.state.categoryId;
+      if(this.state.latitude !== ""){
+          url += '/'+this.state.latitude+'/'+this.state.longitude;
+      }
       axios.all([
-	    axios.get('/product/searchresult/'+this.state.categoryId+'/'+this.state.latitude+'/'+this.state.longitude),
+	      axios.get(url),
         axios.get('/category/categoriesActive/'),
         axios.get('/user/activeUser/'),
         axios.get('/location/activeCities/'),
@@ -488,6 +475,7 @@ class Register extends React.Component {
       ])
       .then(axios.spread((rs1, rs2,rs3,rs4,rs5,rs6,rs7) => {
         if(rs1.data.code === 200){
+          console.log('HERERE', rs1);
           this.setState({resultData:rs1.data.result});
         }
         if(rs2.data.code === 200){
@@ -546,23 +534,58 @@ class Register extends React.Component {
    }
    changeConstant = (e) => {
      const contants = [...this.state.constantList];
+     let selectedConditions = [];
      contants.map((item, index) => {
        if(contants[index].checked == undefined) contants[index].checked = false;
        if(item._id === e.target.value){
          contants[index].checked = !contants[index].checked;
        }
+       if(contants[index].checked) selectedConditions.push(item._id);
      });
-     this.setState({constantList: contants});
+     let filters = {...this.state.filters};
+     filters.selectedConditions = selectedConditions;
+     this.setState({constantList: contants, filters: filters}, ()=>{
+        const dataConstant = new FD();
+        dataConstant.append('ids',this.state.filters.selectedConditions)
+        dataConstant.append('type','condition')
+        axios.post('/product/filterBycategory',dataConstant).then(result =>{
+          if(result.data.code === 200){
+            this.setState({
+              resultData : result.data.result
+            });
+          }else{
+            this.setState({
+              resultData : []
+            });
+          }
+        });
+     });
    };
 
    onUserChange = (tags) => {
        if(tags){
           const userdata = new FD();
-          userdata.append('ids', tags)
-          userdata.append('type','userId')
-          axios.post('/product/filterBycategory',userdata).then(result =>{
-            this.setState({ resultData : result.data.result});
+          let ids = [];
+          tags.map((tag, index) => {
+            ids.push(tag.id);
           });
+          let filters = {...this.state.filters};
+          filters.selectedUsers = ids;
+          this.setState({filters: filters}, ()=>{
+            userdata.append('ids', this.state.filters.selectedUsers)
+            userdata.append('type','userId')
+            axios.post('/product/filterBycategory',userdata).then(result =>{
+              if(result.data.code === 200){
+                this.setState({
+                  resultData : result.data.result
+                });
+              }else{
+                this.setState({
+                  resultData : []
+                });
+              }
+            });
+        });
      }
    };
   getItems() {
@@ -628,7 +651,7 @@ class Register extends React.Component {
                             categoryList={this.state.categoryList}
                             changeToCheck={this.changeToCheckUncheck}
                             showMoreCount={this.state.showMoreCount}
-                            checkedCats={this.checkedCategories}
+                            checkedCats={this.state.filters.selectedCategories}
                             isOpen={this.state.showMoreCategories}
                             showHide={this.showMoreCategoriesOpen}
                           />
@@ -642,7 +665,7 @@ class Register extends React.Component {
                                     <div className="usersearch">
                                       <UserAutosearch
                                         userList={this.state.usersList}
-                                        onUserChange={this.state.onUserChange}
+                                        onUserChange={this.onUserChange}
                                        />
                                     </div>
                                     <div className="taglinerow">
@@ -777,7 +800,7 @@ class Register extends React.Component {
           console.log('RENDER', this.state.resultData);
           if(this.state.resultData.length){
             searchItems = this.state.resultData.map(function (item,index) {
-             let img = item.userId?<img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+item.userId[0].profilePic} />:null;
+             let img = item.userId?<img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+item.userId.profilePic} />:null;
              return (
              <div className="Items" key={index}><div>
              <Link to={'/search-result/'+item._id}>
@@ -785,13 +808,13 @@ class Register extends React.Component {
              </Link>
              <div className='details'>
              <h4><Link to={'/search-result/'+item._id}>{item.productName}</Link></h4>
-               <Link className="catLink" to={'/search-result/'+item._id}>{((item.productCategory)?item.productCategory[0].title:"")}</Link>
+               <Link className="catLink" to={'/search-result/'+item._id}>{((item.productCategory)?item.productCategory.title:"")}</Link>
              </div>
              <div className="userdiv">
              <div className="user-pic">
                 {img}
              </div>
-                <div className="user-name">{item.userId?item.userId[0].firstName:""}</div>
+                <div className="user-name">{item.userId?item.userId.firstName:""}</div>
              </div>
              </div>
              </div>
@@ -812,7 +835,7 @@ class Register extends React.Component {
         			 <div className="rgt-section" onClick={()=>{this.showMoreCategoriesOpen(true); this.isBrandOpenFun(true)}}>
          				<div className="search-row">
          					<div className="search-result">
-         						<strong>"god of war 3 ps4" </strong> (19 Results)
+         						<strong>"god of war 3 ps4" </strong> ({this.state.resultData.length} Results)
          					</div>
          					<div className="sort-by">
          						<span>Sort by:</span>
