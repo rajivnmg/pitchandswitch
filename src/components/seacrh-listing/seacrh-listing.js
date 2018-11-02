@@ -30,9 +30,9 @@ var fs = require('fs');
 const treeData = [{
   label: 'month - 6 month',
   value: '0-0',
-  key: '0-0',
-
-}, {
+  key: '0-0'
+  },
+  {
   label: '6 month - 1 year',
   value: '0-1',
   key: '0-1',
@@ -64,9 +64,9 @@ var Style1 = {columnCount: 7}
 var Style2 = {minWidth: 1610}
 
 const options = [
-{ value: 'Texes', label: 'Texes' },
-{ value: 'Delhi', label: 'Delhi' },
-{ value: 'Haryana', label: 'Haryana' }
+  { value: 'Texes', label: 'Texes' },
+  { value: 'Delhi', label: 'Delhi' },
+  { value: 'Haryana', label: 'Haryana' }
 ];
 
 const Hide = {
@@ -74,15 +74,15 @@ const Hide = {
 }
 const searchUser = [
   {label: "Shopkins", value: 1},
-{label: "Shoppies ", value: 2},
-{label: "Bubblesiha", value: 3},
-{label: "Leander ", value: 4},
-{label: "Cradle", value: 5},
-{label: "Crib", value: 6},
-{label: "High Chair", value: 7},
-{label: "Call of Duty", value: 8},
-{label: "Infinate ", value: 9},
-{label: "Warfare More", value: 10},
+  {label: "Shoppies ", value: 2},
+  {label: "Bubblesiha", value: 3},
+  {label: "Leander ", value: 4},
+  {label: "Cradle", value: 5},
+  {label: "Crib", value: 6},
+  {label: "High Chair", value: 7},
+  {label: "Call of Duty", value: 8},
+  {label: "Infinate ", value: 9},
+  {label: "Warfare More", value: 10},
 
 ];
 const App = () => (
@@ -101,8 +101,18 @@ class Register extends React.Component {
   constructor(props){
     super(props);
     let categoryId = props.match.params.id;
-	let latitude = props.match.params.latitude; 
-    let longitude = props.match.params.longitude; 
+  	let latitude = props.match.params.latitude;
+    if(latitude != undefined){
+        latitude = latitude.replace(" ", "");
+    }else{
+      latitude = '';
+    }
+    let longitude = props.match.params.longitude;
+    if(longitude != undefined){
+        longitude = longitude.replace(" ", "");
+    }else{
+      longitude = '';
+    }
     this.state = {
       time: random(),
       accordion: false,
@@ -125,9 +135,20 @@ class Register extends React.Component {
       constantList:[],
       result: [],
       query: '',
+      filters: {
+        selectedCategories : [],
+        selectedUsers: [],
+        selectedLocations: [],
+        selectedSizes:[],
+        selectedBrands: [],
+        selectedConditions: [],
+        selectedColors: [],
+        selectedAges:[],
+        selectedRatings: []
+      },
       categoryId: categoryId,
-	  latitude: latitude,
-	  longitude: longitude,
+      latitude: latitude,
+      longitude: longitude,
       optionsChecked: [],
       ids :[],
       colors: [
@@ -235,17 +256,15 @@ class Register extends React.Component {
         {id: 2, value: 2, checked: false},
         {id: 1, value: 1, checked: false}
       ],
-      checkedCategories : [],
       showFormSuccess : false,
       showMoreCategories: false,
       showMoreCount : 0,
       showBrandCount: 0,
       isBrandOpen: false,
+      checkedCategories : [],
       selectedUserAges:[],
       selectedSizes:[]
     };
-
-    this.changeContanst = this.changeContanst.bind(this);
   }
   onChange = (activeKey) => {
       this.setState({
@@ -279,123 +298,17 @@ class Register extends React.Component {
       })
   }
 
-
-changeEvent(event) {
-    let checkedArray = this.state.optionsChecked;
-    let selectedValue = event.target.value;
-      if (event.target.checked === true) {
-      	checkedArray.push(selectedValue);
-          this.setState({
-            optionsChecked: checkedArray
-          });
-      }
-      else {
-      	let valueIndex = checkedArray.indexOf(selectedValue);
-		checkedArray.splice(valueIndex, 1);
-          this.setState({
-            optionsChecked: checkedArray
-          });
-      }
-      const data = new FD();
-      data.append('ids',this.state.optionsChecked)
-      data.append('type','productCategory')
-      axios.post('/product/filterBycategory',data).then(result =>{
-		this.setState({
-			resultData : result.data.result
-		});
-	});
-  }
-
-changeBrand(brand) {
-    let checkedArray = this.state.optionsChecked;
-    let selectedValue = brand.target.value;
-      if (brand.target.checked === true) {
-      	checkedArray.push(selectedValue);
-          this.setState({
-            optionsChecked: checkedArray
-          });
-      }
-      else {
-      	let valueIndex = checkedArray.indexOf(selectedValue);
-		checkedArray.splice(valueIndex, 1);
-          this.setState({
-            optionsChecked: checkedArray
-          });
-      }
-      const data = new FD();
-      data.append('ids',this.state.optionsChecked)
-      data.append('type','brand')
-      console.log('aaaa',this.state.optionsChecked);
-      axios.post('/product/filterBycategory',data).then(result =>{
-		this.setState({
-			resultData : result.data.result
-		});
-	});
-  }
-
-changeContanst(constantV) {
-    let checkedArray = this.state.optionsChecked;
-    let selectedValue = constantV.target.value;
-      if (constantV.target.checked === true) {
-      	checkedArray.push(selectedValue);
-          this.setState({
-            optionsChecked: checkedArray
-          });
-      }
-      else {
-        let valueIndex = checkedArray.indexOf(selectedValue);
-		checkedArray.splice(valueIndex, 1);
-          this.setState({
-            optionsChecked: checkedArray
-          });
-      }
-      const dataConstant = new FD();
-      dataConstant.append('ids',this.state.optionsChecked)
-      dataConstant.append('type','condition')
-      axios.post('/product/filterBycategory',dataConstant).then(result =>{
-		this.setState({
-			resultData : result.data.result
-		});
-	});
-  }
-
-
-
-  changeUser(userList){
-	let userValue = userList.value;
-    const userdata = new FD();
-      userdata.append('ids',userList.value)
-      userdata.append('type','userId')
-      console.log('aaaa',userdata);
-    axios.post('/product/filterBycategory',userdata).then(result =>{
-	    this.setState({
-			resultData : result.data.result
-		});
-	 });
-}
-
-  changeCity(cityList){
-    const citydata = new FD();
-      citydata.append('ids',cityList.target.value)
-      citydata.append('type','city')
-      console.log('citydata',citydata)
-    axios.post('/user/searchCity',citydata).then(result =>{
-	    this.setState({
-			resultData : result.data.result
-		});
-	 });
-}
-
-  changeSize(sizeList){
-    const sizedata = new FD();
-      sizedata.append('ids',sizeList.target.value)
-      sizedata.append('type','size')
-    axios.post('/product/filterBycategory',sizedata).then(result =>{
-	    this.setState({
-			resultData : result.data.result
-		});
-	});
-}
+//   changeCity(cityList){
+//     const citydata = new FD();
+//       citydata.append('ids',cityList.target.value)
+//       citydata.append('type','city')
+//       console.log('citydata',citydata)
+//     axios.post('/user/searchCity',citydata).then(result =>{
+// 	    this.setState({
+// 			resultData : result.data.result
+// 		});
+// 	 });
+// }
 
    onLoadMore = () => {
       this.setState((old) => ({limit: old.limit + 10}));
@@ -424,26 +337,66 @@ changeContanst(constantV) {
   changeToCheckUncheck = (e) => {
     const categories = [...this.state.categoryList];
     let showMoreCount = 0;
+    let checkedArray = [];
     categories.map((item, index) => {
       if(categories[index].checked == undefined) categories[index].checked = false;
       if(item._id === e.target.value){
         categories[index].checked = !categories[index].checked;
       }
+      if(item.checked) checkedArray.push(item._id);
       if(categories[index].checked) showMoreCount++;
     });
-    this.setState({categoryList: categories, showMoreCount:showMoreCount });
+    let filters = {...this.state.filters};
+    filters.selectedCategories = checkedArray;
+    this.setState({categoryList: categories, showMoreCount:showMoreCount, filters: filters}, () => {
+      const data = new FD();
+      data.append('ids', checkedArray);
+      data.append('type','productCategory');
+      axios.post('/product/filterBycategory',data).then(result =>{
+        if(result.data.code === 200){
+      		this.setState({
+      			resultData : result.data.result
+      		});
+        }else{
+          this.setState({
+      			resultData : []
+      		});
+        }
+      });
+    });
   };
   brandUpdate = (e) => {
     const brands = [...this.state.brandsList];
     let showBrandCount = 0;
+    let selectedBrands = [];
     brands.map((item, index) => {
       if(brands[index].checked == undefined) brands[index].checked = false;
       if(item._id === e.target.value){
         brands[index].checked = !brands[index].checked;
       }
-      if(brands[index].checked) showBrandCount++;
+      if(brands[index].checked){
+        showBrandCount++;
+        selectedBrands.push(item._id);
+      }
     });
-    this.setState({brandsList: brands, showBrandCount:showBrandCount });
+    let filters = {...this.state.filters};
+    filters.selectedBrands = selectedBrands;
+    this.setState({brandsList: brands, showBrandCount:showBrandCount, filters: filters }, () =>{
+        const data = new FD();
+        data.append('ids', selectedBrands)
+        data.append('type','brand')
+        axios.post('/product/filterBycategory',data).then(result =>{
+          if(result.data.code === 200){
+        		this.setState({
+        			resultData : result.data.result
+        		});
+          }else{
+            this.setState({
+        			resultData : []
+        		});
+          }
+        });
+    });
   };
   isBrandOpenFun = (value) =>{
     const openClose = this.state.isBrandOpen;
@@ -455,25 +408,64 @@ changeContanst(constantV) {
   }
 
   doSizeSelect = (value) => {
-    //console.log('onChange ', value, arguments);
-    this.setState({ selectedSizes: value });
+  //  console.log('doSizeSelect ', value);
+    let filters = {...this.state.filters};
+    filters.selectedSizes = value;
+    this.setState({ filters: filters }, () => {
+      const sizedata = new FD();
+      sizedata.append('ids', this.state.filters.selectedSizes)
+      sizedata.append('type','size');
+      axios.post('/product/filterBycategory',sizedata).then(result =>{
+        if(result.data.code === 200){
+          this.setState({
+            resultData : result.data.result
+          });
+        }else{
+          this.setState({
+            resultData : []
+          });
+        }
+      });
+    });
   };
   changeThisColor = (e) => {
-    console.log('changeThisColor', e.target.value)
     const colors = this.state.colors;
+    let selectedColors = [];
     colors.map((item, index) => {
       if(colors[index].checked == undefined) colors[index].checked = false;
       if(item.id === e.target.value){
         colors[index].checked = !colors[index].checked;
       }
+      if(colors[index].checked) selectedColors.push(item.id);
     });
-    this.setState({colors: colors }, function(){
-      console.log('Selected Colors', this.state.colors)
-    });
+    let filters = {...this.state.filters};
+    filters.selectedColors = selectedColors;
+    this.setState({filters: filters, colors: colors }, function(){
+        //console.log('Selected Colors', this.state.colors)
+        const dataConstant = new FD();
+        dataConstant.append('ids',this.state.filters.selectedColors)
+        dataConstant.append('type','condition')
+        axios.post('/product/filterBycategory',dataConstant).then(result =>{
+          if(result.data.code === 200){
+        		this.setState({
+        			resultData : result.data.result
+        		});
+          }else{
+            this.setState({
+        			resultData : []
+        		});
+          }
+        });
+      });
   };
    componentDidMount(){
+      let url = '/product/searchresult';
+      if(this.state.categoryId != undefined) url += '/'+ this.state.categoryId;
+      if(this.state.latitude !== ""){
+          url += '/'+this.state.latitude+'/'+this.state.longitude;
+      }
       axios.all([
-	    axios.get('/product/searchresult/'+this.state.categoryId+'/'+this.state.latitude+'/'+this.state.longitude),
+	      axios.get(url),
         axios.get('/category/categoriesActive/'),
         axios.get('/user/activeUser/'),
         axios.get('/location/activeCities/'),
@@ -483,10 +475,26 @@ changeContanst(constantV) {
       ])
       .then(axios.spread((rs1, rs2,rs3,rs4,rs5,rs6,rs7) => {
         if(rs1.data.code === 200){
+          console.log('HERERE', rs1);
           this.setState({resultData:rs1.data.result});
         }
         if(rs2.data.code === 200){
-          this.setState({categoryList:rs2.data.result});
+          this.setState({categoryList:rs2.data.result}, () => {
+            const categories = [...this.state.categoryList];
+            if(this.state.categoryId){
+              let showMoreCount = 0;
+              let checkedArray = [];
+              categories.map((item, index) => {
+                if(categories[index].checked == undefined) categories[index].checked = false;
+                if(item._id === this.state.categoryId){
+                  categories[index].checked = !categories[index].checked;
+                }
+                if(item.checked) checkedArray.push(item._id);
+                if(categories[index].checked) showMoreCount++;
+              });
+              this.setState({categoryList: categories, showMoreCount:showMoreCount });
+            }
+          });
         }
         if(rs3.data.code === 200){
           this.setState({usersList:rs3.data.result});
@@ -518,6 +526,7 @@ changeContanst(constantV) {
 
       //.then(response => this.setState({ vehicles: response.data }))
       .catch(error => console.log(error));
+
    }
 
    onAgeChange = (value) => {
@@ -525,15 +534,60 @@ changeContanst(constantV) {
    }
    changeConstant = (e) => {
      const contants = [...this.state.constantList];
+     let selectedConditions = [];
      contants.map((item, index) => {
        if(contants[index].checked == undefined) contants[index].checked = false;
        if(item._id === e.target.value){
          contants[index].checked = !contants[index].checked;
        }
+       if(contants[index].checked) selectedConditions.push(item._id);
      });
-     this.setState({constantList: contants});
+     let filters = {...this.state.filters};
+     filters.selectedConditions = selectedConditions;
+     this.setState({constantList: contants, filters: filters}, ()=>{
+        const dataConstant = new FD();
+        dataConstant.append('ids',this.state.filters.selectedConditions)
+        dataConstant.append('type','condition')
+        axios.post('/product/filterBycategory',dataConstant).then(result =>{
+          if(result.data.code === 200){
+            this.setState({
+              resultData : result.data.result
+            });
+          }else{
+            this.setState({
+              resultData : []
+            });
+          }
+        });
+     });
    };
 
+   onUserChange = (tags) => {
+       if(tags){
+          const userdata = new FD();
+          let ids = [];
+          tags.map((tag, index) => {
+            ids.push(tag.id);
+          });
+          let filters = {...this.state.filters};
+          filters.selectedUsers = ids;
+          this.setState({filters: filters}, ()=>{
+            userdata.append('ids', this.state.filters.selectedUsers)
+            userdata.append('type','userId')
+            axios.post('/product/filterBycategory',userdata).then(result =>{
+              if(result.data.code === 200){
+                this.setState({
+                  resultData : result.data.result
+                });
+              }else{
+                this.setState({
+                  resultData : []
+                });
+              }
+            });
+        });
+     }
+   };
   getItems() {
       const items = [];
       if(this.state.constantList.length){
@@ -597,7 +651,7 @@ changeContanst(constantV) {
                             categoryList={this.state.categoryList}
                             changeToCheck={this.changeToCheckUncheck}
                             showMoreCount={this.state.showMoreCount}
-                            checkedCats={this.checkedCategories}
+                            checkedCats={this.state.filters.selectedCategories}
                             isOpen={this.state.showMoreCategories}
                             showHide={this.showMoreCategoriesOpen}
                           />
@@ -611,6 +665,7 @@ changeContanst(constantV) {
                                     <div className="usersearch">
                                       <UserAutosearch
                                         userList={this.state.usersList}
+                                        onUserChange={this.onUserChange}
                                        />
                                     </div>
                                     <div className="taglinerow">
@@ -740,6 +795,32 @@ changeContanst(constantV) {
           const accordion = this.state.accordion;
           const btn = accordion ? 'Mode: accordion' : 'Mode: collapse';
           const activeKey = this.state.activeKey;
+
+          let searchItems = null;
+          console.log('RENDER', this.state.resultData);
+          if(this.state.resultData.length){
+            searchItems = this.state.resultData.map(function (item,index) {
+             let img = item.userId?<img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+item.userId.profilePic} />:null;
+             return (
+             <div className="Items" key={index}><div>
+             <Link to={'/search-result/'+item._id}>
+                 <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+item.productImages} /></div>
+             </Link>
+             <div className='details'>
+             <h4><Link to={'/search-result/'+item._id}>{item.productName}</Link></h4>
+               <Link className="catLink" to={'/search-result/'+item._id}>{((item.productCategory)?item.productCategory.title:"")}</Link>
+             </div>
+             <div className="userdiv">
+             <div className="user-pic">
+                {img}
+             </div>
+                <div className="user-name">{item.userId?item.userId.firstName:""}</div>
+             </div>
+             </div>
+             </div>
+             )
+           });
+         }
           return (<div className="search-page">
         		<div className="container">
         			<div className="lft-section">
@@ -754,7 +835,7 @@ changeContanst(constantV) {
         			 <div className="rgt-section" onClick={()=>{this.showMoreCategoriesOpen(true); this.isBrandOpenFun(true)}}>
          				<div className="search-row">
          					<div className="search-result">
-         						<strong>"god of war 3 ps4" </strong> (19 Results)
+         						<strong>"god of war 3 ps4" </strong> ({this.state.resultData.length} Results)
          					</div>
          					<div className="sort-by">
          						<span>Sort by:</span>
@@ -765,29 +846,8 @@ changeContanst(constantV) {
          					<div className="cl"></div>
          				</div>
 
-         				<div className="item-listing"  results={this.state.results}>
-         				   { this.state.resultData.map(function (results,index) {
-         					let img = results.userId?results.userId[0].profilePic:"";
-         					return (
-         					<div className="Items" key={index}><div>
-         					<Link to={'/search-result/'+results._id}>
-         					    <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+results.productImages} /></div>
-         					</Link>
-         					<div className='details'>
-         					<h4><Link to={'/search-result/'+results._id}>{results.productName}</Link></h4>
-         					  <Link className="catLink" to={'/search-result/'+results._id}>{((results.productCategory)?results.productCategory[0].title:"")}</Link>
-         					</div>
-         					<div className="userdiv">
-         					<div className="user-pic">
-         					   <img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} />
-         					</div>
-         					   <div className="user-name">{results.userId?results.userId[0].firstName:""}</div>
-         					</div>
-         					</div>
-         					</div>
-         					)
-         				})
-         				}
+         				<div className="item-listing">
+         				   { searchItems}
          				</div>
          				<div className="cl"></div>
          			</div>

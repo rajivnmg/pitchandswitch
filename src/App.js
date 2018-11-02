@@ -79,10 +79,8 @@ class App extends Component {
                             <Route exact path='/verifyUserEmail/:id?' component={Login} />
                             <Route exact path='/subscription' component={Subscription} />
                             <Route exact path='/dashboard' component={Dashboard} />
-                            <Route exact path='/search-listing/:id?/:latitude?/:longitude?' component={SearchListing} />
-                            <Route exact path='/search-listing' component={SearchListing} />
-                            <Route exact path='/search-result/:id?' component={SearchDetail} />
-							<Route exact path='/search-result' component={SearchDetail} />
+                            <Route path='/search-listing/:id?/:latitude?/:longitude?' component={SearchListing} />
+                            <Route exact path='/search-result' component={SearchDetail} />
                             <Route exact path='/add-new-product' component={AddNewProduct} />
                             <Route exact path='/edit-product/:id?' component={EditProduct} />
                             <Route exact path='/my-trades' component={MyTrades} />

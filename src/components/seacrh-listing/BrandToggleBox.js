@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ToggleDisplay from 'react-toggle-display';
 import { Scrollbars } from 'react-custom-scrollbars';
+import closed from '../../images/close.png';
 var Style1 = {columnCount: 3  }
 var Style2 = {minWidth: 600}
 
@@ -34,19 +35,22 @@ class BrandToggleBox extends Component {
   }
 
   render() {
-    const brandList = this.state.filteredBrands.map((item, index) => {
-      if(item.id === ""){
-        return (<li key={index}><h5>{item.brandName}</h5></li>);
-      }else {
-      return (<li key={index}>
-          <div className="check-box"><input checked={item.checked}  brandName="brand" id={'cat-' + item._id} onChange={(e) => this.props.changeToCheck(e)} value={item._id} type="checkbox" />
-            <label htmlFor={'cat-' + item._id}>
-              {item.brandName}
-            </label>
-          </div>
-        </li>);
-      }
-    });
+    let brandList = null;
+    if(this.state.filteredBrands.length){
+        brandList = this.state.filteredBrands.map((item, index) => {
+        if(item.id === ""){
+          return (<li key={index}><h5>{item.brandName}</h5></li>);
+        }else {
+        return (<li key={index}>
+            <div className="check-box"><input checked={item.checked}  name="brand" id={'cat-' + item._id} onChange={(e) => this.props.changeToCheck(e)} value={item._id} type="checkbox" />
+              <label htmlFor={'cat-' + item._id}>
+                {item.brandName}
+              </label>
+            </div>
+          </li>);
+        }
+      });
+    }
     return (
       <div className="App">
         <p className="App-intro">
@@ -56,6 +60,7 @@ class BrandToggleBox extends Component {
           <div className="searchBox" >
             <div className="search-div">
               <input type="text" className="" onChange = {(e) => this.itemFilter(this.props.brandsList, e.target.value)} placeholder="Type here" />
+              <button className="closed" onClick={ () => this.props.showHide() }><img src={closed} alt="closed" /></button>
             </div>
             <Scrollbars className="Scrollsdiv" style={{height: 385}}>
               <div className="checkboxDiv" style={Style2}>

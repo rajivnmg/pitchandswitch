@@ -4,30 +4,29 @@ import Checkbox from 'rc-checkbox';
 import 'rc-checkbox/assets/index.css';
 import Style from './color.css';
 
-function onChange(e) {
-  console.log('Checkbox checked:', (e.target.checked));
-}
-
 class Colors extends React.Component {
   constructor(props){
     super(props);
   }
   render() {
-    let colors = this.props.colorList.map((color) => {
-      return (
-        <p>
-          <label>
-            <Checkbox
-              onChange={(e) => this.props.changeThisColor(e)}
-              disabled={color.disabled}
-              value={color.id}
-            />
+    let colors = null;
+    if(this.props.colorList.length){
+      colors = this.props.colorList.map((color) => {
+        return (
+          <p key={color.id}>
+            <label>
+              <Checkbox
+                onChange={(e) => this.props.changeThisColor(e)}
+                disabled={color.disabled}
+                value={color.id}
+              />
 
-          </label>
+            </label>
 
-        </p>
-      )
-    });
+          </p>
+        )
+      });
+    }
     return (
       <div>
 
