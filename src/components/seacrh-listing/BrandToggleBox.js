@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ToggleDisplay from 'react-toggle-display';
 import { Scrollbars } from 'react-custom-scrollbars';
+import closed from '../../images/close.png';
 var Style1 = {columnCount: 3  }
 var Style2 = {minWidth: 600}
 
@@ -59,6 +60,7 @@ class BrandToggleBox extends Component {
           <div className="searchBox" >
             <div className="search-div">
               <input type="text" className="" onChange = {(e) => this.itemFilter(this.props.brandsList, e.target.value)} placeholder="Type here" />
+              <button className="closed" onClick={ () => this.props.showHide() }><img src={closed} alt="closed" /></button>
             </div>
             <Scrollbars className="Scrollsdiv" style={{height: 385}}>
               <div className="checkboxDiv" style={Style2}>
