@@ -25,8 +25,4 @@ yarn-error.log*
 
 starter.sh
 
-src/BK--controllers--/*
-src/BK=routes/*
-src/Bk-models/*
-src/scss--1-1-/*
 /nbproject/private/
