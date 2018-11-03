@@ -12,7 +12,7 @@ input {outline:none}
 h3 { color:#414141; font-size: 32px; padding: 0 0 35px; font-weight: normal; text-align: center}
 h3 span {font-weight: bold;}
 
-.form-row { padding: 0 0 30px;}
+.form-row { float:left; width:100%; padding: 0 0 30px;}
 .form-row.login-row { padding-bottom:43px;}
 .form-row.login-row h3 {color: #d0a518;font-size: 22px;font-weight: 400; text-align: left; padding:6px 0 8px}
 .form-row.login-row p {color: #969696;font-size: 14px;font-weight: 400;}

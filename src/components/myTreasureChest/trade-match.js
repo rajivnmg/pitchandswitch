@@ -62,7 +62,8 @@ class tradeMatch extends Component {
 	  });
 	}
 	// function to get product filter by data	
-	sortBy(id){						
+	sortBy(id){	
+console.log(id);	
 		this.setState({filterOpt:{category:this.state.currentCategory,sortBy:id},currentshortBy:id},
 		function(){		
 		axios.post('/product/tradeMatchFilterBy',this.state.filterOpt).then(result =>{				

@@ -141,7 +141,7 @@ Capitalize(str){
                                         <h4>Pitch Requests</h4>
                                         <PitchRequests />
                                        {/* <ReturnInfo1 /> */}
-                                        <ProductShippingCostPopup />
+                                        {/*<ProductShippingCostPopup /> */}
                                     </TabPanel>
                                     <TabPanel>
                                         <div className="message-filter">
@@ -163,7 +163,7 @@ Capitalize(str){
                                                 <TabPanel>
                                                     <Switched />
                                                    {/* <ReturnInfo/> */}
-                                                    <SubscriptionAddonsPupup />
+                                                    {/*<SubscriptionAddonsPupup /> */}
                                                 </TabPanel>
                                                 <TabPanel>
                                                     <Completed />

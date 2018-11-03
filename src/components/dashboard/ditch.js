@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import DitchPopup from './shippingTypePopup'
 import axios from 'axios';
 import { Spin, Icon, Alert } from 'antd';
+import ViewDitchPopup from './viewDitchPopup'
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 
 class Ditch extends React.Component {
@@ -69,7 +70,7 @@ class Ditch extends React.Component {
                                     { (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
                                     <div className="colum user width1"><span>{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}</span></div>
                                     <div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
-                                    <div className="colum">  <DitchPopup /> </div>
+                                    <div className="colum">  <ViewDitchPopup offerTrade={pitch}/> </div>
                                     <div className="colum message"> </div> 
                                     <div className="colum action">{pitch.status === 4 ? <a href="#" className={'ditch blocked '}>{ditch}</a> : <a href="#" className={'ditch '}>{ditch}</a>}</div>
                                 </div>

@@ -78,9 +78,7 @@ render() {
 								
 								 {this.state.offerTradeProducts[0].products.map((offerTradeProduct, index) => {
 									 var productImages = (offerTradeProduct._id)?offerTradeProduct.productImages[0]:'';
-									 {console.log("this.state.offerTradeProducts[0]",offerTradeProduct)}
-									 
-									 return(<div className="switch-product-box">
+									 {console.log("this.state.offerTradeProducts[0]",offerTradeProduct)}			return(<div className="switch-product-box">
 										<div className="switch-product-image-box">
 										<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
 											<div className="switch-option-mask">

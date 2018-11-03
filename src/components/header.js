@@ -159,15 +159,13 @@ class Header extends Component {
 						localStorage.setItem('isLoggedIn',0);
 					}
 				}else{
-					 this.props.history.push('/login');
+					 this.props.history.push('/logout');
 				}
 			})
 		}
 	}
 
   componentDidMount() {
-
-
 	//code for google places api
 	window.initMap = this.initMap
 	const gmapScriptEl = document.createElement(`script`)
@@ -199,6 +197,7 @@ class Header extends Component {
 
 
 	axios.get('/location/listingCity').then(result => {
+
 		this.setState({
 			options: result.data.result,
 		});
