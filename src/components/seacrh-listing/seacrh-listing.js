@@ -72,26 +72,7 @@ const options = [
 const Hide = {
   display: "none"
 }
-const searchUser = [
-  {label: "Shopkins", value: 1},
-  {label: "Shoppies ", value: 2},
-  {label: "Bubblesiha", value: 3},
-  {label: "Leander ", value: 4},
-  {label: "Cradle", value: 5},
-  {label: "Crib", value: 6},
-  {label: "High Chair", value: 7},
-  {label: "Call of Duty", value: 8},
-  {label: "Infinate ", value: 9},
-  {label: "Warfare More", value: 10},
 
-];
-const App = () => (
-<div className="app">
-    <div className="container">
-        <Select options={searchUser} />
-    </div>
-</div>
-);
 
 function random() {
   return parseInt(Math.random() * 10, 10) + 1;
@@ -151,104 +132,7 @@ class Register extends React.Component {
       longitude: longitude,
       optionsChecked: [],
       ids :[],
-      colors: [
-        {
-          id: 1,
-          name: 'A',
-          color: 1,
-          disabled: false
-        },
-        {
-          id: 2,
-          name: 'B',
-          color: 2,
-          disabled: false
-        },
-        {
-          id: 3,
-          name: 'C',
-          color: 3,
-          disabled: false
-        },
-        {
-          id: 4,
-          name: 'D',
-          color: 4,
-          disabled: false
-        },
-        {
-          id: 5,
-          name: 'E',
-          color: 5,
-          disabled: false
-        },
-        {
-          id: 6,
-          name: 'F',
-          color: 6,
-          disabled: false
-        },
-        {
-          id: 7,
-          name: 'G',
-          color: 7,
-          disabled: false
-        },
-        {
-          id: 8,
-          name: 'H',
-          color: 8,
-          disabled: false
-        },
-        {
-          id: 9,
-          name: 'I',
-          color: 9,
-          disabled: false
-        },
-        {
-          id: 10,
-          name: 'J',
-          color: 10,
-          disabled: false
-        },
-        {
-          id: 11,
-          name: 'K',
-          color: 11,
-          disabled: false
-        },
-        {
-          id: 12,
-          name: 'L',
-          color: 12,
-          disabled: false
-        },
-        {
-          id: 13,
-          name: 'M',
-          color: 13,
-          disabled: false
-        },
-        {
-          id: 14,
-          name: 'N',
-          color: 14,
-          disabled: false
-        },
-        {
-          id: 15,
-          name: 'O',
-          color: 15,
-          disabled: false
-        },
-        {
-          id: 16,
-          name: 'P',
-          color: 16,
-          disabled: false
-        }
-      ],
+      colors: [],
       ratings: [
         {id: 5, value: 5, checked: false},
         {id: 4, value: 4, checked: false},
@@ -262,8 +146,8 @@ class Register extends React.Component {
       showBrandCount: 0,
       isBrandOpen: false,
       checkedCategories : [],
-      selectedUserAges:[],
-      selectedSizes:[]
+      locationMin: 0,
+      locationMax: 1000
     };
   }
   onChange = (activeKey) => {
@@ -298,24 +182,67 @@ class Register extends React.Component {
       })
   }
 
-//   changeCity(cityList){
-//     const citydata = new FD();
-//       citydata.append('ids',cityList.target.value)
-//       citydata.append('type','city')
-//       console.log('citydata',citydata)
-//     axios.post('/user/searchCity',citydata).then(result =>{
-// 	    this.setState({
-// 			resultData : result.data.result
-// 		});
-// 	 });
-// }
-
+   loadFilterData = () => {
+     let filters = {...this.state.filters};
+     const data = new FD();
+     if(filters.selectedAges.length){
+       data.append('age_ids', filters.selectedAges);
+       data.append('age_type', 'productAge');
+     }
+     if(filters.selectedBrands.length){
+       data.append('brand_ids', filters.selectedBrands);
+       data.append('brand_type', 'brand');
+     }
+     if(filters.selectedCategories.length){
+       data.append('category_ids', filters.selectedCategories);
+       data.append('category_type', 'productCategory');
+     }
+     if(filters.selectedColors.length){
+       data.append('color_ids', filters.selectedColors);
+       data.append('color_type', 'color');
+     }
+     if(filters.selectedConditions.length){
+       data.append('condition_ids', filters.selectedConditions);
+       data.append('condition_type', 'condition');
+     }
+     if(filters.selectedLocations.length){
+       data.append('location_ids', filters.selectedLocations);
+       data.append('location_type', 'location');
+     }
+     if(filters.selectedRatings.length){
+       data.append('rating_ids', filters.selectedRatings);
+       data.append('rating_type', 'rating');
+     }
+     if(filters.selectedSizes.length){
+       data.append('size_ids', filters.selectedSizes);
+       data.append('size_type', 'size');
+     }
+     if(filters.selectedUsers.length){
+       data.append('user_ids', filters.selectedUsers);
+       data.append('user_type', 'userId');
+     }
+     if(this.state.latitude !== ""){
+         data.append('latitude', this.state.latitude);
+         data.append('longitude', this.state.longitude);
+     }
+     axios.post('/product/filterBycategory',data).then(result =>{
+       if(result.data.code === 200){
+         this.setState({
+           resultData : result.data.result
+         });
+       }else{
+         this.setState({
+           resultData : []
+         });
+       }
+     });
+   };
    onLoadMore = () => {
       this.setState((old) => ({limit: old.limit + 10}));
    }
 
   getInfo = () => {
-      console.log(this.state.slides)
+      //console.log(this.state.slides)
       let ArraySlides = this.state.slides
       let ArrayNew;
       for(var i = 0; i < this.state.slides.length; i++) {
@@ -348,22 +275,7 @@ class Register extends React.Component {
     });
     let filters = {...this.state.filters};
     filters.selectedCategories = checkedArray;
-    this.setState({categoryList: categories, showMoreCount:showMoreCount, filters: filters}, () => {
-      const data = new FD();
-      data.append('ids', checkedArray);
-      data.append('type','productCategory');
-      axios.post('/product/filterBycategory',data).then(result =>{
-        if(result.data.code === 200){
-      		this.setState({
-      			resultData : result.data.result
-      		});
-        }else{
-          this.setState({
-      			resultData : []
-      		});
-        }
-      });
-    });
+    this.setState({categoryList: categories, showMoreCount:showMoreCount, filters: filters}, this.loadFilterData);
   };
   brandUpdate = (e) => {
     const brands = [...this.state.brandsList];
@@ -381,22 +293,7 @@ class Register extends React.Component {
     });
     let filters = {...this.state.filters};
     filters.selectedBrands = selectedBrands;
-    this.setState({brandsList: brands, showBrandCount:showBrandCount, filters: filters }, () =>{
-        const data = new FD();
-        data.append('ids', selectedBrands)
-        data.append('type','brand')
-        axios.post('/product/filterBycategory',data).then(result =>{
-          if(result.data.code === 200){
-        		this.setState({
-        			resultData : result.data.result
-        		});
-          }else{
-            this.setState({
-        			resultData : []
-        		});
-          }
-        });
-    });
+    this.setState({brandsList: brands, showBrandCount:showBrandCount, filters: filters }, this.loadFilterData);
   };
   isBrandOpenFun = (value) =>{
     const openClose = this.state.isBrandOpen;
@@ -411,22 +308,7 @@ class Register extends React.Component {
   //  console.log('doSizeSelect ', value);
     let filters = {...this.state.filters};
     filters.selectedSizes = value;
-    this.setState({ filters: filters }, () => {
-      const sizedata = new FD();
-      sizedata.append('ids', this.state.filters.selectedSizes)
-      sizedata.append('type','size');
-      axios.post('/product/filterBycategory',sizedata).then(result =>{
-        if(result.data.code === 200){
-          this.setState({
-            resultData : result.data.result
-          });
-        }else{
-          this.setState({
-            resultData : []
-          });
-        }
-      });
-    });
+    this.setState({ filters: filters }, this.loadFilterData);
   };
   changeThisColor = (e) => {
     const colors = this.state.colors;
@@ -440,30 +322,19 @@ class Register extends React.Component {
     });
     let filters = {...this.state.filters};
     filters.selectedColors = selectedColors;
-    this.setState({filters: filters, colors: colors }, function(){
-        //console.log('Selected Colors', this.state.colors)
-        const dataConstant = new FD();
-        dataConstant.append('ids',this.state.filters.selectedColors)
-        dataConstant.append('type','condition')
-        axios.post('/product/filterBycategory',dataConstant).then(result =>{
-          if(result.data.code === 200){
-        		this.setState({
-        			resultData : result.data.result
-        		});
-          }else{
-            this.setState({
-        			resultData : []
-        		});
-          }
-        });
-      });
+    this.setState({filters: filters, colors: colors }, this.loadFilterData);
+  };
+  getExtraParams = () => {
+    let url = '';
+    if(this.state.categoryId != undefined) url += '/'+ this.state.categoryId;
+    if(this.state.latitude !== ""){
+        url += '/'+this.state.latitude+'/'+this.state.longitude;
+    }
+    return url;
   };
    componentDidMount(){
       let url = '/product/searchresult';
-      if(this.state.categoryId != undefined) url += '/'+ this.state.categoryId;
-      if(this.state.latitude !== ""){
-          url += '/'+this.state.latitude+'/'+this.state.longitude;
-      }
+      url += this.getExtraParams();
       axios.all([
 	      axios.get(url),
         axios.get('/category/categoriesActive/'),
@@ -471,11 +342,11 @@ class Register extends React.Component {
         axios.get('/location/activeCities/'),
         axios.get('/size/listingsize/'),
         axios.get('/brand/listingbrand/'),
+        axios.get('/product/getColors/'),
         axios.get('/donation/getConstant/')
       ])
-      .then(axios.spread((rs1, rs2,rs3,rs4,rs5,rs6,rs7) => {
+      .then(axios.spread((rs1, rs2,rs3,rs4,rs5,rs6,rs7, rs8) => {
         if(rs1.data.code === 200){
-          console.log('HERERE', rs1);
           this.setState({resultData:rs1.data.result});
         }
         if(rs2.data.code === 200){
@@ -492,7 +363,9 @@ class Register extends React.Component {
                 if(item.checked) checkedArray.push(item._id);
                 if(categories[index].checked) showMoreCount++;
               });
-              this.setState({categoryList: categories, showMoreCount:showMoreCount });
+              let filters = {...this.state.filters};
+              filters.selectedCategories = checkedArray;
+              this.setState({categoryList: categories,filters: filters, showMoreCount:showMoreCount });
             }
           });
         }
@@ -520,7 +393,10 @@ class Register extends React.Component {
           this.setState({brandsList:rs6.data.result});
         }
         if(rs7.data.code === 200){
-          this.setState({constantList:rs7.data.result});
+          this.setState({colors:rs7.data.result});
+        }
+        if(rs8.data.code === 200){
+          this.setState({constantList:rs8.data.result});
         }
       }))
 
@@ -530,36 +406,24 @@ class Register extends React.Component {
    }
 
    onAgeChange = (value) => {
-     this.setState({ selectedUserAges: value });
+     let filters = {...this.state.filters};
+     filters.selectedAges = value;
+     this.setState({ filters: filters }, this.loadFilterData);
    }
    changeConstant = (e) => {
      const contants = [...this.state.constantList];
      let selectedConditions = [];
      contants.map((item, index) => {
        if(contants[index].checked == undefined) contants[index].checked = false;
-       if(item._id === e.target.value){
+       if(item.id === e.target.value){
          contants[index].checked = !contants[index].checked;
        }
-       if(contants[index].checked) selectedConditions.push(item._id);
+       if(contants[index].checked) selectedConditions.push(item.id);
      });
+     console.log('changeConstant', selectedConditions, contants, e.target.value);
      let filters = {...this.state.filters};
      filters.selectedConditions = selectedConditions;
-     this.setState({constantList: contants, filters: filters}, ()=>{
-        const dataConstant = new FD();
-        dataConstant.append('ids',this.state.filters.selectedConditions)
-        dataConstant.append('type','condition')
-        axios.post('/product/filterBycategory',dataConstant).then(result =>{
-          if(result.data.code === 200){
-            this.setState({
-              resultData : result.data.result
-            });
-          }else{
-            this.setState({
-              resultData : []
-            });
-          }
-        });
-     });
+     this.setState({constantList: contants, filters: filters}, this.loadFilterData);
    };
 
    onUserChange = (tags) => {
@@ -571,23 +435,27 @@ class Register extends React.Component {
           });
           let filters = {...this.state.filters};
           filters.selectedUsers = ids;
-          this.setState({filters: filters}, ()=>{
-            userdata.append('ids', this.state.filters.selectedUsers)
-            userdata.append('type','userId')
-            axios.post('/product/filterBycategory',userdata).then(result =>{
-              if(result.data.code === 200){
-                this.setState({
-                  resultData : result.data.result
-                });
-              }else{
-                this.setState({
-                  resultData : []
-                });
-              }
-            });
-        });
+          this.setState({filters: filters}, this.loadFilterData);
      }
    };
+   onRatingChange = (e, rating) => {
+     let filters = {...this.state.filters};
+     if(e.target.checked){
+       filters.selectedRatings = [...filters.selectedRatings, rating.id];
+     }else{
+       const selIndex = filters.selectedRatings.map((rat, index ) => {
+         if(rat === rating.id) return index;
+       });
+       filters.selectedRatings.splice(selIndex, 1);
+     }
+     this.setState({filters: filters}, this.loadFilterData);
+   };
+   onLocationChange  = (selectedOption) => {
+     let filters = {...this.state.filters};
+     filters.selectedLocations = selectedOption;
+     this.setState({filters: filters, locationMin:selectedOption[0], locationMax:selectedOption[1] }, this.loadFilterData);
+   };
+
   getItems() {
       const items = [];
       if(this.state.constantList.length){
@@ -636,7 +504,7 @@ class Register extends React.Component {
         };
         let ratings = this.state.ratings.map((rating) => {
           return (<div className="check-box">
-              <input name="New" id={'star'+rating.id} type="checkbox" />
+              <input name="New" id={'star'+rating.id} type="checkbox" onChange={(e) => this.onRatingChange(e, rating)} />
               <label htmlFor={'star'+rating.id}>
                 {getRatingImgs(rating.value)}
               </label>
@@ -677,19 +545,20 @@ class Register extends React.Component {
                             </Panel>
 
                             );
+                    // <SelectLocations options={options} selectedOption={this.state.filters.selectedLocations} onLocationChange={this.onLocationChange}/>
+                    //<span>Distance</span>
                     items.push(
                             <Panel header={`Location`} key="3">
                                 <Collapse>
-                                    <SelectLocations options={options}/>
                                     <div className="distance-range">
-                                        <span>Distance</span>
+
                                         <div className="range-slider">
                                             <div id="slider-range"></div>
                                         </div>
                                         <div className="cl"></div>
-                                        <IntegerStep />
-                                        <div id="min" className="range fl">0 <span>mile</span></div>
-                                        <div id="max" className="range fr">15<span>mile</span></div>
+                                        <IntegerStep onLocationChange={this.onLocationChange}/>
+                                        <div id="min" className="range fl">{this.state.locationMin} <span>km</span></div>
+                                        <div id="max" className="range fr">{this.state.locationMax} <span>km</span></div>
                                     </div>
                                     <div className="cl"></div>
 
@@ -704,7 +573,7 @@ class Register extends React.Component {
                                     <div className="age_select_user">
                                         <AgeSelectUser
                                           treeData={this.state.sizeTreeData}
-                                          value={this.state.selectedSizes}
+                                          value={this.state.filters.selectedSizes}
                                           onChange={this.doSizeSelect}/>
                                     </div>
                                 </Collapse>
@@ -719,7 +588,7 @@ class Register extends React.Component {
                                       brandsList={this.state.brandsList}
                                       changeToCheck={this.brandUpdate}
                                       showMoreCount={this.state.showBrandCount}
-                                      checkedBrands={this.checkedBrands}
+                                      checkedBrands={this.state.filters.selectedBrands}
                                       isOpen={this.state.isBrandOpen}
                                       showHide={this.isBrandOpenFun}
                                     />
@@ -752,7 +621,7 @@ class Register extends React.Component {
                                     <AgeSelectUser
                                       treeData={treeData}
                                       onChange={this.onAgeChange}
-                                      value={this.state.selectedUserAges}
+                                      value={this.state.filters.selectedAges}
                                     />
                                   </div>
                                 </Collapse>
@@ -797,7 +666,6 @@ class Register extends React.Component {
           const activeKey = this.state.activeKey;
 
           let searchItems = null;
-          console.log('RENDER', this.state.resultData);
           if(this.state.resultData.length){
             searchItems = this.state.resultData.map(function (item,index) {
              let img = item.userId?<img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+item.userId.profilePic} />:null;
@@ -835,7 +703,7 @@ class Register extends React.Component {
         			 <div className="rgt-section" onClick={()=>{this.showMoreCategoriesOpen(true); this.isBrandOpenFun(true)}}>
          				<div className="search-row">
          					<div className="search-result">
-         						<strong>"god of war 3 ps4" </strong> ({this.state.resultData.length} Results)
+         						<strong>{this.state.searchvalue  }</strong> ({this.state.resultData.length} Results)
          					</div>
          					<div className="sort-by">
          						<span>Sort by:</span>

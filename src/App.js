@@ -52,13 +52,12 @@ axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken'
 
 class App extends Component {
 	constructor(props){
-            console.log(React.version);
     super(props);
-		console.log('Version', React.version);
+		//console.log('Version', React.version);
 	//console.log('TOken', localStorage.getItem('jwtToken'));
-    if(localStorage.getItem('jwtToken') === null){
-       window.location.href="#/login";
-    }
+    // if(localStorage.getItem('jwtToken') === null){
+    //    window.location.href="#/login";
+    // }
   }
   componentDidMount() {
 	//the function call just after render the html

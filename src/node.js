@@ -28,8 +28,10 @@ var session = require('express-session')
 var auth = require('./routes/auth');
 const search = require('./routes/search')
 //mongoose.connect(config.db)
-mongoose.connect('mongodb://pitchnswitch:nmg251@ds147450.mlab.com:47450/pitch-switch', { useNewUrlParser: true });
+//mongoose.connect('mongodb://pitchnswitch:nmg251@ds147450.mlab.com:47450/pitch-switch', { useNewUrlParser: true });
 //mongoose.connect('mongodb://localhost:27017/pitchAndSwitch', { useNewUrlParser: true });
+//mongoose.connect('mongodb://localhost:27017/pitchAndSwitch', { useNewUrlParser: true });
+mongoose.connect('mongodb://pitchnswitch:pitchnswitch123456@10.0.0.24:27017/pitch-and-switch',{ useNewUrlParser: true });
 app.set('port', (4000));
 app.use(cors());
 app.get('/',(req,res)=>{

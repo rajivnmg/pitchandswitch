@@ -13,7 +13,7 @@ const delimiters = [KeyCodes.comma, KeyCodes.enter];
 class UserAutosearch extends React.Component {
     constructor(props) {
         super(props);
-        console.log('UserAutosearch', this.props);
+        //console.log('UserAutosearch', this.props);
         this.state = {
             tags: [],
             suggestions: []
@@ -26,7 +26,7 @@ class UserAutosearch extends React.Component {
     componentWillMount(){
       let suggestions = [];
       this.props.userList.forEach((user, userIndex) => {
-        suggestions.push({id: user._id, text: (user.firstName+ ' ' + user.middleName + ' ' + user.lastName).trim()});
+        suggestions.push({id: user._id, text: (user.firstName+ ' ' + user.lastName).trim()});
       });
       this.setState({suggestions: suggestions});
     }
