@@ -26,3 +26,31 @@ yarn-error.log*
 starter.sh
 
 /nbproject/private/
+
+
+
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# dependencies
+#admin/node_modules/*
+admin/package-lock.json
+#admin/sessions/*
+#admin/common/constant.js
+#admin/src/node.js
+# production
+/build
+
+#Assets directory for unwanted image and file
+admin/public/assets/uploads/*
+# misc
+admin/.DS_Store
+admin/.idea
+admin/.env.local
+admin/.env.development.local
+admin/.env.test.local
+admin/.env.production.local
+admin/.env
+
+admin/npm-debug.log*
+admin/yarn-debug.log*
+admin/yarn-error.log*
