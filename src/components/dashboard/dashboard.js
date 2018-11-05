@@ -235,7 +235,7 @@ Capitalize(str){
 		</div> */}
 		<div className="tradeText topMargin">
 		<h4>Current Plan</h4>
-		{/*<Scrollbars className="Scrollsdiv" style={{height:402}} >
+		<Scrollbars className="Scrollsdiv" style={{height:402}} >
 		<div className="brdrBox">
 		<div className="row">
 		<div className="left-div bold">
@@ -302,12 +302,12 @@ Capitalize(str){
 		<div className="cl"></div>
 		</div>
 		<div className="topbrdr-row no-padding">
-		<p>Vailidity:  <span>Lifetime</span></p>
+		<p>Vailidity: <span>Lifetime</span></p>
 		</div>
 		</div>
 		</Then>
 		</If>
-		</Scrollbars> */}
+		</Scrollbars> 
 		</div>
 		</div>
 		<div className="cl"></div>
