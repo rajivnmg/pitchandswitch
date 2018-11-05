@@ -31,7 +31,8 @@ class cancelPitchPopup extends Component {
 		axios.post('trade/cancelOfferTrade',data).then(result => {
 			if(result.data.code === 200){
 				console.log("cancelOfferTrade result",result)	
-				jquery('.cancel-btn').click();				
+				jquery('.cancel-btn').click();	
+				window.location.href='/my-trades';			
 			}else{
 				
 			}
@@ -43,24 +44,24 @@ render() {
    return (
 	<Popup trigger={ <a className = 'ditch cancel-ditch' > Cancel Pitch </a>} modal contentStyle = {contentStyle} lockScroll>
 		{
-			close => (
-							<div className="modal">
-								<a className="close" onClick={close}>
-									&times;
-								</a>
-								<div className="header center-align marginTop">Are you sure you want to Canel this Pitch Request?
-									<div className="cl"></div>
-								</div>
-								<div className="content">
-									<div className="return-request-form">
-										<div className="form-row btn-row">
-											<button className="ditch ditch" onClick={()=>this.cancelPitch(this.state.offerTrade)}>Yes</button>
-											<button className="cancel-btn" onClick={close}>No</button>
-										</div>
-									</div> 
-								</div>
-							</div>
-							)
+		close => (
+			<div className="modal">
+				<a className="close" onClick={close}>
+					&times;
+				</a>
+				<div className="header center-align marginTop">Are you sure you want to Canel this Pitch Request?
+					<div className="cl"></div>
+				</div>
+				<div className="content">
+					<div className="return-request-form">
+						<div className="form-row btn-row">
+							<button className="ditch ditch" onClick={()=>this.cancelPitch(this.state.offerTrade)}>Yes</button>
+							<button className="cancel-btn" onClick={close}>No</button>
+						</div>
+					</div> 
+				</div>
+			</div>
+			)
 		}
 	</Popup>
 	)}

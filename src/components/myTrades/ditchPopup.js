@@ -33,7 +33,7 @@ class DitchPopup extends Component {
 			  });	
 			    setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});			
 				window.location.href='/my-trades';
-			    }, 4000);	
+			    }, 5000);	
 				jquery('.cancel-btn').click();				
 			} else{
 				

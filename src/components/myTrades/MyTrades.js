@@ -2,18 +2,25 @@ import React, { Component } from 'react';
 import Style from './myTrades.css';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import PitchRequests from './pitchRequests'
-import SendRequests from './SendRequests'
-import ReceivedRequests from './ReceivedRequests'
+import SendRequests from './sendRequests'
+import ReceivedRequests from './receivedRequests'
 import Switched from './switched'
+import SentSwitched from './sentSwitched'
+import SendCompleted from './sendCompleted'
+import ReceivedSwitched from './receivedSwitched'
+import ReceivedCompleted from './receivedCompleted'
 import Completed from './completed'
 import Ditch from './ditch'
+import SentDitch from './sentDitch'
+import ReceivedDitch from './receivedDitch'
 import axios from  'axios'
+
+
 class MyTrades extends Component {	
 	constructor(props){
 		super(props)
 		this.state = {trades:[]}
 	}	
-	//this function call jusrt after render the page, all the initial data can be load here
 	 componentDidMount() {
 		axios.get('/trade/offerTrades').then(result => {
 			this.setState({inventory:result.data.result})		
@@ -42,63 +49,105 @@ class MyTrades extends Component {
 		</TabList>
 		<TabPanel>
 			 <Tabs forceRenderTabPanel>
-			  <TabList>
-				 <div className="message-filter">
-					<a href="#"><Tab className='active tradeall'>ALL</Tab></a>
-					<Tab className="sent tradeSent">Sent</Tab>
-					<Tab className="received tabreceived">Received</Tab>
-				</div> 
-			  </TabList>
-			<h4>Pitch Requests</h4>
-			   <TabPanel>
-				   <PitchRequests />
-			  </TabPanel>
-			  <TabPanel>        
-				  <SendRequests />
-			   </TabPanel>
-			   <TabPanel>        
-				  <ReceivedRequests />
-			   </TabPanel>
-			   <a className="more-items" href="#">More result</a>
-			</Tabs>
-		</TabPanel>
-		<TabPanel>
-			<div className="message-filter">
-				<ul>
-					<li><a href="#" className='active'>All</a></li>
-					<li className="sent"><a href="#">Sent</a></li>
-					<li className="received"><a href="#">Recieved</a></li>
-				</ul>
-			</div>     
-			<h4>Switched and Completed</h4>
-			<div className="expanded-tabs">
-				<Tabs forceRenderTabPanel>
-					<TabList>
-						<Tab>Switched</Tab>
-						<Tab>Completed</Tab>                
+			     <div className="message-filter">
+			        <TabList>
+						<Tab className='active tradeall'>ALL</Tab>
+						<Tab className="sent tradeSent">Sent</Tab>
+						<Tab className="received tabreceived">Received</Tab>
 					</TabList>
+					</div>
 					<TabPanel>
-						<Switched />
-						<a className="more-items" href="#">More result</a>
+						 <PitchRequests />
 					</TabPanel>
 					<TabPanel>
-						<Completed />
-						<a className="more-items" href="#">More result</a>
-					</TabPanel>                
-				</Tabs>
-			</div>
-		</TabPanel>														
-		<TabPanel>
-			<div className="message-filter">
-				<ul>
-					<li><a href="#" className='active'>All</a></li>
-					<li className="sent"><a href="#">Sent</a></li>
-					<li className="received"><a href="#">Recieved</a></li>
-				</ul>
-			</div>     
-			<h4>Ditched</h4>
-		  <Ditch />								
+						 <SendRequests />
+					</TabPanel>
+					<TabPanel>
+						<ReceivedRequests />
+					</TabPanel>				
+			 </Tabs>			
 		</TabPanel>
+		
+		
+		
+		
+		 <TabPanel>
+			 <Tabs forceRenderTabPanel>
+			     <div className="message-filter">
+			        <TabList>
+						<Tab className='active tradeall'>ALL</Tab>
+						<Tab className="sent tradeSent">Sent</Tab>
+						<Tab className="received tabreceived">Received</Tab>
+					</TabList>
+					</div>
+					<h4>Switched and Completed</h4>
+					<TabPanel>
+						<Tabs>
+							<TabList>
+								<Tab>Switched</Tab>
+								<Tab>Completed</Tab>
+							</TabList>
+							<TabPanel>
+								<Switched />
+							</TabPanel>
+							<TabPanel>
+								<Completed />
+							</TabPanel>
+						</Tabs>
+					</TabPanel>
+					<TabPanel>
+						<Tabs>
+							<TabList>
+								<Tab>Switched</Tab>
+								<Tab>Completed</Tab>
+							</TabList>
+							<TabPanel>
+								<SentSwitched />
+							</TabPanel>
+							<TabPanel>
+								<SendCompleted />
+							</TabPanel>
+						</Tabs>
+					</TabPanel>
+					<TabPanel>
+						<Tabs>
+							<TabList>
+								<Tab>Switched</Tab>
+								<Tab>Completed</Tab>
+							</TabList>
+							<TabPanel>
+								<ReceivedSwitched />
+							</TabPanel>
+							<TabPanel>
+								<ReceivedCompleted />
+							</TabPanel>
+						</Tabs>
+					</TabPanel>				
+			 </Tabs>			
+		</TabPanel>
+		
+															
+		<TabPanel>
+		    <Tabs forceRenderTabPanel>
+		        <div className="message-filter">
+			         <TabList>
+						<Tab className='active tradeall'>ALL</Tab>
+						<Tab className="sent tradeSent">Sent</Tab>
+					    <Tab className="received tabreceived">Received</Tab>
+				     </TabList>
+				</div> 
+				<h4>Ditched</h4> 
+				<TabPanel>
+					 <Ditch />	
+				</TabPanel>
+				<TabPanel>
+					<SentDitch />
+				</TabPanel>
+				<TabPanel>
+					<ReceivedDitch />
+				</TabPanel>
+			</Tabs>										
+		   </TabPanel>
 		</Tabs>
 		</div>
 		</div>

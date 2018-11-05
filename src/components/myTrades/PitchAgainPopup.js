@@ -9,6 +9,7 @@ import rejected from '../../images/rejected.png';
 import successPic from '../../images/successful_img.png';
 import axios from 'axios';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import {
   Badge,
   Button
@@ -19,6 +20,7 @@ var fs = require('fs');
 const constant = require('../../config/constant')
 const modalStyle = {  maxWidth: "460px",  width: "90%"};  
 const contentStyle = { maxWidth: "900px", width: "90%" };
+
 
 
 class PitchAgainPopup extends Component {
@@ -103,11 +105,10 @@ changeEvent(event){
 }
 
    submitHandler(e){
-	    const data = new FD();
+	 const data = new FD();
         data.append('productIDS', this.state.optionsChecked)
         data.append('offerTradeId', this.state.offerTrade._id)
-	    axios.post('/trade/submitPitchAgain/',data).then(result => {
-		console.log('result',result)		  
+	    axios.post('/trade/submitPitchAgain/',data).then(result => {		  
 		  if(result.data.code === 200){			  			
 			 this.setState({
 				message: result.data.message,
@@ -118,7 +119,7 @@ changeEvent(event){
 			  });	
 			   setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});			
 				window.location.href='/my-trades';
-			 }, 12000);	
+			 }, 5000);	
 		  }
       })  
    }
@@ -166,12 +167,20 @@ changeEvent(event){
 		var switched = [];
 		axios.get('/trade/switchedProduct/'+this.state.offerTrade._id).then(switchedResult => {	
 			if(switchedResult.data.code === 200){
-			   this.setState({switchedProducts:switchedResult.data.result.products});				
+			   this.setState({switchedProducts:switchedResult.data.result});				
+			   console.log('switchedProducts',this.state.switchedProducts);
 			}
-			var switchedProductsIDS = [];
-			for (var counter=0; counter < this.state.switchedProducts.length; counter++){
-			   switchedProductsIDS.push(this.state.switchedProducts[counter]._id);
-			}
+			var switchedProductsDATA = [];
+			for(var count = 0; count<this.state.switchedProducts.length; count++){
+				const proIDS = this.state.switchedProducts?this.state.switchedProducts[count].products:"";
+			    switchedProductsDATA.push(proIDS); 	
+			}			
+			 var switchedProductsIDS = [];
+			  for (var counter=0; counter < this.state.switchedProducts.length; counter++){
+			     for (var counters=0; counters < switchedProductsDATA[counter].length; counters++){				  
+					   switchedProductsIDS.push(switchedProductsDATA[counter][counters]._id);
+				   }
+			  }
 			this.setState({switchedProductsID:switchedProductsIDS});
 		 })
 	  }
@@ -195,9 +204,7 @@ render() {
     {
     close => (
     <div className="modal">
-        <a className="close" onClick={close}>
-            &times;
-        </a>
+        <a className="close" onClick={close}>&times;</a>
          <If condition={this.state.showFormSuccess === true}>
 			<Then>
 				<div className="modal pitchSuccessful">
@@ -221,71 +228,73 @@ render() {
 		</div>
 		<div className="cl"></div></div>
 			<div className="content">
-				<div className="received-product">
-					<div className="received-product-box">
-						<div className="received-product-image-box">
-							<img src={constant.BASE_IMAGE_URL+'Products/'+productImg} alt="recieved-product image" />
-						</div>
-						<div className="received-product-content-box">
-							<span>Product ID: <strong>{this.state.proID}</strong></span>
-							<h4>{this.state.productData.productName}</h4>
-							<a className="catLink" href="/">{this.state.productData.productCategory.title}</a>
-							<div className="ratingRow">
+			<div className="received-product">
+				<div className="received-product-box">
+					<div className="received-product-image-box">
+						<img src={constant.BASE_IMAGE_URL+'Products/'+productImg} alt="recieved-product image" />
+					</div>
+					<div className="received-product-content-box">
+						<span>Product ID: <strong>{this.state.proID}</strong></span>
+						<h4>{this.state.productData.productName}</h4>
+						<a className="catLink" href={'search-listing/'+(this.state.productData.productCategory?this.state.productData.productCategory._id:0)}>{this.state.productData.productCategory.title}</a>
+						<div className="ratingRow">
+						<Link to={'public-profile/'+(this.state.productData.userId?this.state.productData.userId._id:0)}>
 							<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} alt="" /></div>
 							<p>{this.state.productData.userId.firstName}</p>
-							<div className="rated">4</div>
-							<div className="cl"></div>
-							</div>
+						</Link>
+						<div className="rated">4</div>
+						<div className="cl"></div>
 						</div>
 					</div>
-					<div className="cl"></div>
-					<div className="switch-product-section choose-product-div border-top">
-                      <Scrollbars className="Scrollsdiv" style={{height: 585 }}>
-                       <If condition={this.state.getAllProduct && this.state.getAllProduct.length > 0}>
-						<Then>
-							{ this.state.getAllProduct.map((productsListing, index) => {	
-							var count = index+1;
-							var productImages = (productsListing.productImages)?(productsListing.productImages[0]):'';
-							var className = (this.state.switchedProductsID.indexOf(productsListing._id) !== -1 )? 'rejected' : '';
-							return(
-								<div className={"switch-product-box " +className+" "}>
-								<div className="switch-product-image-box">
-								<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
-								 <div className="switch-option-mask">
-								<If condition={(this.state.switchedProductsID.indexOf(productsListing._id) !== -1 )} >
-								 <Then> 
-								  <img src={rejected} alt="recieved-product image" />
-								 </Then>
-								 <Else>
-								    <div className="check-box">
-										<input name="Apple" value={productsListing._id}  id={"pitch"+count} type="checkbox" name="productIDS" value={productsListing._id} onChange={this.changeEvent.bind(this)}  disabled={this.state.disabled}/>
-										   <label htmlFor={"pitch"+count}>&nbsp;</label>
-										</div>
-								 </Else>
-								</If>
-								</div>
-								</div>
-								<div className="switch-product-content-box">
-								<h4>{productsListing.productName?productsListing.productName:""}</h4>
-								<a className="catLink" href="/">{productsListing.productCategory?productsListing.productCategory.title:""}</a>
-								</div>
-								</div>
-							   )
-							})
-						  }					  
-						</Then>							
-						<Else>	
-						<p>No Data Available</p>
-						</Else>
-					   </If>
-					</Scrollbars>
-					<div className="btm-btns">
-					<Button onClick={(e)=>this.submitHandler(e)} color="success" className="more-items">Pitch Now</Button>
-					<a className="ditch cancel-ditch"> Cancel Pitch </a>
-                      </div>
-					</div>
+				</div>
+				<div className="cl"></div>
+				<div className="switch-product-section choose-product-div border-top">
+				  <Scrollbars className="Scrollsdiv" style={{height: 585 }}>
+				   <If condition={this.state.getAllProduct && this.state.getAllProduct.length > 0}>
+					<Then>
+						{ this.state.getAllProduct.map((productsListing, index) => {	
+						var count = index+1;
+						var productImages = (productsListing.productImages)?(productsListing.productImages[0]):'';
+						var className = (this.state.switchedProductsID.indexOf(productsListing._id) !== -1 )? 'rejected' : '';
+						return(
+							<div className={"switch-product-box " +className+" "}>
+							<div className="switch-product-image-box">
+							<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+							 <div className="switch-option-mask">							
+							<If condition={(this.state.switchedProductsID.indexOf(productsListing._id) !== -1 )} >
+							 <Then> 
+							  <img src={rejected} alt="recieved-product image" />
+							 </Then>
+							 <Else>
+								<div className="check-box">
+									<input name="Apple" value={productsListing._id}  id={"pitch"+count} type="checkbox" name="productIDS" value={productsListing._id} onChange={this.changeEvent.bind(this)}  disabled={this.state.disabled}/>
+									   <label htmlFor={"pitch"+count}>&nbsp;</label>
+									</div>
+							 </Else>
+							</If>
+							</div>
+							</div>
+							<div className="switch-product-content-box">
+							<h4>{productsListing.productName?productsListing.productName:""}</h4>
+								<a className="catLink" href={'search-listing/'+(productsListing.productCategory?productsListing.productCategory._id:0)}>{productsListing.productCategory?productsListing.productCategory.title:""}</a>
+							</div>
+							</div>
+						   )
+						})
+					  }					  
+					</Then>							
+					<Else>	
+					<p>No Data Available</p>
+					</Else>
+				   </If>
+				</Scrollbars>
+				<div className="btm-btns">
+				<Button onClick={(e)=>this.submitHandler(e)} color="success" className="more-items">Pitch Now</Button>
+				<a className="ditch cancel-ditch"  onClick={close}> Cancel </a>
+				  </div>
 				</div>
 			</div>
+		</div>
 		</Else>
 		</If>
       </div>

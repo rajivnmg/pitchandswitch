@@ -142,7 +142,7 @@ const CustomModal = () => (
                                                 </Scrollbars>
                                                 <div className="btm-btns">
                                                 <a className="more-items" href="#">Pitch Now</a>
-                                                <a className="ditch cancel-ditch"> Cancel Pitch </a>
+                                                <a className="ditch cancel-ditch"  onClick={close}> Cancel </a>
                 
                 </div>
 					</div>

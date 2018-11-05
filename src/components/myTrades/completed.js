@@ -4,7 +4,7 @@ import ReturnInfo from './returnPopup'
 import PostReview from './postReviewPopup'
 import axios from 'axios'
 
-class Switched extends React.Component {
+class Completed extends React.Component {
     TrackHandler = (id) => {
         let pitches = this.state.pitches;
         let index = pitches.findIndex(pitch => pitch.id === id);
@@ -47,7 +47,6 @@ class Switched extends React.Component {
 						<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
 						<div className="colum complete-date"></div>
 						<div className="colum trade-info">
-						{console.log('IDS',pitch)}
 						   <PostReview offerTrade={pitch}/>
 						 </div>  
 						<div className="colum action"><ReturnInfo offerTrade={pitch}/> </div>
@@ -60,4 +59,4 @@ class Switched extends React.Component {
 	}
 }
 
-export default Switched;
+export default Completed;

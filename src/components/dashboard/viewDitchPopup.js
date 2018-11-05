@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Warper from "../common/Warper";
 import Popup from "reactjs-popup";
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import rcvProduct from '../../images/rcv-product-img.jpg'
 import offerProduct1 from '../../images/offer-product-img1.jpg'
 import offerProduct3 from '../../images/offer-product-img3.jpg'
@@ -14,13 +15,14 @@ const contentStyle = {
     width: "90%"
 };
 
-class viewDitchPopup extends Component {
+class ViewDitchPopup extends Component {
 	constructor(props) {
 	  super(props);
 		this.state = {				
 			offerTrade:this.props.offerTrade,
+			proID:this.props.proID,
 			offerTradeProducts:[]
-		}		
+		}	
 	}
 	
 	componentWillMount(){		
@@ -33,6 +35,11 @@ class viewDitchPopup extends Component {
 				this.setState({offerTradeProducts:result.data.result})				
 			}
 		})	
+		 axios.get('/product/productDetails/'+ this.state.proID).then(result => {
+		    this.setState({
+				productData:result.data.result,
+			});
+		})
 	}
 	
 	
@@ -40,6 +47,8 @@ class viewDitchPopup extends Component {
 render() {
 	const proImg = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
 	const productIMG = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.profilePic:"";
+	const productCategoryID = this.state.productData?this.state.productData.productCategory._id:"";
+	const userID = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId._id:"";
 	
    return (
 	<Popup trigger={<a className= 'view-pitch'> View Pitch </a>} modal contentStyle = {contentStyle} lockScroll > 
@@ -59,11 +68,13 @@ render() {
 			<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId._id:""}</strong></span>
 			<h4>Product Name: {this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productName:""}  </h4>
 			<span> {this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.description:""} </span>
-			<a className="catLink" href="/">{this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productCategory:""}</a>
+			<a className="catLink" href={"search-listing/"+productCategoryID}>{this.state.productData.productCategory?this.state.productData.productCategory.title:""}</a>
 			<div className="ratingRow">
-			<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+productIMG} alt="" /></div>
-			<p>{this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.userName:""}</p>
-			<div className="rated">4</div>
+			<Link to={'public-profile/'+userID} >
+				<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+productIMG} alt="" /></div>
+				<p>{this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.userName:""}</p>
+			</Link>	
+			
 			<div className="cl"></div>
 			</div>
 			</div>
@@ -72,7 +83,7 @@ render() {
 			<div className="switch-product-section">
 			<p>Offered products for switch:
 			<span className="pitch-offered">
-			<span className="pitch-offer">Pitch offered To </span> {(this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:''}</span>
+					<span className="pitch-offer">Pitch offered To </span> {(this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:''}</span>
 			<div className="cl"></div>
 			</p>
 
@@ -85,12 +96,12 @@ render() {
 					<div className="switch-product-image-box">
 					<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
 					<div className="switch-option-mask">
-						<a className="view-btn" href={'/search-listing/'+productList._id}>View</a>
+						<a className="view-btn" href={'/search-result/'+productList._id+'/'}>View</a>
 					</div>
 					</div>
 					<div className="switch-product-content-box">
 					<h4>{productList.productName}</h4>
-					<a className="catLink" href="/">{productList.productCategory.title}</a>
+					<a className="catLink" href={'/search-listing/'+productList.productCategory._id}>{productList.productCategory.title}</a>
 					</div>
 				</div>
 				)
@@ -110,4 +121,4 @@ render() {
 )}
 }
 
-export default viewDitchPopup;
+export default ViewDitchPopup;
