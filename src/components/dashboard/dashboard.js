@@ -71,8 +71,8 @@ class Dashboard extends Component {
 							userSubscriptionAddons:saresult.data.userSubacriptionAddons[0]						
 						})	
 				   }				 			 	
-			   }))			  
-			   .catch(error => console.log(error));			
+			}))			  
+			.catch(error => console.log(error));			
 		}	
 			
   }
