@@ -96,12 +96,16 @@ class PopularItems extends Component {
 										</div>
 											<div className='details'>
 											<h4><a href={productUrl} >{item._id?item._id.productName:''}{}</a></h4>
-												<Link className="catLink" to={'/'}>
+												<Link className="catLink" to={'/search-listing/'+(item._id?item._id.productCategory?item._id.productCategory._id:'':'')}>
 												{item._id?item._id.productCategory?item._id.productCategory.title:'':''}</Link>
 											</div>
 										<div className="userdiv">
 											<div className="user-pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} height="20px;" width="20px;"/></div>
-											<div className="user-name">{item._id?item._id.userId?item._id.userId.userName:'':''}</div>
+											<div className="user-name">
+											<Link className="alink" target="_blank" to={'/public-profile/'+(item._id?item._id.userId?item._id.userId._id:'':'')}>
+											{item._id?item._id.userId?item._id.userId.userName:'':''}
+											</Link>
+											</div>
 										</div>
 										</div>
 									</div>

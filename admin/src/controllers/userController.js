@@ -41,6 +41,8 @@ var ip = require('ip');
 // Example retrieve IP from request
 var satelize = require('satelize');
 
+var async = require("async");
+
 var bcrypt = require('bcrypt-nodejs');
 getToken = function (headers) {
   if (headers && headers.authorization) {
@@ -1272,7 +1274,7 @@ const newTradeUserRating = (req, res) => {
  *	Description : Function to delete the user
  **/
 const mostTrustedUsers = (req, res) => {
-console.log("mostTrustedUsers")
+
 UserTradeRating.aggregate([{
            $unwind: '$userId'
 		}, {
@@ -1703,6 +1705,76 @@ getUserWishListProducts = (req, res) => {
 }
 
 
+/** Auther	: Rajiv Kumar
+ *  Date	: Nov 05, 2018
+ *	Description : Function to get user public profile details
+ **/
+getPublicProfile = (req, res) => {
+	if (req.params.id) {
+		
+		var userId = req.params.id;
+		
+		console.log("userId",userId)
+	 async.waterfall([
+        function (done) {
+				UserTradeRating.aggregate([
+						//{ $match : { userId : userId } },
+						{
+						   $unwind: '$userId'
+						}, {
+							$group: {
+								_id: '$userId',
+								totalRating:{ $avg: { $divide: [ "$review", 10 ] } },
+								 count: { $sum: 1 }
+							}
+						}])  
+					.exec(function(err, userAverageRating) {
+						// Don't forget your error handling					
+						totalRating : userAverageRating.totalRating	
+						if (err) {
+                                    return totalRating;
+
+                                }
+
+                                if (!userAverageRating) {
+                                    return totalRating;
+                                } else {
+                                    done(err, userAverageRating);
+								}
+					});
+        },
+        function (userRateings, done) {			
+			var totalViewUser = 1000;
+			var totalProduct = 0;
+			var totalTrade = 0 ; 
+			var totalRating = (userRateings)?userRateings[0].totalRating:'1';
+			
+			Promise.all([
+				User.findOne({_id: userId}),
+				/// Get Total products
+				Product.find({userId:userId}).populate({path:'productCategory',model:'Category'}),
+				//get user switch trade
+				OfferTrade.find({pitchUserId:userId}),
+			
+		  ]
+			).then((values) => {
+			   return res.json({
+				code: httpResponseCode.EVERYTHING_IS_OK,
+				message: httpResponseMessage.SUCCESSFULLY_DONE,
+				result: values[0],
+				products:values[1],
+				totalTrade : values[2].length,
+				totalRating:totalRating,
+				totalViewUser:totalViewUser
+			  });
+			});
+		}
+	], function (err) {
+		console.log('error');
+	});
+}
+};
+
 module.exports = {
 	signup,
 	userSignup,
@@ -1733,6 +1805,7 @@ module.exports = {
   searchCity,
   userSubscription,
   getUserWishListProducts,
-  userSubscriptionAddon
+  userSubscriptionAddon,
+  getPublicProfile
 
 }

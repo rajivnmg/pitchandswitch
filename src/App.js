@@ -79,6 +79,7 @@ class App extends Component {
                             <Route exact path='/subscription' component={Subscription} />
                             <Route exact path='/dashboard' component={Dashboard} />
                             <Route path='/search-listing/:id?/:latitude?/:longitude?' component={SearchListing} />
+                            <Route exact path='/search-result/:id?' component={SearchDetail} />
                             <Route exact path='/search-result' component={SearchDetail} />
                             <Route exact path='/add-new-product' component={AddNewProduct} />
                             <Route exact path='/edit-product/:id?' component={EditProduct} />

@@ -676,14 +676,23 @@ class Register extends React.Component {
              </Link>
              <div className='details'>
              <h4><Link to={'/search-result/'+item._id}>{item.productName}</Link></h4>
-               <Link className="catLink" to={'/search-result/'+item._id}>{((item.productCategory)?item.productCategory.title:"")}</Link>
+               <Link className="catLink" to={'/search-listing/'+item._id}>{((item.productCategory)?item.productCategory[0].title:"")}</Link>
              </div>
              <div className="userdiv">
-             <div className="user-pic">
-                {img}
+           
+				<div className="user-pic">
+				<Link to={'/public-profile/'+(item.userId?item.userId._id:'')}>
+					{img}
+				</Link>
+				</div>
+                <div className="user-name">
+                <Link className="alink" to={'/public-profile/'+(item.userId?item.userId._id:'')}>
+						{item.userId?item.userId.firstName:""}
+                </Link>
+                </div>
+               
              </div>
-                <div className="user-name">{item.userId?item.userId.firstName:""}</div>
-             </div>
+            
              </div>
              </div>
              )
