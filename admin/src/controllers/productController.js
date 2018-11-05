@@ -957,9 +957,11 @@ const searchresult = (req, res) => {
                   "productAge": 1,
                   "condition": 1,
                   "productCategory.title": 1,
+                  "productCategory._id": 1,
                   "userId.firstName": 1,
                   "userId.lastName": 1,
-                  "userId.profilePic": 1
+                  "userId.profilePic": 1,
+                  "userId._id": 1
                 }
               }
             ], function (err, result) {

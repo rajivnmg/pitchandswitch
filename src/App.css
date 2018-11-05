@@ -67,3 +67,4 @@ h3 span {font-weight: bold;}
 .notText { font-size: 120px; text-align: center; color:red}
 .notText span { display: block; font-size:40px; text-align: center; color:#666; margin-bottom: 50px}
 .notFound a {color:#dcb73f; font-weight: bold;}
+.alink{cursor: pointer !important; text-decoration: blink !important;color:#414141 !important}
