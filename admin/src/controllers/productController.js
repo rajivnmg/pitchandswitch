@@ -17,6 +17,7 @@ const validation = require('../middlewares/validation');
 const moment = require('moment-timezone');
 const nodemailer = require('nodemailer');
 const constant = require('../../common/constant')
+const commonFunction = require("../../common/commonFunction");
 const multiparty = require('multiparty');
 const http = require('http');
 const path = require('path');
@@ -546,7 +547,7 @@ const filterBycategory = (req,res) => {
       }
       //console.log('conditionObject', conditionObject)
 	   Product.find(conditionObject)
-     .populate('productCategory',['title'])
+     .populate('productCategory',['title','_id'])
      .populate({path:'userId',model:'User', select: 'firstName lastName profilePic' })
      .populate({path:'brand',model:'Brand'})
      .populate({path:'size',model:'Size'})
@@ -1019,7 +1020,7 @@ const productDetails = (req, res) => {
                             code: httpResponseMessage.BAD_REQUEST
                         });
                     } else {
-                        var token = getToken(req.headers);
+                        var token = commonFunction.getToken(req.headers);
                         if (token.length > 10) {
                             console.log('token', token.length);
                             decoded = jwt.verify(token, settings.secret);
@@ -1082,7 +1083,7 @@ const productImages = (req, res) => {
 const myTreasureChest = (req, res) => {
     var perPage = constant.PER_PAGE_RECORD;
     var page = req.params.page || 1;
-    var token = getToken(req.headers);
+    var token = commonFunction.getToken(req.headers);
     if (token) {
         decoded = jwt.verify(token, settings.secret);
         var userId = decoded._id;
@@ -1187,7 +1188,7 @@ const myTreasureChestFilterBy = (req, res) => {
     var perPage = constant.PER_PAGE_RECORD;
     var page = req.params.page || 1;
 
-    var token = getToken(req.headers);
+    var token = commonFunction.getToken(req.headers);
     if (token) {
         decoded = jwt.verify(token, settings.secret);
         var userId = decoded._id;
@@ -1236,7 +1237,7 @@ const myTreasureChestFilterBy = (req, res) => {
 const tradeMatch = (req, res) => {
     var perPage = constant.PER_PAGE_RECORD;
     var page = req.params.page || 1;
-    var token = getToken(req.headers);
+    var token = commonFunction.getToken(req.headers);
     if (token) {
         decoded = jwt.verify(token, settings.secret);
         var userId = decoded._id;
@@ -1378,7 +1379,7 @@ const tradeMatch = (req, res) => {
 const tradeMatchFilterBy = function (req, res) {
     async.waterfall([
         function (done) {
-            var token = getToken(req.headers);
+            var token = commonFunction.getToken(req.headers);
             if (token) {
                 decoded = jwt.verify(token, settings.secret);
                 var userId = decoded._id;
@@ -1573,7 +1574,7 @@ const tepmUpload = (req, res) => {
  **/
 const addToWishList = (req, res) => {
 //  console.log("addToWishList",req.body)
-    var token = getToken(req.headers);
+    var token = commonFunction.getToken(req.headers);
     if (token) {
         decoded = jwt.verify(token, settings.secret);
         var userId = decoded._id;
@@ -1602,7 +1603,7 @@ const addToWishList = (req, res) => {
  *	Description : Function to add product into user wishlist
  **/
 const removeFromWishList = (req, res) => {
-    var token = getToken(req.headers);
+    var token = commonFunction.getToken(req.headers);
     if (token) {
         decoded = jwt.verify(token, settings.secret);
         var userId = decoded._id;
@@ -1639,7 +1640,7 @@ const removeFromWishList = (req, res) => {
  *	Description : Function to list user wishlist
  **/
 const wishList = (req, res) => {
-    var token = getToken(req.headers);
+    var token = commonFunction.getToken(req.headers);
     if (token) {
         decoded = jwt.verify(token, settings.secret);
         var userId = decoded._id;
@@ -1671,7 +1672,7 @@ const wishList = (req, res) => {
  *	Description : Function to clear the Product from user wishlist
  **/
 const clearWishlist = (req, res) => {
-    var token = getToken(req.headers);
+    var token = commonFunction.getToken(req.headers);
     if (token) {
         decoded = jwt.verify(token, settings.secret);
         var userId = decoded._id;

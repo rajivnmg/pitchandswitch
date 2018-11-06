@@ -103,7 +103,7 @@ class MyTrades extends React.Component {
         }
 		let img = this.state.resultData.userId ? this.state.resultData.userId.profilePic:"";
 		let description = this.state.resultData.description?this.state.resultData.description:"";
-		let userid = (this.state.resultData.userId)?this.state.resultData.userId._id:'1'
+		let userid = (this.state.resultData.userId)?this.state.resultData.userId._id:''
         return (
             <div>
 			<div className="my-trades-container">
@@ -154,12 +154,12 @@ class MyTrades extends React.Component {
 						      <a href="#" className="ditch">Already Pitched</a>
 						  </Then>
 						  <Else>
-						     <If condition={userid !="" && localStorage.getItem('userId') !== userid} >
+						     <If condition={userid !=="" && localStorage.getItem('userId') !== userid} >
 						       <Then>
 						        <a href="#" className="ditch">
 						           <LastPitchPopup offerTrade={this.state.resultData} proID = {this.state.productId}/>
 						         </a>
-						       </Then>						       
+						       </Then>
 						      </If>
 						  </Else>
 						 </If>
@@ -173,11 +173,7 @@ class MyTrades extends React.Component {
 					<Then>
 						<If condition ={localStorage.getItem('isLoggedIn') == "1"}>
 							<Then>
-							   <If condition={userid !="" && localStorage.getItem('userId') !== userid} >
-								<Then>
 								<a href="#" className="ditch add-wishlist" onClick={()=>this.addToWishList()}>Add to Wishlist</a>
-								 </Then>
-								</If>
 							</Then>
 							<Else>
 								<LoginPopup offerTrade={this.state.resultData}/>
@@ -185,8 +181,13 @@ class MyTrades extends React.Component {
 						</If>
 					</Then>
 					<Else>
+					<If condition={userid !=="" && localStorage.getItem('userId') !== userid} >
+					  <Then>
 						<span className="ditch add-wishlist">Added in Wishlist</span>
+					  </Then>
+					 </If>
 					</Else>
+
 				</If>
 				    <div className="cl"></div>
 				</div>

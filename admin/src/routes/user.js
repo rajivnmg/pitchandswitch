@@ -22,6 +22,7 @@ router.get('/dashboardStates',userController.dashboardStates);
 router.get('/myProfle',userController.myProfle);
 router.get('/getLoggedInUser',userController.getLoggedInUser);
 router.post('/forgotPassword', userController.forgotPassword);
+router.post('/forgotPasswordWeb', userController.forgotPasswordWeb);
 router.get('/resetPassword/:id', userController.resetPassword)
 router.post('/updateNewPassword', userController.updateNewPassword);
 router.post('/readNotification', userController.readNotification);
@@ -35,6 +36,6 @@ router.get('/userSubscription',userController.userSubscription);
 router.get('/userSubscriptionAddon',userController.userSubscriptionAddon);
 router.get('/getUserWishListProducts/:id',userController.getUserWishListProducts);
 router.get('/getPublicProfile/:id',userController.getPublicProfile);
-
+router.get('/getReviews/:id',userController.getReviews);
 
 module.exports = router;

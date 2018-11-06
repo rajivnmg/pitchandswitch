@@ -121,7 +121,7 @@ class Forget extends React.Component {
   
   submit = () => {	
 		const email = this.state.forgotForm.email.value;
-		axios.post('/user/forgotPassword', { email: email, userType: '0'})
+		axios.post('/user/forgotPasswordWeb', { email: email, userType: '0'})
 		  .then((result) => {
 			console.log('Forget password result', result)
 			if(result.data.code ==200){
