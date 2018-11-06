@@ -43,18 +43,6 @@ var satelize = require("satelize");
 var async = require("async");
 
 var bcrypt = require("bcrypt-nodejs");
-getToken = function(headers) {
-  if (headers && headers.authorization) {
-    var parted = headers.authorization.split(" ");
-    if (parted.length) {
-      return parted[0];
-    } else {
-      return null;
-    }
-  } else {
-    return null;
-  }
-};
 var readHTMLFile = function(path, callback) {
   fs.readFile(path, { encoding: "utf-8" }, function(err, html) {
     if (err) {
@@ -620,6 +608,126 @@ const forgotPassword = (req, res) => {
   );
 };
 
+
+/*
+  *Auther : Rajiv Kumar
+  *Date   : July 26, 2018
+  *Description  : Function to operate Forget Password for web user
+*/
+const forgotPasswordWeb = (req,res) => {
+ const data = req.body;
+ //console.log("req.body",req.body)
+ const flag = validation.validate_all_request(data, ['email']);
+ if (flag) {
+	return res.json(flag);
+ }
+  User.findOne({ email: req.body.email, userType: req.body.userType }, (err,result)=> {
+    if (err) {
+      return res.send({
+        code: httpResponseCode.BAD_REQUEST,
+        message: httpResponseMessage.INTERNAL_SERVER_ERROR
+      })
+    } else {
+      if (!result) {
+        res.json({
+          code: httpResponseCode.BAD_REQUEST,
+          message: httpResponseMessage.USER_NOT_FOUND
+        });
+      } else {
+        let transporter = nodemailer.createTransport({
+          host: constant.SMTP_HOST,
+          port: constant.SMTP_PORT,
+          secure: false, // true for 465, false for other ports
+          auth: {
+            user: constant.SMTP_USERNAME, // generated ethereal user
+            pass: constant.SMTP_PASSWORD // generated ethereal password
+          }
+        });
+         link = constant.PUBLIC_URL_WEB + "#/resetPassword/"+result._id;
+        const output =` <table width="100%" cellpadding="0" cellspacing="0" align="center" style="background-color: #efefef;">
+            <tr>
+                <td style="text-align:center">
+                    <table width="600" cellpadding="0" cellspacing="0" align="center"  style="text-align:left">
+                        <tr>
+                            <td>
+                            <img src="%PUBLIC_URL%/emailer-header.png" alt="PitchAndSwitch" style="display:block;" />
+                            </td>
+                        </tr>
+                        <tr>
+						<td style="padding:40px; background-color: #ffffff;">
+						<table width="100%" cellpadding="0" cellspacing="0">
+						<tr>
+						<td style="padding:0 0 36px">
+						<h3 style="color: #d0a518;font-size: 22px;font-weight: 400; font-family: Arial; margin: 0; padding:0">Hello `+result.userName.toUpperCase()+`,</h3>
+						</td>
+						</tr>
+						<tr>
+						<td style="padding:0 0 36px">
+						<p style="color: #414141;font-size: 18px;font-weight: 400; font-family: Arial; margin: 0; padding:0">A request to reset your Pitch and Switch password has been made. If you did not make this request, simply ignore this email. If you did make this request, please reset your password:</p>
+						</td>
+						</tr>
+						<tr>
+						<td style="padding:0 0 34px">
+						<a href="`+link+`"><img src="%PUBLIC_URL%/reset-button.png" alt="Reset Password" /></a>
+						</td>
+						</tr>
+						<tr>
+						<td style="padding:0 0 55px">
+
+						<p style="color: #414141;font-size: 18px;font-weight: 400; font-family: Arial; margin: 0; padding:0">Thank you,<br/> Team Pitch and Switch</p>
+						</td>
+						</tr>
+						<tr>
+						<td style="padding:0">
+						<p style="color: #969696; font-family: Arial; font-size: 13px;font-weight: 400; padding: 0; margin: 0"> If the button above does not work, try copying and pasting the URL into your browser. If you continue to have problems, please feel free to contact us at Pitch and Switch support team.</p>
+
+						</td>
+						</tr>
+						</table>
+						</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:30px 0; text-align: center">
+                                <p style="color: #414141;font-size: 14px;font-weight: 400; font-family:Arial">Copyright &copy; 2018, All rights reserved by <a href="#" style="color: #d0a518; text-decoration: none">Pitch and Switch</a></p>
+
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>`;
+
+        host=req.get('host');
+        let mailOptions = {
+          from: constant.SMTP_FROM_EMAIL, // sender address
+          to: req.body.email, // list of receivers
+          subject: 'Forgot Password ✔', // Subject line
+          text: 'Hello world?', // plain text body
+          html : output
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return console.log(error);
+          }
+          //console.log('Message sent: %s', info.messageId);
+          // Preview only available when sending through an Ethereal account
+          //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+          //res.render('ResetPassword')
+          // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+          // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+        });
+        return res.json({
+          code: httpResponseCode.EVERYTHING_IS_OK,
+          message: "Reset Password link has been sent successfully to your email, Please Check Your Mail To Reset Password",
+          result: result
+        })
+      }
+  }
+})
+}
+
+
 /**
  * Auther : Saurabh Agarwal
  * Date   : July 27, 2018
@@ -705,7 +813,7 @@ const updateNewPassword = (req, res) => {
  *	Description : Function to list the available user on the plateform
  **/
 const listUser = (req, res) => {
-  var token = getToken(req.headers);
+  var token = commonFunction.getToken(req.headers);
   if (token) {
     decoded = jwt.verify(token, settings.secret);
     var userId = decoded.id;
@@ -767,7 +875,7 @@ const activeUser = (req, res) => {
 const users = (req, res) => {
   const options = { sort: { firstName: -1 }, limit: 10, skip: 0 };
 
-  var token = getToken(req.headers);
+  var token = commonFunction.getToken(req.headers);
   if (token) {
     var perPage = constant.PER_PAGE_RECORD;
     var page = req.params.page || 1;
@@ -830,7 +938,7 @@ const sortingUsers = (req, res) => {
       var sortingTy = -1;
     } else var sortingTy = 1;
     //console.log('ddddddddd',sortByFields);
-    var token = getToken(req.headers);
+    var token = commonFunction.getToken(req.headers);
     if (token) {
       var perPage = constant.PER_PAGE_RECORD;
       var page = req.params.page || 1;
@@ -919,7 +1027,7 @@ const viewUser = (req, res) => {
  **/
 const myProfle = (req, res) => {
   //User.findOne({_id: userId}).then(function(user){
-  var token = getToken(req.headers);
+  var token = commonFunction.getToken(req.headers);
   if (token) {
     decoded = jwt.verify(token, settings.secret);
     var userId = decoded._id;
@@ -1185,7 +1293,7 @@ const deleteUser = (req, res) => {
  *	Description : Function to getLoggedInUser
  **/
 const getLoggedInUser = (req, res) => {
-  var token = getToken(req.headers);
+  var token = commonFunction.getToken(req.headers);
   if (token) {
     var totalNotifications = 0;
     decoded = jwt.verify(token, settings.secret);
@@ -1581,7 +1689,7 @@ const send = (req, res) => {
  *	Description : Function to getLoggedInUser
  **/
 const frontNotification = (req, res) => {
-  var token = getToken(req.headers);
+  var token = commonFunction.getToken(req.headers);
   if (token) {
     var totalNotifications = 0;
     decoded = jwt.verify(token, settings.secret);
@@ -1617,7 +1725,7 @@ const frontNotification = (req, res) => {
  *	Description : Function to states of user trade
  **/
 userTradeStates = (req, res) => {
-  var token = getToken(req.headers);
+  var token = commonFunction.getToken(req.headers);
   if (token) {
     var totalNotifications = 0;
     decoded = jwt.verify(token, settings.secret);
@@ -1679,7 +1787,7 @@ userTradeStates = (req, res) => {
  *	Description : Function to get the user subscription plans and addOn's
  **/
 userSubscription = (req, res) => {
-  var token = getToken(req.headers);
+  var token = commonFunction.getToken(req.headers);
   if (token) {
     var totalNotifications = 0;
     decoded = jwt.verify(token, settings.secret);
@@ -1715,7 +1823,7 @@ userSubscription = (req, res) => {
  *	Description : Function to get the user userSubscriptionAddon plans and addOn's
  **/
 userSubscriptionAddon = (req, res) => {
-  var token = getToken(req.headers);
+  var token = commonFunction.getToken(req.headers);
   if (token) {
     var totalNotifications = 0;
     decoded = jwt.verify(token, settings.secret);
@@ -1752,7 +1860,7 @@ userSubscriptionAddon = (req, res) => {
  *	Description : Function to get the user getUserWishListProducts
  **/
 getUserWishListProducts = (req, res) => {
-  var token = getToken(req.headers);
+  var token = commonFunction.getToken(req.headers);
   var arrOfVals = [];
   if (token) {
     decoded = jwt.verify(token, settings.secret);
@@ -1902,6 +2010,7 @@ module.exports = {
   dashboardStates,
   myProfle,
   forgotPassword,
+  forgotPasswordWeb,
   resetPassword,
   updateNewPassword,
   readNotification,
