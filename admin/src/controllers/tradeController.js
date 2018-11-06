@@ -8,12 +8,12 @@ const httpResponseCode = require('../helpers/httpResponseCode')
 const httpResponseMessage = require('../helpers/httpResponseMessage')
 const validation = require('../middlewares/validation')
 const constant = require("../../common/constant");
+const commonFunction = require("../../common/commonFunction");
 const moment = require('moment-timezone');
 const md5 = require('md5')
 const nodemailer = require('nodemailer');
 const Notification = require('../models/notification');
 const UserTradeRating = require('../models/userTradeRating');
-
 var settings = require('../config/settings'); // get settings file
 var passport = require('passport');
 require('../config/passport')(passport);
@@ -262,7 +262,7 @@ const offerTrade = (req, res) => {
 const offerTrades = (req, res) => {
   var perPage = constant.PER_PAGE_RECORD
   var page = req.params.page || 1;
-  var token = getToken(req.headers);
+  var token = commonFunction.getToken(req.headers);
    if (token) {
     decoded = jwt.verify(token,settings.secret);
     var userId = decoded._id;
@@ -389,7 +389,7 @@ const switchTrade = (req, res) => {
 const switchTrades = (req, res) => {
   var perPage = constant.PER_PAGE_RECORD
   var page = req.params.page || 1;
-  var token = getToken(req.headers);
+  var token = commonFunction.getToken(req.headers);
   if (token) {
          decoded = jwt.verify(token,settings.secret);
          var userId = decoded._id;
@@ -432,7 +432,7 @@ const switchTrades = (req, res) => {
  */
 ///function to list the completed pitch details details collections
 const completedTrades = (req, res) => {
-  var token = getToken(req.headers);
+  var token = commonFunction.getToken(req.headers);
    if (token) {
      decoded = jwt.verify(token,settings.secret);
      var userId = decoded._id;
@@ -500,7 +500,7 @@ const ditchTrade = (req, res) => {
 const ditchTrades = (req, res) => {
   var perPage = constant.PER_PAGE_RECORD
   var page = req.params.page || 1;
-  var token = getToken(req.headers);
+  var token = commonFunction.getToken(req.headers);
    if (token) {
     decoded = jwt.verify(token,settings.secret);
     var userId = decoded._id;
@@ -624,7 +624,7 @@ const tradingProduct = (req, res) => {
  */
 ///function to save new offer trade in the offerTrade collections
 const getAllProduct = (req, res) => {
-	var token = getToken(req.headers);
+	var token = commonFunction.getToken(req.headers);
      if(token) {
 		decoded = jwt.verify(token,settings.secret);
 		var userId = decoded._id;
@@ -662,7 +662,7 @@ const getAllProduct = (req, res) => {
 ///function to save new offer trade in the offerTrade collections
 const getProductByCategory = (req, res) => {
 	const id = req.params.id;
-	var token = getToken(req.headers);
+	var token = commonFunction.getToken(req.headers);
      if(token) {
 		decoded = jwt.verify(token,settings.secret);
 		var userId = decoded._id;
@@ -702,7 +702,7 @@ const submitPitchProduct = (req, res) => {
 	var form = new multiparty.Form();
 	  form.parse(req, function(err, data, files) {
 		const sentences = data;
-		var token = getToken(req.headers);
+		var token = commonFunction.getToken(req.headers);
 		const dataTrade = {};
 		const pitchTradepro = {};
 		if(token){

@@ -8,13 +8,13 @@ const constant = require('./constant');
 const getToken = function (headers) {
   if (headers && headers.authorization) {
     var parted = headers.authorization.split(' ');
-    if (parted.length) {
+    if (parted.length && (parted.length > 10)) {
       return parted[0];
     } else {
-      return null;
+      return false;
     }
   } else {
-    return null;
+    return false;
   }
 };
 // function to read the html file for email templating

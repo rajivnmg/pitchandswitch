@@ -1,5 +1,6 @@
 module.exports = {
   'PUBLIC_URL':'http://localhost:3006/',
+  'PUBLIC_URL_WEB':'http://localhost:3002/',
   'PER_PAGE_RECORD': 10,
   'DATABASE':'mongodb://localhost:27017/pitch-and-switch',
   //'DATABASE':'mongodb://pitchnswitch:pitchnswitch123456@10.0.0.24:27017/pitch-and-switch',
