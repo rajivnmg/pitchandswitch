@@ -11,6 +11,7 @@ import ThumbGallery from '../../components/seacrh-listing/Gallery';
 import axios from 'axios';
 import Moment from 'moment';
 import ReadMoreReact from 'read-more-react';
+import {Link} from 'react-router-dom';
 import { Spin, Alert} from 'antd';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
@@ -51,7 +52,7 @@ class MyTrades extends React.Component {
 				isAlreadyPitched:result.data.pitchProduct,
 				isAlreadyInWishlist:result.data.wishListProduct
 				});
-				console.log('resultDataaaaaaaaaaaaaaaaaa',this.state.resultData)
+				
 		})
 
 	   axios.get('/donation/getConstant').then(result => {
@@ -137,7 +138,7 @@ class MyTrades extends React.Component {
 				 <div className="pic">
 				   <img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} alt="" />
 				</div>
-				<p>{this.state.resultData.userId?this.state.resultData.userId.userName:""}</p>
+				<p><Link className="alink" to={'/public-profile/'+(this.state.resultData.userId?this.state.resultData.userId._id:"")} >{this.state.resultData.userId?this.state.resultData.userId.userName:""}</Link></p>
 				  <div className="rated">4</div>
 				  <div className="cl"></div></div>
 				</div>

@@ -1775,6 +1775,33 @@ getPublicProfile = (req, res) => {
 }
 };
 
+
+/** Auther	: Rajiv Kumar
+ *  Date	: Nov 05, 2018
+ *	Description : Function to get user public profile details
+ **/
+getReviews = (req, res) => {
+	if (req.params.id) {		
+		var userId = req.params.id;	 
+		UserTradeRating.find({userId:userId})
+			.populate({path:'submitUserId',model:'User'})
+			.exec(function(err, userviews) {
+				// Don't forget your error handling					
+				 return res.json({
+					code: httpResponseCode.EVERYTHING_IS_OK,
+					message: httpResponseMessage.SUCCESSFULLY_DONE,
+					result: userviews							
+				  });
+			});        
+	}else{
+		return res.json({
+				  code: httpResponseCode.NOT_FOUND,
+				  message: httpResponseMessage.ITEM_NOT_FOUND,
+				  result:[]						
+			  });
+	}
+};
+
 module.exports = {
 	signup,
 	userSignup,
@@ -1806,6 +1833,7 @@ module.exports = {
   userSubscription,
   getUserWishListProducts,
   userSubscriptionAddon,
-  getPublicProfile
+  getPublicProfile,
+  getReviews
 
 }

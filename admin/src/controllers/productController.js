@@ -546,7 +546,7 @@ const filterBycategory = (req,res) => {
       }
       //console.log('conditionObject', conditionObject)
 	   Product.find(conditionObject)
-     .populate('productCategory',['title'])
+     .populate('productCategory',['title','_id'])
      .populate({path:'userId',model:'User', select: 'firstName lastName profilePic' })
      .populate({path:'brand',model:'Brand'})
      .populate({path:'size',model:'Size'})

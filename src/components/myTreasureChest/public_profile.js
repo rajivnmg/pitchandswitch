@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import Select from 'react-select';
 import axios from 'axios';
+import {Link} from 'react-router-dom'
 import { Spin, Icon, Alert } from 'antd';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
@@ -35,6 +36,7 @@ class publicProfile extends Component {
         this.state = {
             limit: 10,
             loadMore: true,
+            
             publicProfile:{},
             products:[],
             totalTrade:0,
@@ -46,18 +48,10 @@ class publicProfile extends Component {
                     "category": "Games",
                     "userPic": userPicture,
                     "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
                 }
             ],
 
-        }
-        ;
+        };
     }
     
     componentWillMount(){
@@ -107,7 +101,7 @@ class publicProfile extends Component {
                                         <div className="pic"><div className="overlay"><a href="#" className="favourite"><FontAwesomeIcon icon="heart" /> fav</a></div><img src={constant.BASE_IMAGE_URL+'Products/'+slide.productImages[0]} alt="" /></div>
                                         <div className="details">
                                             <h4><a href="/my-trade-detail">{slide.productName}</a></h4>
-                                            <a href="#" className="catLink"> {(slide.productCategory)?slide.productCategory.title:''}</a>           
+                                            <Link to={'/search-listing/'+((slide.productCategory)?slide.productCategory._id:'')} className="catLink"> {(slide.productCategory)?slide.productCategory.title:''}</Link>           
                                         </div>
                                         <div className="userdiv">
                                             <div className="user-pic"> <FontAwesomeIcon icon="heart-o" /> <img src={constant.BASE_IMAGE_URL+'ProfilePic/'+this.state.publicProfile.profilePic} /></div>
@@ -118,15 +112,11 @@ class publicProfile extends Component {
                             })}
                             <div className="cl"></div>
                         </div>
-                        <If condition={this.state.products.length > 10}>
-							<Then>
-								<a className="more-items" href="javascript:void(0)">More products</a>
-							</Then>
-                         </If>
+                       {this.state.products.length > this.state.limit ? <div>{this.state.loadMore ? <a className="more-items" href="javascript:void()" onClick={this.onLoadMore}>Load more</a> : ''}</div> : '' }
                     </div>
                     <div className="whiteRightBg" style={mainNav}>
 					
-                    <PublicReviews />
+                    <PublicReviews userid={this.props.match.params.id}/>
 					
                      </div>
                       
