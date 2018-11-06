@@ -37,9 +37,8 @@ class CategoryAdd extends Component {
     this.status = React.createRef();
     this.tree_data = null;
     this.state = {
-	
       addCategory: {},
-      message : null,
+      message: null,
       categoryForm: {
         title: {
           elementType: "input",
@@ -115,10 +114,14 @@ class CategoryAdd extends Component {
     this.setState({ categoryForm: updatedCategory });
   };
   handleTreeChange(e, data, inputIdentifier) {
-	  //this.tree_data = data.selected[0];
-	  if(e.type == 'changed' && data.node != undefined && data.node.data != undefined){
-		this.tree_data = data.node.data._id;
-	  }	  
+    //this.tree_data = data.selected[0];
+    if (
+      e.type == "changed" &&
+      data.node != undefined &&
+      data.node.data != undefined
+    ) {
+      this.tree_data = data.node.data._id;
+    }
   }
   componentDidMount() {
     axios
@@ -127,11 +130,9 @@ class CategoryAdd extends Component {
         if (result.data.code === 200) {
           let oldState = this.state.categoryForm;
           oldState.parent.elementConfig.options = result.data.result;
-          this.setState(
-            {
-              categoryForm: oldState
-            }
-          );
+          this.setState({
+            categoryForm: oldState
+          });
         }
         //console.log(this.state.categories);
       })
@@ -151,7 +152,7 @@ class CategoryAdd extends Component {
       ...this.state.categoryForm
     };
     const updatedFormElement = {
-      ...updatedCategory['parent']
+      ...updatedCategory["parent"]
     };
     updatedFormElement.value = this.tree_data;
     updatedFormElement.valid = this.checkValidity(
@@ -159,22 +160,24 @@ class CategoryAdd extends Component {
       updatedFormElement.validation
     );
     updatedFormElement.touched = true;
-    updatedCategory['parent'] = updatedFormElement;
-    this.setState({ categoryForm: updatedCategory }, function(){
-		let categoryObj = {};
-		for (let key in this.state.categoryForm) {
-		  categoryObj[key] = this.state.categoryForm[key].value;
-		}
-		console.log('FFFFFFF', categoryObj);
-		axios.post("/category/create", categoryObj).then(result => {
-		  if (result.data.code == "200") {
-			this.props.history.push("/categories");
-		  }else{
-			  this.setState({message : result.data.message});
-		 }
-		});
-		setTimeout(() => {this.setState({message : null})}, 10000)
-	});
+    updatedCategory["parent"] = updatedFormElement;
+    this.setState({ categoryForm: updatedCategory }, function() {
+      let categoryObj = {};
+      for (let key in this.state.categoryForm) {
+        categoryObj[key] = this.state.categoryForm[key].value;
+      }
+      //console.log('FFFFFFF', categoryObj);
+      axios.post("/category/create", categoryObj).then(result => {
+        if (result.data.code == "200") {
+          this.props.history.push("/categories");
+        } else {
+          this.setState({ message: result.data.message });
+        }
+      });
+      setTimeout(() => {
+        this.setState({ message: null });
+      }, 10000);
+    });
   }
 
   render() {
@@ -237,8 +240,11 @@ class CategoryAdd extends Component {
               <CardHeader>
                 <strong>Add Category</strong>
               </CardHeader>
-              {(this.state.message && this.state.message !== null)?<div className="alert alert-danger">{this.state.message}</div>:''
-		}
+              {this.state.message && this.state.message !== null ? (
+                <div className="alert alert-danger">{this.state.message}</div>
+              ) : (
+                ""
+              )}
               <CardBody>{form}</CardBody>
             </Card>
           </Col>

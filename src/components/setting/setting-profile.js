@@ -8,6 +8,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import Select from 'react-select';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import DatePicker from 'react-date-picker'
+
 library.add(faHeart);
 
 class DateDiv extends Component {
@@ -56,7 +57,7 @@ const App2 = () => (
             </div>
             );
 
-class myTreasureChest extends Component {
+class updateProfile extends Component {
     onLoadMore = () => {
         this.setState((old) => ({limit: old.limit + 10}));
     }
@@ -70,149 +71,22 @@ class myTreasureChest extends Component {
             limit: 10,
             date: new Date(),
             loadMore: true,
-            slides: [{
-                    "title": "Call of Duty : Infinate Warfare More",
-                    "image": popularItemImg,
-                    "category": "Games",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Leander : Cradle, Crib, High Chair, Changing",
-                    "image": "https://api.androidhive.info/json/movies/3.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Holy Crap! This wooden rocket has some",
-                    "image": "https://api.androidhive.info/json/movies/4.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/5.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/6.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Call of Duty : Infinate Warfare More",
-                    "image": "https://api.androidhive.info/json/movies/1.jpg",
-                    "category": "Games",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Leander : Cradle, Crib, High Chair, Changing",
-                    "image": "https://api.androidhive.info/json/movies/3.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Holy Crap! This wooden rocket has some",
-                    "image": "https://api.androidhive.info/json/movies/4.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                }, {
-                    "title": "Call of Duty : Infinate Warfare More",
-                    "image": popularItemImg,
-                    "category": "Games",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Leander : Cradle, Crib, High Chair, Changing",
-                    "image": "https://api.androidhive.info/json/movies/3.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Holy Crap! This wooden rocket has some",
-                    "image": "https://api.androidhive.info/json/movies/4.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/5.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Best Pregnancy & Baby Products for babies",
-                    "image": "https://api.androidhive.info/json/movies/6.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Call of Duty : Infinate Warfare More",
-                    "image": "https://api.androidhive.info/json/movies/1.jpg",
-                    "category": "Games",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Shopkins Shoppies - Bubblesiha",
-                    "image": "https://api.androidhive.info/json/movies/2.jpg",
-                    "category": "Toy",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Leander : Cradle, Crib, High Chair, Changing",
-                    "image": "https://api.androidhive.info/json/movies/3.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                },
-                {
-                    "title": "Holy Crap! This wooden rocket has some",
-                    "image": "https://api.androidhive.info/json/movies/4.jpg",
-                    "category": "Baby Products",
-                    "userPic": userPicture,
-                    "userName": "Bruce Mars"
-                }
-            ],
-
-        }
-        ;
+            profileForm: {
+              firstName: '',
+              lastName: '',
+              profilePic: '',
+              profileMessage: '',
+              email: '',
+              dob: '',
+              address: '',
+              address1: '',
+              country: '',
+              state: '',
+              city: '',
+              zipCode: '',
+              phoneNumber: ''
+            }
+        };
     }
 
     render() {
@@ -227,10 +101,10 @@ class myTreasureChest extends Component {
                         <div className="setting-container">
                             <div className="left-container">
                                 <ul>
-                                   <li><a href="/setting-profile" className="active">Profile Info</a></li>   
-                                    <li><a href="/setting-change-password">Change Password</a></li>   
-                                    <li><a href="/setting-subscription">Subscription Management</a></li>   
-                                    <li><a href="/setting-email-notification">Email Notifications</a></li>     
+                                   <li><a href="/setting-profile" className="active">Profile Info</a></li>
+                                    <li><a href="/setting-change-password">Change Password</a></li>
+                                    <li><a href="/setting-subscription">Subscription Management</a></li>
+                                    <li><a href="/setting-email-notification">Email Notifications</a></li>
                                 </ul>
                             </div>
                             <div className="right-container">
@@ -251,7 +125,7 @@ class myTreasureChest extends Component {
                                         <div className="cl"></div>
                                         </div>
                                         <div className="form-row">
-                                            <div className="invalid-feedback validation"> </div>   
+                                            <div className="invalid-feedback validation"> </div>
                                             <span className="astrik">*</span>
                                             <label className="label" htmlFor={"name"}>Name</label>
                                             <input id={"name"} className={"form-control textBox"} required={true} name={"name"} type={"name"} placeholder="Enter your name" defaultValue="Robert Dawney Jr." />
@@ -275,56 +149,56 @@ class myTreasureChest extends Component {
                                         </div>
                                         <div className="form-row">
                                             <div className="colum">
-                                                <div className="invalid-feedback validation"> </div>             
+                                                <div className="invalid-feedback validation"> </div>
                                                 <span className="astrik">*</span>
                                                 <label className="label" htmlFor={"size"}>Email address</label>
                                                 <input id={"size"} className={"form-control textBox"} required={true} name={"size"} type={"email"} placeholder="" defaultValue="robertdawney.jr@gmail.com" /></div>
                                             <div className="colum right">
-                                                <div className="invalid-feedback validation"> </div>             
+                                                <div className="invalid-feedback validation"> </div>
                                                 <span className="astrik">*</span>
                                                 <label className="label" htmlFor={"brand"}>Date of Birth</label>
                                                 <DateDiv />
-                
-                
+
+
                                             </div>
                                             <div className="cl"></div>
-                
+
                                         </div>
-                
+
                                         <div className="form-row">
                                             <div className="colum">
                                                 <label className="label" htmlFor={"age"}>Address Line 1:</label>
                                                 <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="4138  " />
-                
+
                                             </div>
                                             <div className="colum right">
                                                 <label className="label" htmlFor={"age"}>Address Line 2:</label>
                                                 <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="Pin Oak Drive" />
-                
+
                                             </div>
                                             <div className="cl"></div>
                                         </div>
                                         <div className="form-row">
                                             <div className="colum">
-                                                <div className="invalid-feedback validation"> </div>   
+                                                <div className="invalid-feedback validation"> </div>
                                                 <span className="astrik">*</span>
                                                 <label className="label" htmlFor={"age"}>City</label>
                                                 <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="New York" /></div>
                                             <div className="colum right">
-                                                <div className="invalid-feedback validation"> </div>          
+                                                <div className="invalid-feedback validation"> </div>
                                                 <span className="astrik">*</span>
                                                 <label className="label" htmlFor={"condition"}>State</label>
                                                 <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="NY" /></div>
                                             <div className="cl"></div>
-                
+
                                         </div><div className="form-row">
                                             <div className="colum">
-                                                <div className="invalid-feedback validation"> </div>   
+                                                <div className="invalid-feedback validation"> </div>
                                                 <span className="astrik">*</span>
                                                 <label className="label" htmlFor={"age"}>ZIP / Postal Code:</label>
                                                 <input id={"age"} className={"form-control textBox"} required={true} name={"age"} type={"text"} placeholder="" defaultValue="38922" /></div>
                                             <div className="colum right">
-                                                <div className="invalid-feedback validation"> </div>          
+                                                <div className="invalid-feedback validation"> </div>
                                                 <span className="astrik">*</span>
                                                 <label className="label" htmlFor={"condition"}>Country</label>
                                                 <div className="select-box">
@@ -334,15 +208,15 @@ class myTreasureChest extends Component {
                                                     </select>
                                                 </div></div>
                                             <div className="cl"></div>
-                
+
                                         </div>
                                         <div className="form-row">
-                                            <div className="invalid-feedback validation"> </div>   
+                                            <div className="invalid-feedback validation"> </div>
                                             <span className="astrik">*</span>
                                             <label className="label" htmlFor={"name"}>Phone Number</label>
                                             <input id={"name"} className={"form-control textBox"} required={true} name={"name"} type={"name"} placeholder="Enter your name" defaultValue="562-948-6369" />
                                         </div>
-                
+
                                         <div className="form-row no-padding">
                                         <a href="#" className={"grayBtn fr"}>Deactivate account</a>
                                         <p className="createdOn">Account created on 20/5/2018</p>
@@ -364,4 +238,4 @@ class myTreasureChest extends Component {
                 );
     }
 }
-export default myTreasureChest;
+export default updateProfile;

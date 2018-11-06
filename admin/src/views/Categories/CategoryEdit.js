@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 import InputElement from "../InputElement/InputElement";
 import {
   Badge,
@@ -25,20 +25,20 @@ import {
   InputGroupAddon,
   InputGroupText,
   Label,
-  Row,
-} from 'reactstrap';
+  Row
+} from "reactstrap";
 
-var options = []
+var options = [];
 class CategoryEdit extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.title = React.createRef();
     this.description = React.createRef();
     this.parent = React.createRef();
     this.status = React.createRef();
     let categoryId = this.props.match.params.id;
-	
-	this.state = {
+
+    this.state = {
       categoryId: categoryId,
       categoryForm: {
         title: {
@@ -115,18 +115,22 @@ class CategoryEdit extends Component {
     this.setState({ categoryForm: updatedCategory });
   };
   handleTreeChange(e, data, inputIdentifier) {
-	  //this.tree_data = data.selected[0];
-	  if(e.type == 'changed' && data.node != undefined && data.node.data != undefined){
-		this.tree_data = data.node.data._id;
-	  }	  
+    //this.tree_data = data.selected[0];
+    if (
+      e.type == "changed" &&
+      data.node != undefined &&
+      data.node.data != undefined
+    ) {
+      this.tree_data = data.node.data._id;
+    }
   }
-  cancelHandler(){
+  cancelHandler() {
     this.props.history.push("/categories");
   }
-  
+
   submitHandler(e) {
     e.preventDefault();
-    let categoryObj = {_id: this.state.categoryId};
+    let categoryObj = { _id: this.state.categoryId };
     for (let key in this.state.categoryForm) {
       categoryObj[key] = this.state.categoryForm[key].value;
     }
@@ -138,19 +142,18 @@ class CategoryEdit extends Component {
     });
   }
 
- 
-  componentDidMount() {	  	
+  componentDidMount() {
     axios
       .get("/category/allCategories")
       .then(result => {
         if (result.data.code === 200) {
           let oldState = this.state.categoryForm;
-          oldState.parent.elementConfig.options = result.data.result.filter((cat)=> (cat._id !== this.state.categoryId));
-            this.setState(
-            {
-              categoryForm: oldState
-            }
-          ); 
+          oldState.parent.elementConfig.options = result.data.result.filter(
+            cat => cat._id !== this.state.categoryId
+          );
+          this.setState({
+            categoryForm: oldState
+          });
         }
       })
       .catch(error => {
@@ -158,33 +161,31 @@ class CategoryEdit extends Component {
         if (error.status === 401) {
           this.props.history.push("/login");
         }
-      }); 
-       
-    
-      axios.get('/category/viewCategory/' + this.state.categoryId).then(result => {
-        if(result.data.code == '200'){
+      });
+
+    axios
+      .get("/category/viewCategory/" + this.state.categoryId)
+      .then(result => {
+        if (result.data.code == "200") {
           let categoryForm = this.state.categoryForm;
           for (let key in categoryForm) {
-			  if(key === 'parent'){
-				  categoryForm[key].value = result.data.result[key]._id;
-			  } else {
-				  categoryForm[key].value = result.data.result[key];
-			  }
-		  }
-		  console.log('categoryForm', categoryForm);
-		  this.setState({categoryForm: categoryForm});
+            if (key === "parent") {
+              categoryForm[key].value = result.data.result[key]._id;
+            } else {
+              categoryForm[key].value = result.data.result[key];
+            }
+          }
+          console.log("categoryForm", categoryForm);
+          this.setState({ categoryForm: categoryForm });
         }
       })
-      .catch((error) => {
-        if(error.status === 401) {
+      .catch(error => {
+        if (error.status === 401) {
           this.props.history.push("/login");
         }
       });
+  }
 
-  } 
-  
-  
-  
   render() {
     const formElementsArray = [];
     for (let key in this.state.categoryForm) {
@@ -193,14 +194,14 @@ class CategoryEdit extends Component {
         config: this.state.categoryForm[key]
       });
     }
-    console.log("Form elements", formElementsArray);
+    //console.log("Form elements", formElementsArray);
     let form = (
       <Form noValidate>
         {formElementsArray.map(formElement => (
           <Row key={formElement.id}>
             <Col xs="4" sm="12" key={formElement.id}>
               <InputElement
-				key={formElement.id}
+                key={formElement.id}
                 label={formElement.config.label}
                 elementType={formElement.config.elementType}
                 elementConfig={formElement.config.elementConfig}
@@ -220,7 +221,8 @@ class CategoryEdit extends Component {
             <Button
               onClick={e => this.submitHandler(e)}
               color="success"
-              className="px-4">
+              className="px-4"
+            >
               Submit
             </Button>
           </Col>
@@ -228,7 +230,8 @@ class CategoryEdit extends Component {
             <Button
               onClick={() => this.cancelHandler()}
               color="primary"
-              className="px-4">
+              className="px-4"
+            >
               Cancel
             </Button>
           </Col>
@@ -244,7 +247,7 @@ class CategoryEdit extends Component {
                 <strong>Edit Category</strong>
               </CardHeader>
               <CardBody>{form}</CardBody>
-              </Card>
+            </Card>
           </Col>
         </Row>
       </div>
