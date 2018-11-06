@@ -17,13 +17,13 @@ library.add(faHeart);
 const constant = require('../../config/constant');
 var moment = require('moment');
 var mainNav = {
-    '@media screen and (max-width: 767px)': {
-      width: '100%',
-      float:'none',
-      display: 'block',
-      boxSizing : 'border-box'
-    }
-}
+  "@media screen and (max-width: 767px)": {
+    width: "100%",
+    float: "none",
+    display: "block",
+    boxSizing: "border-box"
+  }
+};
 
 class publicProfile extends Component {
     onLoadMore = () => {
@@ -127,3 +127,4 @@ class publicProfile extends Component {
     }
 }
 export default publicProfile;
+
