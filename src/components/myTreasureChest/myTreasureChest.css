@@ -6,6 +6,7 @@
 .myTreasure .heading-row .more-items {float:right; max-width:unset; margin-top: 0; border-radius:35px;}
 .myTreasure .heading-row h1 {color: #414141;font-size: 30px;font-weight: 700; padding-bottom: 15px; padding-top:0px}
 .myTreasure .heading-row .more-items .plus {font-size:22px; margin-right: 10px;}
+.myTreasure .heading-row .more-items.pink {background-color: #ff7979;}
 .item-listing .Items .details h4 a { text-decoration: none;}
 .heading-row .subheading {color: #969696;font-size: 16px;font-weight: 400;}
 .myTreasure .item-listing {padding: 0 0 0}
@@ -13,9 +14,10 @@
 .myTreasure .item-listing .Items .pic { position: relative}
 .myTreasure .item-listing .Items:nth-child(5n+5) { margin-right:0}
 .myTreasure .item-listing .Items .pic .overlay { background:rgba(0,0,0,0.5); width:100%; height:100%; position: absolute; top:0; left:0; display: none }
-.myTreasure .item-listing .Items .pic:hover .overlay { display: block}
+.myTreasure .item-listing .Items:hover .pic .overlay { display:flex}
 .myTreasure .item-listing .Items .pic .delete { background: #fff url(../../images/delete-edit-icon.png) no-repeat 10px 8px; width:40px; height: 40px; display: block; position: absolute; top:15px; right:65px; border-radius: 50%; text-indent:-999px;}
 .myTreasure .item-listing .Items .pic .edit { background: #fff url(../../images/delete-edit-icon.png) no-repeat 9px -27px; width:40px; height: 40px; display: block; position: absolute; top:15px; right:13px; border-radius: 50%; text-indent:-999px;}
+.myTreasure .item-listing .Items .pic .favourite { background: #fff url(../../images/add-wishlist.png) no-repeat center; width:40px; height: 40px; display: block; position: absolute; top:15px; right:13px; border-radius: 50%; text-indent:-999px;}
 .myTreasure .search-row {padding:15px 0 15px; border-top: 1px solid #ccc;  }
 .myTreasure .search-row .category-left { float:left; }
 .myTreasure .search-row .category-left span { float:left; margin-right: 15px; margin-top: 8px; }
@@ -23,9 +25,14 @@
 .myTreasure .search-row .sort-by.right {float:right}
 .myTreasure .search-row .category-left .css-d8oujb { background: none;}
 .sort-by .newly-add { padding-right: 0} 
-.userProfile{height:20px;width:20px;}
-.mousePointer {cursor: pointer !important;}
-.successDiv{
-	width:200px !important;
-	margin-left: 40%;
-}
+
+.myTreasure .item-listing.donateProducts .Items .pic .overlay {   align-items: center; justify-content: center; flex-direction: column;}
+.myTreasure .item-listing.donateProducts .Items .pic .overlay p { text-align: center; color:#fff; line-height: 22px; }
+.myTreasure .item-listing.donateProducts .Items .pic { position: initial}
+.myTreasure .item-listing.donateProducts .Items { position:relative}
+.myTreasure .item-listing.donateProducts .Items .imgDiv { margin-bottom: 15px;}
+.form-row.btn-row .ditch {height: 46px; border-radius: 23px; padding: 0 25px; text-align: center;   color: #ffffff; font-size: 20px; font-weight: 700; margin: 0 10px;border: 0; min-width: 142px;color: #ffffff; font-size: 20px;  background-color: #ff7979; cursor: pointer}
+
+.empltyArt { text-align: center; padding:85px 0}
+.empltyArt p {padding:40px 0 0; color: #414141;font-family: Roboto;font-size: 18px;font-weight: 700;}
+

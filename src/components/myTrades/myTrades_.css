@@ -1,0 +1,157 @@
+.my-trades-container { background-color: #f1f1f1; padding:40px 0 70px; background-size:100% auto}.my-trades-container .container { max-width: 1100px; margin: 0 auto}
+.my-trades {margin: 0 auto; max-width:1100px;}
+.my-trades.white-background {border-radius: 4px; padding:20px; background-color: #ffffff;}
+.my-trades h3 { text-align: left; color: #414141;font-size: 30px;font-weight: 700;}
+.my-trades h3.center-text { text-align: center; padding-bottom: 0}
+.message-filter {float:right;}
+.message-filter ul {list-style:none}
+.message-filter ul li { display: inline-block;color: #d0a518;font-size: 16px;font-weight: 400; border-left:1px solid #d1d1d1; padding:4px 25px}
+.message-filter ul li:first-child {padding-left:0; border-left: 0}
+.message-filter ul li a { display: inline-block; color: #d0a518;font-size: 16px;font-weight: 400; text-decoration: none;}
+.message-filter ul li a.active { color: #414141; font-weight: 700;}
+.message-filter .sent { background:url(../../images/arrow-sent.png) no-repeat 15px 5px; padding-left: 45px;}
+.message-filter .received { background:url(../../images/arrow-received.png) no-repeat 15px 5px; padding-left: 45px;}
+
+.tab-outer-container h4 {text-align: left; color: #414141; font-size: 30px; font-weight: 700; padding-bottom:35px;}
+.pitch-row { padding:15px 20px;box-shadow: 0 1px 0 #d8d8d8;border-radius: 4px;border: 1px solid #d8d8d8;background-color: #ffffff; position: relative; margin-bottom: 15px;}
+.pitch-row .pitch-div { display: flex;align-items: center; }
+.pitch-row .pitch-div > div {width:16.66667%;}
+.pitch-div .colum.user {color: #414141;font-size: 18px;font-weight: 700;}
+.pitch-div .colum.user.width1{width:32.33%}
+.pitch-div .colum .received {width: 84px;height: 22px; line-height: 22px; text-align: center;border-radius: 17px;background-color: #dab439; color: #ffffff;font-size: 12px;font-weight: 500; display: inline-block; text-transform: capitalize}
+.pitch-div .colum .sent {width: 84px;height: 22px; line-height: 22px; text-align: center;border-radius: 17px;background-color: #3ab03a; color: #ffffff;font-size: 12px;font-weight: 500; display: inline-block; text-transform: capitalize}
+.pitch-div .colum .view-pitch {color: #d0a518;font-size: 18px;font-weight: 400; text-decoration: none}
+.pitch-div .colum .message {color: #d0a518;font-size: 18px;font-weight: 400; text-decoration: none; background:url(../../images/message-icon.png) no-repeat 0 0; padding: 0 0 0 35px; border:0; outline:none; cursor: pointer }
+.pitch-div .colum .message.new {background:url(../../images/message-icon2.png) no-repeat 0 0; padding-top:5px; padding-bottom: 3px;}
+.pitch-div .colum .ditch {text-align: center; height: 46px; line-height: 46px; border-radius: 23px; background-color: #ff7979;  display: inline-block; color: #ffffff; font-size: 20px; text-decoration: none; margin: 0 auto; cursor: pointer; padding:0 25px; min-width: 75px; border:0;}
+.pitch-div .colum .ditch.cancel-ditch {min-width:125px;}
+.pitch-div .colum.action { text-align: right}
+.pitch-div .newPitch { position: absolute; top:10px; left: 20px;color: #3ab03a;font-size: 13px;font-weight: 700; padding-left: 20px;}
+.pitch-div .newPitch:before { content:""; width:10px; height: 10px; border-radius:50%; position: absolute; top:0; left: 0;background-color: #3ab03a;}
+.pitch-div .colum .ditch.ditched { background: none; color: #ff7979;}
+.pitch-div .colum .ditch.blocked {background-color: #969696; color: #ffffff; cursor: default}
+.pitch-div .colum.trade-info {    color: #d0a518;    font-size: 18px;    font-weight: 400;    text-decoration: none;}
+.statusTrack {padding:20px 0 10px; border-top:1px solid #d8d8d8; margin-top: 20px;}
+.statusTrack img { max-width: 100%;}
+.messageForm {padding: 20px 0 10px; border-top: 1px solid #d8d8d8; margin-top: 20px;}
+.TradeInfobtn {    color: #d0a518; font-size: 18px; text-decoration: none; cursor: pointer}
+
+.ditch-btn{height: 46px; border-radius: 23px; background-color: #ff7979; min-width:126px; border: 0; color: #ffffff; font-size: 20px; font-weight: 700; cursor: pointer; border: 2px solid #ff7979; text-transform: capitalize; padding: 0 20px;}
+.ditch-btn:hover{background-color: #ffffff; color: #ff7979; }
+.modal > .header .ditch-btn{float: right;}
+.modal > .header span.yellow {color: #d0a518;}
+.modal > .header .top-right {float:right; max-width: 214px; width:100%; padding: 0 15px 5px; margin-right: 10px;}
+.received-product img{max-width: 100%;}
+.received-product-box{width: auto; min-height:162px; border-radius: 4px; border: 1px solid #d8d8d8; background-color: #f1f1f1; padding: 15px 20px 15px 15px; margin-bottom: 15px;}
+.received-product-image-box{max-width: 130px; vertical-align: top; display: inline-block;}
+.received-product-content-box{padding-left: 25px; width: 74%; display: inline-block; vertical-align: top;}
+.received-product-content-box span{color: #414141; font-size: 13px; font-weight: 400; margin:10px 0; display: block;}
+.received-product-content-box strong{ font-weight: 700;}
+.received-product-content-box h4, .switch-product-section h4{color: #414141; font-size: 18px; font-weight: 400; margin-bottom:15px; padding: 0}
+.received-product-content-box .ratingRow {padding:15px 0 0}
+.received-product-content-box .ratingRow .pic { float:left; width:30px; margin-right:10px;}
+.received-product-content-box .ratingRow p { float:left; color: #414141;font-family: Helvetica;font-size: 16px; padding: 5px 0 0 }
+.received-product-content-box .ratingRow .rated { float:left; color: #414141; background:url(../../images/rated-star.png) no-repeat 0 0; padding: 2px 10px 2px 5px; min-width: 16px;  color: #fff;  margin: 7px 0 0 7px;}
+
+.received-product .catLink{background-color: #dab439; color: #fff; display: inline-block; padding: 5px 15px; border-radius: 15px; text-decoration: none; font-size: 12px;}
+.switch-product-section p{color: #414141; font-size: 14px; font-weight: 400; line-height: 36px;}
+.switch-product-section .pitch-offered {float: right; color: #dcb73f;}
+.switch-product-section .pitch-offered .pitch-offer { font-family: Helvetica;font-size: 14px;color: #b2b2b2;}
+
+.choose-product-div .switch-product-box { width:24%; max-width:206px }
+.choose-product-div .switch-product-box:nth-child(4n+4) { margin-right: 0}
+.choose-product-div .switch-product-box.rejected { position: relative;}
+.choose-product-div .switch-product-box.rejected .switch-product-image-box { position:initial;}
+.choose-product-div .switch-product-box.rejected .switch-product-image-box .switch-option-mask { opacity: 1; background:rgba(255,255,255,0.6) }
+.choose-product-div .switch-product-box.selected {border-radius: 4px;border: 3px solid #dcb73f; box-sizing: border-box}
+.choose-product-div .switch-product-box.selected .switch-option-mask { opacity:1; background: none;}
+.switch-product-box{display: inline-block; vertical-align: top; width:30.3%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); border-radius: 4px; background-color: #ffffff; margin-right: 20px; margin-top: 15px}
+.switch-product-box:last-child{margin-right: 0px;}
+.switch-product-image-box{position: relative; max-height: 244px;}
+.switch-option-mask{position: absolute; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.40); opacity:0; padding-top: 45px; box-shadow: inset 0 0 0 110px rgba(0,0,0, 0.4) inset;
+                    -webkit-transition: all 0.4s ease-in-out; -moz-transition: all 0.4s ease-in-out; -o-transition: all 0.4s ease-in-out; -ms-transition: all 0.4s ease-in-out; transition: all 0.4s ease-in-out; padding-left:15px; padding-right:15px; box-sizing: border-box; }
+.switch-product-box:hover .switch-option-mask{opacity: 1;}
+.switch-product-content-box{padding: 6px 10px 20px;}
+.view-btn{border-radius: 25px; padding: 13px 25px; background: #ffffff; color: #dcb73f; text-align: center; display: block; margin: 25px auto 0; max-width: 170px; text-decoration: none; font-size: 20px; font-weight: 700;}
+.view-btn.margin-top1 { margin-top:65px}
+.switch-btn{border-radius: 25px; padding: 13px 25px; background: #dcb73f; color: #fff ; text-align: center; display: block; margin: 25px auto 0; max-width: 170px; text-decoration: none; font-size: 20px; font-weight: 700;}
+.view-btn:hover{background: #dcb73f; color: #ffffff;}
+.switch-btn:hover{background: #ffffff; color: #dcb73f ;}
+
+.messageRow { max-width: 768px;border-radius: 4px; padding:15px 20px; border: 1px solid #dbdbdb; margin: 0 0 20px; float:left; clear:both; }
+.messageRow.right {float:right;background-color: #f1f1f1; border: 0}
+.messageRow h5 {color: #414141; margin: 0; padding: 0 0 10px;font-size: 18px;font-weight: 700;}
+.messageRow p {color: #969696;font-size: 16px;font-weight: 400; padding:0 0 15px;} 
+
+.messageSent {float:left; clear: both;  width:100%; box-sizing: border-box;height: 66px;border-radius: 4px;border: 1px solid #d8d8d8;background-color: #ffffff; padding:20px; }
+.messageSent .attachment {background:url(../../images/img_icon.png) no-repeat 0 0; width:20px; height: 20px; display: inline-block; text-decoration: none; margin-left:25px; margin-top: 5px; float:right}
+.messageSent input[type=submit] {background:url(../../images/message-sent.png) no-repeat 0 0; width:24px; height: 24px; display: inline-block; border:0; text-indent: -999px; cursor: pointer; margin-left: 25px; float:right}
+.messageSent textarea {width:85%; border:1px solid #ccc; float:left; color: #414141;font-size: 13px; font-family: Arial;font-weight: 400; border: 0; resize: none; outline: none; }
+
+.detail-div { padding:0 0 50px; margin-bottom:30px; border-bottom:1px solid #d8d8d8;}
+.detail-div .pic {float:left; width:374px;}
+.detail-div .details {float:left; width:63%; margin-left:3%;}
+
+.back-page {background:url(../../images/back-arrow.png) no-repeat 0 0; display: inline-block; text-decoration: none;  float:left; padding-left: 35px;color: #969696;font-family: "Roboto";font-size: 13px;font-weight: 700;}
+.edit-product{}
+.delete-product {}
+.delete-product { background: url(../../images/delete-edit-icon.png) no-repeat 0 0; display: block; float:right; color: #ff7979;font-family: "Roboto";font-size: 13px;font-weight: 400; padding-left: 30px; line-height: 22px; margin-left:22px; text-decoration: none }
+.edit-product { background: url(../../images/delete-edit-icon.png) no-repeat 0 -37px; display: block; float:right; color: #d0a518;font-family: "Roboto";font-size: 13px;font-weight: 400; padding-left:30px; line-height: 22px; text-decoration: none}
+.linkRow { padding-bottom:15px;}
+.tagsrow {color: #969696; font-family:"Roboto";font-size: 13px;font-weight: 400; padding-bottom: 15px;}
+.detail-div h1 {color: #414141;font-family: "Roboto";font-size: 26px;font-weight: 700; line-height: 34px; padding-bottom: 20px;}
+.productId {font-size: 13px;font-family: "Roboto";font-weight: 400; padding-bottom:14px;}
+.productId strong {font-weight:700;}
+.detail-div .btnRow { padding-bottom: 22px}
+.detail-div .btnRow .ditch {border-radius: 25px;   padding: 10px 25px;    background: #dcb73f; color: #fff; text-align: center;display:inline-block; max-width: 170px; text-decoration: none; font-family: Roboto; font-size: 20px;margin-right:20px; }
+.detail-div .btnRow .ditch.add-wishlist { background: #ffffff url(../../images/add-wishlist.png) no-repeat 22px 17px; color: #ff7979; padding-left: 55px; margin-left: 0; margin-right: 0 }
+.productDetails {border-top:1px solid #d8d8d8; padding-top: 15px;}
+.productDetails h5 {color: #414141;font-family: "Roboto";font-size: 13px;font-weight: 700;line-height:15px; padding-bottom: 8px;}
+.productDetails table {border:0; border-collapse:collapse;}
+.productDetails table tr td { padding:6px 8px; font-family: "Roboto";font-size: 13px;font-weight: 400;}
+.productDetails table tr td:nth-child(2) { font-weight: 700;}
+.productDetails table tr:nth-child(odd) td { background:#fff}
+
+.pitch-row .pitch-div > div.complete-date {color: #414141;font-family: Roboto;font-size: 18px;font-weight: 400; width:32%}
+
+.react-scrollbar-default {  width: 35%;  min-width: 300px;  max-height: 450px;}
+.scroll-me {  min-width: 750px;}
+.border-top { padding-top:15px; margin-top:25px; border-top:1px solid #dadada;}
+
+.choose-product-div .switch-option-mask .check-box label:before { background:#fff;}
+.choose-product-div .switch-option-mask .check-box input[type=checkbox]:checked + label:before { background-color:#dab439; background-position: 5px 5px;}
+.btm-btns { padding: 25px 0 0; text-align: center; border-top:1px solid #dadada; margin-top:15px}
+.btm-btns .more-items {     display: inline-block; margin: 0 25px 0 0; min-width: 130px;}
+.btm-btns .more-items.no-margin { margin-right: 0}
+.btm-btns.no-brdr { border-top:0}
+.choose-shippinh-type { padding:0 }
+.choose-shippinh-type ul { list-style: none;}
+.choose-shippinh-type ul li {border-radius: 12px;border: 4px solid #d6d6d6;background-color: #ffffff;width: 225px;height: 225px; line-height: 278px;  text-align: center; display:inline-block; margin-right:30px; cursor: pointer}
+.choose-shippinh-type ul li:nth-child(2) {margin-right:0;}
+.choose-shippinh-type ul li.active { border-color: #3ab03a;}
+
+.yellow-brdr-box-div .right-div {float:left; width: 80%; margin-bottom:25px; margin-left: 2%; }
+.yellow-brdr-box-div .radioBtn {float:left;}
+.yellow-brdr-box-div .addOns {font-weight: normal}
+.yellow-brdr-box-div .trades-list {padding:0; list-style:none;}
+.yellow-brdr-box-div .trades-list li { border-radius: 4px;border: 1px solid #cccccc;background-color: #ffffff; padding:12px 20px; display: block; margin-bottom: 10px;}
+.yellow-brdr-box-div .trades-list li.active { border-radius: 4px;border: 2px solid #dcb73f;background-color: #fef3d2;}
+.yellow-brdr-box-div .trades-list li .bold {color: #414141; width:58px;font-family: Roboto;font-size: 20px;font-weight: 700;line-height: 36px; display: inline-block}
+
+.my-trades-container .brdr-top { padding: 15px 0 25px; border-top: 1px solid #d8d8d8;} 
+.my-trades-container .brdr-top.no-padding {padding: 0 0 15px}
+.my-trades-container .brdr-top a {color: #d0a518; text-decoration: none} 
+.my-trades-container .brdr-top .ratingRow {padding:15px 0 0}
+.my-trades-container .brdr-top .ratingRow .pic { float:left; width:30px; margin-right:10px;}
+.my-trades-container .brdr-top .ratingRow p { float:left; color: #414141;font-family: Helvetica;font-size: 16px; padding: 5px 0 0 }
+.my-trades-container .brdr-top .ratingRow .rated { float:left; color: #414141; background:url(../../images/rated-star.png) no-repeat 0 0; padding: 2px 10px 2px 5px; min-width: 16px;  color: #fff;  margin: 7px 0 0 7px;}
+.my-trades-container .brdr-top .ratingRow p.postedBy {color: #414141;font-family: Roboto;font-size: 13px;font-weight: 400; margin-right: 15px;}
+
+.topMsg { position: absolute; top:20px;width: 320px; left: 50%; margin-left:-160px; height: 49px; line-height: 49px;border-radius: 4px;background-color: rgba(0,0,0,0.7); text-align: center;color: #ffffff;font-family: Roboto;font-size: 16px;font-weight: 400;}
+
+.modal > .header.centerheading { text-align: center; font-weight:normal;}
+.modal > .header.centerheading span { color: #d0a518;}
+.modal > .textSuccessful { text-align: center; color: #414141;font-size: 13px; padding: 0 25px 45px; font-weight: 700; line-height: 18px;}
+.modal > .textSuccessful span {color: #969696; display: block}
+
+.successIcon { text-align: center;}

@@ -34,4 +34,7 @@ router.post('/searchCity',userController.searchCity);
 router.get('/userSubscription',userController.userSubscription);
 router.get('/userSubscriptionAddon',userController.userSubscriptionAddon);
 router.get('/getUserWishListProducts/:id',userController.getUserWishListProducts);
+router.get('/getPublicProfile/:id',userController.getPublicProfile);
+router.get('/getReviews/:id',userController.getReviews)
+
 module.exports = router;

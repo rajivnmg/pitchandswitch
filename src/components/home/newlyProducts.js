@@ -75,11 +75,15 @@ class NewlyProducts extends Component {
 								<div className='pic'><Link to={productUrl} ><img src={constant.BASE_IMAGE_URL+'Products/'+newlyProduct.productImages} /></Link></div>
 									<div className='details'>
 									<h4><a href={productUrl}>{newlyProduct.productName}</a></h4>
-										<Link className="catLink" to='/'>{(newlyProduct.category && (newlyProduct.category.length > 0))?newlyProduct.category[0].title:''}</Link>
+										<Link className="catLink" to={'/search-listing/'+newlyProduct.productCategory}>{(newlyProduct.category && (newlyProduct.category.length > 0))?newlyProduct.category[0].title:''}</Link>
 									</div>
 									  <div className="userdiv">
 										<div className="user-pic"><img className="userPicNew"src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} /></div>
-										<div className="user-name">{(newlyProduct.user)?newlyProduct.user[0].userName:''}</div>
+										<div className="user-name">
+										<Link className="alink" target="_blank" to={'/public-profile/'+(newlyProduct.user?newlyProduct.user[0]._id:'')}>
+											{(newlyProduct.user)?newlyProduct.user[0].userName:''}
+										</Link>
+										</div>
 									</div>
 								</div>
 							</div>

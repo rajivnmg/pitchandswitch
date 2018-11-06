@@ -41,7 +41,7 @@ class PitchRequests extends React.Component {
 			.catch((error) => {		
 			  if(error.code === 401) {
 				this.props.history.push("/login");
-			  }
+			}
 		});
 	}
     render() {
@@ -75,10 +75,10 @@ class PitchRequests extends React.Component {
 				<div className="colum"><a href="#" className="view-pitch">
 				<If condition={send === 1}>
 					<Then>
-						<ViewPitchPopup offerTrade={pitch}/>										 
+						<ViewPitchPopup offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/>										 
 					</Then>	
 					<Else>						
-						<ViewReceivedPitch offerTrade={pitch}/>
+						<ViewReceivedPitch offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/>
 					</Else>						
 				 </If>
 				</a></div>

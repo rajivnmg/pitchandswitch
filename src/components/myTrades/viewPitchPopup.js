@@ -7,6 +7,7 @@ import offerProduct3 from '../../images/offer-product-img3.jpg'
 import userPic from '../../images/user-pic.png'
 import axios from 'axios'
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
 const constant = require('../../config/constant')
 const contentStyle = {
@@ -19,11 +20,13 @@ class viewDitchPopup extends Component {
 	  super(props);
 		this.state = {				
 			offerTrade:this.props.offerTrade,
+			proID:this.props.proID,
 			offerTradeProducts:[]
-		}		
+		}	
+			
 	}
 	
-	componentWillMount(){		
+	componentWillMount(){	
 		this.setState({offerTradeId:this.state.offerTrade._id})
 	}
 	 
@@ -32,14 +35,19 @@ class viewDitchPopup extends Component {
 			if(result.data.code === 200){		
 				this.setState({offerTradeProducts:result.data.result})				
 			}
+		})
+		 axios.get('/product/productDetails/'+ this.state.proID).then(result => {
+		    this.setState({
+				productData:result.data.result,
+			});
 		})	
 	}
 	
-	
-	
-render() {
-	const proImg = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
-	const productIMG = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.profilePic:"";
+     render() {
+	 const proImg = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
+	 const productIMG = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.profilePic:"";
+	 const categoryID = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productCategory._id:""
+	const userID = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId._id:0;
 	
    return (
 	<Popup trigger={<a className= 'view-pitch'> View Pitch </a>} modal contentStyle = {contentStyle} lockScroll > 
@@ -59,10 +67,14 @@ render() {
 			<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId._id:""}</strong></span>
 			<h4>Product Name: {this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productName:""}  </h4>
 			<span> {this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.description:""} </span>
-			<a className="catLink" href="/">{this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productCategory:""}</a>
-			<div className="ratingRow">
-			<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+productIMG} alt="" /></div>
-			<p>{this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.userName:""}</p>
+			
+			<a className="catLink" href={'search-listing/'+(this.state.productData.productCategory?this.state.productData.productCategory._id:0)}>{this.state.productData.productCategory?this.state.productData.productCategory.title:""}</a>
+			
+		    <div className="ratingRow">
+		    <Link to={'public-profile/'+(userID)} >
+				<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+productIMG} alt="" /></div>
+				<p>{this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.userName:""}</p>
+			</Link>
 			<div className="rated">4</div>
 			<div className="cl"></div>
 			</div>
@@ -85,12 +97,12 @@ render() {
 					<div className="switch-product-image-box">
 					<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
 					<div className="switch-option-mask">
-						<a className="view-btn" href={'/search-listing/'+productList._id}>View</a>
+						<a className="view-btn" href={'/search-result/'+productList._id}>View</a>
 					</div>
 					</div>
 					<div className="switch-product-content-box">
 					<h4>{productList.productName}</h4>
-					<a className="catLink" href="/">{productList.productCategory.title}</a>
+					<a className="catLink" href={'/search-listing/'+productList.productCategory._id}>{productList.productCategory.title}</a>
 					</div>
 				</div>
 				)

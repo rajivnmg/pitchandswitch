@@ -546,7 +546,7 @@ const filterBycategory = (req,res) => {
       }
       //console.log('conditionObject', conditionObject)
 	   Product.find(conditionObject)
-     .populate('productCategory',['title'])
+     .populate('productCategory',['title','_id'])
      .populate({path:'userId',model:'User', select: 'firstName lastName profilePic' })
      .populate({path:'brand',model:'Brand'})
      .populate({path:'size',model:'Size'})
@@ -957,9 +957,11 @@ const searchresult = (req, res) => {
                   "productAge": 1,
                   "condition": 1,
                   "productCategory.title": 1,
+                  "productCategory._id": 1,
                   "userId.firstName": 1,
                   "userId.lastName": 1,
-                  "userId.profilePic": 1
+                  "userId.profilePic": 1,
+                  "userId._id": 1
                 }
               }
             ], function (err, result) {

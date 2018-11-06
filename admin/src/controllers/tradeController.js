@@ -266,7 +266,11 @@ const offerTrades = (req, res) => {
    if (token) {
     decoded = jwt.verify(token,settings.secret);
     var userId = decoded._id;
-    OfferTrade.find({'ditchCount': {$ne : "4"}}).or([{ 'status':0  }, { 'status': 3 }]).or([{ 'pitchUserId':userId  }, { 'SwitchUserId': userId }])
+    //~ OfferTrade.find({'ditchCount': {$ne : "4"}}).or([{ 'status':0  }, { 'status': 3 }]).or([{ 'pitchUserId':userId  }, { 'SwitchUserId': userId }])
+    
+     OfferTrade.find({'status': 0}).or([{ 'pitchUserId':userId  }, { 'SwitchUserId': userId }])
+    
+    
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .sort({createdAt:-1})
@@ -288,7 +292,6 @@ const offerTrades = (req, res) => {
             });
           })
       });
-
     } else {
       return res.status(403).send({code: 403, message: 'Unauthorized.'});
     }
@@ -928,10 +931,8 @@ const returnTrade = (req, res) => {
 			 //console.log('rrrrllllllllllllllllllllllllll',tradeProresult)
 const switchedProduct = (req, res) => {
  const id =  mongoose.mongo.ObjectId(req.params.id);
-     TradePitchProduct.findOne({offerTradeId:id}).select('_id')
+     TradePitchProduct.find({offerTradeId:id}).select('_id')
          .populate({path:'products',model:'Product',populate:[{path:"productCategory",model:"Category"}]})
-         .populate({path:'tradePitchProductId',model:'Product',populate:[{path:"userId",model:"User"}]})
-         //.populate({path:'userId',model:'User'})
          .exec(function(err, result){
 		     if (err) {
 					return res.send({

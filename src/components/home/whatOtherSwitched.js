@@ -16,6 +16,8 @@ class WhatOtherSwitched extends Component {
     {
        super(props);
         this.state = {
+			limit: 5,
+            loadMore: true,
             switches: [{
                     "title": "",
                     "image": "",
@@ -30,7 +32,10 @@ class WhatOtherSwitched extends Component {
 			this.setState({switches:result.data.result});
 		 })
      }
-     
+     onLoadMore = () => {
+        this.setState((old) => ({limit: old.limit + 5}));
+    }
+    
    render() {
         const settings = {
             dots: false,
@@ -64,7 +69,7 @@ class WhatOtherSwitched extends Component {
 			<div className="popularItems">
 				<h3> What others have switched today </h3>
 				 <Slider {...settings}>				    
-				   {this.state.switches.map(function (switched,index) {					   
+				   {this.state.switches.slice(0, this.state.limit).map(function (switched,index) {					   
 				var imagePathSwitch = switched.tradeSwitchProductId?switched.tradeSwitchProductId.productImages[0]:'';
 				var imagePathPitch = switched.tradePitchProductId?switched.tradePitchProductId.productImages[0]:'';	
 				var imagePathPitchUser = switched.offerTradeId?switched.offerTradeId.pitchUserId.profilePic:'';
@@ -110,7 +115,7 @@ class WhatOtherSwitched extends Component {
 					  })
 				   }
 				</Slider>
-				<Link to='/' className='more-items'>See More</Link>                
+					{this.state.switches.length > this.state.limit ? <div>{this.state.loadMore ? <a className="more-items" href="javascript:void()" onClick={this.onLoadMore}>Load more</a> : ''}</div> : '' }              
 			</div>
            );
           }

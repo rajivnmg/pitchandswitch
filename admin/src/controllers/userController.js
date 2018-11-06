@@ -41,8 +41,15 @@ var ip = require("ip");
 // Example retrieve IP from request
 var satelize = require("satelize");
 
+<<<<<<< HEAD
 var bcrypt = require("bcrypt-nodejs");
 getToken = function(headers) {
+=======
+var async = require("async");
+
+var bcrypt = require('bcrypt-nodejs');
+getToken = function (headers) {
+>>>>>>> d19d486e93b489c4069ca6bdaaa6a499bdc8b54f
   if (headers && headers.authorization) {
     var parted = headers.authorization.split(" ");
     if (parted.length) {
@@ -1343,6 +1350,7 @@ const newTradeUserRating = (req, res) => {
  *	Description : Function to delete the user
  **/
 const mostTrustedUsers = (req, res) => {
+<<<<<<< HEAD
   console.log("mostTrustedUsers");
   UserTradeRating.aggregate([
     {
@@ -1366,6 +1374,27 @@ const mostTrustedUsers = (req, res) => {
           code: httpResponseCode.EVERYTHING_IS_OK,
           message: httpResponseMessage.SUCCESSFULLY_DONE,
           result: populatedTransactions
+=======
+
+UserTradeRating.aggregate([{
+           $unwind: '$userId'
+		}, {
+			$group: {
+				_id: '$userId',
+				totalRating:{ $avg: { $divide: [ "$review", 10 ] } },
+				 count: { $sum: 1 }
+			}
+		}])  
+    .exec(function(err, transactions) {
+        // Don't forget your error handling
+        console.log("transactions",transactions)
+        UserTradeRating.populate(transactions, {path: '_id',model:'User'}, function(err, populatedTransactions) {
+            return res.send({
+            code: httpResponseCode.EVERYTHING_IS_OK,
+            message: httpResponseMessage.SUCCESSFULLY_DONE,
+            result: populatedTransactions
+          })
+>>>>>>> d19d486e93b489c4069ca6bdaaa6a499bdc8b54f
         });
       }
     );
@@ -1785,6 +1814,103 @@ getUserWishListProducts = (req, res) => {
   }
 };
 
+/** Auther	: Rajiv Kumar
+ *  Date	: Nov 05, 2018
+ *	Description : Function to get user public profile details
+ **/
+getPublicProfile = (req, res) => {
+	if (req.params.id) {
+		
+		var userId = req.params.id;
+		
+		console.log("userId",userId)
+	 async.waterfall([
+        function (done) {
+				UserTradeRating.aggregate([
+						//{ $match : { userId : userId } },
+						{
+						   $unwind: '$userId'
+						}, {
+							$group: {
+								_id: '$userId',
+								totalRating:{ $avg: { $divide: [ "$review", 10 ] } },
+								 count: { $sum: 1 }
+							}
+						}])  
+					.exec(function(err, userAverageRating) {
+						// Don't forget your error handling					
+						totalRating : userAverageRating.totalRating	
+						if (err) {
+                                    return totalRating;
+
+                                }
+
+                                if (!userAverageRating) {
+                                    return totalRating;
+                                } else {
+                                    done(err, userAverageRating);
+								}
+					});
+        },
+        function (userRateings, done) {			
+			var totalViewUser = 1000;
+			var totalProduct = 0;
+			var totalTrade = 0 ; 
+			var totalRating = (userRateings)?userRateings[0].totalRating:'1';
+			
+			Promise.all([
+				User.findOne({_id: userId}),
+				/// Get Total products
+				Product.find({userId:userId}).populate({path:'productCategory',model:'Category'}),
+				//get user switch trade
+				OfferTrade.find({pitchUserId:userId}),
+			
+		  ]
+			).then((values) => {
+			   return res.json({
+				code: httpResponseCode.EVERYTHING_IS_OK,
+				message: httpResponseMessage.SUCCESSFULLY_DONE,
+				result: values[0],
+				products:values[1],
+				totalTrade : values[2].length,
+				totalRating:totalRating,
+				totalViewUser:totalViewUser
+			  });
+			});
+		}
+	], function (err) {
+		console.log('error');
+	});
+}
+};
+
+
+/** Auther	: Rajiv Kumar
+ *  Date	: Nov 05, 2018
+ *	Description : Function to get user public profile details
+ **/
+getReviews = (req, res) => {
+	if (req.params.id) {		
+		var userId = req.params.id;	 
+		UserTradeRating.find({userId:userId})
+			.populate({path:'submitUserId',model:'User'})
+			.exec(function(err, userviews) {
+				// Don't forget your error handling					
+				 return res.json({
+					code: httpResponseCode.EVERYTHING_IS_OK,
+					message: httpResponseMessage.SUCCESSFULLY_DONE,
+					result: userviews							
+				  });
+			});        
+	}else{
+		return res.json({
+				  code: httpResponseCode.NOT_FOUND,
+				  message: httpResponseMessage.ITEM_NOT_FOUND,
+				  result:[]						
+			  });
+	}
+};
+
 module.exports = {
   signup,
   userSignup,
@@ -1815,5 +1941,13 @@ module.exports = {
   searchCity,
   userSubscription,
   getUserWishListProducts,
+<<<<<<< HEAD
   userSubscriptionAddon
 };
+=======
+  userSubscriptionAddon,
+  getPublicProfile,
+  getReviews
+
+}
+>>>>>>> d19d486e93b489c4069ca6bdaaa6a499bdc8b54f

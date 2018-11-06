@@ -668,6 +668,16 @@ class Register extends React.Component {
           let searchItems = null;
           if(this.state.resultData.length){
             searchItems = this.state.resultData.map(function (item,index) {
+				let catId:'';
+				let catName:'';
+			  if(item.productCategory && Array.isArray(item.productCategory)){
+					catId = item.productCategory[0]._id;
+					catName = item.productCategory[0].title;
+			  }else{
+					catId = item.productCategory._id;
+					catName = item.productCategory.title; 
+			  }
+				  
              let img = item.userId?<img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+item.userId.profilePic} />:null;
              return (
              <div className="Items" key={index}><div>
@@ -676,14 +686,23 @@ class Register extends React.Component {
              </Link>
              <div className='details'>
              <h4><Link to={'/search-result/'+item._id}>{item.productName}</Link></h4>
-               <Link className="catLink" to={'/search-result/'+item._id}>{((item.productCategory)?item.productCategory.title:"")}</Link>
+               <Link className="catLink" to={'/search-listing/'+catId}>{catName}</Link>
              </div>
              <div className="userdiv">
-             <div className="user-pic">
-                {img}
+           
+				<div className="user-pic">
+				<Link to={'/public-profile/'+(item.userId?item.userId._id:'')}>
+					{img}
+				</Link>
+				</div>
+                <div className="user-name">
+                <Link className="alink" to={'/public-profile/'+(item.userId?item.userId._id:'')}>
+						{item.userId?item.userId.firstName:""}
+                </Link>
+                </div>
+               
              </div>
-                <div className="user-name">{item.userId?item.userId.firstName:""}</div>
-             </div>
+            
              </div>
              </div>
              )
