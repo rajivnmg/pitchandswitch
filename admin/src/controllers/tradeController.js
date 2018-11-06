@@ -22,6 +22,7 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 const multiparty = require('multiparty');
 
+
 getToken = function (headers) {
   if(headers && headers.authorization) {
     var parted = headers.authorization.split(' ');
@@ -762,18 +763,146 @@ const submitTradeProduct = (req, res) => {
 					code: httpResponseMessage.BAD_REQUEST
 			   });
 		    }
-			 OfferTrade.update({ _id:data.offerTradeId },  { "$set": { "status": 1 } }, { new:true }, (err,statusUpdate) => {
+			 OfferTrade.update({ _id:data.offerTradeId },{ "$set": { "status": 1 } }, { new:true }, (err,statusUpdate) => {
 			   if(err){
 					return res.send({
 						code: httpResponseCode.BAD_REQUEST,
 						message: httpResponseMessage.FILE_UPLOAD_ERROR
 					});
 				} else {
-					return res.send({
+				    OfferTrade.findOne({_id:data.offerTradeId})
+					.populate('pitchUserId')
+					.populate('SwitchUserId')
+					.populate('SwitchUserProductId')
+					.exec(function(err, offerTrades) {
+						
+						var pitchUserEmail = offerTrades.pitchUserId.email;				
+						var SwitchUserEmail = offerTrades.SwitchUserId.email;
+										
+					 let transporter = nodemailer.createTransport({
+						  host: constant.SMTP_HOST,
+						  port: constant.SMTP_PORT,
+						  secure: false, 
+						  auth: {
+							user: constant.SMTP_USERNAME, 
+							pass: constant.SMTP_PASSWORD 
+						  }
+						});
+					   const outputPitchUser =` <table width="100%" cellpadding="0" cellspacing="0" align="center" style="background-color: #efefef;">
+						<tr>
+							<td style="text-align:center">
+								<table width="600" cellpadding="0" cellspacing="0" align="center"  style="text-align:left">
+								<tr>
+								 <td>
+								<img src="%PUBLIC_URL%/emailer-header.png" alt="PitchAndSwitch" style="display:block;" />
+								</td>
+								</tr>
+								
+								<tr>
+								<td style="padding:40px; background-color: #ffffff;">
+								<table width="100%" cellpadding="0" cellspacing="0">
+								<tr>
+								
+								<td style="padding:0 0 36px">
+								<h3 style="color: #d0a518;font-size: 22px;font-weight: 400; font-family: Arial; margin: 0; padding:0">Hello `+offerTrades.pitchUserId.userName.toUpperCase()+`,</h3>
+								</td>
+								</tr>
+								<tr>
+								<td style="padding:0 0 36px">
+								<p style="color: #414141;font-size: 18px;font-weight: 400; font-family: Arial; margin: 0; padding:0">One pitch has been confirmed.</p>
+								<p>Product name :+offerTrades.SwitchUserProductId.productName</p>
+								</td>
+								</tr>
+								<tr>
+								<td style="padding:0 0 34px">
+								  Pitch Confirmed User Details :
+								  <p>offerTrades.SwitchUserId.userName</p>
+								  <p>offerTrades.SwitchUserId.email</p>
+								  <p>offerTrades.SwitchUserId.address+','+offerTrades.SwitchUserId.address</p>
+								</td>
+								</tr>
+								<tr>
+								<td style="padding:0 0 55px">
+								<p style="color: #414141;font-size: 18px;font-weight: 400; font-family: Arial; margin: 0; padding:0">Thank you,<br/> Team Pitch and Switch</p>
+								</td>
+								</tr>
+								<tr><td style="padding:0">&nbsp;</td></tr>
+								</table>
+								</td>
+								</tr>
+								</table>
+							</td>
+						</tr>
+					</table>`;
+					 const outputSwitchUser =` <table width="100%" cellpadding="0" cellspacing="0" align="center" style="background-color: #efefef;">
+						<tr>
+							<td style="text-align:center">
+								<table width="600" cellpadding="0" cellspacing="0" align="center"  style="text-align:left">
+								<tr>
+								 <td>
+								<img src="%PUBLIC_URL%/emailer-header.png" alt="PitchAndSwitch" style="display:block;" />
+								</td>
+								</tr>
+								
+								<tr>
+								<td style="padding:40px; background-color: #ffffff;">
+								<table width="100%" cellpadding="0" cellspacing="0">
+								<tr>
+								
+								<td style="padding:0 0 36px">
+								<h3 style="color: #d0a518;font-size: 22px;font-weight: 400; font-family: Arial; margin: 0; padding:0">Hello `+offerTrades.SwitchUserId.userName.toUpperCase()+`,</h3>
+								</td>
+								</tr>
+								<tr>
+								<td style="padding:0 0 36px">
+								<p style="color: #414141;font-size: 18px;font-weight: 400; font-family: Arial; margin: 0; padding:0">One pitch has been confirmed.</p>
+								<p>Product name :+offerTrades.SwitchUserProductId.productName</p>
+								</td>
+								</tr>
+								<tr>
+								<td style="padding:0 0 34px">
+								  Pitch Confirmed User Details :
+								  <p>offerTrades.pitchUserId.userName</p>
+								  <p>offerTrades.pitchUserId.email</p>
+								  <p>offerTrades.pitchUserId.address+','+offerTrades.pitchUserId.address</p>
+								</td>
+								</tr>
+								<tr>
+								<td style="padding:0 0 55px">
+								<p style="color: #414141;font-size: 18px;font-weight: 400; font-family: Arial; margin: 0; padding:0">Thank you,<br/> Team Pitch and Switch</p>
+								</td>
+								</tr>
+								<tr><td style="padding:0">&nbsp;</td></tr>
+								</table>
+								</td>
+								</tr>
+								</table>
+							</td>
+						</tr>
+					</table>`;
+
+					
+					let mailOptions1 = {
+					  from: constant.SMTP_FROM_EMAIL, 
+					  to: SwitchUserEmail, 
+					  subject: 'Meeting Confirmation',
+					  text: 'Meeting Confirmation', 
+					  html : outputSwitchUser
+					};
+
+					transporter.sendMail(mailOptions1, (error, info) => {						
+					  if (error) {
+						return console.log(error);
+					  }       
+					 });
+					 return res.send({
 						code: httpResponseCode.EVERYTHING_IS_OK,
 						message: httpResponseMessage.SUCCESSFULLY_DONE,
 						result: statusUpdate
-				  });
+				      }); 
+					 
+				  });					
+					
 			   }
 		    })
 		})
@@ -994,6 +1123,7 @@ const submitPitchAgain = (req, res) => {
 	});
 }
 
+
 /** Auther	: Rajiv kumar
  *  Date	: Oct 28, 2018
  */
@@ -1006,6 +1136,7 @@ const tradeStatus = (req, res) => {
 		result: resultAdd
 	});
 }
+
 module.exports = {
   listTrades,
   newTrades,
@@ -1036,4 +1167,5 @@ module.exports = {
   submitPitchAgain,
   tradeStatus,
   updateShippingStatus
+  
 }

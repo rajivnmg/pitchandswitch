@@ -493,14 +493,14 @@ const forgotPassword = (req,res) => {
         let transporter = nodemailer.createTransport({
           host: constant.SMTP_HOST,
           port: constant.SMTP_PORT,
-          secure: false, // true for 465, false for other ports
+          secure: false, 
           auth: {
-            user: constant.SMTP_USERNAME, // generated ethereal user
-            pass: constant.SMTP_PASSWORD // generated ethereal password
+            user: constant.SMTP_USERNAME, 
+            pass: constant.SMTP_PASSWORD 
           }
         });
          link = constant.PUBLIC_URL + "#/resetPassword/"+result._id;
-        const output =` <table width="100%" cellpadding="0" cellspacing="0" align="center" style="background-color: #efefef;">
+         const output =` <table width="100%" cellpadding="0" cellspacing="0" align="center" style="background-color: #efefef;">
             <tr>
                 <td style="text-align:center">
                     <table width="600" cellpadding="0" cellspacing="0" align="center"  style="text-align:left">
@@ -544,7 +544,7 @@ const forgotPassword = (req,res) => {
                         </tr>
                         <tr>
                             <td style="padding:30px 0; text-align: center">
-                                <p style="color: #414141;font-size: 14px;font-weight: 400; font-family:Arial">Copyright &copy; 2018, All rights reserved by <a href="#" style="color: #d0a518; text-decoration: none">Pitch and Switch</a></p>
+                              <p style="color: #414141;font-size: 14px;font-weight: 400; font-family:Arial">Copyright &copy; 2018, All rights reserved by <a href="#" style="color: #d0a518; text-decoration: none">Pitch and Switch</a></p>
 
                             </td>
                         </tr>
@@ -555,23 +555,17 @@ const forgotPassword = (req,res) => {
 
         host=req.get('host');
         let mailOptions = {
-          from: constant.SMTP_FROM_EMAIL, // sender address
-          to: req.body.email, // list of receivers
-          subject: 'Forgot Password ✔', // Subject line
-          text: 'Hello world?', // plain text body
+          from: constant.SMTP_FROM_EMAIL, 
+          to: req.body.email, 
+          subject: 'Forgot Password ✔',
+          text: 'Hello world?', 
           html : output
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
             return console.log(error);
-          }
-          //console.log('Message sent: %s', info.messageId);
-          // Preview only available when sending through an Ethereal account
-          //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-          //res.render('ResetPassword')
-          // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-          // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+          }         
         });
         return res.json({
           code: httpResponseCode.EVERYTHING_IS_OK,
@@ -784,8 +778,7 @@ const activeUser = (req, res) => {
 		var stype = data.key[0];
 		var sdir = data.type[0];
 		if(sdir ==1){  var sortingTy = -1; }
-		else var sortingTy = 1;
-		//console.log('ddddddddd',sortByFields);
+		else var sortingTy = 1;		
 	    var token = getToken(req.headers);
 		if (token) {
 		var perPage = constant.PER_PAGE_RECORD
