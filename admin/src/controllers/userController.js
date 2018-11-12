@@ -502,24 +502,18 @@ const forgotPassword = (req, res) => {
           message: httpResponseMessage.INTERNAL_SERVER_ERROR
         });
       } else {
-        if (!result) {
-          res.json({
-            code: httpResponseCode.BAD_REQUEST,
-            message: httpResponseMessage.USER_NOT_FOUND
-          });
-        } else {
-          let transporter = nodemailer.createTransport({
-            host: constant.SMTP_HOST,
-            port: constant.SMTP_PORT,
-            secure: false, // true for 465, false for other ports
-            auth: {
-              user: constant.SMTP_USERNAME, // generated ethereal user
-              pass: constant.SMTP_PASSWORD // generated ethereal password
-            }
-          });
-          link = constant.PUBLIC_URL + "#/resetPassword/" + result._id;
-          const output =
-            ` <table width="100%" cellpadding="0" cellspacing="0" align="center" style="background-color: #efefef;">
+
+        let transporter = nodemailer.createTransport({
+          host: constant.SMTP_HOST,
+          port: constant.SMTP_PORT,
+          secure: false, 
+          auth: {
+            user: constant.SMTP_USERNAME, 
+            pass: constant.SMTP_PASSWORD 
+          }
+        });
+         link = constant.PUBLIC_URL + "#/resetPassword/"+result._id;
+         const output =` <table width="100%" cellpadding="0" cellspacing="0" align="center" style="background-color: #efefef;">
             <tr>
                 <td style="text-align:center">
                     <table width="600" cellpadding="0" cellspacing="0" align="center"  style="text-align:left">
@@ -567,7 +561,7 @@ const forgotPassword = (req, res) => {
                         </tr>
                         <tr>
                             <td style="padding:30px 0; text-align: center">
-                                <p style="color: #414141;font-size: 14px;font-weight: 400; font-family:Arial">Copyright &copy; 2018, All rights reserved by <a href="#" style="color: #d0a518; text-decoration: none">Pitch and Switch</a></p>
+                              <p style="color: #414141;font-size: 14px;font-weight: 400; font-family:Arial">Copyright &copy; 2018, All rights reserved by <a href="#" style="color: #d0a518; text-decoration: none">Pitch and Switch</a></p>
 
                             </td>
                         </tr>
@@ -716,6 +710,7 @@ const forgotPasswordWeb = (req,res) => {
           //res.render('ResetPassword')
           // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
           // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+
         });
         return res.json({
           code: httpResponseCode.EVERYTHING_IS_OK,
@@ -928,6 +923,7 @@ const users = (req, res) => {
 
 //Auther	: KS Date	: August 28, 2018
 //Description : Function to list the available users with pagination
+
 const sortingUsers = (req, res) => {
   var form = new multiparty.Form();
   form.parse(req, function(err, data, files) {
@@ -986,6 +982,7 @@ const sortingUsers = (req, res) => {
     } else {
       return res.status(403).send({ code: 403, message: "Unauthorized." });
     }
+
   });
 };
 
