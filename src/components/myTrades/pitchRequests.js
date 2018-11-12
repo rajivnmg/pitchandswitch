@@ -11,6 +11,7 @@ import LastPitchPopup from './lditch'
 import axios from 'axios'
 import { Spin, Icon, Alert } from 'antd';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import {Link} from 'react-router-dom';
 
 class PitchRequests extends React.Component {
     constructor(props) {
@@ -70,7 +71,11 @@ class PitchRequests extends React.Component {
 		    <div className="pitch-row" key={index}>
 			<div className="pitch-div">
 				{ (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
-				<div className="colum user"> <span>{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}</span></div>
+				<div className="colum user"> <span>
+				<Link className="alink" target="_blank" to={'/public-profile/'+(pitch.SwitchUserId?pitch.SwitchUserId._id:'')}>
+				{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}
+				</Link>
+				</span></div>
 				<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
 				<div className="colum"><a href="#" className="view-pitch">
 				<If condition={send === 1}>

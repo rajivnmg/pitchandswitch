@@ -19,15 +19,10 @@ class DitchPopup extends Component {
 		console.log("DITCH POPUP props", this.props)
 	}
 	
-	componentDidMount(){
-			this.setState({offerTradeId:this.state.offerTrade._id})
-	}
-	
 	ditchPitch(offerTrade){
 		let data = {}
 		data._id = offerTrade._id	
-		data.ditchCount = parseInt(offerTrade.ditchCount)+1
-		console.log("data",data)
+		data.ditchCount = parseInt(offerTrade.ditchCount)+1	
 		axios.post('trade/ditchOfferTrade',data).then(result => {
 			if(result.data.code === 200){
 				console.log("ditched result",result)	

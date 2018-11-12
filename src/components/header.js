@@ -47,10 +47,15 @@ class Header extends Component {
 	}
      this.logoutHandler = this.logoutHandler.bind(this);
      this.onSearchHandler = this.searchHandler.bind(this);
+     console.log('LOCAL STORAGE', localStorage.getItem('jwtToken'));
      if(localStorage.getItem('jwtToken') === null){
          //window.location.href="#/login";
-         //this.props.history.push('/login');
-      }
+        // console.log('Header history', props);
+         props.history.push('/logout');
+      }else{
+		  console.log('Else Header history', props);		  
+		  props.history.push('/dashboard');
+	  }
   }
 
   initMap = () => {
@@ -108,7 +113,6 @@ class Header extends Component {
 			}
 			else{
 			   this.setState({searchData:" "});
-
 			}
 			if(searchData === null || this.state.latitude === null || this.state.longitude === null){
         window.location = constant.PUBLIC_URL+'search-listing';
@@ -138,8 +142,8 @@ class Header extends Component {
 
 	}
 
-	searchCategory = (search,categoryName)=>{
-		this.setState({searchData:search.key})
+	searchCategory = (_id)=>{
+		this.setState({searchData:_id})
 	};
 
   componentWillMount(){
@@ -164,7 +168,10 @@ class Header extends Component {
 			})
 		}
 	}
-
+  filterOption = (value, option) => {
+	  if((value != undefined || value !== null ) && typeof value === 'string') return value.toLowerCase() === option.props.children[0].substring(0, value.length).toLowerCase();
+	  else return true;
+  };
   componentDidMount() {
 	//code for google places api
 	window.initMap = this.initMap
@@ -174,17 +181,6 @@ class Header extends Component {
 
 	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
 	if(localStorage.getItem('jwtToken') !== null){
-		//~ axios.get('/user/getLoggedInUser').then(result => {
-			//~ this.setState({
-				//~ user:result.data.result,
-			//~ })
-			//~ // setter method for loggedin user
-			//~ localStorage.setItem('loggedInUser',result.data.result._id);
-			//~ localStorage.setItem('userId',result.data.result._id);
-			//~ localStorage.setItem('userName',result.data.result.userName);
-			//~ localStorage.setItem('isLoggedIn',1);
-		//~ })
-
 		axios.get('/user/frontNotification').then(result => {
 		this.setState({
 			notification_type:result.data.notification_type,
@@ -219,7 +215,7 @@ class Header extends Component {
 		    let optionsAll;
 			    if(this.state.productsListing){
 				  let optionsList = this.state.productsListing;
-				    optionsLists = optionsList.map(s => <li onClick={this.searchCategory.bind(s.productCategory._id)} key={s.productCategory._id}>{s.productName + ' - ' +s.productCategory.title} </li>);
+				    optionsLists = optionsList.map((s,index) => <li onClick={() => this.searchCategory(s.productCategory._id)} key={index}>{s.productName + ' - ' +s.productCategory.title} </li>);
 			    }
                 if(this.state.options){
 				    let optionsListing = this.state.options;
@@ -241,7 +237,6 @@ class Header extends Component {
                     <CategoryMenu />
 
                     <div className="search-container">
-
                         <div className="location">
                            <input className={"form-control textBox hide2"} value={this.state.latitude} name={"latitude"} type={"text"} placeholder="" />
                  <input className={"form-control textBox hide2"} value={this.state.longitude}  name={"longitude"} type={"text"} placeholder="" />
@@ -298,6 +293,7 @@ class Header extends Component {
 								  dataSource={optionsLists}
 								  placeholder="Search"
 								  defaultValue={this.state.value}
+								  filterOption={(inputValue, option) => this.filterOption(inputValue, option)}
 							  />
                            </div>
                        <input type="submit" value="search" onClick={this.onSearchHandler.bind(this)} className="search-icon" />

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import statusTrack from '../../images/track-status1.png'
 import ReturnInfo from './returnPopup'
 import PostReview from './postReviewPopup'
-import axios from 'axios'
-
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 class Completed extends React.Component {
     TrackHandler = (id) => {
         let pitches = this.state.pitches;
@@ -39,11 +39,16 @@ class Completed extends React.Component {
 		{ this.state.completedPitches.map((pitch, index) => {
 			let ditchClasses = ['ditch'];
 			var IDS = pitch.offerTradeId?pitch.offerTradeId._id:"";
-			var send = (pitch.offerTradeId &&  pitch.offerTradeId.pitchUserId._id == this.state.currentUser)?1:0;          
+			var send = (pitch.offerTradeId &&  pitch.offerTradeId.pitchUserId._id == this.state.currentUser)?1:0;   
+			let publicProfileUrl =  ((send===1)?(pitch.offerTradeId)?pitch.offerTradeId.SwitchUserId._id:'':(pitch.offerTradeId)?pitch.offerTradeId.pitchUserId._id:'')       
 				return (<div className="pitch-row" key={index}>
 					<div className="pitch-div">
 						{ (pitch.offerTradeId &&  pitch.offerTradeId.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
-						<div className="colum user"><span>{(send===1)?(pitch.offerTradeId)?pitch.offerTradeId.SwitchUserId.userName:'N/A':(pitch.offerTradeId)?pitch.offerTradeId.pitchUserId.userName:'N/A'}</span></div>
+						<div className="colum user"><span>
+						 <Link className="alink" target="_blank" to={'/public-profile/'+publicProfileUrl}>
+							{(send===1)?(pitch.offerTradeId)?pitch.offerTradeId.SwitchUserId.userName:'N/A':(pitch.offerTradeId)?pitch.offerTradeId.pitchUserId.userName:'N/A'}
+						</Link>	
+						</span></div>						
 						<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
 						<div className="colum complete-date"></div>
 						<div className="colum trade-info">

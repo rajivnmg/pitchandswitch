@@ -3,6 +3,7 @@ import Popup from 'react-popup';
 import Style from './App.css';
 import './App.scss';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory';
 import Header from './components/header';
 import Footer from './components/footer';
 // import LeftNav from './components/leftNav'
@@ -42,6 +43,7 @@ import axios from 'axios';
 import NotFound from './NotFound';
 const constant = require("./config/constant");
 //import http from 'http';
+const history = createHistory();
 const port=4001;
 const basePath ='';// '/react-test';
 //axios.defaults.baseURL = window.location.protocol + '//' + window.location.hostname + ':' + port + basePath;
@@ -66,7 +68,7 @@ class App extends Component {
         return(
                <Router>
                     <div className="layout">
-                        <Header />
+                        <Header history = {history}/>
                         <div id="content">
                         <Switch>
                             <Route exact path="/" component={Home} />

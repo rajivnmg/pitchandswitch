@@ -256,6 +256,7 @@ class settingProfile extends Component {
           file={
             constant.BASE_IMAGE_URL + "ProfilePic/" + profileForm.profilePic
           }
+          locale= 'en-US'
           fileType="image/jpeg"
           accept="image/gif,image/jpeg,image/png,image/bmp,image/x-png,image/pjpeg"
           getSpinContent={() => <span>loading...</span>}

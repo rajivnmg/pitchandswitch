@@ -141,9 +141,9 @@ class publicProfile extends Component {
                     <div className="Items" key={index}>
                       <div className="pic">
                         <div className="overlay">
-                          <a href="#" className="favourite">
+                         {/* <a href="#" className="favourite">
                             <FontAwesomeIcon icon="heart" /> fav
-                          </a>
+                          </a> */}
                         </div>
                         <img
                           src={
