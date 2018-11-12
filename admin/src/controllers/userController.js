@@ -1028,7 +1028,9 @@ const viewUser = (req, res) => {
 const myProfle = (req, res) => {
   //User.findOne({_id: userId}).then(function(user){
   var token = commonFunction.getToken(req.headers);
+  console.log("token",token)
   if (token) {
+	  console.log("settings",settings)
     decoded = jwt.verify(token, settings.secret);
     var userId = decoded._id;
     User.find({ _id: userId })
