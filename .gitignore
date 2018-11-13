@@ -5,6 +5,10 @@ node_modules/*
 package-lock.json
 sessions/*
 src/config/constant.js
+admin/node_modules_bk/*
+node_modules_latest/*
+
+
 # production
 /build
 
@@ -26,8 +30,6 @@ yarn-error.log*
 starter.sh
 
 /nbproject/private/
-
-
 
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
