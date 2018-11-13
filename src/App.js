@@ -98,9 +98,9 @@ class App extends Component {
                             <Route exact path="/setting-subscription" component={SettingSubscription} />
                             <Route exact path="/setting-email-notification" component={SettingEmailNotification} />
                             <Route exact path="/setting-change-password" component={SettingPassword} />
-                            <Route exact path="/public-profile/:id?" component={PublicProfile} />
-                            <Route exact path="/public-profile" component={PublicProfile} />
-                            <Route exact path="/public-reviews" component={PublicReviews} />
+                            <Route exact path="/public-profile/:id" component={PublicProfile} />
+                           {/*<Route exact path="/public-profile" component={PublicProfile} /> 
+                            <Route exact path="/public-reviews" component={PublicReviews} />*/}
                             <Route exact path="/help" component={Help} />
                             <Route exact path='/about-us' component={aboutUs} />
                             <Route exact path='/contact-us' component={contactUs} />

@@ -49,12 +49,12 @@ class Header extends Component {
      this.onSearchHandler = this.searchHandler.bind(this);
      console.log('LOCAL STORAGE', localStorage.getItem('jwtToken'));
      if(localStorage.getItem('jwtToken') === null){
-         //window.location.href="#/login";
+        // window.location.href="#/logout";
         // console.log('Header history', props);
-         props.history.push('/logout');
+        // props.history.push('/logout');
       }else{
 		  console.log('Else Header history', props);		  
-		  props.history.push('/dashboard');
+		 // props.history.push('/dashboard');
 	  }
   }
 
