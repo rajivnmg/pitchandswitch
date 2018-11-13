@@ -53,12 +53,13 @@ var Input = function Input(_ref2) {
       innerRef = _ref2.innerRef,
       isHidden = _ref2.isHidden,
       isDisabled = _ref2.isDisabled,
-      props = _objectWithoutProperties(_ref2, ['className', 'cx', 'getStyles', 'innerRef', 'isHidden', 'isDisabled']);
+      theme = _ref2.theme,
+      props = _objectWithoutProperties(_ref2, ['className', 'cx', 'getStyles', 'innerRef', 'isHidden', 'isDisabled', 'theme']);
 
   return _react2.default.createElement(
     'div',
     {
-      className: (0, _emotion.css)(getStyles('input', props))
+      className: (0, _emotion.css)(getStyles('input', _extends({ theme: theme }, props)))
     },
     _react2.default.createElement(_reactInputAutosize2.default, _extends({
       className: cx(null, { 'input': true }, className),

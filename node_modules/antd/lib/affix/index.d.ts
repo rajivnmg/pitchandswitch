@@ -25,20 +25,16 @@ export default class Affix extends React.Component<AffixProps, AffixState> {
         offsetBottom: PropTypes.Requireable<number>;
         target: PropTypes.Requireable<(...args: any[]) => any>;
     };
-    scrollEvent: any;
-    resizeEvent: any;
-    timeout: any;
-    events: string[];
-    eventHandlers: {
-        [key: string]: any;
-    };
     state: AffixState;
+    private timeout;
+    private eventHandlers;
     private fixedNode;
     private placeholderNode;
-    setAffixStyle(e: any, affixStyle: React.CSSProperties | null): void;
+    private readonly events;
+    setAffixStyle(e: Event, affixStyle: React.CSSProperties | null): void;
     setPlaceholderStyle(placeholderStyle: React.CSSProperties | null): void;
-    syncPlaceholderStyle(e: any): void;
-    updatePosition(e: any): void;
+    syncPlaceholderStyle(e: Event): void;
+    updatePosition(e: Event): void;
     componentDidMount(): void;
     componentWillReceiveProps(nextProps: AffixProps): void;
     componentWillUnmount(): void;

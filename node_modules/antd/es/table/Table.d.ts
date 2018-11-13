@@ -65,6 +65,7 @@ export default class Table<T> extends React.Component<TableProps<T>, TableState<
         sortOrder: any;
     };
     getSorterFn(state: TableState<T>): ((a: T, b: T) => number) | undefined;
+    isSameColumn(a: ColumnProps<T> | null, b: ColumnProps<T> | null): any;
     toggleSortOrder(column: ColumnProps<T>): void;
     handleFilter: (column: ColumnProps<T>, nextFilters: string[]) => void;
     handleSelect: (record: T, rowIndex: number, e: CheckboxChangeEvent) => void;

@@ -72,10 +72,11 @@ var GroupHeading = function GroupHeading(props) {
   var className = props.className,
       cx = props.cx,
       getStyles = props.getStyles,
-      cleanProps = _objectWithoutProperties(props, ['className', 'cx', 'getStyles']);
+      theme = props.theme,
+      cleanProps = _objectWithoutProperties(props, ['className', 'cx', 'getStyles', 'theme']);
 
   return _react2.default.createElement('div', _extends({
-    className: cx( /*#__PURE__*/(0, _emotion.css)(getStyles('groupHeading', props)), { 'group-heading': true }, className)
+    className: cx( /*#__PURE__*/(0, _emotion.css)(getStyles('groupHeading', _extends({ theme: theme }, cleanProps))), { 'group-heading': true }, className)
   }, cleanProps));
 };
 

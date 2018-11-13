@@ -25,8 +25,12 @@ export interface AlertProps {
     banner?: boolean;
     icon?: React.ReactNode;
 }
-export default class Alert extends React.Component<AlertProps, any> {
-    constructor(props: AlertProps);
+export interface AlertState {
+    closing: boolean;
+    closed: boolean;
+}
+export default class Alert extends React.Component<AlertProps, AlertState> {
+    state: AlertState;
     handleClose: (e: React.MouseEvent<HTMLAnchorElement>) => void;
     animationEnd: () => void;
     render(): JSX.Element | null;

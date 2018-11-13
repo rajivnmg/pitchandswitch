@@ -1877,7 +1877,7 @@ getPublicProfile = (req, res) => {
             }
           ]).exec(function(err, userAverageRating) {
             // Don't forget your error handling
-            userAverageRating.totalRating;
+            
             if (err) {
               return totalRating;
             }
