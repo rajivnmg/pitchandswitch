@@ -6,9 +6,10 @@ var bcrypt = require('bcrypt-nodejs');
 const constant = require('./constant');
 // function to get the token form header
 const getToken = function (headers) {
+        //return true;
   if (headers && headers.authorization) {
     var parted = headers.authorization.split(' ');
-    if (parted.length && (parted.length > 10)) {
+    if (parted[0].length && (parted[0].length > 10)) {
       return parted[0];
     } else {
       return false;

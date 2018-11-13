@@ -61,18 +61,20 @@ class TradeMatch extends Component {
         <h3> <strong>Trade Match</strong></h3>
                <Slider {...settings}>
                     {this.state.tradeMatches.map(function (tradeMatch) {
-						var userImage = tradeMatch.user?tradeMatch.user[0].profilePic:null
+						var userImage = tradeMatch.user?tradeMatch.user[0].profilePic:null;
+						let publicProfileUrl =  ((tradeMatch.user)?tradeMatch.user[0]._id:'');
+						let categoryUrl =  ((tradeMatch.category)?tradeMatch.category[0]._id:'');      
 							return (
 							<div className="slides-div" key={tradeMatch}>
 								<div key={tradeMatch}>
 									<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+tradeMatch.productImages} /></div>
 									<div className='details'>
 										<h4>{tradeMatch.productName}</h4>
-										<Link className="catLink" to='/'>{(tradeMatch.category && (tradeMatch.category.length > 0))?tradeMatch.category[0].title:''}</Link>
+										<Link className="catLink" to={'/search-listing/'+categoryUrl}>{(tradeMatch.category && (tradeMatch.category.length > 0))?tradeMatch.category[0].title:''}</Link>
 									</div>
 									  <div className="userdiv">
 										<div className="user-pic"><img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} /></div>
-										<div className="user-name">{(tradeMatch.user)?tradeMatch.user[0].userName:''}</div>
+										<div className="user-name"><Link className="alink" target="_blank" to={'/public-profile/'+publicProfileUrl}>{(tradeMatch.user)?tradeMatch.user[0].userName:''}</Link></div>
 									</div>
 								</div>
 							</div>

@@ -6,6 +6,7 @@ import CancelPitch from './cancelPitch'
 import CancelPitchPopup from './cancelPitchPopup'
 import ViewPitchPopup from './viewPitchPopup'
 import LastPitchPopup from './lditch'
+import {Link} from 'react-router-dom';
 import ViewReceivedPitch from './viewReceivedPitch'
 import PitchAgainPopup from './PitchAgainPopup'
 import axios from 'axios'
@@ -79,14 +80,17 @@ class PitchRequests extends React.Component {
 					}else{
 						countReceived = countReceived +1;	
 					}
-					
+					let publicProfileUrl =  ((send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId._id:'':(pitch.pitchUserId)?pitch.pitchUserId._id:'')       
 					return (<div key={index}>
 					<If condition={send==1 && (pitch.status=="0" || pitch.status=="3")}>
 						<Then>			
 						<div className="pitch-row" key={index}>	
 						<div className="pitch-div">
 							{ (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
-							<div className="colum user width1"> <span>{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}</span></div>
+							<div className="colum user width1"> <span>
+							<Link className="alink" target="_blank" to={'/public-profile/'+publicProfileUrl}>
+							{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}							
+							</Link></span></div>
 							<div className="colum status"><span className={'sent'}>{'Send'}</span></div>			
 							<div className="colum action"><span className="view-pitch pointer cursorPointer">
 							<ViewPitchPopup offerTrade={pitch} pitchAgain={(pitch.status =="3")?"1":"0"}/>
@@ -103,14 +107,17 @@ class PitchRequests extends React.Component {
 					    <div className="pitch-row" key={index}>				
 						<div className="pitch-div">
 							{ (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
-							<div className="colum user width1"> <span>{(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}</span></div>
+							<div className="colum user width1"> <span>
+							<Link className="alink" target="_blank" to={'/public-profile/'+(pitch.pitchUserId?pitch.pitchUserId._id:'')}>
+							{(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}
+							</Link>
+							</span></div>
 							<div className="colum status"><span className={'received'}>{'Received'}</span></div>
 							<div className="colum action"><span className="view-pitch pointer cursorPointer">
 							<ViewReceivedPitch offerTrade={pitch} pitchAgain={(pitch.status =="3")?"1":"0"}/>
 							</span></div> 
 							<div className="colum message"></div>  
-							<div className="colum action">
-							 
+							<div className="colum action">							 
 							 {pitch.status=="0"? <DitchPopup offerTrade={pitch}/> : (pitch.status =="3")?<div class="colum action"><a href="#" class="ditch ditched">Cancelled</a></div>:<CancelPitchPopup offerTrade={pitch}/>}
 							</div>
 						</div>

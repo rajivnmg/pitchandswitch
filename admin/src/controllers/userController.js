@@ -315,7 +315,7 @@ const userSignup = (req, res) => {
             // Only needed if you don't have a real mail account for testing
 
             host = req.get("host");
-            link = constant.PUBLIC_URL + "verifyUserEmail/" + result._id;
+            link = constant.PUBLIC_URL_WEB + "verifyUserEmail/" + result._id;
             readHTMLFile("src/views/emailTemplate/emailWithPDF.html", function(
               err,
               html
@@ -597,9 +597,8 @@ const forgotPassword = (req, res) => {
             result: result
           });
         }
-      }
-    }
-  );
+      
+    });
 };
 
 
@@ -637,81 +636,41 @@ const forgotPasswordWeb = (req,res) => {
             pass: constant.SMTP_PASSWORD // generated ethereal password
           }
         });
-         link = constant.PUBLIC_URL_WEB + "#/resetPassword/"+result._id;
-        const output =` <table width="100%" cellpadding="0" cellspacing="0" align="center" style="background-color: #efefef;">
-            <tr>
-                <td style="text-align:center">
-                    <table width="600" cellpadding="0" cellspacing="0" align="center"  style="text-align:left">
-                        <tr>
-                            <td>
-                            <img src="%PUBLIC_URL%/emailer-header.png" alt="PitchAndSwitch" style="display:block;" />
-                            </td>
-                        </tr>
-                        <tr>
-						<td style="padding:40px; background-color: #ffffff;">
-						<table width="100%" cellpadding="0" cellspacing="0">
-						<tr>
-						<td style="padding:0 0 36px">
-						<h3 style="color: #d0a518;font-size: 22px;font-weight: 400; font-family: Arial; margin: 0; padding:0">Hello `+result.userName.toUpperCase()+`,</h3>
-						</td>
-						</tr>
-						<tr>
-						<td style="padding:0 0 36px">
-						<p style="color: #414141;font-size: 18px;font-weight: 400; font-family: Arial; margin: 0; padding:0">A request to reset your Pitch and Switch password has been made. If you did not make this request, simply ignore this email. If you did make this request, please reset your password:</p>
-						</td>
-						</tr>
-						<tr>
-						<td style="padding:0 0 34px">
-						<a href="`+link+`"><img src="%PUBLIC_URL%/reset-button.png" alt="Reset Password" /></a>
-						</td>
-						</tr>
-						<tr>
-						<td style="padding:0 0 55px">
+         link = constant.PUBLIC_URL_WEB + "reset/"+result._id;
+         
+          readHTMLFile("src/views/emailTemplate/forgotPassword.html", function(
+              err,
+              html
+            ) {
+              var template = handlebars.compile(html);
+              var replacements = {
+                link: link,
+                userName: result.userName.toUpperCase()
+              };
+              var htmlToSend = template(replacements);
 
-						<p style="color: #414141;font-size: 18px;font-weight: 400; font-family: Arial; margin: 0; padding:0">Thank you,<br/> Team Pitch and Switch</p>
-						</td>
-						</tr>
-						<tr>
-						<td style="padding:0">
-						<p style="color: #969696; font-family: Arial; font-size: 13px;font-weight: 400; padding: 0; margin: 0"> If the button above does not work, try copying and pasting the URL into your browser. If you continue to have problems, please feel free to contact us at Pitch and Switch support team.</p>
+              // setup email data with unicode symbols
+              let mailOptions = {
+                from: constant.SMTP_FROM_EMAIL, // sender address
+                to: result.email + ",rajiv.kumar@nmgtechnologies.com", // list of receivers
+                subject: "Forgot Password ✔", // Subject line
+                text: "Forgot Password", // plain text body
+                html: htmlToSend
+              };
+              
+              // send mail with defined transport object
+              transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                  return console.log(error);
+                }
+                console.log("Message sent: %s", info.messageId);
+                // Preview only available when sending through an Ethereal account
+                //	console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 
-						</td>
-						</tr>
-						</table>
-						</td>
-                        </tr>
-                        <tr>
-                            <td style="padding:30px 0; text-align: center">
-                                <p style="color: #414141;font-size: 14px;font-weight: 400; font-family:Arial">Copyright &copy; 2018, All rights reserved by <a href="#" style="color: #d0a518; text-decoration: none">Pitch and Switch</a></p>
-
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-        </table>`;
-
-        host=req.get('host');
-        let mailOptions = {
-          from: constant.SMTP_FROM_EMAIL, // sender address
-          to: req.body.email, // list of receivers
-          subject: 'Forgot Password ✔', // Subject line
-          text: 'Hello world?', // plain text body
-          html : output
-        };
-
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            return console.log(error);
-          }
-          //console.log('Message sent: %s', info.messageId);
-          // Preview only available when sending through an Ethereal account
-          //console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-          //res.render('ResetPassword')
-          // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-          // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-
-        });
+                // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+                // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+              });
+            });      
         return res.json({
           code: httpResponseCode.EVERYTHING_IS_OK,
           message: "Reset Password link has been sent successfully to your email, Please Check Your Mail To Reset Password",
@@ -1025,7 +984,9 @@ const viewUser = (req, res) => {
 const myProfle = (req, res) => {
   //User.findOne({_id: userId}).then(function(user){
   var token = commonFunction.getToken(req.headers);
+  console.log("token",token)
   if (token) {
+	  console.log("settings",settings)
     decoded = jwt.verify(token, settings.secret);
     var userId = decoded._id;
     User.find({ _id: userId })

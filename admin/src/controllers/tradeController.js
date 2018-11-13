@@ -505,9 +505,20 @@ const ditchTrades = (req, res) => {
    if (token) {
     decoded = jwt.verify(token,settings.secret);
     var userId = decoded._id;
-    OfferTrade.find({'status': {$ne : "0"}}).or([{ 'status':3  }, { 'status': 2 }]).or([{ 'pitchUserId':userId  },{ 'SwitchUserId': userId }])
+    //~ OfferTrade.find({'status': {$ne : "0"}}).or([{ 'status':3  }, { 'status': 2 }]).or([{ 'pitchUserId':userId  },{ 'SwitchUserId': userId }])
+    //~ .and([
+	  //~ { $or: [{ 'pitchUserId':userId  },{ 'SwitchUserId': userId }] }
+  //~ ])
+    OfferTrade.find(
+			{'status': {$ne : "0"},
+			 $and: [
+				  { $or: [{ 'pitchUserId':userId  },{ 'SwitchUserId': userId }] },
+				  { $or: [{ 'status':3  }, { 'status': 2 }]}
+				  
+			 ]
+		 }
+    )
     .where('ditchCount').gt(0).lt(4)
-
     .skip((perPage * page) - perPage)
     .limit(perPage)
     .sort({createdAt:-1})
