@@ -1,7 +1,7 @@
 {
-  "name": "pitch-switch-admin",
-  "version": "1.0.0",
-  "description": "Pitch And Switch Admin",
+  "name": "@coreui/coreui-free-react-admin-template",
+  "version": "2.0.4",
+  "description": "CoreUI React Open Source Bootstrap 4 Admin Template",
   "author": "Łukasz Holeczek",
   "homepage": "https://coreui.io",
   "copyright": "Copyright 2018 creativeLabs Łukasz Holeczek",
