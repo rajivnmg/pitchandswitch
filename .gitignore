@@ -32,7 +32,7 @@ starter.sh
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-admin/node_modules/*
+#admin/node_modules/*
 admin/package-lock.json
 admin/sessions/*
 admin/common/constant.js
