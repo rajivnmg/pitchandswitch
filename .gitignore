@@ -34,8 +34,8 @@ starter.sh
 # dependencies
 admin/node_modules/*
 admin/package-lock.json
-#admin/sessions/*
-#admin/common/constant.js
+admin/sessions/*
+admin/common/constant.js
 #admin/src/node.js
 # production
 /build
