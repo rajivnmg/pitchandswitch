@@ -505,8 +505,8 @@ const updateStatus = (req, res) => {
  *	Description : Function to update the user status.
  **/
 const saveUserSubscriptionPlan = (req, res) => {
-//  console.log("saveUserSubscriptionPlan",req.body)
-  User.update({ _id:req.body.userId },  { "$set": { "subscriptionPlan": req.body.subscriptionId,"subscriptionStatus":1} }, { new:true }, (err,result) => {
+ console.log("saveUserSubscriptionPlan",req.body)
+  User.update({ _id:req.body.userId },  { "$set": { "subscriptionPlan": req.body.subscriptionId,"subscriptionStatus":"1","totalInventory":req.body.totalInventory,"totalTrade":req.body.totalTrade} }, { new:true }, (err,result) => {
     if(err){
 		return res.send({
 			code: httpResponseCode.BAD_REQUEST,
@@ -563,7 +563,7 @@ const payOnStripe = (req, res) => {
     }).then(function(charge) {
     //  console.log("charge",charge)
     // New charge created on a new customer
-    User.updateMany({ _id:req.body.userId },  { "$set": { "subscriptionPlan": req.body.subscriptionId,"subscriptionStatus":"1"} }).then(function(user){
+    User.updateMany({ _id:req.body.userId },  { "$set": { "subscriptionPlan": req.body.subscriptionId,"subscriptionStatus":"1","totalInventory":req.body.totalInventory,"totalTrade":req.body.totalTrade} }).then(function(user){
       //console.log("user",user)
     });
     let data = {}

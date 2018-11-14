@@ -51,3 +51,6 @@
 .closed { float: right; position: relative; right: -25px;top: -65px; cursor:pointer;}
 button.closed{ background:none; border:0; cursor:pointer;}
 button.closed:focus{outline: none;}
+.pitchnowPopup{width: max-content !important; float:right;}
+
+.detail-div .btnRow .ditch.add-wishlist.active{ background: #fff url(../../images/add-wishlist-selected.png) no-repeat  no-repeat 24px 14px;}

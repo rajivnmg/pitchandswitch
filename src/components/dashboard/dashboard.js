@@ -8,7 +8,6 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import PitchRequests from './pitchRequests'
 import SendRequests from './sendRequests'
 import ReceivedRequests from './receivedRequests'
-
 import SentSwitched from './sentSwitched'
 import SendCompleted from './sendCompleted'
 import ReceivedSwitched from './receivedSwitched'
@@ -97,8 +96,7 @@ class Dashboard extends Component {
 Capitalize(str){
 	return str.charAt(0).toUpperCase() + str.slice(1);
 } 
-    render() {
-		console.log(this.state)
+    render() {		
         return (
 		<div className="dashboard">                
 		<div className="container">

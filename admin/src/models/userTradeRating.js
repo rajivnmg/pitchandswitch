@@ -4,7 +4,6 @@ var SchemaTypes = mongoose.Schema.Types;
 var Schema = mongoose.Schema;
 global.Promise = mongoose.Promise;
 var bcrypt = require('bcrypt-nodejs');
-
 var UserTradeRatingSchema = new Schema({
 submitUserId:{
   type:Schema.Types.ObjectId,
@@ -25,7 +24,7 @@ comment:{
 review:{
     type:Number,
     trim:true,
-    defult:0
+    default:0
 },
 status:{
   type:String,

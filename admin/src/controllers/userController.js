@@ -1256,27 +1256,22 @@ const getLoggedInUser = (req, res) => {
     var totalNotifications = 0;
     decoded = jwt.verify(token, settings.secret);
     var userId = decoded._id;
-    User.findOne({ _id: userId }).then(function(user) {
-      Notification.find({ toUserId: 1, isRead: 0 }, function(
-        err,
-        notifications
-      ) {
-        if (err) {
-          return res.json({
-            message: "notification Error",
-            code: httpResponseMessage.BAD_REQUEST
-          });
-        }
+    Promise.all([
+		User.findOne({ _id: userId }),
+		Notification.find({ toUserId: 1, isRead: 0 }),
+		Product.find({userId: userId })
+	]).then(result =>{		   
         return res.json({
           code: httpResponseCode.EVERYTHING_IS_OK,
           message: httpResponseMessage.SUCCESSFULLY_DONE,
-          result: user,
-          totalNotifications: notifications.length,
-          notifications: notifications,
-          notification_type: constant.notification_type
+          result: result[0],
+          totalNotifications: result[1].length,
+          notifications: result[1],
+          notification_type: constant.notification_type,
+          totalInventory: result[2].length
         });
-      });
-    });
+   });
+    
   } else {
     return res.status(403).send({ code: 403, message: "Unauthorized." });
   }

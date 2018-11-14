@@ -47,13 +47,13 @@ class Header extends Component {
 	}
      this.logoutHandler = this.logoutHandler.bind(this);
      this.onSearchHandler = this.searchHandler.bind(this);
-     console.log('LOCAL STORAGE', localStorage.getItem('jwtToken'));
+     //console.log('LOCAL STORAGE', localStorage.getItem('jwtToken'));
      if(localStorage.getItem('jwtToken') === null){
         // window.location.href="#/logout";
         // console.log('Header history', props);
         // props.history.push('/logout');
       }else{
-		  console.log('Else Header history', props);		  
+		 // console.log('Else Header history', props);		  
 		 // props.history.push('/dashboard');
 	  }
   }
@@ -188,7 +188,7 @@ class Header extends Component {
 			totalNotifications:result.data.totalNotifications
 		  })
 		})
-	   console.log("localStorage",localStorage.getItem('isLoggedIn'));
+	  // console.log("localStorage",localStorage.getItem('isLoggedIn'));
 	}
 
 

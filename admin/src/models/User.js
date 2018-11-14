@@ -134,7 +134,28 @@ emailNotification:{
 	 trim:true,
 	 sparse:true,
 	 default:0
-}
+},
+totalInventory:{
+	type:Number,
+    trim:true,
+    default:0
+},
+
+totalTrade:{
+	type:Number,
+    trim:true,
+    default:0
+},
+totalAvailableTrade:{
+	type:Number,
+    trim:true,
+    default:0
+},
+totalAvailableInventory:{
+	 type:Number,
+	 trim:true,	 
+	 default:0
+},
 },
 {
 timestamps:true

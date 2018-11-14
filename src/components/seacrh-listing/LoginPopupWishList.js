@@ -12,8 +12,8 @@ const contentStyle = {
 
 const CustomModal = () => (
 <Popup
-    trigger={ <a href="#" className = 'ditch' > Pitch Now </a>}
-    modal
+    trigger={ <a href="#" className = 'ditch add-wishlist' > Add to Wishlist </a>}
+    modal contentStyle = { contentStyle}
     lockScroll  >
     {
 		close => (
