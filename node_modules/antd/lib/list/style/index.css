@@ -212,9 +212,6 @@
 .ant-list-vertical .ant-list-item-meta {
   margin-bottom: 16px;
 }
-.ant-list-vertical .ant-list-item-meta-avatar {
-  display: none;
-}
 .ant-list-vertical .ant-list-item-meta-title {
   color: rgba(0, 0, 0, 0.85);
   margin-bottom: 12px;

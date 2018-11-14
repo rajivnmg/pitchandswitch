@@ -81,8 +81,7 @@ var baseCSS = function baseCSS(_ref2) {
 
 var dropdownIndicatorCSS = exports.dropdownIndicatorCSS = baseCSS;
 var DropdownIndicator = exports.DropdownIndicator = function DropdownIndicator(props) {
-  var _props$children = props.children,
-      children = _props$children === undefined ? _react2.default.createElement(DownChevron, null) : _props$children,
+  var children = props.children,
       className = props.className,
       cx = props.cx,
       getStyles = props.getStyles,
@@ -99,11 +98,13 @@ var DropdownIndicator = exports.DropdownIndicator = function DropdownIndicator(p
     children
   );
 };
+DropdownIndicator.defaultProps = {
+  children: _react2.default.createElement(DownChevron, null)
+};
 
 var clearIndicatorCSS = exports.clearIndicatorCSS = baseCSS;
 var ClearIndicator = exports.ClearIndicator = function ClearIndicator(props) {
-  var _props$children2 = props.children,
-      children = _props$children2 === undefined ? _react2.default.createElement(CrossIcon, null) : _props$children2,
+  var children = props.children,
       className = props.className,
       cx = props.cx,
       getStyles = props.getStyles,
@@ -119,6 +120,10 @@ var ClearIndicator = exports.ClearIndicator = function ClearIndicator(props) {
     }),
     children
   );
+};
+
+ClearIndicator.defaultProps = {
+  children: _react2.default.createElement(CrossIcon, null)
 };
 
 // ==============================

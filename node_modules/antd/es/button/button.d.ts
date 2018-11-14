@@ -50,11 +50,13 @@ export default class Button extends React.Component<ButtonProps, any> {
         block: PropTypes.Requireable<boolean>;
     };
     private delayTimeout;
+    private buttonNode;
     constructor(props: ButtonProps);
     componentDidMount(): void;
     componentWillReceiveProps(nextProps: ButtonProps): void;
     componentDidUpdate(): void;
     componentWillUnmount(): void;
+    saveButtonRef: (node: HTMLElement | null) => void;
     fixTwoCNChar(): void;
     handleClick: React.MouseEventHandler<HTMLButtonElement | HTMLAnchorElement>;
     isNeedInserted(): boolean;

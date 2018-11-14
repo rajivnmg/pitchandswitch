@@ -5,6 +5,10 @@ node_modules/*
 package-lock.json
 sessions/*
 src/config/constant.js
+admin/node_modules_bk/*
+node_modules_latest/*
+
+
 # production
 /build
 
@@ -27,15 +31,19 @@ starter.sh
 
 /nbproject/private/
 
-
-
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
 #admin/node_modules/*
+<<<<<<< HEAD
 admin/package-lock.json
 admin/sessions/*
 admin/common/constant.js
+=======
+#admin/package-lock.json
+#admin/sessions/*
+#admin/common/constant.js
+>>>>>>> 5ada55f1dc1e22bb3c8e252c9bb9788711b712cb
 #admin/src/node.js
 # production
 /build
