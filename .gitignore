@@ -5,9 +5,6 @@ node_modules/*
 package-lock.json
 sessions/*
 src/config/constant.js
-admin/node_modules_bk/*
-node_modules_latest/*
-
 
 # production
 /build
