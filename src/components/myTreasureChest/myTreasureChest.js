@@ -7,24 +7,9 @@ import axios from 'axios';
 import {Link} from 'react-router-dom';
 import { Popconfirm, message, Button,Spin, Icon, Alert } from 'antd';
 import { If, Then, Else } from 'react-if-elseif-else-render';
-import subscriptionAddonsPupup from '../subscriptionAddonsPupup';
+import PayInventoryPopup from '../payInventoryPopup';
 const constant = require("../../config/constant");
 const text = 'Are you sure to delete this?';
-const App1 = () => ( 
-            <div className="app">
-                <div className="container">
-                    <Select value="Newly Added" options={this.state.categories} />
-                </div>
-            </div>
-            );
-
-const App2 = () => (
-            <div className="app">
-                <div className="container">
-                    <Select value="Newly Added" options={this.state.newlyAdded} />
-                </div>
-            </div>
-            );
 
 class myTreasureChest extends Component {   
     constructor(props)    
@@ -149,10 +134,10 @@ Capitalize(str){
                         <div className="heading-row">.
 							<If condition={this.state.totalInventory >= this.state.user.totalInventory }>
 								<Then>
-									 <a href={'/add-new-product'} className="more-items"><span className="plus">+</span> Add New Product</a>
+									 <Link to={'/add-new-product'} className="more-items"><span className="plus">+</span> Add New Product</Link>
 								</Then>
-								<Else>
-									<subscriptionAddonsPupup />
+								<Else>								
+									<PayInventoryPopup />
 								</Else>
 							</If>
                            

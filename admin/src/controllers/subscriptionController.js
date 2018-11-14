@@ -500,6 +500,24 @@ const updateStatus = (req, res) => {
   })
 }
 
+/** Auther	: Rajiv kumar
+ *  Date	: June 22, 2018
+ */
+/// function to list all active addons plan
+const getActiveAddons = (req, res) => { 
+    Addon.find({})
+      .exec(function(err, addon) {          
+			if (err) return next(err)
+			  return res.json({
+				  code: httpResponseCode.EVERYTHING_IS_OK,
+				  message: httpResponseMessage.SUCCESSFULLY_DONE,
+				  result: addon
+			 });
+    });
+}
+
+
+
 /** Auther	: Rajiv Kumar
  *  Date	: October 08, 2018
  *	Description : Function to update the user status.
@@ -654,6 +672,7 @@ module.exports = {
   updateStatus,
   listingsubscription,
   listSubscriptionPlans,
+  getActiveAddons,  
   saveUserSubscriptionPlan,
   payOnStripe
 }
