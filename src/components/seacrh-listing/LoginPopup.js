@@ -1,56 +1,39 @@
-import React, { Component }
-from 'react';
+import React, { Component } from 'react';
 import Warper from "../common/Warper";
-import Popup from "reactjs-popup";
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import Popup from "reactjs-popup";
+import axios from 'axios'
+import jquery from 'jquery'
 
 const contentStyle = {
     maxWidth: "460px",
     width: "90%"
 };
 
-const CustomModal = () => (
-<Popup
-    trigger={ <a href="#" className = 'ditch' > Pitch Now </a>}
-    modal contentStyle = { contentStyle}
-    lockScroll  >
-    {
-		close => (
-			<div className="modal">
-			  <a className="close" onClick={close}>
-			      &times;
-			   </a>
-			<div className="header ">Welcome, Please login
-			<div className="cl"></div>
-			</div>
-			<Register />
-			</div>
-		)
-     }
-   </Popup>
-);
-class Register extends React.Component {
+
+class LoginPopup extends Component {
   constructor(props){
-		super();
+		super(props);
 		this.email = React.createRef();
 		this.password = React.createRef();
 		this.state = {
-		loginForm: {
+ 		  userID :this.props.UserID,
+ 		  proID :this.props.proID, 		 
+		  loginForm: {
 				email : '',
 				password : '',
 				type: 'password',
 				score: 'null'
-		},
-		email: '',
-		password: '',
-		showFormSuccess : false,
-		showFormError : false,
-		showEmailVerification :false,
-		showInactiveError :false,
-		message:''
+		  },
+			email: '',
+			password: '',
+			showFormSuccess : false,
+			showFormError : false,
+			showEmailVerification :false,
+			showInactiveError :false,
+			message:''
 		}
-		this.showHide = this.showHide.bind(this);
+		this.showHide = this.showHide.bind(this);		
 	}
 	
 	
@@ -107,9 +90,7 @@ class Register extends React.Component {
 		updatedForm[inputIdentifier] = updatedFormElement;    
 		this.setState({ loginForm: updatedForm }, function(){
 	   });
-      };
-      
- 
+      }; 
   
   
    submitHandler = event => {
@@ -129,16 +110,19 @@ class Register extends React.Component {
          if(result.data.code === 200){		  
           localStorage.setItem('jwtToken', result.data.token);
           this.setState({ message: '' });          
-			console.log("result",result)
+				
 			if(result.data.result.subscriptionStatus === '0'){
 				window.location.href='/subscription';
-			}else{
-				window.location.reload();
-			}			
-        }else if(result.data.code === 403){
+			} else if(this.state.userID == (result.data.result?result.data.result._id:'')) {
+				window.location.href='/my-trade-detail/'+this.state.proID;
+			} else  {
+			    window.location.reload();	
+			}
+					
+        } else if(result.data.code === 403){
 			this.setState({showInactiveError: true});
 			this.setState({ message: result.data.message });			
-		}else{			
+		} else{			
           this.setState({
             showFormError: true
           });          
@@ -188,7 +172,22 @@ class Register extends React.Component {
     );
   }
   render() {
+	  
     return (
+       <Popup
+       trigger={ <a href="#" className = 'ditch' > Pitch Now </a>}
+       modal contentStyle = { contentStyle}
+         lockScroll  >
+          {
+		   close => (
+			<div className="modal">
+			  <a className="close" onClick={close}>&times;</a>
+			<div className="header ">Welcome, Please login
+			<div className="cl"></div>
+			</div>
+			
+    
+    
         <div>
         <div >
         <div className="cl"></div>
@@ -259,7 +258,11 @@ class Register extends React.Component {
           </div>
           <div className="cl"> </div>
         </div>
-      </div>
+        </div>       
+		  </div>
+		)
+     }
+   </Popup>
     );
   }
 }
@@ -327,4 +330,4 @@ class Form extends React.Component {
   }
 }
 
-export default Warper(CustomModal);
+export default LoginPopup;

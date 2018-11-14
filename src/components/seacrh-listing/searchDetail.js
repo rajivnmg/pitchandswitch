@@ -43,41 +43,40 @@ class MyTrades extends React.Component {
         };
     }
 
-	 componentWillMount(){
-	      axios.get('/product/productDetails/'+ this.state.productId).then(result => {
+	
+
+	 componentDidMount(){
+		  axios.get('/product/productDetails/'+ this.state.productId).then(result => {
 		    this.setState({
 				resultData:result.data.result,
 				mainImages:result.data.result?result.data.result.productImages[0]:"default_product_img@3x.png",
 				isAlreadyPitched:result.data.pitchProduct,
 				isAlreadyInWishlist:result.data.wishListProduct
 				});
-		})
+				})
 
-	   axios.get('/donation/getConstant').then(result => {
-		   this.setState({conditions: result.data.result});
-	   });
+			   axios.get('/donation/getConstant').then(result => {
+				   this.setState({conditions: result.data.result});
+			   });
 
-       if(localStorage.getItem('jwtToken') !== null){
-			axios.get('/user/getLoggedInUser').then(result => {
-				this.setState({ user:result.data.result })
-				localStorage.setItem('loggedInUser',result.data.result._id);
-				localStorage.setItem('userId',result.data.result._id);
-				localStorage.setItem('userName',result.data.result.userName);
-				localStorage.setItem('isLoggedIn',1);
-				this.setState({resultData:result.data.result});
-			})
-		}
-    }
-
-	 componentDidMount(){
-		 const data = new FD();
-			data.append('productId', this.state.productId)
-			data.append('pitchUserID', localStorage.getItem('loggedInUser'))
-			console.log('data',data);
-			axios.post('/product/checkExists/',data).then(result => {
-			  this.setState({checkData:result.data.result});
-		    })
-        }
+			   if(localStorage.getItem('jwtToken') !== null){
+					axios.get('/user/getLoggedInUser').then(result => {
+						this.setState({ user:result.data.result })
+						localStorage.setItem('loggedInUser',result.data.result._id);
+						localStorage.setItem('userId',result.data.result._id);
+						localStorage.setItem('userName',result.data.result.userName);
+						localStorage.setItem('isLoggedIn',1);
+						this.setState({resultData:result.data.result});
+					})
+				}		 
+				const data = new FD();
+				data.append('productId', this.state.productId)
+				data.append('pitchUserID', localStorage.getItem('loggedInUser'))
+					axios.post('/product/checkExists/',data).then(result => {
+					  this.setState({checkData:result.data.result});
+				})		    
+	 }
+        
 
 	addToWishList(){
 		let data = {};
@@ -146,64 +145,44 @@ class MyTrades extends React.Component {
 					</div>
 				<div className="btnRow">
 				{this.state.showFormSuccess ? this._renderSuccessMessage() : null}
-
                    <If condition={localStorage.getItem('isLoggedIn') == "1"} >
-						<Then>
-						 <If condition={this.state.checkData && this.state.checkData.length>0} >
+                    <Then>
+                        <If condition={this.state.checkData && this.state.checkData.length>0} >
 						  <Then>
 						      <a href="#" className="ditch">Already Pitched</a>
 						  </Then>
-						  <Else>
-						     <If condition={userid !=="" && localStorage.getItem('userId') !== userid} >
-						       <Then>
-						        <a href="#" className="ditch">
-						           <LastPitchPopup offerTrade={this.state.resultData} proID = {this.state.productId}/>
-						         </a>
-						       </Then>
-						      </If>
+						  <Else>						    
+						       <LastPitchPopup offerTrade={this.state.resultData} proID = {this.state.productId}/>
 						  </Else>
 						 </If>
-                        </Then>
-                        <Else>
-							<a href="#" className="ditch">	<LoginPopup offerTrade={this.state.resultData}/></a>
-                       </Else>
-                    </If>
-
-				<If condition={this.state.isAlreadyInWishlist === false}>
-					<Then>
-						<If condition ={localStorage.getItem('isLoggedIn') == "1"}>
-							<Then>
-								<a href="#" className="ditch add-wishlist" onClick={()=>this.addToWishList()}>Add to Wishlist</a>
-							</Then>
-							<Else>
-								<LoginPopup offerTrade={this.state.resultData}/>
-							</Else>
-						</If>
-					</Then>
-					<Else>
-					<If condition={userid !=="" && localStorage.getItem('userId') !== userid} >
-					  <Then>
-						<span className="ditch add-wishlist">Added in Wishlist</span>
-					  </Then>
-					 </If>
-					</Else>
-
-				</If>
+						 <If condition={this.state.isAlreadyInWishlist === false}>
+						   <Then>
+						     <a href="#" className="ditch add-wishlist" onClick={()=>this.addToWishList()}>Add to Wishlist</a>
+						   </Then>
+						   <Else>
+						      <span className="ditch add-wishlist">Added in Wishlist</span>
+						   </Else>
+						 </If>
+                      </Then>
+                    <Else>
+                        <LoginPopup UserID={userid} proID={this.state.productId}/> 
+                    </Else>
+                   </If>                 
 				    <div className="cl"></div>
 				</div>
 
 				<div className="productDetails">
-				<h5>Product Details</h5>
-				<table cellPadding="0" cellSpacing="0" width="100%">
+				 <h5>Product Details</h5>
+				 <table cellPadding="0" cellSpacing="0" width="100%">
 				  <tbody>
 					<tr>
-					<td>Size:</td><td>{this.state.resultData.size?this.state.resultData.size.size:""} GB</td>
+						<td>Size:</td><td>{this.state.resultData.size?this.state.resultData.size.size:""} GB</td>
 					</tr>
 					<tr>
-					<td>Color:</td><td><img src={colorOrange} />{this.state.resultData.color}</td>
+						<td>Color:</td><td><img src={colorOrange} />{this.state.resultData.color}</td>
 					</tr>
 					<tr>
-					<td>Brand:</td><td>{this.state.resultData.brand?this.state.resultData.brand.brandName:""}</td>
+						<td>Brand:</td><td>{this.state.resultData.brand?this.state.resultData.brand.brandName:""}</td>
 					</tr>
 					<tr>
 						<td>Condition:</td><td>{optionTemplate}</td>

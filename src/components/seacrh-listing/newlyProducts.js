@@ -12,6 +12,7 @@ class NewlyProducts extends Component {
      {
        super(props);
          this.state = {
+			productID:this.props.productID,
             relatedProduct: [{
 				"title": "",
 				"image": "",
@@ -29,7 +30,7 @@ class NewlyProducts extends Component {
 		})
 	  }
     
-    render() {
+     render() {
           const settings = {
             dots: false,
             infinite: false,
@@ -62,21 +63,22 @@ class NewlyProducts extends Component {
           <div className="container">
 			<Slider {...settings}>
 				{   this.state.relatedProduct.map(function (products) {
+					var productIDS = products?products._id:'';
 					var userImage = products.userId?products.userId.profilePic:"";					
 					return (
-					<div className="slides-div" key={products}>
-					<div key={products}>
-					<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+products.productImages} /></div>
-					<div className='details'>
-					<h4>{products.productName}</h4>
-					<Link className="catLink" to='/'>{products.productCategory?products.productCategory.title:''}</Link>
-					</div>
-					<div className="userdiv">
-					<div className="user-pic"><img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} /></div>
-					<div className="user-name">{(products.userId)?products.userId.firstName:""}</div>
-					</div>
-					</div>
-					</div>
+						<div className="slides-div" key={products}>
+						<div key={products}>
+						<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+products.productImages} /></div>
+						<div className='details'>
+						<h4>{products.productName}</h4>
+						<Link className="catLink" to={'/search-listing/'+(products.productCategory?products.productCategory._id:'')}>{products.productCategory?products.productCategory.title:''}</Link>
+						</div>
+						<div className="userdiv">
+						<div className="user-pic"><img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} /></div>
+						<div className="user-name">{(products.userId)?products.userId.firstName:""}</div>
+						</div>
+						</div>
+						</div>
 					)
 				  })
 				}

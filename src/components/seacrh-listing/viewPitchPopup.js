@@ -70,7 +70,10 @@ render() {
 					<div className="cl"></div>
 					<div className="switch-product-section">
 						<p>Offered products for switch:
-                           <span className="pitch-offered"><span className="pitch-offer">Pitch offered To </span> {(this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:''}</span>
+                           <span className="pitch-offered">
+                             <span className="pitch-offer">Pitch offered To </span>
+                              {(this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:''}
+                             </span>
 							<div className="cl"></div>
 						</p>
 						<If condition={this.state.offerTradeProducts.length > 0}>
@@ -95,7 +98,7 @@ render() {
 						}
 						</Then>							
 						<Else>
-						<p>No Image Available</p>
+						   <p>No Image Available</p>
 						</Else>
 						</If>
 					</div>

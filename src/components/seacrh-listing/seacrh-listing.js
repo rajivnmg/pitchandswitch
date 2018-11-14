@@ -16,6 +16,8 @@ import Style from './search-listing.css';
 import IntegerStep from './IntegerStep';
 import SelectLocations from './SelectLocations';
 import BrandToggleBox from './BrandToggleBox';
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+
 import {
   Fade,
   Form,
@@ -665,6 +667,7 @@ class Register extends React.Component {
           const btn = accordion ? 'Mode: accordion' : 'Mode: collapse';
           const activeKey = this.state.activeKey;
 
+
           let searchItems = null;
           if(this.state.resultData.length){
             searchItems = this.state.resultData.map(function (item,index) {
@@ -677,19 +680,29 @@ class Register extends React.Component {
 					catId = item.productCategory._id;
 					catName = item.productCategory.title; 
 			  }
-				  
+				
+			 let userID = item.userId?item.userId._id:'';  
              let img = item.userId?<img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+item.userId.profilePic} />:null;
              return (
              <div className="Items" key={index}><div>
-             <Link to={'/search-result/'+item._id}>
-                 <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+item.productImages} /></div>
-             </Link>
+            
+              <If condition={localStorage.getItem('isLoggedIn') == "1" && localStorage.getItem('userId') === userID}>
+				   <Then>
+					 <Link to={'/my-trade-detail/'+item._id}>
+    					 <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+item.productImages} /></div>
+                     </Link>
+				   </Then>
+				   <Else>
+					  <Link to={'/search-result/'+item._id}>
+					     <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+item.productImages} /></div>
+                      </Link>
+				   </Else>
+			  </If>
              <div className='details'>
              <h4><Link to={'/search-result/'+item._id}>{item.productName}</Link></h4>
                <Link className="catLink" to={'/search-listing/'+catId}>{catName}</Link>
              </div>
              <div className="userdiv">
-           
 				<div className="user-pic">
 				<Link to={'/public-profile/'+(item.userId?item.userId._id:'')}>
 					{img}
@@ -697,12 +710,10 @@ class Register extends React.Component {
 				</div>
                 <div className="user-name">
                 <Link className="alink" to={'/public-profile/'+(item.userId?item.userId._id:'')}>
-						{item.userId?item.userId.firstName:""}
+					{item.userId?item.userId.firstName:""}
                 </Link>
                 </div>
-               
              </div>
-            
              </div>
              </div>
              )
@@ -719,25 +730,25 @@ class Register extends React.Component {
                   {this.getItems()}
               </Collapse>
               </div>
-        			 <div className="rgt-section" onClick={()=>{this.showMoreCategoriesOpen(true); this.isBrandOpenFun(true)}}>
-         				<div className="search-row">
-         					<div className="search-result">
-         						<strong>{this.state.searchvalue  }</strong> ({this.state.resultData.length} Results)
-         					</div>
-         					<div className="sort-by">
-         						<span>Sort by:</span>
-         						<div className="newly-add">
-         							<div className="search"><Select options={filterSearch} defaultValue={filterSearch[0]}   onChange={opt => console.log(opt.label, opt.value)} /></div>
-         						</div>
-         					</div>
-         					<div className="cl"></div>
-         				</div>
+				 <div className="rgt-section" onClick={()=>{this.showMoreCategoriesOpen(true); this.isBrandOpenFun(true)}}>
+					<div className="search-row">
+						<div className="search-result">
+							<strong>{this.state.searchvalue  }</strong> ({this.state.resultData.length} Results)
+						</div>
+						<div className="sort-by">
+							<span>Sort by:</span>
+							<div className="newly-add">
+								<div className="search"><Select options={filterSearch} defaultValue={filterSearch[0]}   onChange={opt => console.log(opt.label, opt.value)} /></div>
+							</div>
+						</div>
+						<div className="cl"></div>
+					</div>
 
-         				<div className="item-listing">
-         				   { searchItems}
-         				</div>
-         				<div className="cl"></div>
-         			</div>
+					<div className="item-listing">
+					   { searchItems}
+					</div>
+					<div className="cl"></div>
+				</div>
          			<div className="cl"></div>
          		</div>
          	</div>);

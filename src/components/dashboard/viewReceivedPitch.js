@@ -7,12 +7,11 @@ import offerProduct3 from '../../images/offer-product-img3.jpg'
 import userPic from '../../images/user-pic.png'
 import axios from 'axios'
 import successPic from '../../images/successful_img.png';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import ShippingTypePopup from './shippingTypePopup'
-
 const constant = require('../../config/constant')
-
 const contentStyle = {
     maxWidth: "660px",
     width: "90%"
@@ -28,18 +27,17 @@ class viewReceivedPopup extends Component {
 	  super(props);
 		this.state = {				
 			offerTrade:this.props.offerTrade,
+			proID:this.props.proID,
 			offerTradeProducts:[]
 		}
 	}
-	
 	
 	
 	componentWillMount(){		
 		this.setState({offerTradeId:this.state.offerTrade._id})
 	}
 	
-    submitHandler(proID){	   
-	    //console.log('proID',proID);
+    submitHandler(proID){
 	    const data = new FD();
         data.append('offerTradeId', this.state.offerTrade._id)
         data.append('tradePitchProductId', proID)
@@ -57,11 +55,10 @@ class viewReceivedPopup extends Component {
 			  });	
 			   setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});			
 				window.location.href='/my-trades';
-			 }, 12000);	
+			 }, 5000);	
 		  }
       })  
    }
-	
 	
 	componentDidMount(){
 		axios.get('/trade/tradingProduct/'+this.state.offerTrade._id).then(result => {
@@ -69,12 +66,16 @@ class viewReceivedPopup extends Component {
 				this.setState({offerTradeProducts:result.data.result})				
 			}
 		})
+		 axios.get('/product/productDetails/'+ this.state.proID).then(result => {
+		    this.setState({
+				productData:result.data.result,
+			});
+		})
 	}
 
-render() {
-	const proImg = this.state.offerTrade.SwitchUserProductId.productImages?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
-	
-	
+    render() {
+	  const proImg = this.state.offerTrade.SwitchUserProductId.productImages?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
+	  const userID = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId._id:"";
 	
 return (
 <Popup
@@ -116,19 +117,23 @@ return (
 		<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId._id}</strong></span>
 		<h4>{this.state.offerTrade.SwitchUserProductId.productName} </h4>
 		<span> {this.state.offerTrade.SwitchUserProductId.description} </span>
-		<a className="catLink" href="/">{this.state.offerTrade.SwitchUserProductId.productCategory}</a>
+		<a className="catLink" href={"search-listing/"+this.state.productData.productCategory._id}>{this.state.productData.productCategory?this.state.productData.productCategory.title:""}</a>
 		</div>
 		</div>
 		<div className="cl"></div>
 		<div className="switch-product-section">
 		<p>Offered products for switch:
-			<span class="pitch-offered"><span class="pitch-offer">Pitch offered by </span>{this.state.offerTrade.SwitchUserId.userName} </span>
+			<span class="pitch-offered"><span class="pitch-offer">Pitch offered by </span>
+			  {this.state.offerTrade.SwitchUserId.userName} 
+			</span>
 		<div className="cl"></div>
 		</p>
 		<If condition={this.state.offerTradeProducts}>
-		<Then>
-		{ this.state.offerTradeProducts.products.map((productList, index) => {			
-		var productImages = (productList.productImages)?productList.productImages[0]:'';
+			<Then>
+				{ this.state.offerTradeProducts.products.map((productList, index) => {			
+				var productImages = (productList.productImages)?productList.productImages[0]:'';
+				var productCategoryID = productList?productList.productCategory._id:"";
+		
 		return(
 		<div className="switch-product-box">
 			<div className="switch-product-image-box">
@@ -142,7 +147,7 @@ return (
 			</div>
 			<div className="switch-product-content-box">
 			<h4>{productList.productName}</h4>
-			<a className="catLink" href="/">{productList.productCategory.title}</a>
+			<a className="catLink" href={'search-listing/'+productCategoryID}>{productList.productCategory.title}</a>
 			</div>
 		</div>
 		)

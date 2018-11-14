@@ -60,18 +60,18 @@ class Dashboard extends Component {
 				 axios.get('/user/userSubscription'),
 				 axios.get('/user/userSubscriptionAddon')
 			   ])
-			   .then(axios.spread((user, sresult,saresult) => {
-				   if(user.data.code === 200){					 
-					   this.setState({ 
-							currentUser:user.data.result,
-							notification_type:user.data.notification_type,
-							notifications:user.data.notifications,
-							totalNotifications:user.data.totalNotifications,
-							userSubscription:sresult.data.userSubacriptions[0],
-							userSubscriptionAddons:saresult.data.userSubacriptionAddons[0]						
-						})	
-				   }				 			 	
-			}))			  
+				.then(axios.spread((user, sresult,saresult) => {
+				if(user.data.code === 200){					 
+				this.setState({ 
+				currentUser:user.data.result,
+				notification_type:user.data.notification_type,
+				notifications:user.data.notifications,
+				totalNotifications:user.data.totalNotifications,
+				userSubscription:sresult.data.userSubacriptions[0],
+				userSubscriptionAddons:saresult.data.userSubacriptionAddons[0]						
+				})	
+				}				 			 	
+				}))			  
 			.catch(error => console.log(error));			
 		}	
 			
