@@ -28,7 +28,7 @@ const aux = props => {
       ALLOWED_PATHS.indexOf("/") != -1 ||
       ALLOWED_PATHS.indexOf("/login") != -1
     ) {
-      if (props.history) props.history.push("/dashboard");
+      if (props.history && (props.match.path === "/" || props.match.path === "/login")) props.history.push("/dashboard");
     }
   }
   return props.children;

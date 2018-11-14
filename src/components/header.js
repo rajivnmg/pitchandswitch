@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Style from "./main.css";
 import "../slick.min.css";
-
+import { NavLink } from "react-router-dom";
 import Logo from "../images/logo.png";
 import userIMg from "../images/user-pic.png";
 import CategoryMenu from "./categoryMenu";
@@ -36,7 +36,6 @@ class Header extends Component {
   constructor(props) {
     //let categoryId = props.match.params.id;
     super(props);
-<<<<<<< HEAD
     this.state = {
       user: {
         email: "",
@@ -58,38 +57,6 @@ class Header extends Component {
     };
     this.logoutHandler = this.logoutHandler.bind(this);
     this.onSearchHandler = this.searchHandler.bind(this);
-=======
-        this.state = {
-	     user:{
-		 email:'',
-		 lastName:'',
-		 middleName:'',
-		 profilePic:'',
-		 userName:''
-		},
-	     notifications:0,
-	     notifications:[],
-	     result: [],
-	     rs: [],
-	     searchData:"",
-	     searchD :"",
-	     categoryId :"",
-		 latitude:"",
-		 longitude:"",
-		 gmapsLoaded: false
-	}
-     this.logoutHandler = this.logoutHandler.bind(this);
-     this.onSearchHandler = this.searchHandler.bind(this);
-     //console.log('LOCAL STORAGE', localStorage.getItem('jwtToken'));
-     if(localStorage.getItem('jwtToken') === null){
-        // window.location.href="#/logout";
-        // console.log('Header history', props);
-        // props.history.push('/logout');
-      }else{
-		 // console.log('Else Header history', props);		  
-		 // props.history.push('/dashboard');
-	  }
->>>>>>> 01a941f51c090bbee6909f8a800edfaa1233d300
   }
 
   initMap = () => {
@@ -212,28 +179,7 @@ class Header extends Component {
     else return true;
   };
   componentDidMount() {
-<<<<<<< HEAD
-    //code for google places api
-    window.initMap = this.initMap;
-    const gmapScriptEl = document.createElement(`script`);
-    gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyA_Is11HwzMFGIFAU-q78V2kQUiT9OQiZI&libraries=places&callback=initMap`;
-    document
-      .querySelector(`body`)
-      .insertAdjacentElement(`beforeend`, gmapScriptEl);
 
-    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-      "jwtToken"
-    );
-    if (localStorage.getItem("jwtToken") !== null) {
-      axios.get("/user/frontNotification").then(result => {
-        this.setState({
-          notification_type: result.data.notification_type,
-          notifications: result.data.notifications,
-          totalNotifications: result.data.totalNotifications
-        });
-      });
-      console.log("localStorage", localStorage.getItem("isLoggedIn"));
-=======
 	//code for google places api
 	window.initMap = this.initMap
 	const gmapScriptEl = document.createElement(`script`)
@@ -251,22 +197,7 @@ class Header extends Component {
 		})
 	  // console.log("localStorage",localStorage.getItem('isLoggedIn'));
 	}
-
-
-	axios.get('/location/listingCity').then(result => {
-
-		this.setState({
-			options: result.data.result,
-		});
-	})
-
-	axios.get('/product/activeProducts').then(rs => {
-		this.setState({
-		    productsListing: rs.data.result,
-		});
-	  })
->>>>>>> 01a941f51c090bbee6909f8a800edfaa1233d300
-    }
+	
 
     axios.get("/location/listingCity").then(result => {
       this.setState({
