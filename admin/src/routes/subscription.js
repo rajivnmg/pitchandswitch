@@ -19,6 +19,7 @@ router.get('/viewAddon/:id',subscriptionController.viewAddon)
 router.delete('/deleteAddon/:id',subscriptionController.deleteAddon)
 router.post('/updateStatus',subscriptionController.updateStatus)
 router.get('/addons/:page', subscriptionController.listAddon)
+router.get('/getActiveAddons',subscriptionController.getActiveAddons)
 
 // routes for user subscription plan
 router.post('/saveUserSubscriptionPlan',subscriptionController.saveUserSubscriptionPlan)

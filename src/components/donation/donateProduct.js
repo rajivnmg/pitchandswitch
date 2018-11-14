@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import Style from '../donation/addnewproduct.css';
 import { Link } from 'react-router-dom';
-import { SketchPicker } from 'react-color'
 import PicturesWall from '../common/picturesWall';
 import CategorySelectBox from '../../components/CategorySelectBox/CategorySelectBox';
 import axios from 'axios'
-import Colors from '../seacrh-listing/colors';
+import Colors from '../colors';
 var FD = require('form-data');
 var fs = require('fs');
-//~ class ColorPicker extends React.Component {
-   //~ render() {
-	//~ return <SketchPicker />
-  //~ }
-//~ }
+
 class Form extends React.Component {
   state = {
     isValidated: false
@@ -244,16 +239,23 @@ class DonateProduct extends React.Component {
 	changeThisColor = (e) => {
 			const colors = this.state.colors;
 			let selectedColors = [];
+			//~ colors.map((item, index) => {
+				//~ colors[index].checked  = false;
+			  //~ if(colors[index].checked == undefined) colors[index].checked = false;
+			  //~ colors[index].checked  = false;
+			  //~ if(item.id === e.target.value){
+				//~ colors[index].checked = true;
+			  //~ }else{
+				  //~ colors[index].checked = false;
+			  //~ }			 
+			//~ });
+			
 			colors.map((item, index) => {
-			  if(colors[index].checked == undefined) colors[index].checked = false;
-			  colors[index].checked  = false;
+			  colors[index].checked  = false;	 
 			  if(item.id === e.target.value){
 				colors[index].checked = true;
-			  }else{
-				  colors[index].checked = false;
 			  }			 
 			});
-			
 			
 			this.setState({colors: colors });			
 	};
