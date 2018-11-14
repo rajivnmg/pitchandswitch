@@ -64,32 +64,32 @@ render() {
 									<div className="return-request-form">
 							   
 				<div className="yellow-brdr-box-div ">
-{this.state.subscriptions.map((subscription,index) => {
-	if(subscription.totalInventoryAllowed ===9999){
-						 return(	
-						 <Auxios>																	
-									<div className="radioBtn">
-										<input id="gold" type="radio" name="radio" checked="checked" value="" /><label htmlFor="gold"></label>
-									</div>
-									<div className="right-div">
-										<p>Gold Package
-										<span className="price">$25 USD/year</span></p>   
-									</div>							
-								<div className="cl"></div>	
-							</Auxios>);
-				}else{
-					return null;
-				}
-	})}
-					<div className="radioBtn">
-						<input id="gold1" type="radio"  value="" name="radio" /><label htmlFor="gold1"></label>
-					</div> 
+			{this.state.subscriptions.map((subscription,index) => {
+				if(subscription.totalInventoryAllowed ===9999){
+									 return(	
+									 <Auxios>																	
+												<div className="radioBtn">
+													<input id="gold" type="radio" name="radio" checked="checked" value="" /><label htmlFor="gold"></label>
+												</div>
+												<div className="right-div">
+													<p>Gold Package
+													<span className="price">$25 USD/year</span></p>   
+												</div>							
+											<div className="cl"></div>	
+										</Auxios>);
+							}else{
+								return null;
+							}
+				})}
+					
 					 <div className="right-div">
 					 <p className="addOns"><strong>Add-ons</strong> (How much trades you need)</p>  
 					 <ul className="trades-list">
 						{this.state.addons.map((addon,index) => {						
 							 return(						
-									<li>{addon.packageName} <span className="bold active"> ${addon.price}</span>{addon.totalTradePermitted} Trade, {addon.totalInventoryAllowed} Items Storage</li>								
+									<li><div className="radioBtn">
+						<input id="gold1" type="radio"  value="" name={'radio'} /><label htmlFor={"gold1"}></label>
+					</div> {addon.packageName} <span className="bold active"> ${addon.price}</span>{addon.totalTradePermitted} Trade, {addon.totalInventoryAllowed} Items Storage</li>								
 								)
 						})
 					}
