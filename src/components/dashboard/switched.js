@@ -103,7 +103,7 @@ class Switched extends React.Component {
                                     {(send===1)?(pitch.offerTradeId)?pitch.offerTradeId.SwitchUserId.userName:'N/A':(pitch.offerTradeId)?pitch.offerTradeId.pitchUserId.userName:'N/A'}
                                     </Link>
                                     </span></div>
-                                    <div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
+                                    <div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Sent':'Received'}</span></div>
                                     <div className="colum"><a href="#" className="view-pitch"><TradeInfo /></a></div>
                                     
                                     <div className="colum message"> </div>

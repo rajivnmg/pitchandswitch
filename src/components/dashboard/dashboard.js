@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from "react";
 import Style from "./dashboard.css";
 import PopularItems from "./popularItems";
@@ -29,6 +30,37 @@ import { Link } from "react-router-dom";
 import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
 import Aux from "../../hoc/Aux";
 var moment = require("moment");
+=======
+import React, { Component } from 'react';
+import Style from './dashboard.css';
+import PopularItems from './popularItems'
+import NewlyProducts from './newlyProducts'
+import TradeMatch from './tradeMatch'
+import Style1 from './myTrades.css';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import PitchRequests from './pitchRequests'
+import SendRequests from './sendRequests'
+import ReceivedRequests from './receivedRequests'
+import SentSwitched from './sentSwitched'
+import SendCompleted from './sendCompleted'
+import ReceivedSwitched from './receivedSwitched'
+import ReceivedCompleted from './receivedCompleted'
+import SentDitch from './sentDitch'
+import ReceivedDitch from './receivedDitch'
+import Switched from './switched'
+import Completed from './completed'
+import Ditch from './ditch'
+import SubscriptionAddonsPupup from '../subscriptionAddonsPupup'
+import ProductShippingCostPopup from '../productShippingCostPopup'
+import ReturnInfo from '../payShopPopup'
+import ReturnInfo1 from '../payShopPopup1'
+import axios from 'axios';
+import { Scrollbars } from 'react-custom-scrollbars';
+import UpgradePlan from '../upgradePlanPopup'
+import { Link } from 'react-router-dom';
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+var moment = require('moment');
+>>>>>>> 01a941f51c090bbee6909f8a800edfaa1233d300
 
 class Dashboard extends Component {
   constructor(props) {
@@ -97,6 +129,39 @@ class Dashboard extends Component {
       });
     }
   }
+<<<<<<< HEAD
+=======
+  
+  	
+Capitalize(str){
+	return str.charAt(0).toUpperCase() + str.slice(1);
+} 
+    render() {		
+        return (
+		<div className="dashboard">                
+		<div className="container">
+		<If condition={this.state.totalInvemtory === 0} >
+		<Then>
+		<div className="msgSuccess">                        
+		<a href="#" className="close">x</a>You're almost there, upload your first item to get trading							
+		</div>
+		</Then>
+		</If>
+		<div className="heading-row">
+		<Link to={'/donate-product'} className="more-items">Donate Now</Link>
+		<h1>Welcome, {this.Capitalize(this.state.currentUser.firstName)}{' '}{this.Capitalize(this.state.currentUser.lastName)}.</h1>
+		<p className="subheading">There is a list of some latest and tranding itmes on pitch and switch </p>
+		<div className="cl"></div>
+		</div>
+		<div className="dashboardLeft">
+			<div className="tab-outer-container">
+				<Tabs>
+					<TabList>
+						<Tab>Pitch Requests</Tab>
+						<Tab>Switched</Tab>
+						<Tab>Ditched</Tab>
+					</TabList>
+>>>>>>> 01a941f51c090bbee6909f8a800edfaa1233d300
 
   Capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);

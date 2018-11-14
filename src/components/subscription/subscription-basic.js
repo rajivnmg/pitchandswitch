@@ -116,7 +116,9 @@ class subscriptionBasic extends Component {
 		data.userId =  localStorage.getItem('userId');
 		data.amount =  this.state.subscription.price;
 		data.subscriptionId =  this.state.subscription._id;
-		console.log("submit",data)
+		data.totalInventory = this.state.subscription.totalInventoryAllowed;
+		data.totalTrade = this.state.subscription.totalTradePermitted;		
+		//console.log("submit",data)
 		this.setState({isProcess:true})
         axios.post('/subscription/payOnStripe', data).then(result => {        
          if(result.data.code === 200){

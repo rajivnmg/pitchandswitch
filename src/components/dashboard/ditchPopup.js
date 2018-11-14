@@ -15,8 +15,6 @@ class DitchPopup extends Component {
 		this.state = {				
 			offerTrade:this.props.offerTrade
 		}
-		
-		console.log("DITCH POPUP props", this.props)
 	}
 	
 	ditchPitch(offerTrade){

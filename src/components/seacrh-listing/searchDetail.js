@@ -19,6 +19,7 @@ import ViewPitchPopup from './viewPitchPopup';
 import AgainPitchPopup from './againditch';
 import LastPitchPopup from './lditch'
 import LoginPopup from './LoginPopup'
+import LoginPopupWishList from './LoginPopupWishList'
 const constant = require('../../config/constant')
 var FD = require('form-data');
 var fs = require('fs');
@@ -57,23 +58,22 @@ class MyTrades extends React.Component {
 		   this.setState({conditions: result.data.result});
 	   });
 
-       if(localStorage.getItem('jwtToken') !== null){
-			axios.get('/user/getLoggedInUser').then(result => {
-				this.setState({ user:result.data.result })
-				localStorage.setItem('loggedInUser',result.data.result._id);
-				localStorage.setItem('userId',result.data.result._id);
-				localStorage.setItem('userName',result.data.result.userName);
-				localStorage.setItem('isLoggedIn',1);
-				this.setState({resultData:result.data.result});
-			})
-		}
+       //~ if(localStorage.getItem('jwtToken') !== null){
+			//~ axios.get('/user/getLoggedInUser').then(result => {
+				//~ this.setState({ user:result.data.result })
+				//~ localStorage.setItem('loggedInUser',result.data.result._id);
+				//~ localStorage.setItem('userId',result.data.result._id);
+				//~ localStorage.setItem('userName',result.data.result.userName);
+				//~ localStorage.setItem('isLoggedIn',1);
+				//~ this.setState({resultData:result.data.result});
+			//~ })
+		//~ }
     }
 
 	 componentDidMount(){
 		 const data = new FD();
 			data.append('productId', this.state.productId)
-			data.append('pitchUserID', localStorage.getItem('loggedInUser'))
-			console.log('data',data);
+			data.append('pitchUserID', localStorage.getItem('loggedInUser'))			
 			axios.post('/product/checkExists/',data).then(result => {
 			  this.setState({checkData:result.data.result});
 		    })
@@ -146,8 +146,8 @@ class MyTrades extends React.Component {
 					</div>
 				<div className="btnRow">
 				{this.state.showFormSuccess ? this._renderSuccessMessage() : null}
-
-                   <If condition={localStorage.getItem('isLoggedIn') == "1"} >
+<p>{localStorage.getItem('isLoggedIn') == "1"}</p>
+                <If condition={localStorage.getItem('isLoggedIn') == "1"} >
 						<Then>
 						 <If condition={this.state.checkData && this.state.checkData.length>0} >
 						  <Then>
@@ -155,17 +155,15 @@ class MyTrades extends React.Component {
 						  </Then>
 						  <Else>
 						     <If condition={userid !=="" && localStorage.getItem('userId') !== userid} >
-						       <Then>
-						        <a href="#" className="ditch">
-						           <LastPitchPopup offerTrade={this.state.resultData} proID = {this.state.productId}/>
-						         </a>
+						       <Then>						       
+						           <LastPitchPopup offerTrade={this.state.resultData} proID = {this.state.productId}/>						       
 						       </Then>
 						      </If>
 						  </Else>
 						 </If>
                         </Then>
                         <Else>
-							<a href="#" className="ditch">	<LoginPopup offerTrade={this.state.resultData}/></a>
+							<LoginPopup offerTrade={this.state.resultData}/>
                        </Else>
                     </If>
 
@@ -176,14 +174,14 @@ class MyTrades extends React.Component {
 								<a href="#" className="ditch add-wishlist" onClick={()=>this.addToWishList()}>Add to Wishlist</a>
 							</Then>
 							<Else>
-								<LoginPopup offerTrade={this.state.resultData}/>
+								<LoginPopupWishList offerTrade={this.state.resultData}/>
 							</Else>
 						</If>
 					</Then>
 					<Else>
 					<If condition={userid !=="" && localStorage.getItem('userId') !== userid} >
 					  <Then>
-						<span className="ditch add-wishlist">Added in Wishlist</span>
+						<span className="ditch add-wishlist active">Added in Wishlist</span>
 					  </Then>
 					 </If>
 					</Else>

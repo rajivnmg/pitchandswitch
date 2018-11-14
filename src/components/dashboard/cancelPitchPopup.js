@@ -15,8 +15,6 @@ class cancelPitchPopup extends Component {
 		this.state = {				
 			offerTrade:this.props.offerTrade
 		}
-		
-		console.log("cancelOfferTrade POPUP props", this.props)
 	}
 	
 	componentDidMount(){
@@ -26,11 +24,9 @@ class cancelPitchPopup extends Component {
 	cancelPitch(offerTrade){
 		let data = {}
 		data._id = offerTrade._id	
-		data.ditchCount = parseInt(offerTrade.ditchCount)+1
-		console.log("data",data)
+		data.ditchCount = parseInt(offerTrade.ditchCount)+1		
 		axios.post('trade/cancelOfferTrade',data).then(result => {
-			if(result.data.code === 200){
-				console.log("cancelOfferTrade result",result)	
+			if(result.data.code === 200){				
 				jquery('.cancel-btn').click();				
 			}else{
 				
