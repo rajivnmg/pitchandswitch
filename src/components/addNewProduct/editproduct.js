@@ -3,6 +3,7 @@ import Style from './addnewproduct.css';
 import { Link } from 'react-router-dom';
 import { Spin } from 'antd';
 import { SketchPicker } from 'react-color'
+import Colors from '../seacrh-listing/colors';
 import PicturesWall from '../common/picturesWall';
 import CategorySelectBox from '../../components/CategorySelectBox/CategorySelectBox';
 //import BrandSelectBox from '../../components/BrandSelectBox/BrandSelectBox';
@@ -101,6 +102,7 @@ class Register extends React.Component {
 	   Categories: [],
 	   brands: [],
 	   sizes: [],
+	   colors: [],
 	   conditions: [],
 	   categoryValue: '',
 	   background: '#fff',
@@ -176,21 +178,50 @@ class Register extends React.Component {
 			
 			//~ this.setState({productImages: result.data.result.productImages});       
 		   }      
-		 });			
-		//GET ALL Brand
-		axios.get('/brand/listingbrand').then(result => {			
-			this.setState({brands:result.data.result})
-		})	
-		//GET ALL Condition
-		axios.get('/donation/getConstant').then(result => {			
-			this.setState({conditions:result.data.result})
-		})	
-		//GET ALL Size
-		axios.get('/size/listingsize').then(result => {			
-			this.setState({sizes:result.data.result})
-		})
+		 });
+		 			
+		axios.all([							
+				axios.get('/size/listingsize/'),
+				axios.get('/brand/listingbrand/'),
+				axios.get('/product/getColors/'),
+				axios.get('/donation/getConstant/')
+			  ])
+			  .then(axios.spread((rsize, rbrand,rcolor,rconstant) => {
+				if(rsize.data.code === 200){
+				  this.setState({sizes:rsize.data.result});
+				}
+				if(rbrand.data.code === 200){
+				  this.setState({brands:rbrand.data.result});
+				}
+				if(rcolor.data.code === 200){
+				  this.setState({colors:rcolor.data.result});
+				}
+				if(rconstant.data.code === 200){
+				  this.setState({conditions:rconstant.data.result});
+				}
+			}))      
+			.catch(error => console.log(error));
 	}		
-
+	
+	// change color 
+	changeThisColor = (e) => {
+			const colors = this.state.colors;
+			let selectedColors = [];
+			colors.map((item, index) => {
+			  if(colors[index].checked == undefined) colors[index].checked = false;
+			  colors[index].checked  = false;
+			  if(item.id === e.target.value){
+				colors[index].checked = true;
+			  }else{
+				  colors[index].checked = false;
+			  }			 
+			});
+			
+			
+			this.setState({colors: colors });			
+		 };
+		
+	
 	conditionsChange = (value) => {
 	   this.setState({conditionValue: value.target.value});
 	}
@@ -311,11 +342,7 @@ class Register extends React.Component {
 		
 		<div className="form-row">
 			<label className="label">Color</label>
-			<SketchPicker 
-				color={ this.state.background } 
-				onChangeComplete={ this.handleChangeComplete }
-			/>
-			{/*<ColorPicker /> */}
+				<Colors colorList={this.state.colors} changeThisColor={this.changeThisColor}/>
 		</div>
                
 		<div className="form-row">
@@ -387,7 +414,7 @@ class Register extends React.Component {
 			</div>
 			<div className="cl"></div>
 		</div>
-		<div className="form-row">
+		{/*<div className="form-row">
 			<div className="colum">
 				<div className="invalid-feedback validation"> </div>   
 				<span className="astrik">*</span>
@@ -401,7 +428,7 @@ class Register extends React.Component {
 			</div>
 			<div className="colum right">&nbsp;</div>
 			<div className="cl"></div>
-		</div>
+		</div>*/}
 		<div className="form-row no-padding">
 			<button
 				type={"submit"}

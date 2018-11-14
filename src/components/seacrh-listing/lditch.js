@@ -219,7 +219,7 @@ render() {
 				</div> 
 				</div>
 				</div>
-				 <div className="select-box top-right">
+				 <div className="select-box top-right pitchnowPopup">
 					<select id="select" innerRef={input => (this.condition = input)} className="form-control" onChange={this.handleOnChange}>
 						   {optionTemplate}
 					</select>

@@ -33,8 +33,7 @@ class CategorySelectBox extends Component {
     });
   }
   componentWillMount(){
-	  setTimeout(()=>{
-		  console.log('HERE', this.props.value);
+	  setTimeout(()=>{		  
 		  this.setState({value: this.props.value});
 	  }, 100);
   }

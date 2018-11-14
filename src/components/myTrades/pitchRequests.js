@@ -76,7 +76,7 @@ class PitchRequests extends React.Component {
 				{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}
 				</Link>
 				</span></div>
-				<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
+				<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Sent':'Received'}</span></div>
 				<div className="colum"><a href="#" className="view-pitch">
 				<If condition={send === 1}>
 					<Then>

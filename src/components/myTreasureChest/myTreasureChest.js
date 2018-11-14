@@ -4,8 +4,10 @@ import popularItemImg from '../../images/popular-item1.jpg';
 import userPicture from '../../images/user-pic.png';
 import Select from 'react-select';
 import axios from 'axios';
-import { Popconfirm, message, Button } from 'antd';
-import { Spin, Icon, Alert } from 'antd';
+import {Link} from 'react-router-dom';
+import { Popconfirm, message, Button,Spin, Icon, Alert } from 'antd';
+import { If, Then, Else } from 'react-if-elseif-else-render';
+import subscriptionAddonsPupup from '../subscriptionAddonsPupup';
 const constant = require("../../config/constant");
 const text = 'Are you sure to delete this?';
 const App1 = () => ( 
@@ -35,10 +37,12 @@ class myTreasureChest extends Component {
 				 lastName:'J',
 				 middleName:'',
 				 profilePic:'',
-				 userName:'Robert'
+				 userName:'Robert',
+				 totalInventory:0
 			},
 			newlyAdded : [],
             limit: 5,
+            totalInventory:0,
             loadMore: true,
             categories : [{label: "Select", value: 1}],
             currentCategory:'',
@@ -72,12 +76,13 @@ class myTreasureChest extends Component {
 	}
 	
 	componentWillMount(){
-		this.setState({newlyAdded:constant.sortBy},function(){console.log("newlyAdded",this.state.newlyAdded[0])})
+		this.setState({newlyAdded:constant.sortBy},function(){/*console.log("newlyAdded",this.state.newlyAdded[0])*/})
 	}
 	componentDidMount(){
 			axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');			
 			if(localStorage.getItem('jwtToken') !== null){
-				axios.get('/user/getLoggedInUser').then(result => {					
+				axios.get('/user/getLoggedInUser').then(result => {	
+					console.log("resultresult",result)				
 					this.setState({ 
 						user:result.data.result,
 						notification_type:result.data.notification_type,
@@ -142,7 +147,15 @@ Capitalize(str){
                             </ul>
                         </div>
                         <div className="heading-row">.
-                            <a href={'/add-new-product'} className="more-items"><span className="plus">+</span> Add New Product</a>
+							<If condition={this.state.totalInventory >= this.state.user.totalInventory }>
+								<Then>
+									 <a href={'/add-new-product'} className="more-items"><span className="plus">+</span> Add New Product</a>
+								</Then>
+								<Else>
+									<subscriptionAddonsPupup />
+								</Else>
+							</If>
+                           
                             <h1>Welcome, {this.Capitalize(this.state.user.firstName)}{' '}{this.Capitalize(this.state.user.lastName)}.</h1>
                             <div className="cl"></div>
                         </div>

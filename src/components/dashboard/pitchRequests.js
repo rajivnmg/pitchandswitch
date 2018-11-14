@@ -91,7 +91,7 @@ class PitchRequests extends React.Component {
 							<Link className="alink" target="_blank" to={'/public-profile/'+publicProfileUrl}>
 							{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}							
 							</Link></span></div>
-							<div className="colum status"><span className={'sent'}>{'Send'}</span></div>			
+							<div className="colum status"><span className={'sent'}>{'Sent'}</span></div>			
 							<div className="colum action"><span className="view-pitch pointer cursorPointer">
 							<ViewPitchPopup offerTrade={pitch} pitchAgain={(pitch.status =="3")?"1":"0"}/>
 							</span></div> 

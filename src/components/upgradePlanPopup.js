@@ -31,8 +31,7 @@ class UpgradePlan extends Component {
 		data.subscriptionId = e.currentTarget.dataset.id
 		data.userId = localStorage.getItem('userId')
 		data.userName = localStorage.getItem('userName')		
-		axios.post('/subscription/saveUserSubscriptionPlan',data).then(result => {
-				console.log("saveSubscriptionPlan",result.data.result)
+		axios.post('/subscription/saveUserSubscriptionPlan',data).then(result => {				
 				if(result.data.code === 200){
 					this.setState({showFormError: false,showFormSuccess: true})
 					 setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});
@@ -50,8 +49,7 @@ class UpgradePlan extends Component {
 		 setTimeout(() => {this.setState({showFormError: false});}, 12000);
 	}
 	componentWillMount(){
-		axios.get('/subscription/list-subscriptions').then(result =>{
-			console.log("list-subscriptions",result.data.result)
+		axios.get('/subscription/list-subscriptions').then(result =>{			
 				if(result.data.code === 200){
 					this.setState({subscriptions:result.data.result})
 				}

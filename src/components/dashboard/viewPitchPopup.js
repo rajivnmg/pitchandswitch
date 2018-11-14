@@ -21,8 +21,7 @@ class viewPitchPopup extends Component {
 			offerTrade:this.props.offerTrade,
 			proID:this.props.proID,
 			offerTradeProducts:[]
-		}	
-			
+		}			
 	}
 	
 	componentWillMount(){	
@@ -35,7 +34,7 @@ class viewPitchPopup extends Component {
 				this.setState({offerTradeProducts:result.data.result})				
 			}
 		})
-		 axios.get('/product/productDetails/'+ this.state.proID).then(result => {
+		 axios.get('/product/productDetails/'+ this.state.offerTrade.SwitchUserProductId._id).then(result => {
 		    this.setState({
 				productData:result.data.result,
 			});
@@ -64,14 +63,18 @@ class viewPitchPopup extends Component {
 			</div>
 			<div className="received-product-content-box">
 			<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId._id:""}</strong></span>
-			<h4>Product Name: {this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productName:""}  </h4>
-			<span> {this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.description:""} </span>
+			<h4>Product Name: {((this.state.offerTrade && this.state.offerTrade.SwitchUserProductId)?this.state.offerTrade.SwitchUserProductId.productName:"")}  </h4>
+			<span> {((this.state.offerTrade && this.state.offerTrade.SwitchUserProductId)?this.state.offerTrade.SwitchUserProductId.description:"")} </span>
 			
+<<<<<<< HEAD
 			<a className="catLink" href={"search-listing/"+((this.state.productData) && (this.state.productData.productCategory?this.state.productData.productCategory._id:''))}>{((this.state.productData) && (this.state.productData.productCategory?this.state.productData.productCategory.title:""))}</a>
+=======
+			<a className="catLink" href={"search-listing/"+((this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory._id:'')}>{((this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory.title:"")}</a>
+>>>>>>> 054c191314b525f73af5a98a87b38a94e1b341e7
 			
 		    <div className="ratingRow">
 			<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+productIMG} alt="" /></div>
-			<p>{this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.userName:""}</p>
+			<p>{((this.state.offerTrade && this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:"")}</p>
 			<div className="rated">4</div>
 			<div className="cl"></div>
 			</div>

@@ -5,6 +5,7 @@ import { SketchPicker } from 'react-color'
 import PicturesWall from '../common/picturesWall';
 import CategorySelectBox from '../../components/CategorySelectBox/CategorySelectBox';
 import axios from 'axios'
+import Colors from '../seacrh-listing/colors';
 var FD = require('form-data');
 var fs = require('fs');
 //~ class ColorPicker extends React.Component {
@@ -101,6 +102,7 @@ class DonateProduct extends React.Component {
 			   brands: [],
 			   sizes: [],
 			   conditions: [],
+			   colors: [],
 			   user:[],
 			   countryId :'',
 				stateId :'',
@@ -202,24 +204,32 @@ class DonateProduct extends React.Component {
 			
 		}
 		
-		componentDidMount() {
-			//GET ALL Brand
-			axios.get('/brand/listingbrand').then(result => {
-				this.setState({brands:result.data.result})
-			})
-			//GET ALL Condition
-			axios.get('/donation/getConstant').then(result => {
-				this.setState({conditions:result.data.result})
-			})
-			//GET ALL Size
-			axios.get('/size/listingsize').then(result => {
-				this.setState({sizes:result.data.result})
-			})
-			// function to get location
-			axios.get('/location/getLocation').then(result => {			
-				this.setState({countries:result.data.result})
-			})		
-		  
+		componentDidMount() {			
+		  axios.all([							
+				axios.get('/size/listingsize/'),
+				axios.get('/brand/listingbrand/'),
+				axios.get('/product/getColors/'),
+				axios.get('/donation/getConstant/'),
+				axios.get('/location/getLocation')
+			  ])
+			  .then(axios.spread((rsize, rbrand,rcolor,rconstant,rcountries) => {
+				if(rsize.data.code === 200){
+				  this.setState({sizes:rsize.data.result});
+				}
+				if(rbrand.data.code === 200){
+				  this.setState({brands:rbrand.data.result});
+				}
+				if(rcolor.data.code === 200){
+				  this.setState({colors:rcolor.data.result});
+				}
+				if(rconstant.data.code === 200){
+				  this.setState({conditions:rconstant.data.result});
+				}
+				if(rcountries.data.code === 200){
+				  this.setState({countries:rcountries.data.result})
+				}
+			}))      
+			.catch(error => console.log(error));
 		}
 
 	inputChangedHandler = (event, inputIdentifier) => {
@@ -229,6 +239,26 @@ class DonateProduct extends React.Component {
 		productForm[inputIdentifier] = event.target.value;    
 		this.setState({ donateProductForm: productForm });
 	};
+	
+	// change color 
+	changeThisColor = (e) => {
+			const colors = this.state.colors;
+			let selectedColors = [];
+			colors.map((item, index) => {
+			  if(colors[index].checked == undefined) colors[index].checked = false;
+			  colors[index].checked  = false;
+			  if(item.id === e.target.value){
+				colors[index].checked = true;
+			  }else{
+				  colors[index].checked = false;
+			  }			 
+			});
+			
+			
+			this.setState({colors: colors });			
+	};
+		
+	
 	submit = () => {
 	const data =new FD()
 	const formData = this.state.donateProductForm;
@@ -318,11 +348,12 @@ class DonateProduct extends React.Component {
                 </div>
                 <div className="form-row">
                   <label className="label">Color</label>
-                    <div className="select-box">
-                  <select required={true} name={"color"} name={"color"} defaultValue="" onChange={(e) => this.inputChangedHandler(e, 'color')}>
+                    <div className="">
+                 {/* <select required={true} name={"color"} name={"color"} defaultValue="" onChange={(e) => this.inputChangedHandler(e, 'color')}>
                   <option value="red">Red</option>
                   <option value="green">Green</option>
-                  </select>
+                  </select> */}
+                  <Colors colorList={this.state.colors} changeThisColor={this.changeThisColor}/>
                   </div>
                   
                 </div>

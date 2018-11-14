@@ -14,7 +14,6 @@ userSubscriptionId:{
   type: Schema.Types.ObjectId,
   ref: 'UserSubscription'
 },
-
 addonId:{
   type: Schema.Types.ObjectId,
   ref: 'Addon'

@@ -30,12 +30,12 @@ class ShippingTypePopup extends Component {
 			productID:this.props.productID,
 			offerTrade:this.props.offerTrade,
 		}	
-		console.log('sssssss',this.state.offerTrade);
+		
 	 } 
 
      submitHandler(proID){	   
 		this.setState({  condition: !this.state.condition  });
-	    console.log('proID',proID);
+	    
 	    const data = new FD();
         data.append('offerTradeId', this.state.offerTrade._id)
         data.append('tradePitchProductId', proID)

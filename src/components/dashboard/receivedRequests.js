@@ -16,7 +16,6 @@ class ReceivedRequests extends React.Component {
 			currentUser:'',
             pitches: []
         }
-         console.log('vvvvvvv',props)
     };
         
 	TrackHandler = (id) => {
@@ -33,7 +32,6 @@ class ReceivedRequests extends React.Component {
 					pitches: result.data.result,
 					currentUser: result.data.currentUser	  
 				});
-				console.log('currentUser',this.state.currentUser)
 			  }
 			})
 			.catch((error) => {		

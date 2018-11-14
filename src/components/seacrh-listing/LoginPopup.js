@@ -10,8 +10,32 @@ const contentStyle = {
     width: "90%"
 };
 
+<<<<<<< HEAD
 
 class LoginPopup extends Component {
+=======
+const CustomModal = () => (
+<Popup
+    trigger={ <a href="#" className = 'ditch' > Pitch Now </a>}
+    modal
+    lockScroll  >
+    {
+		close => (
+			<div className="modal">
+			  <a className="close" onClick={close}>
+			      &times;
+			   </a>
+			<div className="header ">Welcome, Please login
+			<div className="cl"></div>
+			</div>
+			<Register />
+			</div>
+		)
+     }
+   </Popup>
+);
+class Register extends React.Component {
+>>>>>>> 054c191314b525f73af5a98a87b38a94e1b341e7
   constructor(props){
 		super(props);
 		this.email = React.createRef();

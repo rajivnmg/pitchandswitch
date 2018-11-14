@@ -16,7 +16,7 @@ class SendRequests extends React.Component {
 			currentUser:'',
             pitches: []
         }
-        console.log('pppppppp',props)
+       
     };
         
 	TrackHandler = (id) => {
@@ -56,7 +56,7 @@ class SendRequests extends React.Component {
 				</Then>								
 		    <Else>
 			{ this.state.pitches.map((pitch, index) => {
-				{console.log('pitch',pitch.pitchUserId._id)}				
+				
 				   if(pitch.pitchUserId &&  pitch.pitchUserId._id == this.state.currentUser){	
 					var send = (pitch.pitchUserId &&  pitch.pitchUserId._id == this.state.currentUser)?1:0;
 					let ditchClasses = ['ditch'];                                                       
