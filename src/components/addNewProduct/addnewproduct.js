@@ -8,8 +8,11 @@ import CategorySelectBox from '../../components/CategorySelectBox/CategorySelect
 //import BrandSelectBox from '../../components/BrandSelectBox/BrandSelectBox';
 //import SizeSelectBox from '../../components/SizeSelectBox/SizeSelectBox';
 import axios from 'axios';
+import { Modal } from "antd";
+import pica from "pica";
 var FD = require('form-data');
 var fs = require('fs');
+var CropViewer = require("rc-cropping");
 //~ class ColorPicker extends Component {
    //~ render() {
     //~ return <SketchPicker
@@ -114,7 +117,9 @@ class Register extends React.Component {
 		  message: ''
 		},
 		 showFormSuccess: false
-	  }
+	  },
+	  cropper: false,
+	  imageCropper: null
 	};
 
 	constructor(props){
@@ -255,7 +260,38 @@ class Register extends React.Component {
       </div>
     );
   }
+  resizer = (from, to) => {
+    return pica().resize(from, to);
+  };
+  updatedImage = file => {
+	  console.log('Updated file', file);
+    //~ const profileForm = { ...this.state.profileForm };
+    //~ profileForm.profilePic = file;
+    //~ this.setState({ profileForm }, () => {
+      //~ console.log("ProfileImage", this.state);
+    //~ });
+  };
   render() {
+	  let imageCropper = null;
+	  if(this.state.cropper){
+		  imageCropper = (
+        <CropViewer
+          size={[64, 64]}
+          thumbnailSizes={[[64, 64]]}
+          file={this.state.imageCropper}
+          locale= 'en-US'
+          fileType="image/jpeg"
+          accept="image/gif,image/jpeg,image/png,image/bmp,image/x-png,image/pjpeg"
+          getSpinContent={() => <span>loading...</span>}
+          renderModal={() => <Modal />}
+          circle={true}
+          resizer={this.resizer}
+          onChange={this.updatedImage}
+        />
+      );
+	  }
+	  
+	  
     return (
             <div className="add-product-container">
         <div  className="container">

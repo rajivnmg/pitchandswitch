@@ -10,3 +10,4 @@
 .ant-upload-select-picture-card .ant-upload-text {margin-top: 8px;  color: #666;}
 .form-row .ant-upload.ant-upload-select-picture-card {background-color: #e1e1e1;}
 .ant-upload-select-picture-card i {border-radius: 15px;background-color: #d0a518; color:#fff}
+i.anticon svg{display:none;}
