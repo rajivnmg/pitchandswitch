@@ -60,16 +60,16 @@ class mostTrusted extends Component {
 						var userImage = slide._id?slide._id.profilePic:'';
 						var userUrl = (slide._id)?'/public-profile/'+slide._id._id:'#';
 						return (
-								<div className="slides-div"  key={slide}>
-									<div key={slide}>
-									<div className='pic'><Link to={userUrl} ><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage}/></Link> </div>
-										<div className='details'>
-										<h4><Link to={userUrl} >{(slide._id)?slide._id.userName:''}</Link></h4>
-											<div className="ratingRow">{slide.totalRating}</div>
-										</div>
+							<div className="slides-div"  key={slide}>
+							  <div key={slide}>
+								<div className='pic'><Link to={userUrl} ><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage}/></Link> </div>
+									<div className='details'>
+									<h4><Link to={userUrl} >{(slide._id)?slide._id.userName:''}</Link></h4>
+									<div className="ratingRow">{slide.totalRating}</div>
 									</div>
 								</div>
-								)
+							</div>
+							)
                         }):''
                         }
                     </Slider>

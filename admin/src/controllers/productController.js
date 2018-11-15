@@ -1008,6 +1008,7 @@ const productDetails = (req, res) => {
             .populate({path: 'size', model: 'Size'})
             .populate({path: 'brand', model: 'Brand'})
             .exec(function (err, result) {
+				console.log('resultrerereeerereeeee',result)
                 if (err) {
                     return res.send({
                         code: httpResponseCode.BAD_REQUEST,
