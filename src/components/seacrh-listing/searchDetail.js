@@ -44,17 +44,17 @@ class MyTrades extends React.Component {
         };
     }
 
-	
-
-	 componentDidMount(){
-		  axios.get('/product/productDetails/'+ this.state.productId).then(result => {
+	 componentWillMount(){
+	      axios.get('/product/productDetails/'+ this.state.productId).then(result => {
 		    this.setState({
 				resultData:result.data.result,
 				mainImages:result.data.result?result.data.result.productImages[0]:"default_product_img@3x.png",
 				isAlreadyPitched:result.data.pitchProduct,
 				isAlreadyInWishlist:result.data.wishListProduct
 				});
+
 				})
+
 
 	   axios.get('/donation/getConstant').then(result => {
 		   this.setState({conditions: result.data.result});
@@ -78,6 +78,16 @@ class MyTrades extends React.Component {
 		//~ }
     }
 
+
+
+	 componentDidMount(){
+		 const data = new FD();
+			data.append('productId', this.state.productId)
+			data.append('pitchUserID', localStorage.getItem('loggedInUser'))			
+			axios.post('/product/checkExists/',data).then(result => {
+			  this.setState({checkData:result.data.result});
+		    })
+        }
 
 
 	addToWishList(){
@@ -148,6 +158,7 @@ class MyTrades extends React.Component {
 				<div className="btnRow">
 				{this.state.showFormSuccess ? this._renderSuccessMessage() : null}
 
+
                    <If condition={localStorage.getItem('isLoggedIn') == "1"} >
                     <Then>
                         <If condition={this.state.checkData && this.state.checkData.length>0} >
@@ -172,21 +183,22 @@ class MyTrades extends React.Component {
                     </Else>
                    </If>                 
 
+
 				    <div className="cl"></div>
 				</div>
 
 				<div className="productDetails">
-				 <h5>Product Details</h5>
-				 <table cellPadding="0" cellSpacing="0" width="100%">
+				<h5>Product Details</h5>
+				<table cellPadding="0" cellSpacing="0" width="100%">
 				  <tbody>
 					<tr>
-						<td>Size:</td><td>{this.state.resultData.size?this.state.resultData.size.size:""} GB</td>
+					<td>Size:</td><td>{this.state.resultData.size?this.state.resultData.size.size:""} GB</td>
 					</tr>
 					<tr>
-						<td>Color:</td><td><img src={colorOrange} />{this.state.resultData.color}</td>
+					<td>Color:</td><td><img src={colorOrange} />{this.state.resultData.color}</td>
 					</tr>
 					<tr>
-						<td>Brand:</td><td>{this.state.resultData.brand?this.state.resultData.brand.brandName:""}</td>
+					<td>Brand:</td><td>{this.state.resultData.brand?this.state.resultData.brand.brandName:""}</td>
 					</tr>
 					<tr>
 						<td>Condition:</td><td>{optionTemplate}</td>

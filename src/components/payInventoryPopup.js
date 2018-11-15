@@ -66,73 +66,88 @@ render() {
 				<div className="yellow-brdr-box-div ">
 			{this.state.subscriptions.map((subscription,index) => {
 				if(subscription.totalInventoryAllowed ===9999){
-									 return(	
-									 <Auxios>																	
-												<div className="radioBtn">
-													<input id="gold" type="radio" name="radio" checked="checked" value="" /><label htmlFor="gold"></label>
-												</div>
-												<div className="right-div">
-													<p>Gold Package
-													<span className="price">$25 USD/year</span></p>   
-												</div>							
-											<div className="cl"></div>	
-										</Auxios>);
-							}else{
-								return null;
-							}
+							 return(	
+							 <Auxios key={index}>															
+										<div className="radioBtn" >
+											<input id="gold" type="radio" name="radio" value="" /><label htmlFor="gold"></label>
+										</div>
+										<div className="right-div">
+											<p>Gold Package
+											<span className="price">$25 USD/year</span></p> 
+											<span className="bold active"> </span>Unlimited Trade, Unlimited Items Storage    
+										</div>							
+									<div className="cl"></div>	
+								</Auxios>);
+					}else{
+						return null;
+					}
 				})}
-					
-					 <div className="right-div">
-					 <p className="addOns"><strong>Add-ons</strong> (How much trades you need)</p>  
-					 <ul className="trades-list">
+				 <h2 className="addOns"><strong>Add-ons</strong> (How much trades you need)</h2>  				
 						{this.state.addons.map((addon,index) => {						
-							 return(						
-									<li><div className="radioBtn">
-						<input id="gold1" type="radio"  value="" name={'radio'} /><label htmlFor={"gold1"}></label>
-					</div> {addon.packageName} <span className="bold active"> ${addon.price}</span>{addon.totalTradePermitted} Trade, {addon.totalInventoryAllowed} Items Storage</li>								
-								)
+							 return(
+							 <Auxios key={index}>															
+									<div className="radioBtn" >
+										<input id={"gold1"+index} type="radio" name="radio" value="" />
+										<label htmlFor={"gold1"+index}></label>
+									</div>
+									<div className="right-div">
+										<p>{addon.packageName} 
+										<span className="price">${addon.price} USD/year</span></p> 
+										<span className="bold active"> </span>{addon.totalTradePermitted} Trade, {addon.totalInventoryAllowed} Items Storage  
+									</div>							
+								<div className="cl"></div>	
+							</Auxios>		
+							)
 						})
 					}
-					</ul>
-					</div> 
+					
 				<div className="cl"></div>
 				</div>
-										<div className="form-row">
-											<span className="astrik">*</span>
-											<label className="label">Name</label>
-											 <input type="text" placeholder="Card holder name" />
-										</div>
-										<div className="form-row">
-											<span className="astrik">*</span>
-											<label className="label">Card number</label>
-											<input type="text" />
-										</div>
-										 <div className="form-row">
-										<div className="colum left">
-											<span className="astrik">*</span>
-											<label className="label">Expiry date</label>
-											<input type="text" placeholder="7/21" />
-											</div>
-											<div className="colum right">
-											<span className="astrik">*</span>
-											<label className="label">Security code</label>
-											<input type="text" placeholder="CVV" />
-											</div>
-											<div className="cl"></div>
-											</div>
-										<div className="form-row">
-											<input className="" value="Pay $3.00" type="submit" />
-										</div>
-										<div className="form-row no-padding">
-										<p className="secure-img"> Secure payments</p>
-										<p className="secure-btm-text">This payments use a secure 128-bit SSL encryption</p>
-										</div>
-									</div> 
-								</div>
-							</div>
+				<div className="form-row">
+					<span className="astrik">*</span>
+					<label className="label">Name</label>
+					<input type="text" placeholder="Card holder name" />
+				</div>
+				<div className="form-row">
+					<span className="astrik">*</span>
+					<label className="label">Card number</label>
+					<input type="text" />
+				</div>
+				 <div className="form-row">
+					<div className="colum left">
+						<span className="astrik">*</span>
+						<label className="label">Expiry Month</label>
+						<input type="text" placeholder="MM" />
+						</div>
+						<div className="colum right">
+						<span className="astrik">*</span>
+						<label className="label">Expiry Year</label>
+						<input type="text" placeholder="YYYY" />
+					</div>
+					<div className="cl"></div>
+				</div>
+				 <div className="form-row">
+					
+						<div className="colum">
+							<span className="astrik">*</span>
+							<label className="label">Security code</label>
+							<input type="text" placeholder="CVV" />
+						</div>
+					<div className="cl"></div>
+				</div>
+				<div className="form-row">
+					<input className="" value="Pay $3.00" type="submit" />
+				</div>
+				<div className="form-row no-padding">
+					<p className="secure-img"> Secure payments</p>
+					<p className="secure-btm-text">This payments use a secure 128-bit SSL encryption</p>
+				</div>
+			</div> 
+			</div>
+			</div>
 				)
 			}
-			</Popup>
+		</Popup>
 	)}
 }
 export default payInventoryPopup;

@@ -93,7 +93,7 @@ class PitchRequests extends React.Component {
 							</Link></span></div>
 							<div className="colum status"><span className={'sent'}>{'Sent'}</span></div>			
 							<div className="colum action"><span className="view-pitch pointer cursorPointer">
-							<ViewPitchPopup offerTrade={pitch} pitchAgain={(pitch.status =="3")?"1":"0"}/>
+							<ViewPitchPopup offerTrade={pitch}  proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""} pitchAgain={(pitch.status =="3")?"1":"0"}/>
 							</span></div> 
 							<div className="colum message"></div>  
 							<div className="colum action">
@@ -114,7 +114,7 @@ class PitchRequests extends React.Component {
 							</span></div>
 							<div className="colum status"><span className={'received'}>{'Received'}</span></div>
 							<div className="colum action"><span className="view-pitch pointer cursorPointer">
-							<ViewReceivedPitch offerTrade={pitch} pitchAgain={(pitch.status =="3")?"1":"0"}/>
+							<ViewReceivedPitch offerTrade={pitch}  proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""} pitchAgain={(pitch.status =="3")?"1":"0"}/>
 							</span></div> 
 							<div className="colum message"></div>  
 							<div className="colum action">							 

@@ -8,34 +8,28 @@ import colorImg from "../../images/color.png";
 import star from "../../images/star.png";
 //import { Slider, InputNumber, Row, Col } from 'antd';
 
-
-import Colors from './colors';
-import UserAutosearch from './userSelect';
-import axios from 'axios';
-import CategoryToggleBox from './CategoryToggleBox';
-import AgeSelectUser from './ageSelect';
-import Style from './search-listing.css';
-import IntegerStep from './IntegerStep';
-import SelectLocations from './SelectLocations';
-import BrandToggleBox from './BrandToggleBox';
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
-
-import {
-  Fade,
-  Form,
-  FormGroup,
-  FormText,
-  FormFeedback
-} from 'reactstrap';
+import Colors from "./colors";
+import UserAutosearch from "./userSelect";
+import axios from "axios";
+import CategoryToggleBox from "./CategoryToggleBox";
+import AgeSelectUser from "./ageSelect";
+import Style from "./search-listing.css";
+import IntegerStep from "./IntegerStep";
+import SelectLocations from "./SelectLocations";
+import BrandToggleBox from "./BrandToggleBox";
+import { Fade, Form, FormGroup, FormText, FormFeedback } from "reactstrap";
 import Aux from "../../hoc/Aux";
-const constant = require('../../config/constant');
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+const constant = require("../../config/constant");
 
-var FD = require('form-data');
-var fs = require('fs');
-const treeData = [{
-  label: 'month - 6 month',
-  value: '0-0',
-  key: '0-0'
+var FD = require("form-data");
+var fs = require("fs");
+const treeData = [
+  {
+    label: "month - 6 month",
+    value: "0-0",
+    key: "0-0"
+
   },
   {
     label: "6 month - 1 year",
@@ -732,49 +726,100 @@ class Register extends React.Component {
           catName = item.productCategory.title;
         }
 
-    let userID = item.userId?item.userId._id:'';  
-             let img = item.userId?<img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+item.userId.profilePic} />:null;
-             return (
-             <div className="Items" key={index}><div>
-            
-              <If condition={localStorage.getItem('isLoggedIn') == "1" && localStorage.getItem('userId') === userID}>
-				   <Then>
-					 <Link to={'/my-trade-detail/'+item._id}>
-    					 <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+item.productImages} /></div>
-                     </Link>
-				   </Then>
-				   <Else>
-					  <Link to={'/search-result/'+item._id}>
-					     <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+item.productImages} /></div>
-                      </Link>
-				   </Else>
-			  </If>
-             <div className='details'>
-             <h4><Link to={'/search-result/'+item._id}>{item.productName}</Link></h4>
-               <Link className="catLink" to={'/search-listing/'+catId}>{catName}</Link>
-             </div>
-             <div className="userdiv">
-				<div className="user-pic">
-				<Link to={'/public-profile/'+(item.userId?item.userId._id:'')}>
-					{img}
-				</Link>
-				</div>
-                <div className="user-name">
-                <Link className="alink" to={'/public-profile/'+(item.userId?item.userId._id:'')}>
-					{item.userId?item.userId.firstName:""}
 
-        
+    let userID = item.userId?item.userId._id:'';  
+         
+        let img = item.userId ? (
+          <img
+            className="userPicNew"
+            src={
+              constant.BASE_IMAGE_URL + "ProfilePic/" + item.userId.profilePic
+            }
+          />
+        ) : null;
+        return (
+          <div className="Items" key={index}>
+            <div>
+              <If condition={localStorage.getItem('isLoggedIn') == "1" && localStorage.getItem('userId') === userID}>
+               <Then>
+                   <Link to={'/my-trade-detail/'+item._id}>
+                      <div className="pic">
+						  <img
+							src={
+							  constant.BASE_IMAGE_URL + "Products/" + item.productImages
+							}
+						  />
+						</div>
+					  </Link>
+                 </Then>   
+                  <Else>
+                  <Link to={"/search-result/" + item._id}>
+                   <div className="pic">
+                    <img
+                    src={
+                      constant.BASE_IMAGE_URL + "Products/" + item.productImages
+                    }
+                    />
+                  </div>
+                </Link>
+              </Else>
+              </If>
+              
+              
+              
+              <div className="details">
+                <h4>
+                <If condition={localStorage.getItem('isLoggedIn') == "1" && localStorage.getItem('userId') === userID}>
+                  <Then>
+                    <Link to={"/my-trade-detail/" + item._id}>
+                     {item.productName}
+                  </Link>
+                  </Then>
+                   <Else>
+                    <Link to={"/search-result/" + item._id}>
+                    {item.productName}
+                  </Link>
+                   </Else>
+                   </If>
+                
+                
+                
+
+                </h4>
+                
+                
+                
+                
+                <Link className="catLink" to={"/search-listing/" + catId}>
+                  {catName}
                 </Link>
               </div>
-              
-             </div>
-             </div>
-             </div>
-             )
-           });
-         }
-     
-      
+              <div className="userdiv">
+                <div className="user-pic">
+                  <Link
+                    to={
+                      "/public-profile/" + (item.userId ? item.userId._id : "")
+                    }
+                  >
+                    {img}
+                  </Link>
+                </div>
+                <div className="user-name">
+                  <Link
+                    className="alink"
+                    to={
+                      "/public-profile/" + (item.userId ? item.userId._id : "")
+                    }
+                  >
+                    {item.userId ? item.userId.firstName : ""}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      });
+    }
     return (
       <Aux>
         <div className="search-page">
@@ -815,20 +860,15 @@ class Register extends React.Component {
                 <div className="cl" />
               </div>
 
-				
 
-					<div className="item-listing">
-					   { searchItems}
-					</div>
-					<div className="cl"></div>
-				</div>
-         			<div className="cl"></div>
-         		</div>
-         	</div>
-       
+              <div className="item-listing">{searchItems}</div>
+              <div className="cl" />
+            </div>
+            <div className="cl" />
+          </div>
+        </div>
       </Aux>
     );
-
   }
 }
 

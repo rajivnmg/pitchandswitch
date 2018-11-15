@@ -10,10 +10,7 @@ const contentStyle = {
     width: "90%"
 };
 
-
-
-class LoginPopup extends Component {
-
+class LoginPopup extends React.Component {
   constructor(props){
 		super(props);
 		this.email = React.createRef();

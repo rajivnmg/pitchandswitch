@@ -258,36 +258,36 @@ class Dashboard extends Component {
                   <div className="brdrBox">
                     <div className="row">
                       <div className="left-div bold">
-                        {this.state.userSubscription.subscriptionId
+                        {((this.state.userSubscription) && (this.state.userSubscription.subscriptionId
                           ? this.state.userSubscription.subscriptionId
                               .subscriptionName
-                          : "Basic"}
+                          : "Basic"))}
                       </div>
                       <div className="rightDiv bold green">
-                        {this.state.userSubscription.subscriptionId &&
+                        {((this.state.userSubscription) && (this.state.userSubscription.subscriptionId &&
                         this.state.userSubscription.subscriptionId.price > 0
                           ? this.state.userSubscription.subscriptionId.price
-                          : "Free"}
+                          : "Free"))}
                       </div>
                       <div className="cl" />
                     </div>
                     <div className="row">
                       <div className="left-div ">Trade</div>
                       <div className="rightDiv">
-                        {this.state.userSubscription.subscriptionId
+                        {((this.state.userSubscription) && (this.state.userSubscription.subscriptionId
                           ? this.state.userSubscription.subscriptionId
                               .totalTradePermitted
-                          : "0"}
+                          : "0"))}
                       </div>
                       <div className="cl" />
                     </div>
                     <div className="row">
                       <div className="left-div">Inventory</div>
                       <div className="rightDiv pink">
-                        {this.state.userSubscription.subscriptionId
+                        {((this.state.userSubscription) && (this.state.userSubscription.subscriptionId
                           ? this.state.userSubscription.subscriptionId
                               .totalInventoryAllowed
-                          : "0"}
+                          : "0"))}
                       </div>
                       <div className="cl" />
                     </div>
@@ -295,25 +295,13 @@ class Dashboard extends Component {
                       <p>
                         Start date:{" "}
                         <span>
-                          {moment(
-                            this.state.userSubscription.subscriptionId
-                              ? this.state.userSubscription.subscriptionId
-                                  .createdAt
-                              : Date()
-                          ).format("LL")}
+                          
                         </span>
                       </p>
                       <p>
                         End date:{" "}
                         <span>
-                          {moment(
-                            this.state.userSubscription.subscriptionId
-                              ? this.state.userSubscription.subscriptionId
-                                  .createdAt
-                              : Date()
-                          )
-                            .add(1, "years")
-                            .format("LL")}
+                          
                         </span>
                       </p>
                       <UpgradePlan />
