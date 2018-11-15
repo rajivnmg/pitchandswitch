@@ -52,6 +52,30 @@ class Dashboard extends Component {
   }
 
   componentWillMount() {
+<<<<<<< HEAD
+	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
+		 if(localStorage.getItem('jwtToken') !== null){	
+			  axios.all([
+				 axios.get('/user/getLoggedInUser'),
+				 axios.get('/user/userSubscription'),
+				 axios.get('/user/userSubscriptionAddon')
+			   ])
+				.then(axios.spread((user, sresult,saresult) => {
+				if(user.data.code === 200){					 
+				this.setState({ 
+				currentUser:user.data.result,
+				notification_type:user.data.notification_type,
+				notifications:user.data.notifications,
+				totalNotifications:user.data.totalNotifications,
+				userSubscription:sresult.data.userSubacriptions[0],
+				userSubscriptionAddons:saresult.data.userSubacriptionAddons[0]						
+				})	
+				}				 			 	
+				}))			  
+			.catch(error => console.log(error));			
+		}	
+			
+=======
     axios.defaults.headers.common["Authorization"] = localStorage.getItem(
       "jwtToken"
     );
@@ -78,6 +102,7 @@ class Dashboard extends Component {
         )
         .catch(error => console.log(error));
     }
+>>>>>>> 054c191314b525f73af5a98a87b38a94e1b341e7
   }
 
   componentDidMount() {

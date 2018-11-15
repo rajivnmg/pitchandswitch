@@ -73,7 +73,10 @@ class WhatOtherSwitched extends Component {
 				var imagePathSwitch = switched.tradeSwitchProductId?switched.tradeSwitchProductId.productImages[0]:'';
 				var imagePathPitch = switched.tradePitchProductId?switched.tradePitchProductId.productImages[0]:'';	
 				var imagePathPitchUser = switched.offerTradeId?switched.offerTradeId.pitchUserId.profilePic:'';
-				var imagePathSwitchUser = switched.offerTradeId?switched.offerTradeId.SwitchUserId.profilePic:'';																
+				var imagePathSwitchUser = switched.offerTradeId?switched.offerTradeId.SwitchUserId.profilePic:'';
+				var userIds = switched.offerTradeId?switched.offerTradeId.SwitchUserId._id:'0';
+				var proIDS = switched.tradePitchProductId?switched.tradePitchProductId._id:'0';	
+				var productUrl = (localStorage.getItem('isLoggedIn') == 1 && localStorage.getItem('userId') == userIds)?'/my-trade-detail/'+proIDS:'/search-result/'+proIDS															
 					return (					    					
 					    <div className="slides-div"  key={index}>
 						<div key={index}>
@@ -81,11 +84,11 @@ class WhatOtherSwitched extends Component {
 						<div className="flipper">
 						<div className="front">
 						<div className='pic'>
-						  <Link to="/my-trade-detail" ><img src={constant.BASE_IMAGE_URL+'Products/'+imagePathSwitch} /></Link>
+						  <Link to={productUrl} ><img src={constant.BASE_IMAGE_URL+'Products/'+imagePathSwitch} /></Link>
 						  </div>
 						<div className='details'>						
-						<h4><a href="/my-trade-detail" >{switched.tradeSwitchProductId?switched.tradeSwitchProductId.productName:''}</a></h4>
-						<Link className="catLink" replace to='/'>{(switched.tradePitchProductId)?switched.tradePitchProductId.productCategory.title:"NA"}</Link>
+						<h4><a href={productUrl} >{switched.tradeSwitchProductId?switched.tradeSwitchProductId.productName:''}</a></h4>
+						<Link className="catLink" replace to={'/search-listing/'+(switched.tradePitchProductId?switched.tradePitchProductId.productCategory._id:"")}>{(switched.tradePitchProductId)?switched.tradePitchProductId.productCategory.title:"NA"}</Link>
 						</div>
 						<div className="userdiv">
 						<div className="user-pic userProfilePic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+imagePathSwitchUser} height="20px;" width="20px;"/></div>
@@ -100,7 +103,7 @@ class WhatOtherSwitched extends Component {
 						<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+imagePathPitch} /></div>
 						<div className='details'>
 						<h4>{switched.tradePitchProductId?switched.tradePitchProductId.productName:''}</h4>
-						<Link className="catLink" replace to='/'>{switched.tradePitchProductId?switched.tradePitchProductId.productCategory.title:'NA'}</Link>
+						<Link className="catLink" replace to={'/search-listing/'+(switched.tradePitchProductId?switched.tradePitchProductId.productCategory._id:"")}>{switched.tradePitchProductId?switched.tradePitchProductId.productCategory.title:'NA'}</Link>
 						</div>
 						<div className="userdiv">
 						<div className="user-pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+imagePathPitchUser} height="20px;" width="20px;"/></div>

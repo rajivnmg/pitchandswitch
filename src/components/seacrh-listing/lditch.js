@@ -34,7 +34,6 @@ class viewPitchPopup extends Component {
 			stateChange:[],
 			optionsChecked: []
 		}	
-		//console.log('offerTrade',this.state.offerTrade)
 	 }  
 	 
 	 
@@ -58,8 +57,7 @@ class viewPitchPopup extends Component {
 			this.setState({stateChange:stateChange})
         }
 	 
-	 handleOnChange = (chosenValue) => {
-		// console.log('chosenValue',chosenValue.target.value)
+	 handleOnChange = (chosenValue) => {		
            this.setState({ categoriesValues: chosenValue.target.value})
 		     axios.get('/trade/getProductByCategory/'+chosenValue.target.value).then(result => {
 			 if(result.data.code === 200){
@@ -69,7 +67,7 @@ class viewPitchPopup extends Component {
 		    })
       } 
 	  
-	 //componentWillMount state it always execute before render the page
+	
 	componentWillMount(){
 		this.setState({offerTradeId:this.props.proID})
 		   axios.get('/trade/getAllProduct/').then(result => {
@@ -83,7 +81,7 @@ class viewPitchPopup extends Component {
 		   }
 		})	
     }
-	//componentWillMount methos end 
+	
 
 changeEvent(event){
   let checkedArray = this.state.optionsChecked;	
@@ -110,8 +108,7 @@ changeEvent(event){
 	    const data = new FD();
         data.append('productIDS', this.state.optionsChecked)
         data.append('switchProId', this.props.proID)
-	    axios.post('/trade/submitPitchProduct/',data).then(result => {
-		//console.log('result',result)		  
+	    axios.post('/trade/submitPitchProduct/',data).then(result => {	
 		  if(result.data.code === 200){			  			
 			 this.setState({
 				message: result.data.message,
@@ -262,7 +259,7 @@ render() {
 				</Scrollbars>
 				<div className="btm-btns">
 				  <Button onClick={(e)=>this.submitHandler(e)} color="success" className="more-items">Pitch Now</Button>
-				  <Button><a className="ditch cancel-ditch close"> Cancel Pitch </a></Button>
+				  <Button><a className="ditch cancel-ditch close" onClick={close}> Cancel Pitch </a></Button>
 				</div>
 				</div>
 				</div>
