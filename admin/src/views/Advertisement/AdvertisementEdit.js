@@ -185,7 +185,7 @@ class AdvertisementEdit extends Component {
                     <Col xs="4" sm="12">
                     <FormGroup>
                       <Label htmlFor="lastname">URL</Label>
-                      <Input type="url"  pattern="(http|https)://.+" innerRef={input => (this.redirectURL = input)} placeholder="URL" />
+                      <Input type="url"  minlength="10" pattern="(http|https)://.+" innerRef={input => (this.redirectURL = input)} placeholder="URL" />
                     </FormGroup>
                   </Col>
                 </Row>

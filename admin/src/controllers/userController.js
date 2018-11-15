@@ -1853,8 +1853,7 @@ getUserWishListProducts = (req, res) => {
 getPublicProfile = (req, res) => {
   if (req.params.id) {
     var userId = req.params.id;
-
-    console.log("userId", userId);
+    let totalRating = 0;
     async.waterfall(
       [
         function(done) {

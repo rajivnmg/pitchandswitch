@@ -45,15 +45,14 @@ class MyTrades extends React.Component {
     }
 
 	 componentWillMount(){
-	      axios.get('/product/productDetails/'+ this.state.productId).then(result => {
+	     axios.get('/product/productDetails/'+ this.state.productId).then(result => {
 		    this.setState({
 				resultData:result.data.result,
 				mainImages:result.data.result?result.data.result.productImages[0]:"default_product_img@3x.png",
 				isAlreadyPitched:result.data.pitchProduct,
 				isAlreadyInWishlist:result.data.wishListProduct
 				});
-
-				})
+		})
 
 
 	   axios.get('/donation/getConstant').then(result => {
@@ -181,10 +180,8 @@ class MyTrades extends React.Component {
                     <Else>
                         <LoginPopup UserID={userid} proID={this.state.productId}/> 
                     </Else>
-                   </If>                 
-
-
-				    <div className="cl"></div>
+                   </If> 
+                   <div className="cl"></div>
 				</div>
 
 				<div className="productDetails">

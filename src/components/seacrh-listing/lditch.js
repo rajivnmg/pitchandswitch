@@ -119,7 +119,7 @@ changeEvent(event){
 			  });	
 			   setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});			
 				window.location.href='/my-trades';
-			 }, 12000);	
+			 }, 5000);	
 		  }
       })  
    }
@@ -160,6 +160,7 @@ changeEvent(event){
 			if(result.data.code === 200){
 			  this.setState({productData:result.data.result})
 		   }
+		   console.log('thisaaaaaaaaaaaaaaa',this.state.productData)
 		})
 			
 	  }
@@ -171,7 +172,7 @@ render() {
 	  optionTemplate = conditionsList.map(v => (<option key={v._id} value={v._id}>{v.title}</option>));
    }
   let img = this.state.productData.userId?this.state.productData.userId.profilePic:"";
-  
+   const productCategoryID = this.state.productData.productCategory?this.state.productData.productCategory._id:"";
   let productImg = 
   this.state.productData.productImages?this.state.productData.productImages[0]:"";
   return(
@@ -209,11 +210,12 @@ render() {
 				</div>
 				<div className="received-product-content-box">
 				<span>Product ID: <strong>{this.props.proID}</strong></span>
-				<h4>{this.state.productData.productName}</h4>
-				<a className="catLink" href="/">{this.state.productData.description}</a>
+				<h4>{this.state.productData.productName}-{this.state.productData.description}</h4>
+				<a className="catLink" href={"/search-listing/" + productCategoryID}>{this.state.productData.productCategory?this.state.productData.productCategory.title:""}</a>
 				<div className="ratingRow">
-				<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} alt="" /></div>
-				<p>{this.state.productData.description}</p>
+				<div className="pic">
+				<a href={"/public-profile/" + (this.state.productData.userId?this.state.productData.userId._id:"")}><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} alt="" /></a></div>
+				<p><a href={"/public-profile/" + (this.state.productData.userId?this.state.productData.userId._id:"")}>{this.state.productData.description}</a></p>
 				<div className="rated">4</div>
 				<div className="cl"></div>
 				</div> 
@@ -245,7 +247,7 @@ render() {
 				</div>
 				<div className="switch-product-content-box">
 				<h4>{productsListing.productName?productsListing.productName:""}</h4>
-				<a className="catLink" href="/">{productsListing.productCategory?productsListing.productCategory.title:""}</a>
+				<a className="catLink" href={"/search-listing/" + (productsListing.productCategory?productsListing.productCategory._id:'')}>{productsListing.productCategory?productsListing.productCategory.title:""}</a>
 				</div>
 				</div>
 				)

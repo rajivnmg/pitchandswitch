@@ -764,9 +764,6 @@ class Register extends React.Component {
                 </Link>
               </Else>
               </If>
-              
-              
-              
               <div className="details">
                 <h4>
                 <If condition={localStorage.getItem('isLoggedIn') == "1" && localStorage.getItem('userId') === userID}>
@@ -781,14 +778,7 @@ class Register extends React.Component {
                   </Link>
                    </Else>
                    </If>
-                
-                
-                
-
                 </h4>
-                
-                
-                
                 
                 <Link className="catLink" to={"/search-listing/" + catId}>
                   {catName}
@@ -859,7 +849,6 @@ class Register extends React.Component {
                 </div>
                 <div className="cl" />
               </div>
-
 
               <div className="item-listing">{searchItems}</div>
               <div className="cl" />

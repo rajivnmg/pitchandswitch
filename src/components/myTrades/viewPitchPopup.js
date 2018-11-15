@@ -28,7 +28,14 @@ class viewDitchPopup extends Component {
 	
 	componentWillMount(){	
 		this.setState({offerTradeId:this.state.offerTrade._id})
-	}
+		 if (localStorage.getItem("jwtToken") !== null) {
+			  axios.get("/user/getLoggedInUser").then(result => {
+				if(result.data.code === 200) {
+				  localStorage.setItem("userId", result.data.result._id);
+				} 
+			  });
+		   }
+	 }
 	 
 	componentDidMount(){
 		axios.get('/trade/pitchedProductList/'+this.state.offerTrade._id).then(result => {
@@ -92,17 +99,27 @@ class viewDitchPopup extends Component {
 			<Then>
 			  	{ this.state.offerTradeProducts.products.map((productList, index) => {			
 				var productImages = (productList.productImages)?productList.productImages[0]:'';
+				{console.log('productList',productList)}
 				return(
 				<div className="switch-product-box">
 					<div className="switch-product-image-box">
 					<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
 					<div className="switch-option-mask">
-						<a className="view-btn" href={'/search-result/'+productList._id}>View</a>
+					 <If condition={localStorage.getItem('userId') === productList.userId}>
+                       <Then>
+						 <a className="view-btn" href={'/my-trade_detail/'+productList._id}>View</a>
+					   </Then>
+					  <Else>
+					  <a className="view-btn" href={'/search-result/'+productList._id}>View</a>
+					  </Else>
+					 </If>
 					</div>
 					</div>
 					<div className="switch-product-content-box">
 					<h4>{productList.productName}</h4>
-					<a className="catLink" href={'/search-listing/'+productList.productCategory._id}>{productList.productCategory.title}</a>
+					   <a className="catLink" href={'/search-listing/'+productList.productCategory._id}>
+					     {productList.productCategory.title}
+					   </a>
 					</div>
 				</div>
 				)
