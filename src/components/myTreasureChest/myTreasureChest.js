@@ -78,7 +78,8 @@ class myTreasureChest extends Component {
 			}
 			axios.get('/product/myTreasureChest').then(result =>{				
 				this.setState({
-					myTreasureChests : result.data.result
+					myTreasureChests : result.data.result,
+					totalInventory:result.data.result.length
 				});
 			});
 			axios.get('/category/listCategory').then(result =>{			
@@ -132,7 +133,7 @@ Capitalize(str){
                             </ul>
                         </div>
                         <div className="heading-row">.
-							<If condition={this.state.totalInventory >= this.state.user.totalInventory }>
+							<If condition={this.state.totalInventory <= this.state.user.totalInventory }>
 								<Then>
 									 <Link to={'/add-new-product'} className="more-items"><span className="plus">+</span> Add New Product</Link>
 								</Then>

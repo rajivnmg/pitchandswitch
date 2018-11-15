@@ -654,6 +654,109 @@ const payOnStripe = (req, res) => {
 });
 }
 
+/** Auther	: Rajiv Kumar
+ *  Date	: November 15, 2018
+ *	Description : Function to update subscription and purchase addon plan on stripe
+ **/
+const updateUserPlan = (req, res) => {
+//  console.log("payOnStripe", req.body); return;
+  stripe.customers.create({
+      email: req.body.userEmail,
+      source: {
+        object: 'card',
+        exp_month: req.body.expiryMonth,
+        exp_year: req.body.expiryYear,
+        number: req.body.cardNumber,
+        cvc: req.body.cardCVV
+      }
+    }).then(function(customer) {
+      //console.log("customer",customer)
+      return stripe.charges.create({
+        amount: req.body.amount*100,
+        currency: 'usd',
+        customer: customer.id
+      });
+    }).then(function(charge) {
+    //  console.log("charge",charge)
+    // New charge created on a new customer
+    User.updateMany({ _id:req.body.userId },  { "$set": {"totalInventory":req.body.totalInventory,"totalTrade":req.body.totalTrade} }).then(function(user){
+      //console.log("user",user)
+    });
+    let data = {}
+		if(req.body.planType ==='subscription'){
+			data.subscriptionId =req.body.planTypeId
+		}else if(req.body.planType ==='addon'){
+			data.subscriptionId =req.body.planTypeId
+		}
+      
+      data.userId = req.body.userId
+      data.status = 1
+      data.transactionId = charge.id
+      data.transactionStatus = (charge.status === 'succeeded')?1:0
+      data.transactionResponceMessage = charge.status
+      data.transactionAmount = (charge.amount/100)
+      UserSubscription.create(data, (err, responceData) => {
+        if(err){
+          return res.send({
+            code: httpResponseCode.BAD_REQUEST,
+            message: httpResponseMessage.INTERNAL_SERVER_ERROR
+          });
+        }else{
+			
+			let TransactionData = {};
+				TransactionData.transactionId = charge.id
+				TransactionData.transactionType = 'Subscription'
+				TransactionData.userId = req.body.userId
+				TransactionData.paymentId = charge.id
+				TransactionData.transactionAmount = (charge.amount/100)
+				TransactionData.status = (charge.status === 'succeeded')?1:0
+				TransactionData.transactionDate = new Date();
+				Transaction.create(TransactionData, (err, transactionResp) => {
+					console.log("transactionResp",transactionResp)
+				});					
+				// console.log("responceData",responceData)
+    			// setup email data with unicode symbols
+                commonFunction.readHTMLFile('src/views/emailTemplate/userSubscriptionConfirmationEmail.html', function(err, html) {
+                  var template = handlebars.compile(html);
+                  var replacements = {
+                       trnxId:charge.id,
+                       userName:(req.body.userName)?req.body.userName.toUpperCase():'Subscriber'
+                  };
+                  var htmlToSend = template(replacements);
+                  let mailOptions = {
+                    from: constant.SMTP_FROM_EMAIL, // sender address
+                    to: req.body.userEmail+',rajiv.kumar@newmediaguru.net', // list of receivers
+                    subject: 'Payment success ✔', // Subject line
+                    html : htmlToSend
+                  };
+                  commonFunction.transporter.sendMail(mailOptions, function (error, response) {
+                      if (error) {
+                          console.log(error);
+                      }else{
+                        console.log('Message sent: %s', info.messageId);
+            						// Preview only available when sending through an Ethereal account
+            						console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                      }
+                  });
+              })
+            return res.json({
+                code: httpResponseCode.EVERYTHING_IS_OK,
+                message: httpResponseMessage.CHANGE_STATUS_SUCCESSFULLY,
+               result: responceData
+              });
+          }
+    })
+
+}).catch(function(err) {
+  // Deal with an error
+  return res.json({
+      code: httpResponseCode.BAD_REQUEST,
+      message: err,
+     result: err
+    });
+});
+}
+
 
 module.exports = {
   create,
@@ -674,5 +777,6 @@ module.exports = {
   listSubscriptionPlans,
   getActiveAddons,  
   saveUserSubscriptionPlan,
-  payOnStripe
+  payOnStripe,
+  updateUserPlan
 }

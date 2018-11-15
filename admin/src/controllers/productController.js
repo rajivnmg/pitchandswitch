@@ -464,7 +464,7 @@ const filterBycategory = (req,res) => {
 	  var form = new multiparty.Form();
     var conditionObject = {};
 	  form.parse(req, function(err, data, files) {
-      console.log('filterBycategory', data)
+      //console.log('filterBycategory', data)
       if(data.category_type){
         conditionObject[data.category_type] = {$in: data.category_ids[0].split(',')};
       }
@@ -552,7 +552,7 @@ const filterBycategory = (req,res) => {
      .populate({path:'brand',model:'Brand'})
      .populate({path:'size',model:'Size'})
 	  .exec(function(err, result){
-      console.log('RESULT', result, err)
+    //  console.log('RESULT', result, err)
       if(err){
     		return res.send({
     			code: httpResponseCode.BAD_REQUEST,
@@ -709,8 +709,7 @@ const checkExists = (req, res) => {
     form.parse(req, function (err, data, files) {
         const dataTrade = {};
         var pitchUserID = data.pitchUserID;
-        var productId = data.productId;
-        console.log('pitchUserID', productId);
+       var productId = data.productId;       
         //Product.find({productCategory:id,userId:userId})
         //OfferTrade.find({pitchUserID:pitchUserID})
         OfferTrade.find({pitchUserId: pitchUserID, SwitchUserProductId: productId})
@@ -893,7 +892,7 @@ const searchresult = (req, res) => {
 
 					var searchvalue = {productCategory:ObjectId(id),productStatus:"1",userId: {$in: responseData}};
 				}else{
-					console.log("OUTTTT");
+					
 					var searchvalue = {};
 				}
         Product.aggregate([
@@ -1008,7 +1007,7 @@ const productDetails = (req, res) => {
             .populate({path: 'size', model: 'Size'})
             .populate({path: 'brand', model: 'Brand'})
             .exec(function (err, result) {
-				console.log('resultrerereeerereeeee',result)
+				
                 if (err) {
                     return res.send({
                         code: httpResponseCode.BAD_REQUEST,
@@ -1023,7 +1022,7 @@ const productDetails = (req, res) => {
                     } else {
                         var token = commonFunction.getToken(req.headers);
                         if (token.length > 10) {
-                            console.log('token', token.length);
+                           
                             decoded = jwt.verify(token, settings.secret);
                             var userId = decoded._id;
                             Promise.all([
@@ -1645,12 +1644,12 @@ const wishList = (req, res) => {
     if (token) {
         decoded = jwt.verify(token, settings.secret);
         var userId = decoded._id;
-        WishList.find({})
+        WishList.find({userId:userId})
                 .populate('userId')
                 .populate('userId', ['firstName', 'lastName', 'userName', 'profilePic'])
                 .populate({path: 'productId', model: 'Product', populate: [{path: "productCategory", model: "Category"}]})
                 .exec(function (err, result) {
-                    console.log("result", result)
+                   
                     if (err) {
                         return res.json({
                             message: httpResponseMessage.USER_NOT_FOUND,
@@ -1676,7 +1675,7 @@ const clearWishlist = (req, res) => {
     var token = commonFunction.getToken(req.headers);
     if (token) {
         decoded = jwt.verify(token, settings.secret);
-        var userId = decoded._id;
+        var userId = decoded._id;       
         WishList.deleteMany({userId: userId}, (err, result) => {
             if (err) {
                 return res.json({

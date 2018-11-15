@@ -86,6 +86,8 @@ class payInventoryPopup extends Component {
 		addons:[],
 		subscriptions : [],
 	    isProcess : false,
+	    showFormError:true,
+	    showFormSuccess:false,
 		message:'',
 		paymentAmount:0,
 		planTypeId : '',
@@ -129,15 +131,31 @@ class payInventoryPopup extends Component {
 	};
 	
 	inputChangedHandler = (event, inputIdentifier) => {
-		console.log("data-ptype",event.target.getAttribute('data-ptype'))
-		console.log("event",event.target.value)
+		//console.log("data-ptype",event.target.getAttribute('data-ptype'))
+		//console.log("event",event.target.value)
+		if(event.target.getAttribute('data-ptype') !==null){
+			this.setState({
+				paymentAmount:event.target.value,
+				planTypeId : event.target.getAttribute('data-ptypeid'),
+				planType:event.target.getAttribute('data-ptype'),
+				totalInventoryAllowed:event.target.getAttribute('data-inventory'),
+				totalTradePermitted:event.target.getAttribute('data-trade'),	
+			});			
+		}
 			const paymentForm = {
 			  ...this.state.addPaymentForm
 			};
 			paymentForm[inputIdentifier] = event.target.value;    
 			this.setState({ addPaymentForm: paymentForm });
 		};	
-	submit = () => {
+	submit = () => {		
+		if(this.state.planTypeId ==''){		
+			console.log("planTypeId",this.state.planTypeId)	
+				this.setState({showFormError: true,message: 'Please choose a plan'});				
+				setTimeout(() => {this.setState({showFormError: false});}, 12000);
+			return false;
+		}
+		
 		const data = this.state.addPaymentForm;
 		data.userEmail = localStorage.getItem('userEmail');
 		data.userId =  localStorage.getItem('userId');
@@ -146,9 +164,9 @@ class payInventoryPopup extends Component {
 		data.planType =  this.state.planType;
 		data.totalInventory = this.state.totalInventoryAllowed;
 		data.totalTrade = this.state.totalTradePermitted;		
-		console.log("submit",data); return;
+		//console.log("submit",data); return;
 		this.setState({isProcess:true})
-        axios.post('/subscription/payOnStripe', data).then(result => {        
+        axios.post('/subscription/updateUserPlan', data).then(result => {        
          if(result.data.code === 200){
 			  this.setState({
 				message: result.data.message,
@@ -190,7 +208,7 @@ class payInventoryPopup extends Component {
   
  _renderErrorMessage() {
     return (
-      <div align="center" className={"alert alert-danger mt-4"} role="alert">
+      <div align="center" className={"errorMessage alert alert-danger mt-4"} role="alert">
         {this.state.message}
       </div>
     );
@@ -218,7 +236,7 @@ render() {
 															return(	
 																<Auxios key={index}>															
 																	<div className="radioBtn" >
-																		<input id={"gold"} required={true} name={"plan"} type={"radio"} data-ptype={'subscription'} value={subscription.price} onChange={(e) => this.inputChangedHandler(e, 'radio')}/><label htmlFor="gold"></label>
+																		<input id={"gold"} required={true} name={"plan"} type={"radio"} data-ptype={'subscription'} data-ptypeid={subscription._id} data-trade={subscription.totalTradePermitted} data-inventory={subscription.totalInventoryAllowed} value={subscription.price} onChange={(e) => this.inputChangedHandler(e, 'radio')}/><label htmlFor="gold"></label>
 																	</div>
 																	<div className="right-div">
 																		<p>Gold Package
@@ -236,7 +254,7 @@ render() {
 												return(
 													<Auxios key={index}>															
 													<div className="radioBtn" >
-														<input id={"gold1"+index} type="radio" name="plan" onChange={(e) => this.inputChangedHandler(e, 'radio')} data-ptype={'addon'} value={addon.price}/>
+														<input id={"gold1"+index} type="radio" name="plan" onChange={(e) => this.inputChangedHandler(e, 'radio')} data-ptype={'addon'} data-ptypeid={addon._id} value={addon.price} data-trade={addon.totalTradePermitted} data-inventory={addon.totalInventoryAllowed}/>
 														<label htmlFor={"gold1"+index}></label>
 													</div>
 													<div className="right-div">
@@ -252,6 +270,8 @@ render() {
 									<div className="cl"></div>
 								</div>
 							<div className="form-row">
+							 {this.state.showFormError ? this._renderErrorMessage() : null}	
+							  {this.state.showFormSuccess ? this._renderSuccessMessage() : null}	
 								<span className="astrik">*</span>
 								<label className="label">Name</label>
 								<input type="text" id={"cardHolderName"} required={true} name={"cardHolderName"} type={"cardHolderName"}  onChange={(e) => this.inputChangedHandler(e, 'cardHolderName')} placeholder="Card holder name" className="form-control textBox"/>

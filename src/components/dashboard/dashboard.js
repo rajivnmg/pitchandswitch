@@ -292,21 +292,11 @@ class Dashboard extends Component {
                       <div className="cl" />
                     </div>
                     <div className="topbrdr-row">
-                      <p>
-                        Start date:{" "}
-                        <span>
-                          
-                        </span>
-                      </p>
-                      <p>
-                        End date:{" "}
-                        <span>
-                          
-                        </span>
-                      </p>
-                      <UpgradePlan />
-                      <div className="cl" />
-                    </div>
+						<p>Start date: <span>{moment((this.state.userSubscription.subscriptionId)?this.state.userSubscription.subscriptionId.createdAt:Date()).format('LL')}</span></p>
+						<p>End date: <span>{moment((this.state.userSubscription.subscriptionId)?this.state.userSubscription.subscriptionId.createdAt:Date()).add(1, 'years').format('LL')}</span></p>
+						 <UpgradePlan />
+						 <div className="cl"></div>
+					</div>
                   </div>
                   <If condition={this.state.userSubscriptionAddons}>
                     <Then>

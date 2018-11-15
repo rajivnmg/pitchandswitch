@@ -24,5 +24,5 @@ router.get('/getActiveAddons',subscriptionController.getActiveAddons)
 // routes for user subscription plan
 router.post('/saveUserSubscriptionPlan',subscriptionController.saveUserSubscriptionPlan)
 router.post('/payOnStripe',subscriptionController.payOnStripe)
-
+router.post('/updateUserPlan',subscriptionController.updateUserPlan)
 module.exports = router;
