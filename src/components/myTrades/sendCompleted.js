@@ -36,9 +36,7 @@ class SendCompleted extends React.Component {
 	
 	render() {
 		return (<div>
-		{ this.state.completedPitches.map((pitch, index) => {
-			console.log('idididididididi',pitch.pitchUserId)
-			console.log('currentUserIDS',this.state.currentUser)
+		{ this.state.completedPitches.map((pitch, index) => {		
 			if(pitch.pitchUserId &&  pitch.pitchUserId._id == this.state.currentUser){	
 			let ditchClasses = ['ditch'];
 			var IDS = pitch.offerTradeId?pitch.offerTradeId._id:"";
@@ -47,7 +45,7 @@ class SendCompleted extends React.Component {
 					<div className="pitch-div">
 						{ (pitch.offerTradeId &&  pitch.offerTradeId.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
 						<div className="colum user"><span>{(send===1)?(pitch.offerTradeId)?pitch.offerTradeId.SwitchUserId.userName:'N/A':(pitch.offerTradeId)?pitch.offerTradeId.pitchUserId.userName:'N/A'}</span></div>
-						<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
+						<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'asdfasdfasdfasfd':'Received'}</span></div>
 						<div className="colum complete-date"></div>
 						<div className="colum trade-info">
 						{console.log('IDS',pitch)}

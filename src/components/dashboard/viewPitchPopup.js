@@ -38,7 +38,14 @@ class viewPitchPopup extends Component {
 		    this.setState({
 				productData:result.data.result,
 			});
-		})	
+		})
+		 if (localStorage.getItem("jwtToken") !== null) {
+			  axios.get("/user/getLoggedInUser").then(result => {
+				if(result.data.code === 200) {
+				  localStorage.setItem("userId", result.data.result._id);
+				} 
+			  });
+		   }	
 	}
 	
      render() {
@@ -68,7 +75,6 @@ class viewPitchPopup extends Component {
 
 			<a className="catLink" href={"search-listing/"+((this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory._id:'')}>{((this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory.title:"")}</a>
 
-			
 		    <div className="ratingRow">
 			<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+productIMG} alt="" /></div>
 			<p>{((this.state.offerTrade && this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:"")}</p>
@@ -94,7 +100,14 @@ class viewPitchPopup extends Component {
 					<div className="switch-product-image-box">
 					<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
 					<div className="switch-option-mask">
-						<a className="view-btn" href={'/search-result/'+productList._id}>View</a>
+					 <If condition={localStorage.getItem('userId') === productList.userId}>
+                       <Then>
+						 <a className="view-btn" href={'/my-trade_detail/'+productList._id}>View</a>
+					   </Then>
+					  <Else>
+					  <a className="view-btn" href={'/search-result/'+productList._id}>View</a>
+					  </Else>
+					 </If>
 					</div>
 					</div>
 					<div className="switch-product-content-box">

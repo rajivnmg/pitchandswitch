@@ -60,7 +60,7 @@ class Ditch extends React.Component {
 				<div className="pitch-div">
 				{(pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
 				<div className="colum user"><span>{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}</span></div>
-				<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
+				<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Sent':'Received'}</span></div>
 				<div className="colum"><ViewDitchPopup offerTrade={pitch}/> </div>
 				<div className="colum message"> </div>
 				 <div className="colum action">

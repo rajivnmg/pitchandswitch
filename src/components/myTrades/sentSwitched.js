@@ -59,8 +59,7 @@ class Switched extends React.Component {
 					  showIcon
 					/>				
 				</Then>								
-			</If>
-        
+			</If>        
        
             {this.state.switches.map((pitch, index) => {							
 			let ditchClasses = ['ditch'];			
@@ -70,7 +69,7 @@ class Switched extends React.Component {
 				<div className="pitch-div">
 				   { (pitch.offerTradeId &&  pitch.offerTradeId.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New switched</div> : null }
 					<div className="colum user width1"><span>{(send===1)?(pitch.offerTradeId)?pitch.offerTradeId.SwitchUserId.userName:'N/A':(pitch.offerTradeId)?pitch.offerTradeId.pitchUserId.userName:'N/A'}</span></div>
-					<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
+					<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Sent':'Received'}</span></div>
 					<div className="colum"><a href="#" className="view-pitch">
 					<SwitchTradeInfo offerTrade={pitch} /></a></div>
 					<div className="colum trade-info"> </div>
