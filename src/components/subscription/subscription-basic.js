@@ -91,7 +91,6 @@ class subscriptionBasic extends Component {
 				cardCVV:''
 			}
 		}
-		console.log("subscriptionBasic POPUP props", this.props)
 	}
 	
 	state = {
