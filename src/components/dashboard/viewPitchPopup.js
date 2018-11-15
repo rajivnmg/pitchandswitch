@@ -66,11 +66,7 @@ class viewPitchPopup extends Component {
 			<h4>Product Name: {((this.state.offerTrade && this.state.offerTrade.SwitchUserProductId)?this.state.offerTrade.SwitchUserProductId.productName:"")}  </h4>
 			<span> {((this.state.offerTrade && this.state.offerTrade.SwitchUserProductId)?this.state.offerTrade.SwitchUserProductId.description:"")} </span>
 			
-<<<<<<< HEAD
-			<a className="catLink" href={"search-listing/"+((this.state.productData) && (this.state.productData.productCategory?this.state.productData.productCategory._id:''))}>{((this.state.productData) && (this.state.productData.productCategory?this.state.productData.productCategory.title:""))}</a>
-=======
 			<a className="catLink" href={"search-listing/"+((this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory._id:'')}>{((this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory.title:"")}</a>
->>>>>>> 054c191314b525f73af5a98a87b38a94e1b341e7
 			
 		    <div className="ratingRow">
 			<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+productIMG} alt="" /></div>

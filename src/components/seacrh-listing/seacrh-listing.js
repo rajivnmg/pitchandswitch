@@ -7,34 +7,6 @@ import { Link } from "react-router-dom";
 import colorImg from "../../images/color.png";
 import star from "../../images/star.png";
 //import { Slider, InputNumber, Row, Col } from 'antd';
-<<<<<<< HEAD
-import Colors from './colors';
-import UserAutosearch from './userSelect';
-import axios from 'axios';
-import CategoryToggleBox from './CategoryToggleBox';
-import AgeSelectUser from './ageSelect';
-import Style from './search-listing.css';
-import IntegerStep from './IntegerStep';
-import SelectLocations from './SelectLocations';
-import BrandToggleBox from './BrandToggleBox';
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
-
-import {
-  Fade,
-  Form,
-  FormGroup,
-  FormText,
-  FormFeedback
-} from 'reactstrap';
-const constant = require('../../config/constant');
-
-var FD = require('form-data');
-var fs = require('fs');
-const treeData = [{
-  label: 'month - 6 month',
-  value: '0-0',
-  key: '0-0'
-=======
 import Colors from "./colors";
 import UserAutosearch from "./userSelect";
 import axios from "axios";
@@ -55,7 +27,6 @@ const treeData = [
     label: "month - 6 month",
     value: "0-0",
     key: "0-0"
->>>>>>> 054c191314b525f73af5a98a87b38a94e1b341e7
   },
   {
     label: "6 month - 1 year",
@@ -752,52 +723,6 @@ class Register extends React.Component {
           catName = item.productCategory.title;
         }
 
-<<<<<<< HEAD
-
-          let searchItems = null;
-          if(this.state.resultData.length){
-            searchItems = this.state.resultData.map(function (item,index) {
-				let catId:'';
-				let catName:'';
-			  if(item.productCategory && Array.isArray(item.productCategory)){
-					catId = item.productCategory[0]._id;
-					catName = item.productCategory[0].title;
-			  }else{
-					catId = item.productCategory._id;
-					catName = item.productCategory.title; 
-			  }
-				
-			 let userID = item.userId?item.userId._id:'';  
-             let img = item.userId?<img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+item.userId.profilePic} />:null;
-             return (
-             <div className="Items" key={index}><div>
-            
-              <If condition={localStorage.getItem('isLoggedIn') == "1" && localStorage.getItem('userId') === userID}>
-				   <Then>
-					 <Link to={'/my-trade-detail/'+item._id}>
-    					 <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+item.productImages} /></div>
-                     </Link>
-				   </Then>
-				   <Else>
-					  <Link to={'/search-result/'+item._id}>
-					     <div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+item.productImages} /></div>
-                      </Link>
-				   </Else>
-			  </If>
-             <div className='details'>
-             <h4><Link to={'/search-result/'+item._id}>{item.productName}</Link></h4>
-               <Link className="catLink" to={'/search-listing/'+catId}>{catName}</Link>
-             </div>
-             <div className="userdiv">
-				<div className="user-pic">
-				<Link to={'/public-profile/'+(item.userId?item.userId._id:'')}>
-					{img}
-				</Link>
-				</div>
-                <div className="user-name">
-                <Link className="alink" to={'/public-profile/'+(item.userId?item.userId._id:'')}>
-					{item.userId?item.userId.firstName:""}
-=======
         let img = item.userId ? (
           <img
             className="userPicNew"
@@ -826,7 +751,6 @@ class Register extends React.Component {
                 </h4>
                 <Link className="catLink" to={"/search-listing/" + catId}>
                   {catName}
->>>>>>> 054c191314b525f73af5a98a87b38a94e1b341e7
                 </Link>
               </div>
               <div className="userdiv">
@@ -839,28 +763,12 @@ class Register extends React.Component {
                     {img}
                   </Link>
                 </div>
-<<<<<<< HEAD
-             </div>
-             </div>
-             </div>
-             )
-           });
-         }
-          return (<div className="search-page">
-        		<div className="container">
-        			<div className="lft-section">
-              <Collapse
-                  accordion={accordion}
-                  onChange={this.onChange}
-                  activeKey={activeKey}
-=======
                 <div className="user-name">
                   <Link
                     className="alink"
                     to={
                       "/public-profile/" + (item.userId ? item.userId._id : "")
                     }
->>>>>>> 054c191314b525f73af5a98a87b38a94e1b341e7
                   >
                     {item.userId ? item.userId.firstName : ""}
                   </Link>
@@ -910,31 +818,6 @@ class Register extends React.Component {
                 </div>
                 <div className="cl" />
               </div>
-<<<<<<< HEAD
-				 <div className="rgt-section" onClick={()=>{this.showMoreCategoriesOpen(true); this.isBrandOpenFun(true)}}>
-					<div className="search-row">
-						<div className="search-result">
-							<strong>{this.state.searchvalue  }</strong> ({this.state.resultData.length} Results)
-						</div>
-						<div className="sort-by">
-							<span>Sort by:</span>
-							<div className="newly-add">
-								<div className="search"><Select options={filterSearch} defaultValue={filterSearch[0]}   onChange={opt => console.log(opt.label, opt.value)} /></div>
-							</div>
-						</div>
-						<div className="cl"></div>
-					</div>
-
-					<div className="item-listing">
-					   { searchItems}
-					</div>
-					<div className="cl"></div>
-				</div>
-         			<div className="cl"></div>
-         		</div>
-         	</div>);
-      }
-=======
 
               <div className="item-listing">{searchItems}</div>
               <div className="cl" />
@@ -944,7 +827,6 @@ class Register extends React.Component {
         </div>
       </Aux>
     );
->>>>>>> 054c191314b525f73af5a98a87b38a94e1b341e7
   }
 }
 

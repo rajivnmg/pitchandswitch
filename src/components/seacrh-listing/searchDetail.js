@@ -44,42 +44,16 @@ class MyTrades extends React.Component {
         };
     }
 
-	
-
-	 componentDidMount(){
-		  axios.get('/product/productDetails/'+ this.state.productId).then(result => {
+	 componentWillMount(){
+	      axios.get('/product/productDetails/'+ this.state.productId).then(result => {
 		    this.setState({
 				resultData:result.data.result,
 				mainImages:result.data.result?result.data.result.productImages[0]:"default_product_img@3x.png",
 				isAlreadyPitched:result.data.pitchProduct,
 				isAlreadyInWishlist:result.data.wishListProduct
 				});
-				})
+		})
 
-<<<<<<< HEAD
-			   axios.get('/donation/getConstant').then(result => {
-				   this.setState({conditions: result.data.result});
-			   });
-
-			   if(localStorage.getItem('jwtToken') !== null){
-					axios.get('/user/getLoggedInUser').then(result => {
-						this.setState({ user:result.data.result })
-						localStorage.setItem('loggedInUser',result.data.result._id);
-						localStorage.setItem('userId',result.data.result._id);
-						localStorage.setItem('userName',result.data.result.userName);
-						localStorage.setItem('isLoggedIn',1);
-						this.setState({resultData:result.data.result});
-					})
-				}		 
-				const data = new FD();
-				data.append('productId', this.state.productId)
-				data.append('pitchUserID', localStorage.getItem('loggedInUser'))
-					axios.post('/product/checkExists/',data).then(result => {
-					  this.setState({checkData:result.data.result});
-				})		    
-	 }
-        
-=======
 	   axios.get('/donation/getConstant').then(result => {
 		   this.setState({conditions: result.data.result});
 	   });
@@ -104,7 +78,6 @@ class MyTrades extends React.Component {
 			  this.setState({checkData:result.data.result});
 		    })
         }
->>>>>>> 054c191314b525f73af5a98a87b38a94e1b341e7
 
 	addToWishList(){
 		let data = {};
@@ -173,31 +146,6 @@ class MyTrades extends React.Component {
 					</div>
 				<div className="btnRow">
 				{this.state.showFormSuccess ? this._renderSuccessMessage() : null}
-<<<<<<< HEAD
-                   <If condition={localStorage.getItem('isLoggedIn') == "1"} >
-                    <Then>
-                        <If condition={this.state.checkData && this.state.checkData.length>0} >
-						  <Then>
-						      <a href="#" className="ditch">Already Pitched</a>
-						  </Then>
-						  <Else>						    
-						       <LastPitchPopup offerTrade={this.state.resultData} proID = {this.state.productId}/>
-						  </Else>
-						 </If>
-						 <If condition={this.state.isAlreadyInWishlist === false}>
-						   <Then>
-						     <a href="#" className="ditch add-wishlist" onClick={()=>this.addToWishList()}>Add to Wishlist</a>
-						   </Then>
-						   <Else>
-						      <span className="ditch add-wishlist">Added in Wishlist</span>
-						   </Else>
-						 </If>
-                      </Then>
-                    <Else>
-                        <LoginPopup UserID={userid} proID={this.state.productId}/> 
-                    </Else>
-                   </If>                 
-=======
 <p>{localStorage.getItem('isLoggedIn') == "1"}</p>
                 <If condition={localStorage.getItem('isLoggedIn') == "1"} >
 						<Then>
@@ -239,22 +187,21 @@ class MyTrades extends React.Component {
 					</Else>
 
 				</If>
->>>>>>> 054c191314b525f73af5a98a87b38a94e1b341e7
 				    <div className="cl"></div>
 				</div>
 
 				<div className="productDetails">
-				 <h5>Product Details</h5>
-				 <table cellPadding="0" cellSpacing="0" width="100%">
+				<h5>Product Details</h5>
+				<table cellPadding="0" cellSpacing="0" width="100%">
 				  <tbody>
 					<tr>
-						<td>Size:</td><td>{this.state.resultData.size?this.state.resultData.size.size:""} GB</td>
+					<td>Size:</td><td>{this.state.resultData.size?this.state.resultData.size.size:""} GB</td>
 					</tr>
 					<tr>
-						<td>Color:</td><td><img src={colorOrange} />{this.state.resultData.color}</td>
+					<td>Color:</td><td><img src={colorOrange} />{this.state.resultData.color}</td>
 					</tr>
 					<tr>
-						<td>Brand:</td><td>{this.state.resultData.brand?this.state.resultData.brand.brandName:""}</td>
+					<td>Brand:</td><td>{this.state.resultData.brand?this.state.resultData.brand.brandName:""}</td>
 					</tr>
 					<tr>
 						<td>Condition:</td><td>{optionTemplate}</td>
