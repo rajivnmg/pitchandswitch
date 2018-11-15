@@ -11,7 +11,6 @@ const contentStyle = {
 };
 
 class LoginPopup extends React.Component {
-
   constructor(props){
 		super(props);
 		this.email = React.createRef();

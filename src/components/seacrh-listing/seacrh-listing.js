@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import colorImg from "../../images/color.png";
 import star from "../../images/star.png";
 //import { Slider, InputNumber, Row, Col } from 'antd';
+
 import Colors from "./colors";
 import UserAutosearch from "./userSelect";
 import axios from "axios";
@@ -18,6 +19,7 @@ import SelectLocations from "./SelectLocations";
 import BrandToggleBox from "./BrandToggleBox";
 import { Fade, Form, FormGroup, FormText, FormFeedback } from "reactstrap";
 import Aux from "../../hoc/Aux";
+import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 const constant = require("../../config/constant");
 
 var FD = require("form-data");
@@ -27,6 +29,7 @@ const treeData = [
     label: "month - 6 month",
     value: "0-0",
     key: "0-0"
+
   },
   {
     label: "6 month - 1 year",
@@ -723,6 +726,9 @@ class Register extends React.Component {
           catName = item.productCategory.title;
         }
 
+
+    let userID = item.userId?item.userId._id:'';  
+         
         let img = item.userId ? (
           <img
             className="userPicNew"
@@ -734,21 +740,56 @@ class Register extends React.Component {
         return (
           <div className="Items" key={index}>
             <div>
-              <Link to={"/search-result/" + item._id}>
-                <div className="pic">
-                  <img
+              <If condition={localStorage.getItem('isLoggedIn') == "1" && localStorage.getItem('userId') === userID}>
+               <Then>
+                   <Link to={'/my-trade-detail/'+item._id}>
+                      <div className="pic">
+						  <img
+							src={
+							  constant.BASE_IMAGE_URL + "Products/" + item.productImages
+							}
+						  />
+						</div>
+					  </Link>
+                 </Then>   
+                  <Else>
+                  <Link to={"/search-result/" + item._id}>
+                   <div className="pic">
+                    <img
                     src={
                       constant.BASE_IMAGE_URL + "Products/" + item.productImages
                     }
-                  />
-                </div>
-              </Link>
+                    />
+                  </div>
+                </Link>
+              </Else>
+              </If>
+              
+              
+              
               <div className="details">
                 <h4>
-                  <Link to={"/search-result/" + item._id}>
+                <If condition={localStorage.getItem('isLoggedIn') == "1" && localStorage.getItem('userId') === userID}>
+                  <Then>
+                    <Link to={"/my-trade-detail/" + item._id}>
+                     {item.productName}
+                  </Link>
+                  </Then>
+                   <Else>
+                    <Link to={"/search-result/" + item._id}>
                     {item.productName}
                   </Link>
+                   </Else>
+                   </If>
+                
+                
+                
+
                 </h4>
+                
+                
+                
+                
                 <Link className="catLink" to={"/search-listing/" + catId}>
                   {catName}
                 </Link>
@@ -818,6 +859,7 @@ class Register extends React.Component {
                 </div>
                 <div className="cl" />
               </div>
+
 
               <div className="item-listing">{searchItems}</div>
               <div className="cl" />
