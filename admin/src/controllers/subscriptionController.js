@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser')
 const Subscription = require('../models/subscription')
 const UserSubscription = require('../models/userSubscription')
+const UserSubscriptionAddons = require('../models/userSubscriptionAddons')
 const User = require('../models/User')
 const Addon = require('../models/addon')
 const Transaction = require('../models/transaction')
@@ -659,7 +660,7 @@ const payOnStripe = (req, res) => {
  *	Description : Function to update subscription and purchase addon plan on stripe
  **/
 const updateUserPlan = (req, res) => {
-//  console.log("payOnStripe", req.body); return;
+  console.log("payOnStripe", req.body);
   stripe.customers.create({
       email: req.body.userEmail,
       source: {
@@ -678,41 +679,51 @@ const updateUserPlan = (req, res) => {
       });
     }).then(function(charge) {
     //  console.log("charge",charge)
+        
     // New charge created on a new customer
     User.updateMany({ _id:req.body.userId },  { "$set": {"totalInventory":req.body.totalInventory,"totalTrade":req.body.totalTrade} }).then(function(user){
       //console.log("user",user)
     });
     let data = {}
-		if(req.body.planType ==='subscription'){
-			data.subscriptionId =req.body.planTypeId
-		}else if(req.body.planType ==='addon'){
-			data.subscriptionId =req.body.planTypeId
-		}
-      
-      data.userId = req.body.userId
+	  data.userId = req.body.userId
       data.status = 1
       data.transactionId = charge.id
       data.transactionStatus = (charge.status === 'succeeded')?1:0
       data.transactionResponceMessage = charge.status
       data.transactionAmount = (charge.amount/100)
-      UserSubscription.create(data, (err, responceData) => {
+      var query = {};
+		if(req.body.planType ==='addon'){
+			data.addonId =req.body.planTypeId
+			data.userSubscriptionId =req.body.planTypeId	
+			query = new UserSubscriptionAddons(data);		
+		}else{
+			 data.subscriptionId =req.body.planTypeId
+			 var query = new UserSubscription(data);
+		}	
+		//console.log("query",query) 
+		//Saving it to the database.    
+      query.save(function (err, responceData){		  
         if(err){
           return res.send({
             code: httpResponseCode.BAD_REQUEST,
             message: httpResponseMessage.INTERNAL_SERVER_ERROR
           });
         }else{
-			
+			//console.log("responceData",responceData)
 			let TransactionData = {};
 				TransactionData.transactionId = charge.id
-				TransactionData.transactionType = 'Subscription'
+				if(req.body.planType ==='addon'){
+					TransactionData.transactionType = 'Addons'
+				}else{
+					TransactionData.transactionType = 'Subscription'
+				}				
 				TransactionData.userId = req.body.userId
 				TransactionData.paymentId = charge.id
 				TransactionData.transactionAmount = (charge.amount/100)
 				TransactionData.status = (charge.status === 'succeeded')?1:0
 				TransactionData.transactionDate = new Date();
 				Transaction.create(TransactionData, (err, transactionResp) => {
-					console.log("transactionResp",transactionResp)
+					//console.log("transactionResp",transactionResp)
 				});					
 				// console.log("responceData",responceData)
     			// setup email data with unicode symbols
