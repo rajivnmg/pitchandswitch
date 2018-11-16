@@ -178,7 +178,7 @@ class Register extends React.Component {
           if (this.state.query.length % 2 === 0) {
             this.getInfo();
           }
-        } else if (!this.state.query) {
+          } else if (!this.state.query) {
         }
       }
     );
@@ -600,8 +600,7 @@ class Register extends React.Component {
           </Collapse>
         </Panel>
       );
-      // <SelectLocations options={options} selectedOption={this.state.filters.selectedLocations} onLocationChange={this.onLocationChange}/>
-      //<span>Distance</span>
+      
       items.push(
         <Panel header={`Location`} key="3">
           <Collapse>
@@ -686,7 +685,6 @@ class Register extends React.Component {
         </Panel>
       );
     }
-
     return items;
   }
 
@@ -848,8 +846,7 @@ class Register extends React.Component {
                   </div>
                 </div>
                 <div className="cl" />
-              </div>
-
+               </div>
               <div className="item-listing">{searchItems}</div>
               <div className="cl" />
             </div>

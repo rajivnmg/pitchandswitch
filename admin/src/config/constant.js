@@ -4,7 +4,6 @@ module.exports = {
   'PUBLIC_URL_WEB':'http://localhost:3002/',
   'PER_PAGE_RECORD': 10,
   'DATABASE':'mongodb://localhost:27017/pitch-and-switch',
-  //'DATABASE':'mongodb://pitchnswitch:pitchnswitch123456@10.0.0.24:27017/pitch-and-switch',
   'SMTP_HOST':'smtp.sendgrid.net',
   'SMTP_PORT': 587,   
   'SMTP_USERNAME': '####',
@@ -19,42 +18,21 @@ module.exports = {
   'product_path': '/var/www/html/pitchandswitch/admin/public/assets/uploads/Products/',
   'tepmUpload_path': '/var/www/html/pitchandswitch/admin/public/assets/uploads/tepmUpload/',
   'advertisementimage_path': '/var/www/html/pitchandswitch/admin/public/assets/uploads/AdvertisementImage/',
-  'notification_type':[{'id':'1','name':'New User Created'},{'id':'2','name':'New Trade Requested'},{'id':'3','name':'Trade Rejected'},{'id':'4','name':'New Message Received'}],
+  'notification_type':[{'id':'1','name':'New User Created'},{'id':'2','name':'New Trade Requested'},{'id':'3','name':'Trade  Rejected'},{'id':'4','name':'New Message Received'}],
   'donation_conditions':[{'id':'1','name':'New'},{'id':'2','name':'old'},{'id':'3','name':'Excellent'},{'id':'4','name':'Very Old'}],
   'donation_status':[{'id':'0','name':'Pending'},{'id':'1','name':'Accepted'},{'id':'2','name':'Rejected'}],
   'shippingStatus':[{'id':'0','name':'Picked up'},{'id':'1','name':'Shipped'},{'id':'2','name':'Delivered'}],
-  'returnReason':[
-    {'id':'0','name':'Item Defective'},
-    {'id':'1','name':'Bought By Mistake'},
-    {'id':'2','name':'No longer needed'},
-    {'id':'3','name':'Too small'},
-    {'id':'4','name':'Ordered In wrong size'},
-    {"id":"5","name":'Product not as expected'}
+  'returnReason':[{'id':'0','name':'Item Defective'},{'id':'1','name':'Bought By Mistake'},{'id':'2','name':'No longer needed'},{'id':'3','name':'Too small'},{'id':'4','name':'Ordered In wrong size'},{"id":"5","name":'Product not as expected'}
   ],
-  donation_conditions: [
-    { id: "1", name: "New" },
-    { id: "2", name: "old" },
-    { id: "3", name: "Excellent" },
-    { id: "4", name: "Very Old" }
+   'selectedAges': [
+    { 'id': "1", 'name': "0 month - 6 month" },
+    { 'id': "2", 'name': "6 month - 1 year" },
+    { 'id': "3", 'name': "1 year - 2 year" },
+    { 'id': "4", 'name': "2 year - 5 year" },
+    { 'id': "5", 'name': "5 year - 10 year" },
+    { 'id': "6", 'name': "above 10 year" },
   ],
-  donation_status: [
-    { id: "0", name: "Pending" },
-    { id: "1", name: "Accepted" },
-    { id: "2", name: "Rejected" }
-  ],
-  shippingStatus: [
-    { id: "0", name: "Picked up" },
-    { id: "1", name: "Shipped" },
-    { id: "2", name: "Delivered" }
-  ],
-  returnReason: [
-    { id: "0", name: "Item Defective" },
-    { id: "1", name: "Bought By Mistake" },
-    { id: "2", name: "No longer needed" },
-    { id: "3", name: "Too small" },
-    { id: "4", name: "Ordered In wrong size" },
-    { id: "5", name: "Product not as expected" }
-  ],
+ 
   tradeStatus: [
     { id: "1", name: "Switched" },
     { id: "2", name: "Completed" },
@@ -159,4 +137,5 @@ module.exports = {
       disabled: false
     }
   ]
+  
 };

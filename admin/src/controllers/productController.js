@@ -197,7 +197,7 @@ const addProduct = (req, res) => {
         var userId = decoded._id;
         var form = new multiparty.Form();
         form.parse(req, function (err, data, files) {
-            // console.log('postdata', data);
+           console.log('aaaaaaaaaaaaaaaaaaaa'.data)
             if (!data.productName) {
                 return res.send({
                     code: httpResponseCode.BAD_REQUEST,
@@ -221,7 +221,7 @@ const addProduct = (req, res) => {
                     var uploadedFiles = [];
                     if (data.files != '') {
                         var productImages = JSON.parse(data.files);
-                        //console.log('productImages', productImages,productImages['filename']);
+                       
                         for (var i = 0; i < productImages.length; i++) {
                             var uidv1 = uuidv1()
                             //	console.log("productImages",productImages[i].filename);
@@ -280,7 +280,6 @@ const addProduct = (req, res) => {
                             });
                         });
                     }
-                    //console.log('resultImgas',result);
                     Product.update({_id: result._id}, {"$set": {"productImages": newfilename}}, {new : true}, (err, fileupdate) => {
                         if (err) {
                             return res.send({

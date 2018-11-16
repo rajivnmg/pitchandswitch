@@ -322,7 +322,7 @@ const updateDonation = (req, res) => {
           if (!fs.existsSync(constant.donationimage_path,777)){
               fs.mkdirSync(constant.donationimage_path);
           }
-				  //return res.json(process.cwd());
+				
 				  fs.writeFile(pathNew, fileData, function(err) {
 					if (err) {
 					  res.send(err);
@@ -330,7 +330,7 @@ const updateDonation = (req, res) => {
 					}
 				  });
 				});
-      			  //console.log('asdf',newfilename);
+      			 
       			  Donation.update({ _id:data._id },  { "$set": { "productImage": newfilename } }, { new:true }, (err,fileupdate) => {
       				if(err){
                 res.send(err);
@@ -523,13 +523,12 @@ const donatedProducts = (req, res) => {
 /// function to save the donation item in the database from front;
 const donateProduct = (req, res) => {
   var form = new multiparty.Form();
-  form.parse(req, function(err, data, files) {
-    //console.log('dddddddddddddddd',data);
+  form.parse(req, function(err, data, files) {   
     if (!data.productName) {
     return res.send({
-      code: httpResponseCode.BAD_REQUEST,
-      message: httpResponseMessage.REQUIRED_DATA
-    })
+       code: httpResponseCode.BAD_REQUEST,
+       message: httpResponseMessage.REQUIRED_DATA
+     })
     }
     const flag = validation.validate_all_request(data, ['productName']);
     if (flag) {
@@ -555,23 +554,21 @@ const donateProduct = (req, res) => {
         message: httpResponseMessage.INTERNAL_SERVER_ERROR
         })
       } else {
-       // console.log('Created-Page',err, result);
        var productImages = JSON.parse(data.files);
-
        if((productImages) && productImages.length > 0) {
          var uidv1 = uuidv1()
-       //	console.log("productImages",productImages[i].filename);
+         console.log("productImages1");
          fsExtra.move(constant.tepmUpload_path+productImages[0].filename, constant.donationimage_path + productImages[0].filename).then(uploadedfile =>{
            fs.rename(constant.product_path + productImages[0].filename,constant.donationimage_path +uidv1+productImages[0].filename)
            .then(renameFile =>{
-                   fs.remove(constant.donationimage_path + productImages[0].filename, err => {
-                     if (err) return console.error(err)
-                     console.log('success!')
-                   });
+                fs.remove(constant.donationimage_path + productImages[0].filename, err => {
+                   if (err) return console.error(err)
+                     console.log('eeeeeeeeeeeeeeeeeee',err)
+                 });
              })
-         });
+         });         
         // update the uploaded file name in database
-          Donation.update({ _id:result._id },  { "$set": { "productImage": productImages[0].filename } }, { new:true }, (err,fileupdate) => {
+         Donation.update({ _id:result._id },  { "$set": { "productImage": productImages[0].filename } }, { new:true }, (err,fileupdate) => {
           if(err){
             return res.send({
               code: httpResponseCode.BAD_REQUEST,
@@ -585,15 +582,15 @@ const donateProduct = (req, res) => {
               })
             }
            })
-          ///end file update///
-
-        }else{
+          //~ ///end file update///
+           
+        } else {
+			
           return res.send({
             code: httpResponseCode.EVERYTHING_IS_OK,
             message: httpResponseMessage.SUCCESSFULLY_DONE,
             result: result
           })
-
         }
       }
       })

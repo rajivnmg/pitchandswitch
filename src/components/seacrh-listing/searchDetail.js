@@ -51,7 +51,7 @@ class MyTrades extends React.Component {
 				mainImages:result.data.result?result.data.result.productImages[0]:"default_product_img@3x.png",
 				isAlreadyPitched:result.data.pitchProduct,
 				isAlreadyInWishlist:result.data.wishListProduct
-				});
+			});
 		})
 
 
@@ -63,7 +63,7 @@ class MyTrades extends React.Component {
 			data.append('pitchUserID', localStorage.getItem('loggedInUser'))			
 			axios.post('/product/checkExists/',data).then(result => {
 			  this.setState({checkData:result.data.result});
-		    })
+		 })
 
        //~ if(localStorage.getItem('jwtToken') !== null){
 			//~ axios.get('/user/getLoggedInUser').then(result => {

@@ -13,6 +13,7 @@ import pica from "pica";
 var FD = require('form-data');
 var fs = require('fs');
 var CropViewer = require("rc-cropping");
+const constant = require("../../config/constant");
 //~ class ColorPicker extends Component {
    //~ render() {
     //~ return <SketchPicker
@@ -23,7 +24,8 @@ var CropViewer = require("rc-cropping");
 //~ }
 class Form extends Component {
   state = {
-    isValidated: false
+    isValidated: false,
+    
   };
 
   validate = () => {
@@ -85,7 +87,8 @@ class Form extends Component {
 }
 class Register extends React.Component {
 	state = {
-	 selectedFiles: '',
+	   selectedFiles: '',
+	   ageSelected : constant.selectedAges,
 	   addProductForm: {
 			productName:'',
 			description:'',
@@ -136,14 +139,11 @@ class Register extends React.Component {
 		cancelHandler(){
 			this.props.history.push("/my-treasure-chest");
 		}
-
-		// set the selected file in to state
 		handlePictureChange = (event) => {
-		  let oldFiles = [];
+		 let oldFiles = [];
 		  event.map((file) => {
 			console.log('FIle', file);
 			if (file.response && file.response.code === 200) {
-			  // Component will show file.url as link
 			  oldFiles.push({
 				filename: file.response.result[0].filename,
 				size: file.response.result[0].size,
@@ -153,8 +153,7 @@ class Register extends React.Component {
 		  });
 		  this.setState({selectedFiles: JSON.stringify(oldFiles)});
 		}
-
-		// Set The cureent color on change color
+		
 		handleChangeComplete = (color) => {
 			const productForm = {
 			  ...this.state.addProductForm
@@ -164,6 +163,7 @@ class Register extends React.Component {
 		};		
 		
 		 changeThisColor = (e) => {
+			this.setState({colorsValue: e.target.value});
 			const colors = this.state.colors;
 			let selectedColors = [];
 			colors.map((item, index) => {
@@ -175,9 +175,7 @@ class Register extends React.Component {
 				  colors[index].checked = false;
 			  }			 
 			});
-			
-			
-			this.setState({colors: colors });			
+			 this.setState({colors: colors });	
 		 };
 		
 		componentWillMount() {		
@@ -211,23 +209,27 @@ class Register extends React.Component {
 			productForm[inputIdentifier] = event.target.value;    
 			this.setState({ addProductForm: productForm });
 		};
-	submit = () => {
+		
+		
+	    submit = () => {
 		const data =new FD()
-        const formData = this.state.addProductForm;
-		for (let [key, value] of Object.entries(formData)) {
-		  if(key == 'productImages'){
-			  if(this.state.selectedFiles){
-				data.append('files', this.state.selectedFiles);
-			  } 
-		  }else if(key == 'userId'){
+	    const formData = this.state.donateProductForm;
+		
+		Object.keys(formData).forEach((key,index) => {
+			if(key == 'productImages'){
+			 if(this.state.selectedFiles){				
+				data.append('files', this.state.selectedFiles);				
+			 } 
+			} else if(key == 'userId'){
 			  data.append('userId', '1');	
-		  }else{
-			  data.append(key, value);
-		  }
-		}
+			} else {
+			  data.append(key,formData[key]);  
+			}
+		});
+		
+		data.append('color', this.state.colorsValue),
         axios.post('/product/addProduct', data).then(result => {
-          console.log('USER DATA', data)
-         if(result.data.code ==200){
+          if(result.data.code ==200){
 			  this.setState({
 				message: result.data.message,
 				code :result.data.code,
@@ -235,7 +237,7 @@ class Register extends React.Component {
 				showFormError: false
 			  });
 			  this.props.history.push("/my-treasure-chest");
-			}else{
+			} else {
 			  this.setState({
 				message: result.data.messaage,
 				code :result.data.code,
@@ -263,14 +265,11 @@ class Register extends React.Component {
   resizer = (from, to) => {
     return pica().resize(from, to);
   };
+  
   updatedImage = file => {
 	  console.log('Updated file', file);
-    //~ const profileForm = { ...this.state.profileForm };
-    //~ profileForm.profilePic = file;
-    //~ this.setState({ profileForm }, () => {
-      //~ console.log("ProfileImage", this.state);
-    //~ });
   };
+  
   render() {
 	  let imageCropper = null;
 	  if(this.state.cropper){
@@ -291,21 +290,30 @@ class Register extends React.Component {
       );
 	  }
 	  
+	 
+	  let optionTemplate;
+	    if(constant.selectedAges){
+			let conditionsList = constant.selectedAges;
+		    optionTemplate = conditionsList.map(v => (<option key={v.id} value={v.id}>{v.name}</option>));
+       }
+	  
 	  
     return (
-            <div className="add-product-container">
+      <div className="add-product-container">
         <div  className="container">
         <div className="breadcrumb">
         <ul>
-        <li><a href="/">Home</a></li><li><a href={'/my-treasure-chest'}>My Treasure Chest</a></li><li>Add New Product</li>
+			<li><a href="/">Home</a></li>
+			<li><a href={'/my-treasure-chest'}>My Treasure Chest</a></li>
+			<li>Add New Product</li>
         </ul>
         </div>
-              <div className="cl"></div>
-       <div className="add-product">
+         <div className="cl"></div>
+          <div className="add-product">
            {this.state.showFormSuccess ? this._renderSuccessMessage() : null}
-		<div className="form-row">
+		   <div className="form-row">
 			  <h3>Add New Product</h3>
-		</div>
+		   </div>
 
         <Form submit={this.submit}>
 
@@ -359,7 +367,7 @@ class Register extends React.Component {
 				<label className="label" htmlFor={"size"}>Size</label>
 				{/*<input id={"size"} className={"form-control textBox"} required={true} name={"size"} type={"text"} placeholder="" defaultValue="Meduim" />*/}
 				{/*  <SizeSelectBox onSelectSize={this.handleSize}/> */}
-				<div className="select-box">
+				    <div className="select-box">
 						<select required={true} name={"size"} id={"size"}  onChange={(e) => this.inputChangedHandler(e, 'size')}>
 						<option value="">Select Brand</option>
 						{
@@ -368,7 +376,7 @@ class Register extends React.Component {
 						})
 						}
 						</select>
-				</div>
+				   </div>
 			</div>
 
 			<div className="colum right">
@@ -397,7 +405,15 @@ class Register extends React.Component {
 				<div className="invalid-feedback validation"> </div>
 				<span className="astrik">*</span>
 				<label className="label" htmlFor={"age"}>Age</label>
-				<input id={"productAge"} className={"form-control textBox"} onChange={(e) => this.inputChangedHandler(e, 'productAge')} required={true} name={"productAge"} type={"text"} placeholder="Age" defaultValue="" />
+				<div className="select-box">
+				 <select required={true} name={"productAge"} id={"productAge"} onChange={(e) => this.inputChangedHandler(e, 'productAge')}>
+					<option value="">Select</option>
+					{this.state.ageSelected.map(condition => {
+						return (<option  key={condition.id} value={condition.id}>{condition.name}</option>)
+					})
+					}
+				</select>
+			    </div>
 			</div>
 			<div className="colum right">
 				<div className="invalid-feedback validation"> </div>

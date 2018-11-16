@@ -76,7 +76,7 @@ class DonateProduct extends React.Component {
 		  this.state = {
 			 selectedFiles: '',
 			   donateProductForm: {
-					productName:'',
+					productName:'RRRRRRR',
 					description:'',
 					productCategory:'',
 					size:'',
@@ -97,7 +97,8 @@ class DonateProduct extends React.Component {
 			   brands: [],
 			   sizes: [],
 			   conditions: [],
-			   colors: [],
+			   colors: '',
+			   colorsValue: '',
 			   user:[],
 			   countryId :'',
 				stateId :'',
@@ -121,6 +122,7 @@ class DonateProduct extends React.Component {
 				 showFormSuccess: false
 			  }
 			};		
+			
 			this.handleChangeCountry = this.handleChangeCountry.bind(this);
 			this.handleChangeState = this.handleChangeState.bind(this);
 			this.handleChangeCity = this.handleChangeCity.bind(this);	
@@ -168,6 +170,7 @@ class DonateProduct extends React.Component {
 				 })
 			 }
 		}
+		
 		handleChangeState(event) {
 			this.setState({stateId:event.target.value})    
 			if(event.target.value !== "0"){
@@ -178,10 +181,8 @@ class DonateProduct extends React.Component {
 							this.setState({cityId:result.data.result[0]._id})
 						}
 					 })
-				
-			}
+			  }
 		}
-	
 		handleChangeCity(event) {  
 			this.setState({cityId:event.target.value})
 			this.setState({state: event.target.value});
@@ -237,8 +238,9 @@ class DonateProduct extends React.Component {
 	
 	// change color 
 	changeThisColor = (e) => {
-			const colors = this.state.colors;
-			let selectedColors = [];
+		    this.setState({colorsValue: e.target.value});
+			 const colors = this.state.colors;
+			 let selectedColors = [];
 			//~ colors.map((item, index) => {
 				//~ colors[index].checked  = false;
 			  //~ if(colors[index].checked == undefined) colors[index].checked = false;
@@ -257,30 +259,32 @@ class DonateProduct extends React.Component {
 			  }			 
 			});
 			
-			this.setState({colors: colors });			
+			this.setState({colors: colors});
 	};
 		
 	
 	submit = () => {
 	const data =new FD()
 	const formData = this.state.donateProductForm;
-		for (let [key, value] of Object.entries(formData)) {
-		  if(key == 'productImages'){
-			  if(this.state.selectedFiles){				
-				data.append('files', this.state.selectedFiles);				
-			  } 
-		  }else if(key == 'userId'){
-			  data.append('userId', '1');	
-		  }else{
-			   
-			  data.append(key, value);
-		  }
+	Object.keys(formData).forEach((key,index) => {
+	//~ console.log('HHHHHH', key, formData[key]);
+		if(key == 'productImages'){
+		 if(this.state.selectedFiles){				
+			data.append('files', this.state.selectedFiles);				
+		 } 
+		} else if(key == 'userId'){
+		  data.append('userId', '1');	
+		} else {
+		  data.append(key,formData[key]);  
 		}
+	});
+	
 		data.append('city', this.state.cityId),
         data.append('state', this.state.stateId),
         data.append('country', this.state.countryId),
-		console.log("city,state,country",this.state.cityId,this.state.stateId,this.state.countryId)
-	   axios.post('/donation/donateProduct', data).then(result => {         
+        data.append('color', this.state.colorsValue),
+		//console.log("city,state,country,color",this.state.cityId,this.state.stateId,this.state.countryId,this.state.colorsValue)
+	     axios.post('/donation/donateProduct', data).then(result => {         
 			 if(result.data.code ==200){
 				  this.setState({
 					message: result.data.message,
@@ -289,7 +293,7 @@ class DonateProduct extends React.Component {
 					showFormError: false
 				  });
 				  this.props.history.push("/donated-products");
-				}else{
+				} else {
 				  this.setState({
 					message: result.data.messaage,
 					code :result.data.code,
@@ -298,11 +302,9 @@ class DonateProduct extends React.Component {
 				  });
 				}
 			  })
-			  .catch((error) => {
-				console.log('error', error);
+			  .catch((error) => {			
 				if (!error.status) {
 					 this.setState({ showFormError: true,showFormSuccess: false,message: 'ERROR in Adding Product, Please try again!!!' });
-
 				}
 			  });
 		setTimeout(() => {this.setState({showFormSuccess: false,showFormError: false});}, 12000);
@@ -316,14 +318,16 @@ class DonateProduct extends React.Component {
   }
   render() {
     return (
-            <div className="add-product-container">
-        <div  className="container">
+       <div className="add-product-container">
+        <div className="container">
         <div className="breadcrumb">
         <ul>
-        <li><Link to={'/dashboard'}>dashboard</Link></li><li><Link to={'/donated-products'}>Donated Products</Link></li><li>Donate Product</li>
+        <li><Link to={'/dashboard'}>dashboard</Link></li>
+        <li><Link to={'/donated-products'}>Donated Products</Link></li>
+        <li>Donate Product</li>
         </ul>
         </div>
-              <div className="cl"></div>
+         <div className="cl"></div>
           <div className="add-product">
            {this.state.showFormSuccess ? this._renderSuccessMessage() : null}
             <div className="form-row">
@@ -341,7 +345,8 @@ class DonateProduct extends React.Component {
                 <span className="astrik">*</span>
                   <label className="label" htmlFor={"description"}>Description</label>
                   <textarea id={"description"} className={"form-control textBox"} required={true} name={"description"}
-                    type={"description"} onChange={(e) => this.inputChangedHandler(e, 'description')} placeholder="" defaultValue=""></textarea>
+                    type={"description"} onChange={(e) => this.inputChangedHandler(e,'description')} placeholder="" defaultValue="">
+                  </textarea>
                   
                 </div>
                 <div className="form-row">
@@ -350,11 +355,7 @@ class DonateProduct extends React.Component {
                 </div>
                 <div className="form-row">
                   <label className="label">Color</label>
-                    <div className="">
-                 {/* <select required={true} name={"color"} name={"color"} defaultValue="" onChange={(e) => this.inputChangedHandler(e, 'color')}>
-                  <option value="red">Red</option>
-                  <option value="green">Green</option>
-                  </select> */}
+                   <div className="">
                   <Colors colorList={this.state.colors} changeThisColor={this.changeThisColor}/>
                   </div>
                   
@@ -373,7 +374,7 @@ class DonateProduct extends React.Component {
 				<label className="label" htmlFor={"size"}>Size</label>
 				<div className="select-box">
 				<select required={true} name={"size"} id={"size"}  onChange={(e) => this.inputChangedHandler(e, 'size')}>
-						<option value="">Select Brand</option>
+					<option value="">Select Brand</option>
 						{
 							this.state.sizes.map(size =>{
 								return(<option key={size._id} value={size._id}>{size.size}</option>)
@@ -469,26 +470,26 @@ class DonateProduct extends React.Component {
                   
         </div>
 			<div className="form-row">
-					<div className="colum">
-						<div className="invalid-feedback validation"> </div>          
-						<span className="astrik">*</span>
-						<label className="label" htmlFor={"condition"}>City</label>
-						<div className="select-box">						
-							  <select  name="city" id="city"  onChange={this.handleChangeCity}>
-							  {
-									this.state.cities.map( function(city,index) { 
-										return(<option key={index} value={city._id}>{city.cityName}</option>);
-									})
-								}
-							  </select>
-						</div>
-					</div>				
-                  <div className="colum right">
-						<div className="invalid-feedback validation"> </div>   
-						<span className="astrik">*</span>
-						<label className="label" htmlFor={"zipCode"}>ZIP / Postal Code:</label>
-						<input id={"zipCode"} className={"form-control textBox"} required={true} name={"zipCode"} type={"text"} placeholder="90001" defaultValue="" onChange={(e) => this.inputChangedHandler(e, 'zipCode')} />
-                  </div>		
+				<div className="colum">
+					<div className="invalid-feedback validation"> </div>          
+					<span className="astrik">*</span>
+					<label className="label" htmlFor={"condition"}>City</label>
+					<div className="select-box">						
+						  <select  name="city" id="city"  onChange={this.handleChangeCity}>
+						  {
+								this.state.cities.map( function(city,index) { 
+									return(<option key={index} value={city._id}>{city.cityName}</option>);
+								})
+							}
+						  </select>
+					</div>
+				</div>				
+			  <div className="colum right">
+					<div className="invalid-feedback validation"> </div>   
+					<span className="astrik">*</span>
+					<label className="label" htmlFor={"zipCode"}>ZIP / Postal Code:</label>
+					<input id={"zipCode"} className={"form-control textBox"} required={true} name={"zipCode"} type={"text"} placeholder="90001" defaultValue="" onChange={(e) => this.inputChangedHandler(e, 'zipCode')} />
+			  </div>		
 				
 				<div className="cl"></div>
 		 </div>
