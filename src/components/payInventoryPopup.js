@@ -79,8 +79,7 @@ class Form extends Component {
 class payInventoryPopup extends Component {	
 	constructor(props){
     super(props);
-   	localStorage.setItem('isLoggedIn',1);
-			
+   	localStorage.setItem('isLoggedIn',1);			
     this.state = {
 		currentUser:{},
 		addons:[],
@@ -117,7 +116,9 @@ class payInventoryPopup extends Component {
 					   this.setState({ 
 							currentUser:user.data.result,
 							subscriptions:rsubscription.data.result,
-							addons:raddons.data.result						
+							addons:raddons.data.result,
+							totalInventoryAllowed:(user.data.result.totalInventory === null)?0:user.data.result.totalInventory,
+							totalTradePermitted:(user.data.result.totalTrade === null)?0:user.data.result.totalTrade	
 						})	
 				   }				 			 	
 			}))			  
@@ -134,12 +135,13 @@ class payInventoryPopup extends Component {
 		//console.log("data-ptype",event.target.getAttribute('data-ptype'))
 		//console.log("event",event.target.value)
 		if(event.target.getAttribute('data-ptype') !==null){
+			//console.log("this.state.totalTradePermitted",this.state.totalTradePermitted);
 			this.setState({
 				paymentAmount:event.target.value,
 				planTypeId : event.target.getAttribute('data-ptypeid'),
 				planType:event.target.getAttribute('data-ptype'),
-				totalInventoryAllowed:event.target.getAttribute('data-inventory'),
-				totalTradePermitted:event.target.getAttribute('data-trade'),	
+				totalInventoryAllowed:(parseInt(this.state.totalInventoryAllowed)+parseInt(event.target.getAttribute('data-inventory'))),
+				totalTradePermitted:(parseInt(this.state.totalTradePermitted)+parseInt(event.target.getAttribute('data-trade'))),	
 			});			
 		}
 			const paymentForm = {
@@ -154,8 +156,7 @@ class payInventoryPopup extends Component {
 				this.setState({showFormError: true,message: 'Please choose a plan'});				
 				setTimeout(() => {this.setState({showFormError: false});}, 12000);
 			return false;
-		}
-		
+		}		
 		const data = this.state.addPaymentForm;
 		data.userEmail = localStorage.getItem('userEmail');
 		data.userId =  localStorage.getItem('userId');
