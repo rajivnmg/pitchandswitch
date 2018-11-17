@@ -374,7 +374,7 @@ class DonateProduct extends React.Component {
 				<label className="label" htmlFor={"size"}>Size</label>
 				<div className="select-box">
 				<select required={true} name={"size"} id={"size"}  onChange={(e) => this.inputChangedHandler(e, 'size')}>
-					<option value="">Select Brand</option>
+					<option value="">Select Size</option>
 						{
 							this.state.sizes.map(size =>{
 								return(<option key={size._id} value={size._id}>{size.size}</option>)

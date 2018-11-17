@@ -146,7 +146,7 @@ const create = (req, res) => {
                     var newfilename = files.productImages[0].fieldName + '-' + Date.now() + ext;
                     fs.readFile(files.productImages[0].path, function (err, fileData) {
                         if (err) {
-                            res.send(err);
+                            //res.send(err);
                             return;
                         }
                         fileName = files.productImages[0].originalFilename;
@@ -197,7 +197,7 @@ const addProduct = (req, res) => {
         var userId = decoded._id;
         var form = new multiparty.Form();
         form.parse(req, function (err, data, files) {
-           console.log('aaaaaaaaaaaaaaaaaaaa'.data)
+          // console.log('aaaaaaaaaaaaaaaaaaaa',data,files)
             if (!data.productName) {
                 return res.send({
                     code: httpResponseCode.BAD_REQUEST,
@@ -220,27 +220,32 @@ const addProduct = (req, res) => {
                 } else {
                     var uploadedFiles = [];
                     if (data.files != '') {
+						if (!fs.existsSync(constant.product_path,777)){
+							fs.mkdirSync(constant.product_path);
+						}
                         var productImages = JSON.parse(data.files);
                        
                         for (var i = 0; i < productImages.length; i++) {
-                            var uidv1 = uuidv1()
-                            //	console.log("productImages",productImages[i].filename);
-                            fsExtra.move(constant.tepmUpload_path + productImages[i].filename, constant.product_path + productImages[i].filename).then(uploadedfile => {
-                                fs.rename(constant.product_path + productImages[i].filename, constant.product_path + uidv1 + productImages[i].filename)
-                                        .then(renameFile => {
-                                            fs.remove(constant.product_path + productImages[i], err => {
+                            var uidv1 = uuidv1()                                                        
+                          // 	console.log("productImages",productImages[i].filename);
+                           	var filename = productImages[i].filename;
+                            fsExtra.move(constant.tepmUpload_path + filename, constant.product_path + filename,{overwrite:true}).then(() => {
+								var newFilePath = constant.product_path + uidv1 + filename;
+                                fs.rename(constant.product_path + filename, newFilePath)
+                                .then(() => {
+                                            fs.remove(constant.product_path + filename, err => {
                                                 if (err)
                                                     return console.error(err)
-                                                console.log('success!')
+													console.log('success!')
                                             });
 
-                                        })
-                            });
+                                        }).catch(err => { console.error("catch file ",err) })
+                            }).catch(err => { console.error("move catch file ",err) });
                             uploadedFiles.push({
                                 productId: result._id,
-                                imageName: productImages[i].filename,
+                                imageName: filename,
                                 imageStatus: 1,
-                                imageURL: constant.product_path + productImages[i].filename
+                                imageURL: constant.product_path + filename
                             });
                         }
                         try {
@@ -249,15 +254,24 @@ const addProduct = (req, res) => {
                             res.send(e);
                             return;
                         }
-                        Product.update({_id: result._id}, {"$set": {"productImages": productImages[0].filename}}, {new : true}).then(pimage => {
-
-                            console.log("pimage", pimage)
+                        Product.update({_id: result._id}, {"$set": {"productImages": productImages[0].filename}}, {new : true}).then(pimage => {							
+                             return res.send({
+                                code: httpResponseCode.EVERYTHING_IS_OK,
+                                message: httpResponseMessage.SUCCESSFULLY_DONE,
+                                result: result
+                            })
                         })
 
-                    }
+                    }else{
+						 return res.send({
+                              code: httpResponseCode.EVERYTHING_IS_OK,
+                              message: httpResponseMessage.SUCCESSFULLY_DONE,
+                              result: result
+                      })
+					}
                     //console.log('Created-Page',err, result);
                     // check file and upload if exist
-                    if ((files.productImages) && files.productImages.length > 0 && files.productImages != '') {
+                   /* if ((files.productImages) && files.productImages.length > 0 && files.productImages != '') {
                         var fileName = files.productImages[0].originalFilename;
                         var ext = path.extname(fileName);
                         var newfilename = files.productImages[0].fieldName + '-' + Date.now() + ext;
@@ -294,8 +308,9 @@ const addProduct = (req, res) => {
                                 result: result
                             })
                         }
-                    })
-                    ///end file update///
+                    }) */
+                    ///end file update///                   
+                    
                 }
             })
         });
@@ -811,6 +826,99 @@ const updateProduct = (req, res) => {
         })
     });
 }
+
+
+
+/** Auther	: Rajiv kumar
+ *  Date	: November 17, 2018
+ *	Description : Function to update the UserProduct from front-end.
+ **/
+const updateUserProduct = (req, res) => {
+    var form = new multiparty.Form();
+    form.parse(req, function (err, data, files) {
+        if (!data.productName) {
+            return res.send({
+                code: httpResponseCode.BAD_REQUEST,
+                message: httpResponseMessage.REQUIRED_DATA
+            })
+        }
+        const flag = validation.validate_all_request(data, ['productName']);
+        if (flag) {
+            return res.json(flag);
+        }
+        let now = new Date();
+        Product.findOneAndUpdate({_id: data._id}, data, {new : true}, (err, result) => {
+            if (err) {
+                return res.send({
+                    code: httpResponseCode.BAD_REQUEST,
+                    message: httpResponseMessage.INTERNAL_SERVER_ERROR,
+                    err: err
+                });
+            } else {
+                if (!result) {
+                    res.json({
+                        message: httpResponseMessage.USER_NOT_FOUND,
+                        code: httpResponseMessage.BAD_REQUEST
+                    });
+                } else {
+                     var uploadedFiles = [];
+                    if (data.files != '') {
+						if (!fs.existsSync(constant.product_path,777)){
+							fs.mkdirSync(constant.product_path);
+						}
+                        var productImages = JSON.parse(data.files);
+                       
+                        for (var i = 0; i < productImages.length; i++) {
+                            var uidv1 = uuidv1()                                                        
+                           	console.log("productImages",productImages[i].filename);
+                           	var filename = productImages[i].filename;
+                            fsExtra.move(constant.tepmUpload_path + filename, constant.product_path + filename,{overwrite:true})                            
+                            .then(uploadedfile => {
+								var newFilePath = constant.product_path + uidv1 + filename;
+                                fs.rename(constant.product_path + filename, newFilePath)
+                                        .then(renameFile => {
+                                            fs.remove(constant.product_path + filename, err => {
+                                                if (err)
+                                                    return console.error(err)
+                                                console.log('success!')
+                                            });
+
+                                        })
+                            });
+                            uploadedFiles.push({
+                                productId: result._id,
+                                imageName: filename,
+                                imageStatus: 1,
+                                imageURL: constant.product_path + filename
+                            });
+                        }
+                        try {
+                            ProductImage.insertMany(uploadedFiles);
+                        } catch (e) {
+                            res.send(e);
+                            return;
+                        }
+                        Product.update({_id: result._id}, {"$set": {"productImages": productImages[0].filename}}, {new : true}).then(pimage => {							
+                             return res.send({
+                                code: httpResponseCode.EVERYTHING_IS_OK,
+                                message: httpResponseMessage.SUCCESSFULLY_DONE,
+                                result: result
+                            })
+                        })
+
+                    }else{
+						 return res.send({
+                              code: httpResponseCode.EVERYTHING_IS_OK,
+                              message: httpResponseMessage.SUCCESSFULLY_DONE,
+                              result: result
+                      })
+					}
+                }
+            }
+        })
+    });
+}
+
 
 
 
@@ -1706,6 +1814,19 @@ const getColors = (req, res) => {
 	});
 }
 
+/** Auther	: Rajiv kumar
+ *  Date	: November 17, 2018
+ */
+/// function to list all getAgeList
+const getAgeList = (req, res) => {
+	resultAdd = constant.selectedAges;
+	return res.json({
+		code: httpResponseCode.EVERYTHING_IS_OK,
+		message: httpResponseMessage.SUCCESSFULLY_DONE,
+		result: resultAdd
+	});
+}
+
 module.exports = {
   create,
   allProducts,
@@ -1717,6 +1838,7 @@ module.exports = {
   switchTodays,
   myTreasureChest,
   addProduct,
+  updateUserProduct,
   tepmUpload,
   activeProducts,
   searchresult,
@@ -1732,5 +1854,6 @@ module.exports = {
   removeFromWishList,
   tradeMatch,
   tradeMatchFilterBy,
-  getColors
+  getColors,
+  getAgeList
 }

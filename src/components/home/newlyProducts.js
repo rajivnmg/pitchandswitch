@@ -15,19 +15,15 @@ class NewlyProducts extends Component {
     {
         super(props);
         this.state = {
-            newlyProducts: [{
-                    "title": "",
-                    "image": "",
-                    "category": ""
-                }
-            ]
+            newlyProducts: []
         };
     }
 
-   componentDidMount(){
+   componentWillMount(){
 	 axios.get('/product/listProduct').then(result => {		 
-		 console.log("Product",result)		 ;
-			this.setState({newlyProducts:result.data.result})
+			if(result.data.code === 200){
+				this.setState({newlyProducts:(result.data.result !== null)?result.data.result:[]})
+			}
 		 })
    }
    
@@ -65,9 +61,10 @@ class NewlyProducts extends Component {
            <div className="container">
                <h3> Newly added products</h3>
                     <Slider {...settings}>
-                        {this.state.newlyProducts.map(function (newlyProduct,index) {							
-							var userImage = newlyProduct.user?newlyProduct.user[0].profilePic:null
-							var userIds =(newlyProduct.user)?newlyProduct.user[0]._id:'0'
+                    
+                        {(this.state.newlyProducts.length)?this.state.newlyProducts.map(function (newlyProduct,index) {							
+							var userImage = ((newlyProduct.user && (newlyProduct.user.length > 0))?newlyProduct.user[0].profilePic:null)
+							var userIds =((newlyProduct.user && (newlyProduct.user.length > 0))?newlyProduct.user[0]._id:'0');
 							var productUrl = (localStorage.getItem('isLoggedIn') == 1 && localStorage.getItem('userId') == userIds)?'/my-trade-detail/'+newlyProduct._id:'/search-result/'+newlyProduct._id
 						return (
 							<div className="slides-div" key={index}>
@@ -80,16 +77,17 @@ class NewlyProducts extends Component {
 									  <div className="userdiv">
 										<div className="user-pic"><img className="userPicNew"src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} /></div>
 										<div className="user-name">
-										<Link className="alink" target="_blank" to={'/public-profile/'+(newlyProduct.user?newlyProduct.user[0]._id:'')}>
-											{(newlyProduct.user)?newlyProduct.user[0].userName:''}
+										<Link className="alink" target="_blank" to={'/public-profile/'+((newlyProduct.user && (newlyProduct.user.length > 0))?newlyProduct.user[0]._id:'')}>
+											{(newlyProduct.user  && (newlyProduct.user.length > 0))?newlyProduct.user[0].userName:''}
 										</Link>
 										</div>
 									</div>
 								</div>
 							</div>
 							)
-                          })
+                          }):null
                         }
+					
                     </Slider>
                    {/* <Link to='/' className='more-items'>More items</Link> */}
                     </div>

@@ -106,6 +106,7 @@ class Register extends React.Component {
 	   sizes: [],
 	   colors: [],
 	   conditions: [],
+	   ageSelected: [],
 	   categoryValue: '',
 	   background: '#fff',
 	   validation:{
@@ -181,11 +182,12 @@ class Register extends React.Component {
 		componentWillMount() {		
 			  axios.all([							
 				axios.get('/size/listingsize/'),
-				axios.get('/brand/listingbrand/'),
+				axios.get('/brand/listingbrand/'),				
 				axios.get('/product/getColors/'),
-				axios.get('/donation/getConstant/')
+				axios.get('/donation/getConstant/'),
+				axios.get('/product/getAgeList/')
 			  ])
-			  .then(axios.spread((rsize, rbrand,rcolor,rconstant) => {
+			  .then(axios.spread((rsize, rbrand,rcolor,rconstant,rAge) => {
 				if(rsize.data.code === 200){
 				  this.setState({sizes:rsize.data.result});
 				}
@@ -197,6 +199,9 @@ class Register extends React.Component {
 				}
 				if(rconstant.data.code === 200){
 				  this.setState({conditions:rconstant.data.result});
+				}
+				if(rAge.data.code === 200){
+				  this.setState({ageSelected:rAge.data.result});
 				}
 			}))      
 			.catch(error => console.log(error));
@@ -213,8 +218,7 @@ class Register extends React.Component {
 		
 	    submit = () => {
 		const data =new FD()
-	    const formData = this.state.donateProductForm;
-		
+	    const formData = this.state.addProductForm;		
 		Object.keys(formData).forEach((key,index) => {
 			if(key == 'productImages'){
 			 if(this.state.selectedFiles){				
@@ -340,7 +344,7 @@ class Register extends React.Component {
 		</div>
 
 		<div className="form-row">
-			<label className="label">Add product a photo</label>
+			<label className="label">Add product a photo</label>  			
   			<PicturesWall multiple={false} onHandlePicture={this.handlePictureChange}/>
 		</div>
 
@@ -369,7 +373,7 @@ class Register extends React.Component {
 				{/*  <SizeSelectBox onSelectSize={this.handleSize}/> */}
 				    <div className="select-box">
 						<select required={true} name={"size"} id={"size"}  onChange={(e) => this.inputChangedHandler(e, 'size')}>
-						<option value="">Select Brand</option>
+						<option value="">Select Size</option>
 						{
 						this.state.sizes.map(size =>{
 						return(<option key={size._id} value={size._id}>{size.size}</option>)

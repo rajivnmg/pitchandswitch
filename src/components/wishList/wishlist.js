@@ -56,6 +56,9 @@ class wishList extends Component {
 	componentWillMount(){
 		axios.get('/product/wishList').then(wishlists =>{
 				if(wishlists.data.code === 200){
+					if(wishlists.data.result.length ===0){
+						window.location = constant.PUBLIC_URL + "empty-wishlist";
+					}
 					this.setState({wishlists:wishlists.data.result,total:wishlists.data.result.length})
 				}
 			});
@@ -90,11 +93,11 @@ class wishList extends Component {
 									  </Spin>
 								</Then>							
 							</If>
-							<If condition={this.state.total === 0}>
+							{/*<If condition={this.state.total === 0}>
 								<Then>
 									 <Redirect push to="/empty-wishlist" />
 								</Then>							
-							</If>
+							</If> */}
                         <div className="item-listing donateProducts">
                             {this.state.wishlists.slice(0, this.state.limit).map((wishlist, index) => {
 								var productImages = (wishlist.productId)?wishlist.productId.productImages[0]:'';

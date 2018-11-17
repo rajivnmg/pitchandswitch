@@ -22,9 +22,11 @@ class TradeMatch extends Component {
             ]
         }
     }
-	 componentDidMount(){
+	 componentWillMount(){
 		axios.get('/product/listProduct').then(result => {		 
-		   this.setState({tradeMatches:result.data.result})
+		  if(result.data.code===200){	 
+				this.setState({tradeMatches:(result.data.result !== null)?result.data.result:[]})
+			}
 		})
 	  }
     render() {
@@ -60,10 +62,10 @@ class TradeMatch extends Component {
         <div className="container">
         <h3> <strong>Trade Match</strong></h3>
                <Slider {...settings}>
-                    {this.state.tradeMatches.map(function (tradeMatch) {
-						var userImage = tradeMatch.user?tradeMatch.user[0].profilePic:null;
-						let publicProfileUrl =  ((tradeMatch.user)?tradeMatch.user[0]._id:'');
-						let categoryUrl =  ((tradeMatch.category)?tradeMatch.category[0]._id:'');      
+                    {(this.state.tradeMatches.length)? this.state.tradeMatches.map(function (tradeMatch) {
+						var userImage = ((tradeMatch.user && tradeMatch.user.length > 0)?tradeMatch.user[0].profilePic:'default_user@1x.png');
+						let publicProfileUrl =  ((tradeMatch.user && tradeMatch.user.length > 0)?tradeMatch.user[0]._id:'');
+						let categoryUrl =  ((tradeMatch.category && tradeMatch.category.length > 0)?tradeMatch.category[0]._id:'');      
 							return (
 							<div className="slides-div" key={tradeMatch}>
 								<div key={tradeMatch}>
@@ -74,12 +76,12 @@ class TradeMatch extends Component {
 									</div>
 									  <div className="userdiv">
 										<div className="user-pic"><img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} /></div>
-										<div className="user-name"><Link className="alink" target="_blank" to={'/public-profile/'+publicProfileUrl}>{(tradeMatch.user)?tradeMatch.user[0].userName:''}</Link></div>
+										<div className="user-name"><Link className="alink" target="_blank" to={'/public-profile/'+publicProfileUrl}>{(tradeMatch.user && tradeMatch.user.length > 0)?tradeMatch.user[0].userName:''}</Link></div>
 									</div>
 								</div>
 							</div>
 							)
-                        })
+                        }):'null'
                     }
                   </Slider>
                 </div>

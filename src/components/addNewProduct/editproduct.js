@@ -255,7 +255,7 @@ class Register extends React.Component {
 		}
 		
 		//console.log('DATA', formData);
-        axios.put('/product/updateProduct', data).then(result => {
+        axios.put('/product/updateUserProduct', data).then(result => {
           console.log('USER DATA', data)
          if(result.data.code ==200){			    
 			  this.setState({

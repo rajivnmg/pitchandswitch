@@ -34,6 +34,7 @@ const navHide = { display: "none" };
 
 class Header extends Component {
   constructor(props) {
+	  
     //let categoryId = props.match.params.id;
     super(props);
     this.state = {

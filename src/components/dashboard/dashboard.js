@@ -66,6 +66,7 @@ class Dashboard extends Component {
         .then(
           axios.spread((user, sresult, saresult) => {
             if (user.data.code === 200) {
+				console.log("saresult",saresult)
               this.setState({
                 currentUser: user.data.result,
                 notification_type: user.data.notification_type,
@@ -305,32 +306,32 @@ class Dashboard extends Component {
                           <div className="left-div bold">Add-on</div>
                           <div className="rightDiv bold green">
                             $
-                            {this.state.userSubscriptionAddons &&
-                            this.state.userSubscriptionAddons.addonId
-                              ? this.state.userSubscription.addonId.price
-                              : "0"}
+                            {((this.state.userSubscriptionAddons &&
+                            (this.state.userSubscriptionAddons.lenght > 0))
+                              ? this.state.userSubscription.addonId[0].price
+                              : "0")}
                           </div>
                           <div className="cl" />
                         </div>
                         <div className="row">
                           <div className="left-div ">Trade</div>
                           <div className="rightDiv">
-                            {this.state.userSubscriptionAddons &&
-                            this.state.userSubscriptionAddons.addonId
-                              ? this.state.userSubscriptionAddons.addonId
+                            {((this.state.userSubscriptionAddons &&
+                            (this.state.userSubscriptionAddons.lenght > 0))
+                              ? this.state.userSubscriptionAddons.addonId[0]
                                   .totalTradePermitted
-                              : "0"}
+                              : "0")}
                           </div>
                           <div className="cl" />
                         </div>
                         <div className="row">
                           <div className="left-div">Inventory</div>
                           <div className="rightDiv">
-                            {this.state.userSubscriptionAddons &&
-                            this.state.userSubscriptionAddons.addonId
-                              ? this.state.userSubscriptionAddons.addonId
+                            {((this.state.userSubscriptionAddons &&
+                            (this.state.userSubscriptionAddons.lenght > 0))
+                              ? this.state.userSubscriptionAddons[0].addonId
                                   .totalInventoryAllowed
-                              : "0"}
+                              : "0")}
                           </div>
                           <div className="cl" />
                         </div>

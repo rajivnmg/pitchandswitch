@@ -11,6 +11,7 @@ router.get('/switchTodays',productController.switchTodays)
 router.get('/popularItems',productController.popularItems)
 router.get('/myTreasureChest',productController.myTreasureChest)
 router.post('/addProduct',productController.addProduct)
+router.put('/updateUserProduct',productController.updateUserProduct)
 router.post('/tepmUpload',productController.tepmUpload)
 router.get('/activeProducts',productController.activeProducts)
 router.get('/searchresult/:id?/:latitude?/:longitude?',productController.searchresult)
@@ -30,4 +31,5 @@ router.post('/removeFromWishList',productController.removeFromWishList)
 router.delete('/clearWishlist',productController.clearWishlist)
 router.post('/checkExists',productController.checkExists)
 router.get('/getColors',productController.getColors);
+router.get('/getAgeList',productController.getAgeList);
 module.exports = router;
