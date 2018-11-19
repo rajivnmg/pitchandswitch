@@ -67,9 +67,9 @@ class MyTradesDetail extends React.Component {
 				conditionsList.map((key, index) => {  if(key.id==4){  optionTemplate = key.name;  }
 			})
         }
-		let img = this.state.resultData.userId ? this.state.resultData.userId.profilePic:"";
-		let description = this.state.resultData.description?this.state.resultData.description:"";
-		let userid = (this.state.resultData.userId)?this.state.resultData.userId._id:''
+		let img = (this.state.resultData && this.state.resultData.userId) ? this.state.resultData.userId.profilePic:"";
+		let description = (this.state.resultData && this.state.resultData.description)?this.state.resultData.description:"";
+		let userid = (this.state.resultData && this.state.resultData.userId)?this.state.resultData.userId._id:''
         return (
 				<div className="my-trades-container">
 				<div  className="container">
@@ -90,29 +90,29 @@ class MyTradesDetail extends React.Component {
 
 				<div className="cl"></div>
 				</div>            
-				<p className="tagsrow">{this.state.resultData.productCategory?this.state.resultData.productCategory.title:""}</p>
-				<h1>{this.state.resultData.productName}~ {description}</h1>
+				<p className="tagsrow">{(this.state.resultData && this.state.resultData.productCategory)?this.state.resultData.productCategory.title:""}</p>
+					<h1>{(this.state.resultData && this.state.resultData.productName)?this.state.resultData.productName:''}~ {(this.state.resultData && this.state.resultData.description)?this.state.resultData.description:''}</h1>
 				<div className="productId">Product ID: <strong>{this.state.productId}</strong>
-                 <span className="postedDate">Posted date: {Moment(this.state.resultData.createdAt).format('Y-M-D') }</span>
+					<span className="postedDate">Posted date: {(this.state.resultData && this.state.resultData.createdAt)?Moment(this.state.resultData.createdAt).format('Y-M-D'):''}</span>
                 </div>
 				<div className="productDetails">
 				<h5>Product Details</h5>
 				<table cellPadding="0" cellSpacing="0" width="100%">
 				<tbody>
 				<tr>
-					<td>Size:</td><td>{this.state.resultData.size?this.state.resultData.size.size:""} GB</td>
+					<td>Size:</td><td>{(this.state.resultData && this.state.resultData.size)?this.state.resultData.size.size:""} GB</td>
 				</tr>
 				<tr>
-					<td>Color:</td><td>{this.state.resultData.color}</td>
+					<td>Color:</td><td>{(this.state.resultData && this.state.resultData.color)?this.state.resultData.color:''}</td>
 				</tr>
 				<tr>
-					<td>Brand:</td><td>{this.state.resultData.brand?this.state.resultData.brand.brandName:""}</td>
+					<td>Brand:</td><td>{(this.state.resultData && this.state.resultData.brand)?this.state.resultData.brand.brandName:""}</td>
 				</tr>
 				<tr>
 				<td>Condition:</td><td>{optionTemplate}</td>
 				</tr>
 				<tr>
-				<td>Age:</td><td>{this.state.resultData.productAge} Month</td>
+				<td>Age:</td><td>{(this.state.resultData && this.state.resultData.productAge)?this.state.resultData.productAge:"0"} Month</td>
 				</tr>
 				</tbody>
 				</table>

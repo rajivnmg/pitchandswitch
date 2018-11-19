@@ -18,7 +18,7 @@ class TradeMatch extends Component {
                     "title": "",
                     "image": "",
                     "category": ""
-                }
+                   }
             ]
         }
     }
@@ -71,7 +71,7 @@ class TradeMatch extends Component {
 								<div key={tradeMatch}>
 									<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+tradeMatch.productImages} /></div>
 									<div className='details'>
-										<h4>{tradeMatch.productName}</h4>
+										<h4><Link to={"/search-result/"+tradeMatch._id}>{tradeMatch.productName}</Link></h4>
 										<Link className="catLink" to={'/search-listing/'+categoryUrl}>{(tradeMatch.category && (tradeMatch.category.length > 0))?tradeMatch.category[0].title:''}</Link>
 									</div>
 									  <div className="userdiv">

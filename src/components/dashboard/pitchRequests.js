@@ -96,8 +96,7 @@ class PitchRequests extends React.Component {
 							<ViewPitchPopup offerTrade={pitch}  proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""} pitchAgain={(pitch.status =="3")?"1":"0"}/>
 							</span></div> 
 							<div className="colum message"></div>  
-							<div className="colum action">
-							 
+							<div className="colum action">							 
 							 {send == 0 && pitch.status=="0"? <DitchPopup offerTrade={pitch}/> : (pitch.status =="3")?<div class="colum action"><a href="#" class="ditch ditched">Cancelled</a></div>:<CancelPitchPopup offerTrade={pitch}/>}
 							</div>
 						</div>

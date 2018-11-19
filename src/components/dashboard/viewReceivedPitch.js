@@ -154,8 +154,6 @@ return (
 				<a className="view-btn" href={'/search-result/'+productList._id}>View</a>
 				</Else>
 			 </If>
-			
-			<a className="view-btn" href={'/search-listing/'+productList._id}>View</a>
 			   <Button className="switch-btn" >
 			      <ShippingTypePopup productID={productList._id} offerTrade={this.state.offerTrade}/>
 			   </Button>			   

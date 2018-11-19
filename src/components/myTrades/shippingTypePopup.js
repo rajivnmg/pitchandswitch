@@ -25,15 +25,24 @@ var fs = require('fs');
 var tempDate = new Date();
 var date = tempDate.getFullYear() + '-' + (tempDate.getMonth()+1) + '-' + tempDate.getDate() +' '+ tempDate.getHours()+':'+ tempDate.getMinutes()+':'+ tempDate.getSeconds();
 
-
 class ShippingTypePopup extends Component {
 	constructor(props) {
 		super(props);
+		const tradeId = this.props.offerTrade._id;			
+		const productID = this.props.productID;
 		this.state = {				
 		  productID:this.props.productID,
 		  offerTrade:this.props.offerTrade,
 		}	
 	} 
+	
+    componentWillMount(){
+		//get the offer trade details
+		axios.get('trade/getShippingCost/'+this.tradeId+'/'+this.productID).then(result => {
+			console.log("getOfferTrade",result)
+		});
+	}
+	
      submitHandler(proID){	   
 		this.setState({ condition: !this.state.condition });	   
 	    const data = new FD();

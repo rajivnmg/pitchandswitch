@@ -174,7 +174,7 @@ Capitalize(str){
 												<img src={constant.BASE_IMAGE_URL+'Products/'+slide.productImages} alt="" />
 											</div>
 											<div className="details">
-												<h4><a href="/my-trade-detail">{slide.productName}</a></h4>
+												<h4><Link to={"/my-trade-detail/"+slide._id}>{slide.productName}</Link></h4>
 												<a href="#" className="catLink"> {(slide.productCategory && slide.productCategory !== null)?slide.productCategory.title:'N/A'}</a>           
 											</div>
 											<div className="userdiv">

@@ -199,18 +199,17 @@ class Header extends Component {
 	  // console.log("localStorage",localStorage.getItem('isLoggedIn'));
 	}
 	
-
-    axios.get("/location/listingCity").then(result => {
-      this.setState({
-        options: result.data.result
-      });
-    });
-
-    axios.get("/product/activeProducts").then(rs => {
-      this.setState({
-        productsListing: rs.data.result
-      });
-    });
+	// HTTP request to get the list of cities and active product from the server		
+	axios.all([
+     axios.get('/location/listingCity'),
+     axios.get('/product/activeProducts')
+   ])
+   .then(axios.spread(function (rcities, rsProduct) {     
+     this.setState({ options: rcities.data.result,productsListing: rsProduct.data.result })
+   }))  
+   .catch(error => console.log(error));
+   
+   
   }
 
   Capitalize(str) {

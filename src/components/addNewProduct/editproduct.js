@@ -6,21 +6,10 @@ import { SketchPicker } from 'react-color'
 import Colors from '../seacrh-listing/colors';
 import PicturesWall from '../common/picturesWall';
 import CategorySelectBox from '../../components/CategorySelectBox/CategorySelectBox';
-//import BrandSelectBox from '../../components/BrandSelectBox/BrandSelectBox';
-//import SizeSelectBox from '../../components/SizeSelectBox/SizeSelectBox';
 import axios from 'axios';
 var FD = require('form-data');
 var fs = require('fs');
-
-
-//~ class ColorPicker extends Component {
-   //~ render() {
-    //~ return <SketchPicker 
-		//~ color={ this.state.background } 
-		//~ onChangeComplete={ this.handleChangeComplete }
-		//~ />
-  //~ }
-//~ }
+const constant = require("../../config/constant");
 class Form extends Component {
   state = {
     isValidated: false
@@ -86,7 +75,7 @@ class Form extends Component {
 class Register extends React.Component {
 	state = {
 		productId: this.props.match.params.id,
-		selectedFiles: '',
+		selectedFiles: '',		
 		editProductForm: {
 			productName:'',
 			description:'',
@@ -104,6 +93,7 @@ class Register extends React.Component {
 	   sizes: [],
 	   colors: [],
 	   conditions: [],
+	   ageSelected: [],
 	   categoryValue: '',
 	   background: '#fff',
 	   validation:{
@@ -184,9 +174,10 @@ class Register extends React.Component {
 				axios.get('/size/listingsize/'),
 				axios.get('/brand/listingbrand/'),
 				axios.get('/product/getColors/'),
-				axios.get('/donation/getConstant/')
+				axios.get('/donation/getConstant/'),
+				axios.get('/product/getAgeList/')
 			  ])
-			  .then(axios.spread((rsize, rbrand,rcolor,rconstant) => {
+			  .then(axios.spread((rsize, rbrand,rcolor,rconstant,rAge) => {
 				if(rsize.data.code === 200){
 				  this.setState({sizes:rsize.data.result});
 				}
@@ -198,6 +189,9 @@ class Register extends React.Component {
 				}
 				if(rconstant.data.code === 200){
 				  this.setState({conditions:rconstant.data.result});
+				}
+				if(rAge.data.code === 200){
+				  this.setState({ageSelected:rAge.data.result});
 				}
 			}))      
 			.catch(error => console.log(error));
@@ -396,7 +390,14 @@ class Register extends React.Component {
 				<div className="invalid-feedback validation"> </div>   
 				<span className="astrik">*</span>
 				<label className="label" htmlFor={"age"}>Age</label>
-				<input id={"productAge"} value={this.state.editProductForm.productAge} className={"form-control textBox"} onChange={(e) => this.inputChangedHandler(e, 'productAge')} required={true} name={"productAge"} type={"text"} placeholder="Age" defaultValue="" />
+				 <select required={true} name={"productAge"} className={"form-control textBox"} id={"productAge"} onChange={(e) => this.inputChangedHandler(e, 'productAge')}>
+					<option value="">Select</option>
+					{this.state.ageSelected.map(condition => {
+						return (<option  key={condition.id} selected={(this.state.editProductForm.productAge === condition.id)?"selected":""} value={condition.id}>{condition.name}</option>)
+					})
+					}
+				</select>
+				{/*<input id={"productAge"} value={this.state.editProductForm.productAge} className={"form-control textBox"} onChange={(e) => this.inputChangedHandler(e, 'productAge')} required={true} name={"productAge"} type={"text"} placeholder="Age" defaultValue="" /> */}
 			</div>
 			<div className="colum right">
 				<div className="invalid-feedback validation"> </div>          

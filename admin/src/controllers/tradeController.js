@@ -1148,6 +1148,21 @@ const tradeStatus = (req, res) => {
 	});
 }
 
+/** Auther	: Rajiv kumar
+ *  Date	: November 17, 2018
+ */
+/// function to get the trade product shipping cost
+const getShippingCost = (req, res) => {
+	console.log("getShippingCost",res.params)
+	OfferTrade.find({_id:req.params.id}).exec(function(err,result){				
+		return res.json({
+			code: httpResponseCode.EVERYTHING_IS_OK,
+			message: httpResponseMessage.SUCCESSFULLY_DONE,
+			result: result
+		});
+	})
+}
+
 module.exports = {
   listTrades,
   newTrades,
@@ -1177,6 +1192,7 @@ module.exports = {
   switchedProduct,
   submitPitchAgain,
   tradeStatus,
-  updateShippingStatus
+  updateShippingStatus,
+  getShippingCost
   
 }

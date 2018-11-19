@@ -6,9 +6,11 @@ import detailPic from '../../images/detail-pic.png';
 import createHistory from "history/createBrowserHistory";
 import colorOrange from '../../images/color-orange.png';
 import UserPic from '../../images/user-pic.png';
-import NewlyProducts from './newlyProducts';
+//import NewlyProducts from './newlyProducts';
+import RelatedProducts from './relatedProducts';
 import ThumbGallery from '../../components/seacrh-listing/Gallery';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 import Moment from 'moment';
 import ReadMoreReact from 'read-more-react';
 import { Spin, Alert} from 'antd';
@@ -53,8 +55,6 @@ class MyTrades extends React.Component {
 				isAlreadyInWishlist:result.data.wishListProduct
 			});
 		})
-
-
 	   axios.get('/donation/getConstant').then(result => {
 		   this.setState({conditions: result.data.result});
 	   });
@@ -145,9 +145,11 @@ class MyTrades extends React.Component {
 				</div>
 				<div className="brdr-top no-padding "><div className="ratingRow"><p className="postedBy">Posted by:</p>
 				 <div className="pic">
-				   <img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} alt="" />
+					<Link target="_blank" to={"/public-profile/"+userid}>
+						<img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} alt="" />
+				   </Link>
 				</div>
-				<p>{this.state.resultData.userId?this.state.resultData.userId.firstName:""}</p>
+				<p><Link target="_blank" to={"/public-profile/"+userid}>{this.state.resultData.userId?this.state.resultData.userId.firstName:""}</Link></p>
 				  <div className="rated">4</div>
 				  <div className="cl"></div></div>
 				</div>
@@ -214,7 +216,7 @@ class MyTrades extends React.Component {
 			<div className="cl"></div>
 			<div className="my-trades ">
 			<h3 className="center-text">You may be interested in</h3>
-			   <NewlyProducts productID={this.state.productId}/>
+			   <RelatedProducts productID={this.state.productId}/>
 			</div>
 			<div className="cl"> </div>
 			</div>

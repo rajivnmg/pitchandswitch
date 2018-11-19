@@ -88,7 +88,7 @@ class Form extends Component {
 class Register extends React.Component {
 	state = {
 	   selectedFiles: '',
-	   ageSelected : constant.selectedAges,
+	  // ageSelected : constant.selectedAges,
 	   addProductForm: {
 			productName:'',
 			description:'',

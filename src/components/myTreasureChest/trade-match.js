@@ -5,7 +5,8 @@ import userPicture from '../../images/user-pic.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import Select from 'react-select';
-import axios from 'axios'
+import axios from 'axios';
+import {Link} from 'react-router-dom';
 import { If, Then, Else } from 'react-if-elseif-else-render';
 import { Alert,Icon } from 'antd';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
@@ -170,8 +171,7 @@ console.log(id);
                             </div>
                             <div className="cl"></div>
                         </div>
-                        <div className="item-listing">                        
-                        
+                        <div className="item-listing">
                             {this.state.tradeMatches.slice(0, this.state.limit).map((tradeMatch, index) => {
 									var userImage = tradeMatch.userId?tradeMatch.userId.profilePic:null
                                     return(<div className="Items" key={index}>
@@ -193,15 +193,17 @@ console.log(id);
 												<img src={constant.BASE_IMAGE_URL+'Products/'+tradeMatch.productImages} alt="" />
 										</div>
                                         <div className="details">
-                                            <h4><a href="/my-trade-detail">{tradeMatch.productName}</a></h4>
-                                            <a href="#" className="catLink"> {(tradeMatch.productCategory)?tradeMatch.productCategory.title:''}</a>
+                                            <h4><Link to={"/search-result/"+tradeMatch._id}>{tradeMatch.productName}</Link></h4>
+                                            <Link to={"/search-listing/"+((tradeMatch.productCategory)?tradeMatch.productCategory._id:'')} className="catLink"> {(tradeMatch.productCategory)?tradeMatch.productCategory.title:''}</Link>
                                        </div>
                                         <div className="userdiv">
                                             <div className="user-pic"> <FontAwesomeIcon icon="heart-o" /> <img className="userProfile" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage}  /></div>
-                                            <div className="user-name">{(tradeMatch.userId)?tradeMatch.userId.userName:''}</div>
+                                            <div className="user-name ">
+                                            <Link className="alink" target="_blank" to={"/public-profile/"+((tradeMatch.userId)?tradeMatch.userId._id:'')}>{(tradeMatch.userId)?tradeMatch.userId.userName:''}</Link>
+                                            </div>
                                         </div>
                                     </div>
-                                            )
+                               )
                             })}
                             <div className="cl"></div>
                         </div>
