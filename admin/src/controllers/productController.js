@@ -219,7 +219,7 @@ const addProduct = (req, res) => {
                     })
                 } else {
                     var uploadedFiles = [];
-                    if (data.files != '') {
+                    if (data.files != '' && data.files != undefined) {
 						if (!fs.existsSync(constant.product_path,777)){
 							fs.mkdirSync(constant.product_path);
 						}
@@ -846,6 +846,7 @@ const updateUserProduct = (req, res) => {
         if (flag) {
             return res.json(flag);
         }
+        console.log("data.files ",data.files)
         let now = new Date();
         Product.findOneAndUpdate({_id: data._id}, data, {new : true}, (err, result) => {
             if (err) {
@@ -862,7 +863,7 @@ const updateUserProduct = (req, res) => {
                     });
                 } else {
                      var uploadedFiles = [];
-                    if (data.files != '') {
+                    if (data.files != '' && data.files != undefined) {
 						if (!fs.existsSync(constant.product_path,777)){
 							fs.mkdirSync(constant.product_path);
 						}

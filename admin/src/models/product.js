@@ -48,6 +48,27 @@ productAge:{
 type:String,
 trim:true
 },
+
+length:{
+type:String,
+trim:true,
+default:0
+},
+width:{
+type:String,
+trim:true,
+default:0
+},
+height:{
+type:String,
+trim:true,
+default:0
+},
+weight:{
+type:String,
+trim:true,
+default:0 //weight always be in kgs
+},
 productStatus:{
  type:String,
  trim:true,

@@ -33,8 +33,7 @@ const Option = AutoComplete.Option;
 const navHide = { display: "none" };
 
 class Header extends Component {
-  constructor(props) {
-	  
+  constructor(props) {	  
     //let categoryId = props.match.params.id;
     super(props);
     this.state = {
@@ -49,6 +48,8 @@ class Header extends Component {
       notifications: [],
       result: [],
       rs: [],
+      options:[],
+      productsListing:[],
       searchData: "",
       searchD: "",
       categoryId: "",
@@ -180,7 +181,6 @@ class Header extends Component {
     else return true;
   };
   componentDidMount() {
-
 	//code for google places api
 	window.initMap = this.initMap
 	const gmapScriptEl = document.createElement(`script`)
@@ -213,7 +213,12 @@ class Header extends Component {
   }
 
   Capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+	  console.log("header str",str)
+		if (str.length == 0) {
+			return str;
+		}else{
+	      return str.charAt(0).toUpperCase() + str.slice(1);
+	   }
   }
 
   render() {

@@ -30,6 +30,8 @@ class viewReceivedPopup extends Component {
 			proID:this.props.proID,
 			offerTradeProducts:[]
 		}
+		
+		console.log("view pitchreceived",props)
 	}
 	
 	
@@ -124,7 +126,7 @@ return (
 		<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId._id}</strong></span>
 		<h4>{this.state.offerTrade.SwitchUserProductId.productName} </h4>
 		<span> {this.state.offerTrade.SwitchUserProductId.description} </span>
-		<a className="catLink" href={"search-listing/"+((this.state.productData) && (this.state.productData.productCategory?this.state.productData.productCategory._id:''))}>{this.state.productData.productCategory?this.state.productData.productCategory.title:""}</a>
+		<a className="catLink" href={"search-listing/"+((this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory._id:'')}>{((this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory.title:"")}</a>
 		</div>
 		</div>
 		<div className="cl"></div>
@@ -137,7 +139,7 @@ return (
 		</p>
 		<If condition={this.state.offerTradeProducts}>
 			<Then>
-				{ this.state.offerTradeProducts.products.map((productList, index) => {			
+				{ (this.state.offerTradeProducts && this.state.offerTradeProducts.products)?this.state.offerTradeProducts.products.map((productList, index) => {			
 				var productImages = (productList.productImages)?productList.productImages[0]:'';
 				var productCategoryID = productList?productList.productCategory._id:"";
 		
@@ -166,7 +168,7 @@ return (
 		</div>
 		)
 		})
-		}
+		:''}
 		</Then>							
 		<Else>
 		  <p>No Data Available</p>

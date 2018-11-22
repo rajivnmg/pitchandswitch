@@ -601,12 +601,14 @@ const offerTradeProduct = (req, res) => {
 ///function to save new offer trade in the offerTrade collections
 const tradingProduct = (req, res) => {
   const id =  mongoose.mongo.ObjectId(req.params.id);
+  console.log("id",id)
 	 var result = [];
         TradePitchProduct.findOne({offerTradeId:id})
          .populate({path:'products',model:'Product',populate:[{path:"productCategory",model:"Category"}]})
          .sort({_id:-1})
          .limit(1)
          .exec(function(err, result){
+			 console.log("result",result)
 		     if (err) {
 					return res.send({
 					code: httpResponseCode.BAD_REQUEST,

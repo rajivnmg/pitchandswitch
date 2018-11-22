@@ -99,7 +99,11 @@ class Register extends React.Component {
 			productAge:'',
 			condition:'',
 			productImages:'',
-			productStatus:'0'
+			productStatus:'0',
+			length:'0',
+			width:'0',
+			height:'0',
+			weight:'0'
 		},
 	   Categories: [],
 	   brands: [],
@@ -432,6 +436,36 @@ class Register extends React.Component {
 					}
 					</select>
 				</div>
+			</div>
+			<div className="cl"></div>
+		</div>
+		<div className="form-row">
+			<div className="colum">
+				<div className="invalid-feedback validation"> </div>
+				<span className="astrik">*</span>
+				<label className="label" htmlFor={"length"}>Length(CM)</label>
+				<input id={"length"} className={"form-control textBox"} step="any" min="0" required={true} name={"length"} type={"number"} onChange={(e) => this.inputChangedHandler(e, 'length')} placeholder="" defaultValue="0" />
+			</div>
+			<div className="colum right">
+				<div className="invalid-feedback validation"> </div>
+				<span className="astrik">*</span>
+				<label className="label" htmlFor={"width"}>Width(CM)</label>
+				<input id={"width"} className={"form-control textBox"} step="any" min="0" required={true} name={"width"} type={"number"} onChange={(e) => this.inputChangedHandler(e, 'width')} placeholder="" defaultValue="0" />
+			</div>
+			<div className="cl"></div>
+		</div>
+		<div className="form-row">
+			<div className="colum">
+				<div className="invalid-feedback validation"> </div>
+				<span className="astrik">*</span>
+				<label className="label" htmlFor={"height"}>Height(CM)</label>
+				<input id={"height"} className={"form-control textBox"} step="any" min="0" required={true} name={"height"} type={"number"} onChange={(e) => this.inputChangedHandler(e, 'height')} placeholder="" defaultValue="0" />
+			</div>
+			<div className="colum right">
+				<div className="invalid-feedback validation"> </div>
+				<span className="astrik">*</span>
+				<label className="label" htmlFor={"weight"}>Weight(KG)</label>				
+				<input id={"weight"} className={"form-control textBox"} step="any" min="0" required={true} name={"weight"} type={"number"} onChange={(e) => this.inputChangedHandler(e, 'weight')} placeholder="" />
 			</div>
 			<div className="cl"></div>
 		</div>
