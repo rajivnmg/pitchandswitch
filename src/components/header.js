@@ -204,16 +204,20 @@ class Header extends Component {
      axios.get('/location/listingCity'),
      axios.get('/product/activeProducts')
    ])
-   .then(axios.spread(function (rcities, rsProduct) {     
-     this.setState({ options: rcities.data.result,productsListing: rsProduct.data.result })
+   .then(axios.spread((rcities, rsProduct) => {	  
+	   if(rcities.data.code ===200){
+		   this.setState({ options: rcities.data.result})
+	   }
+	   if(rsProduct.data.code ===200){
+		   
+		   this.setState({productsListing: rsProduct.data.result })
+	   }      
    }))  
-   .catch(error => console.log(error));
-   
+   .catch(error => console.log(error)); 
    
   }
 
-  Capitalize(str) {
-	  console.log("header str",str)
+  Capitalize(str) {	
 		if (str.length == 0) {
 			return str;
 		}else{
@@ -225,7 +229,7 @@ class Header extends Component {
     let optionsLists;
     let optionsAll;
     if (this.state.productsListing) {
-      let optionsList = this.state.productsListing;
+      let optionsList = this.state.productsListing;     
       optionsLists = optionsList.map((s, index) => (
         <li
           onClick={() => this.searchCategory(s.productCategory._id)}
@@ -324,7 +328,7 @@ class Header extends Component {
               </PlacesAutocomplete>
             )}
           </div>
-          <div className="search">
+          <div className="search">          
             <AutoComplete
               style={{ width: 410 }}
               dataSource={optionsLists}

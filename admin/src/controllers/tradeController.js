@@ -607,8 +607,7 @@ const tradingProduct = (req, res) => {
          .populate({path:'products',model:'Product',populate:[{path:"productCategory",model:"Category"}]})
          .sort({_id:-1})
          .limit(1)
-         .exec(function(err, result){
-			 console.log("result",result)
+         .exec(function(err, result){			 
 		     if (err) {
 					return res.send({
 					code: httpResponseCode.BAD_REQUEST,
@@ -1155,14 +1154,20 @@ const tradeStatus = (req, res) => {
  */
 /// function to get the trade product shipping cost
 const getShippingCost = (req, res) => {
-	console.log("getShippingCost",res.params)
-	OfferTrade.find({_id:req.params.id}).exec(function(err,result){				
-		return res.json({
-			code: httpResponseCode.EVERYTHING_IS_OK,
-			message: httpResponseMessage.SUCCESSFULLY_DONE,
-			result: result
-		});
-	})
+	console.log("getShippingCost param",req.params.tradeid,req.params.productid)	
+	Product.find({_id:req.params.productid}).then( product => {
+		 OfferTrade.find({_id:req.params.tradeid})		
+		.populate({path:'pitchUserId',model:'User',populate:[{path:"city",model:"City"},{path:"state",model:"State"},{	path:"country",model:"Country"}]})		
+		.populate({path:'SwitchUserId',model:'User',populate:[{path:"city",model:"City"},{path:"state",model:"State"},{path:"country",model:"Country"}]})		
+		.exec(function(err,result){
+			console.log("getShippingCost",result)				
+			return res.json({
+				code: httpResponseCode.EVERYTHING_IS_OK,
+				message: httpResponseMessage.SUCCESSFULLY_DONE,
+				result: result
+			});
+		})
+	});
 }
 
 module.exports = {

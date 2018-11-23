@@ -364,7 +364,7 @@ const userSignup = (req, res) => {
  *	Description : Function to verify user and login
  **/
 const login = (req, res) => {
-  console.log("login", req.body);
+  
   if (!req.body.email && !req.body.password) {
     return res.json({
       code: httpResponseCode.BAD_REQUEST,
@@ -383,8 +383,7 @@ const login = (req, res) => {
   }
   User.findOne(
     { email: req.body.email, userType: req.body.userType },
-    (err, result) => {
-      console.log("result", result);
+    (err, result) => {     		
       if (err) {
         return res.send({
           code: httpResponseCode.BAD_REQUEST,
@@ -405,7 +404,7 @@ const login = (req, res) => {
             return;
           }
 
-          if (result.userStatus === "0" && result.userType === 0) {
+          if (result.userStatus === "0" && result.userType === "0") {
             return res.json({
               message: httpResponseMessage.INACTIVE_USER,
               code: httpResponseCode.FORBIDDEN

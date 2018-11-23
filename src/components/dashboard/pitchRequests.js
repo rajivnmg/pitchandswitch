@@ -85,7 +85,7 @@ class PitchRequests extends React.Component {
 					<If condition={send==1 && (pitch.status=="0" || pitch.status=="3")}>
 						<Then>			
 						<div className="pitch-row" key={index}>	
-						<div className="pitch-div">
+						<div className="pitch-div" key={index}>
 							{ (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
 							<div className="colum user width1"> <span>
 							<Link className="alink" target="_blank" to={'/public-profile/'+publicProfileUrl}>
@@ -104,7 +104,7 @@ class PitchRequests extends React.Component {
 					</Then>
 					<ElseIf condition={send===0 && (pitch.status=="0")}>
 					    <div className="pitch-row" key={index}>				
-						<div className="pitch-div">
+						<div className="pitch-div" key={index}>
 							{ (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
 							<div className="colum user width1"> <span>
 							<Link className="alink" target="_blank" to={'/public-profile/'+(pitch.pitchUserId?pitch.pitchUserId._id:'')}>

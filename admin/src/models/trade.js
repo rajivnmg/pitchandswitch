@@ -43,7 +43,6 @@ switchUserPaymentStatus:{
 switchDate:{
   type: Date, default: Date.now
 },
-
 shippingStatus:{
   type:String,
   trim:true,

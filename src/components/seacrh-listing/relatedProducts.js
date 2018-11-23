@@ -70,7 +70,7 @@ class RelatedProducts extends Component {
 						<div key={products}>
 						<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+products.productImages} /></div>
 						<div className='details'>
-						<h4><Link to={'/search-listing/'+(products?products._id:'')}>{products?products.productName:''}</Link></h4>
+						<h4><a href={'/search-result/'+(products?products._id:'')}>{products?products.productName:''}</a></h4>
 							<Link className="catLink" to={'/search-listing/'+(products.productCategory?products.productCategory._id:'')}>{products.productCategory?products.productCategory.title:''}</Link>
 						</div>
 						<div className="userdiv">

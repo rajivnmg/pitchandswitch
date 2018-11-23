@@ -143,6 +143,38 @@ const api = new Easypost(constant.EasyPostApiKey);
   "updated_at": "2013-04-22T05:40:57Z"
 }
 */
+
+//function to create Form & To Address for the parcel 
+//toAddress & fromAddress example
+createAddress = (address) => {
+	return  new api.Address({
+		"city": "Rajiv",
+		"company": null,
+		"country": "US",		
+		"email": "rajiv.kumar@nmgtechnologies.com",
+		"mode": "test",
+		"name": "Dr. Steve Brule",
+		"object": "Address",
+		"phone": null,
+		"state": "CA",
+		"street1": "179 N Harbor Dr",
+		"street2": null,
+		//"updated_at": "2013-11-08T15:49:58Z",
+		"zip": "90277"
+	});
+}
+ 
+//Function createParcel to Create parcel a new parcel for shippment
+createParcel = (length,width, height,weight) => {
+	return new api.Parcel({
+	  length:length,
+	  width: width,
+	  height:height,
+	  weight:weight
+	});
+}
+
+//Function createShippment is to  create the new shippment in between address for the give n parcel
 createShipment = (toAddress,fromAddress, parcel) => {
   const toAddress = new api.Address(toAddress);
   const fromAddress = new api.Address(fromAddress);
@@ -168,6 +200,8 @@ refundShipment = (shipmentId) => {
 }
 
 module.exports = {
-  createShipment,
-  refundShipment
+	createAddress,
+	createParcel,
+	createShipment,
+	refundShipment
 };

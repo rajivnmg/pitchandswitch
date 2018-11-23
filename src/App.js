@@ -59,7 +59,7 @@ class App extends Component {
     //console.log('Version', React.version);
     //console.log('TOken', localStorage.getItem('jwtToken'),window.location.href, constant.PUBLIC_URL+'login');
      if((localStorage.getItem('jwtToken') === null) && (window.location.href !==constant.PUBLIC_URL+'login')){
-        window.location.href="/login";
+        //window.location.href="/login";
      }
   }
   componentDidMount() {
@@ -136,7 +136,7 @@ class App extends Component {
                 component={PublicProfile}
               />
               {/*<Route exact path="/public-profile" component={PublicProfile} />
-                            <Route exact path="/public-reviews" component={PublicReviews} />*/}
+               <Route exact path="/public-reviews" component={PublicReviews} />*/}
               <Route exact path="/help" component={Help} />
               <Route exact path="/about-us" component={aboutUs} />
               <Route exact path="/contact-us" component={contactUs} />

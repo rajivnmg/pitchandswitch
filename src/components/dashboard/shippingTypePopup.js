@@ -27,11 +27,9 @@ var date = tempDate.getFullYear() + '-' + (tempDate.getMonth()+1) + '-' + tempDa
 
 class ShippingTypePopup extends Component {
 	constructor(props) {
-		super(props);
-		
+		super(props);		
 		const tradeId = this.props.offerTrade._id;
-		const productID = this.props.productID;
-		console.log("ShippingTypePopup PROPS",props,productID,tradeId)
+		const productID = this.props.productID;		
 		this.state = {				
 		  productID:this.props.productID,
 		  offerTrade:this.props.offerTrade,
@@ -39,11 +37,6 @@ class ShippingTypePopup extends Component {
 		  pitchUserDATA:{}
 		}	
 	} 
-	
-    componentDidMount(){
-		//get the offer trade details
-		
-	}
 	
      submitHandler(proID){	   
 		this.setState({ condition: !this.state.condition });	   
@@ -69,20 +62,17 @@ class ShippingTypePopup extends Component {
       })  
    }
    
-     componentDidMount(){
-		 
-		 // HTTP request to get the list of cities and active product from the server		
+     componentDidMount(){		 
+		// HTTP request to get the list of cities and active product from the server			
 		axios.all([
 		 axios.get('/user/viewUser/'+this.props.offerTrade.pitchUserId._id),
-		 axios.get('trade/getShippingCost/'+this.tradeId+'/'+this.productID)
+		 axios.get('trade/getShippingCost/'+this.props.offerTrade._id+'/'+this.props.productID)
 	   ])
-	   .then(axios.spread(function (ruser, rsShippingCost) {     
+	   .then(axios.spread((ruser, rsShippingCost) => {     
 		 this.setState({ pitchUserDATA :ruser.data.result,shippingCost: rsShippingCost.data.result })
 	   }))  
-	   .catch(error => console.log(error));		
-		
+	   .catch(error => console.log(error));				
 	  }
-	  
 	  
 	 submitHandler(proID){	   
 		this.setState({  condition: !this.state.condition  });

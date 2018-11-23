@@ -236,7 +236,7 @@ const addProduct = (req, res) => {
                                             fs.remove(constant.product_path + filename, err => {
                                                 if (err)
                                                     return console.error(err)
-													console.log('success!')
+													//console.log('success!')
                                             });
 
                                         }).catch(err => { console.error("catch file ",err) })
@@ -1045,12 +1045,12 @@ const searchresult = (req, res) => {
                     }
                 },
                 {
-                    $lookup: {
-                        from: "users",
-                        localField: "userId",
-                        foreignField: "_id",
-                        as: "userId"
-                    }
+					$lookup: {
+						from: "users",
+						localField: "userId",
+						foreignField: "_id",
+						as: "userId"
+					}
                 },
                 {$unwind: '$userId'},
                 {
@@ -1073,7 +1073,6 @@ const searchresult = (req, res) => {
                 }
               }
             ], function (err, result) {
-
                 Product.count().exec(function (err, count) {
                     if (err) {
                         console.log("ewrewr" + err)
@@ -1503,7 +1502,7 @@ const tradeMatchFilterBy = function (req, res) {
 						var latitude = '77.1024901999999';
                     var longitude = '28.7040592';
 					}
-					console.log(userId);
+					//console.log(userId);
 
 
                     User.find({_id: { $ne: ObjectId(userId) },'loc': {
@@ -1563,7 +1562,7 @@ const tradeMatchFilterBy = function (req, res) {
             }
         },
         function (user, done) {
-             console.log(user.length);
+             //console.log(user.length);
             var sortObject = {};
             var condObject = {};
             var stype = "productName";
