@@ -526,9 +526,9 @@ class Register extends React.Component {
           return null;
         }
       });
-      let conditions = this.state.constantList.map(constant => {
+      let conditions = this.state.constantList.map((constant,ckey) => {
         return (
-          <div className="check-box">
+          <div className="check-box" key={ckey}>
             <input
               name="condition"
               id={constant.name}
@@ -545,17 +545,17 @@ class Register extends React.Component {
         for (let i = 0; i < to; i++) {
           jsx.push({ id: i });
         }
-        return jsx.map(js => {
+        return jsx.map((js,xkey) => {
           return (
-            <span className="stardiv">
+            <span className="stardiv" key={xkey}>
               <img src={star} alt={star} />
             </span>
           );
         });
       };
-      let ratings = this.state.ratings.map(rating => {
+      let ratings = this.state.ratings.map((rating,rkey )=> {
         return (
-          <div className="check-box">
+          <div className="check-box" key={rkey}>
             <input
               name="New"
               id={"star" + rating.id}

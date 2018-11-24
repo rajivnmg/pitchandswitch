@@ -144,6 +144,7 @@ const api = new Easypost(constant.EasyPostApiKey);
 }
 */
 
+/***
 //function to create Form & To Address for the parcel 
 //toAddress & fromAddress example
 createAddress = (address) => {
@@ -173,12 +174,47 @@ createParcel = (length,width, height,weight) => {
 	  weight:weight
 	});
 }
+***/
+
+//function to create Form & To Address for the parcel 
+//toAddress & fromAddress example
+createAddress = (user) => {		
+	return ({
+		"city": (user.city && user.city.cityName)?user.city.cityName:null,
+		"company": null,
+		"country": (user.country && user.country.countryCode)?user.country.countryCode:'US',		
+		"email": (user.email && user.email !='')?user.email:null,
+		"mode": "test",
+		"name": (user.firstName && user.firstName !='')?user.firstName:null +' '+(user.lastName && user.lastName !='')?user.lastName:null,
+		"object": "Address",		
+		"phone": (user.phoneNumber && user.phoneNumber !='')?user.phoneNumber:null,
+		"state": (user.state && user.state.stateName)?user.state.stateName:null,
+		"street1": (user.address && user.address !='')?user.address:null,
+		"street2": null,
+		//"updated_at": "2013-11-08T15:49:58Z",
+		"zip": (user.zipCode && user.zipCode !='')?user.zipCode:null
+	});
+}
+
+//Function createParcel to Create parcel a new parcel for shippment from product
+createParcel = (product) => {	
+	return ({
+		"length":(product.length)?parseInt(product.length):0,
+		"width": (product.width)?parseInt(product.width):0,
+		"height":(product.height)?parseInt(product.height):0,
+		"weight":(product.weight !== null && product.weight !== '0')?product.weight:1
+	});
+};
+
+
+
+
 
 //Function createShippment is to  create the new shippment in between address for the give n parcel
-createShipment = (toAddress,fromAddress, parcel) => {
-  const toAddress = new api.Address(toAddress);
-  const fromAddress = new api.Address(fromAddress);
-  const parcel = new api.Parcel(parcel);
+createShipment = (toAddr,fromAddr, prcel) => {
+  const toAddress = new api.Address(toAddr);
+  const fromAddress = new api.Address(fromAddr);
+  const parcel = new api.Parcel(prcel);
   return new api.Shipment({
     parcel,
     to_address: toAddress,
@@ -186,7 +222,8 @@ createShipment = (toAddress,fromAddress, parcel) => {
     options: {
       address_validation_level: 0
     }
-  });
+  }).save();
+  
 }
 
 /**
@@ -200,8 +237,8 @@ refundShipment = (shipmentId) => {
 }
 
 module.exports = {
-	createAddress,
 	createParcel,
+	createAddress,	
 	createShipment,
 	refundShipment
 };

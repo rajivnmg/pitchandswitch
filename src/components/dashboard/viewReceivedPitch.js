@@ -132,11 +132,11 @@ return (
 		<div className="cl"></div>
 		<div className="switch-product-section">
 		<p>Offered products for switch:
-			<span class="pitch-offered"><span class="pitch-offer">Pitch offered by </span>
+			<span className="pitch-offered"><span className="pitch-offer">Pitch offered by </span>
 			  {this.state.offerTrade.SwitchUserId.userName} 
-			</span>
-		<div className="cl"></div>
+			</span>		
 		</p>
+		<div className="cl"></div>
 		<If condition={this.state.offerTradeProducts}>
 			<Then>
 				{ (this.state.offerTradeProducts && this.state.offerTradeProducts.products)?this.state.offerTradeProducts.products.map((productList, index) => {			
@@ -144,7 +144,7 @@ return (
 				var productCategoryID = productList?productList.productCategory._id:"";
 		
 		return(
-		<div className="switch-product-box">
+		<div className="switch-product-box" key={index}>
 			<div className="switch-product-image-box">
 			<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
 			<div className="switch-option-mask">

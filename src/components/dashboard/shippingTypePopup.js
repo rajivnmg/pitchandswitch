@@ -10,6 +10,7 @@ import axios from 'axios'
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import successPic from '../../images/successful_img.png';
 import { Badge,Button} from 'reactstrap';
+import Auxios from '../Auxios';
 const constant = require('../../config/constant')
 
 const contentStyle = {
@@ -151,8 +152,27 @@ render() {
 		<span className="catLink">Switched with</span>
 		<p>Shopkins Shoppies - Bubbleisha</p>                    
 		</div>
-		<div className="yellow-brdr-box-div "><p>Shipping cost
-		<span className="price">$66</span></p>                    
+		<div className="yellow-brdr-box-div ">
+		<p>
+			Available Shipping Type <span className="price"></span>
+		</p>     
+		{this.state.shippingCost.map((rate,index) => {
+														
+														return(	
+															<Auxios key={index}>															
+																<div className="radioBtn" >
+																	<input id={"gold"} required={true} name={"plan"} type={"radio"} data-ptype={'subscription'} /><label htmlFor="gold"></label>
+																</div>
+																<div className="right-div">
+																	<p>{rate.service} ({rate.currency})
+																	<span className="price">${rate.rate} USD/year</span></p> 
+																	  
+																</div>							
+															<div className="cl"></div>	
+															</Auxios>);
+													
+										})}
+		               
 		</div>
 		<div className="form-row">
 		<span className="astrik">*</span>

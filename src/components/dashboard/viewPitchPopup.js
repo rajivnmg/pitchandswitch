@@ -55,7 +55,7 @@ class viewPitchPopup extends Component {
 	
 	
    return (
-	<Popup trigger={<a className= 'view-pitch'> View Pitch </a>} modal contentStyle = {contentStyle} lockScroll > 
+	<Popup trigger={<span className= 'view-pitch'> View Pitch </span>} modal contentStyle = {contentStyle} lockScroll > 
 	{ close => (
       <div className="modal">
         <a className="close" onClick={close}>

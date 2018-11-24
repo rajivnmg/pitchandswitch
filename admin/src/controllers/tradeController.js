@@ -21,7 +21,8 @@ var jwt = require('jsonwebtoken');
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 const multiparty = require('multiparty');
-
+const easyPostComponent = require('../components/EasyPostComponent');
+var async = require('async');
 
 getToken = function (headers) {
   if(headers && headers.authorization) {
@@ -601,8 +602,7 @@ const offerTradeProduct = (req, res) => {
 ///function to save new offer trade in the offerTrade collections
 const tradingProduct = (req, res) => {
   const id =  mongoose.mongo.ObjectId(req.params.id);
-  console.log("id",id)
-	 var result = [];
+  	 var result = [];
         TradePitchProduct.findOne({offerTradeId:id})
          .populate({path:'products',model:'Product',populate:[{path:"productCategory",model:"Category"}]})
          .sort({_id:-1})
@@ -1096,7 +1096,6 @@ const switchedProduct = (req, res) => {
     })
 }
 
-
 /** Auther	: KS
  *  Date	: July 2, 2018
  */
@@ -1135,7 +1134,6 @@ const submitPitchAgain = (req, res) => {
 	});
 }
 
-
 /** Auther	: Rajiv kumar
  *  Date	: Oct 28, 2018
  */
@@ -1148,28 +1146,43 @@ const tradeStatus = (req, res) => {
 		result: resultAdd
 	});
 }
-
 /** Auther	: Rajiv kumar
  *  Date	: November 17, 2018
  */
 /// function to get the trade product shipping cost
 const getShippingCost = (req, res) => {
-	console.log("getShippingCost param",req.params.tradeid,req.params.productid)	
+	//console.log("getShippingCost param",req.params.tradeid,req.params.productid)	
 	Product.find({_id:req.params.productid}).then( product => {
+		//console.log("product",product)
 		 OfferTrade.find({_id:req.params.tradeid})		
 		.populate({path:'pitchUserId',model:'User',populate:[{path:"city",model:"City"},{path:"state",model:"State"},{	path:"country",model:"Country"}]})		
 		.populate({path:'SwitchUserId',model:'User',populate:[{path:"city",model:"City"},{path:"state",model:"State"},{path:"country",model:"Country"}]})		
-		.exec(function(err,result){
-			console.log("getShippingCost",result)				
-			return res.json({
-				code: httpResponseCode.EVERYTHING_IS_OK,
-				message: httpResponseMessage.SUCCESSFULLY_DONE,
-				result: result
-			});
+		.exec(function(err,result){			
+			const parcelAttribute = easyPostComponent.createParcel(product[0]);
+			const toAddressAttribute = easyPostComponent.createAddress(result[0].pitchUserId);
+			const fromAddressAttribute = easyPostComponent.createAddress(result[0].SwitchUserId);
+			//console.log("parcelAttribute",parcelAttribute);
+			//console.log("toAddressAttribute",toAddressAttribute);
+			//console.log("fromAddressAttribute",fromAddressAttribute);
+			const shipment = easyPostComponent.createShipment(toAddressAttribute,fromAddressAttribute,parcelAttribute);
+				shipment.then(resultShippment => {					
+					return res.json({
+						code: httpResponseCode.EVERYTHING_IS_OK,
+						message: httpResponseMessage.SUCCESSFULLY_DONE,
+						result: resultShippment.rates
+					});					
+			})
+			.catch((error) => {
+				return res.json({
+						code: httpResponseCode.BAD_REQUEST,
+						message: httpResponseMessage.INTERNAL_SERVER_ERROR,
+						result: error
+					});
+				//console.log("ErrorInShipment",error)
+			});			
 		})
 	});
 }
-
 module.exports = {
   listTrades,
   newTrades,

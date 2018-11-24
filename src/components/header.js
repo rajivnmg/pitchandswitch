@@ -53,8 +53,9 @@ class Header extends Component {
       searchData: "",
       searchD: "",
       categoryId: "",
-      latitude: "",
-      longitude: "",
+     // latitude: "",
+      //longitude: "",
+      address:"",
       gmapsLoaded: false
     };
     this.logoutHandler = this.logoutHandler.bind(this);
@@ -67,7 +68,7 @@ class Header extends Component {
     });
   };
 
-  handleChange = address => {
+  handleChange = address => {	 
     this.setState({ address });
   };
   handleSelect = address => {
