@@ -194,7 +194,6 @@ class payInventoryPopup extends Component {
 			console.log('error', error);
 			if (!error.status) {
 				 this.setState({ showFormError: true,showFormSuccess: false,message: this.state.message });
-
 			}
 		  });    
   }

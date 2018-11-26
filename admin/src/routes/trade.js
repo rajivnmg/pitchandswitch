@@ -39,5 +39,6 @@ router.post('/submitPitchAgain',tradeController.submitPitchAgain)
 
 //trade shipping product cost
 router.get('/getShippingCost/:tradeid/:productid',tradeController.getShippingCost)
+router.post('/payShipment',tradeController.payShipment)
 
 module.exports = router;

@@ -30,8 +30,6 @@ class viewReceivedPopup extends Component {
 			proID:this.props.proID,
 			offerTradeProducts:[]
 		}
-		
-		console.log("view pitchreceived",props)
 	}
 	
 	
@@ -85,6 +83,7 @@ class viewReceivedPopup extends Component {
     render() {
 	  const proImg = this.state.offerTrade.SwitchUserProductId.productImages?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
 	  const userID = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId._id:"";
+	  const productData = ((this.state.productData)?this.state.productData:{});
 	
 return (
 <Popup
@@ -141,33 +140,32 @@ return (
 			<Then>
 				{ (this.state.offerTradeProducts && this.state.offerTradeProducts.products)?this.state.offerTradeProducts.products.map((productList, index) => {			
 				var productImages = (productList.productImages)?productList.productImages[0]:'';
-				var productCategoryID = productList?productList.productCategory._id:"";
-		
-		return(
-		<div className="switch-product-box" key={index}>
-			<div className="switch-product-image-box">
-			<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
-			<div className="switch-option-mask">
-			<If condition={localStorage.getItem('userId') === productList.userId}>
-               <Then>
-			      <a className="view-btn" href={'/my-trade_detail/'+productList._id}>View</a>
-			    </Then>
-				<Else>
-				<a className="view-btn" href={'/search-result/'+productList._id}>View</a>
-				</Else>
-			 </If>
-			   <Button className="switch-btn" >
-			      <ShippingTypePopup productID={productList._id} offerTrade={this.state.offerTrade}/>
-			   </Button>			   
-			</div>
-			</div>
-			<div className="switch-product-content-box">
-			<h4>{productList.productName}</h4>
-			<a className="catLink" href={'search-listing/'+productCategoryID}>{productList.productCategory.title}</a>
-			</div>
-		</div>
-		)
-		})
+				var productCategoryID = productList?productList.productCategory._id:"";		
+						return(
+						<div className="switch-product-box" key={index}>
+							<div className="switch-product-image-box">
+							<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+							<div className="switch-option-mask">
+							<If condition={localStorage.getItem('userId') === productList.userId}>
+							   <Then>
+								  <a className="view-btn" href={'/my-trade_detail/'+productList._id}>View</a>
+								</Then>
+								<Else>
+								<a className="view-btn" href={'/search-result/'+productList._id}>View</a>
+								</Else>
+							 </If>
+							   <Button className="switch-btn" >
+								  <ShippingTypePopup switchProduct={productList} pitchProduct={productData} productID={productList._id} offerTrade={this.state.offerTrade}/>
+							   </Button>			   
+							</div>
+							</div>
+							<div className="switch-product-content-box">
+							<h4>{productList.productName}</h4>
+							<a className="catLink" href={'search-listing/'+productCategoryID}>{productList.productCategory.title}</a>
+							</div>
+						</div>
+						)
+			})
 		:''}
 		</Then>							
 		<Else>

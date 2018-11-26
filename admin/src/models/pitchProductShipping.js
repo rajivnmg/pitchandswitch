@@ -15,7 +15,10 @@ pitchUserId:{
   type: Schema.Types.ObjectId,
   ref: 'User'
 },
-
+trackingCode:{
+ type: String,
+ trim: true
+},
 comments:{
 	 type: String,
 	 trim: true

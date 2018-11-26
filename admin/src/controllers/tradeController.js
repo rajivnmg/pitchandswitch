@@ -24,6 +24,12 @@ const multiparty = require('multiparty');
 const easyPostComponent = require('../components/EasyPostComponent');
 var async = require('async');
 
+const keyPublishable = constant.StripeKeyPublic;
+const keySecret = constant.StripeKeySecret;
+const stripe = require("stripe")(keySecret);
+
+
+
 getToken = function (headers) {
   if(headers && headers.authorization) {
     var parted = headers.authorization.split(' ');
@@ -1183,6 +1189,177 @@ const getShippingCost = (req, res) => {
 		})
 	});
 }
+
+
+/** Auther	: Rajiv Kumar
+ *  Date	: November 24, 2018
+ *	Description : Function to pay the shipment cost beforw switch the product
+ **/
+const payShipment = (req, res) => {
+  //console.log("payOnStripe", req.body); return;
+  stripe.customers.create({
+      email: req.body.userEmail,
+      source: {
+        object: 'card',
+        exp_month: req.body.expiryMonth,
+        exp_year: req.body.expiryYear,
+        number: req.body.cardNumber,
+        cvc: req.body.cardCVV
+      }
+    }).then(function(customer) {
+      //console.log("customer",customer)
+      return stripe.charges.create({
+        amount: req.body.amount*100,
+        currency: 'usd',
+        customer: customer.id
+      });
+    }).then(function(charge) {
+     //console.log("charge",charge); return;       
+  // const shipment = easyPostComponent.retrieveShipment(req.body.shipmentId);
+Promise.all([
+   easyPostComponent.retrieveShipment(req.body.shipmentId)
+]).then((shipment) => {	
+	console.log("req.body.shipmentTypeId",req.body.shipmentTypeId)
+	console.log("shipment",shipment[0].lowestRate(['USPS'], ['First']))
+	shipment[0].buy(shipment[0].lowestRate(['USPS'], ['First'])).then(shippingRateResp => {
+		console.log("shippingRateResp",shippingRateResp); return;
+			  let data = {}
+			  data.userId = req.body.userId
+			  data.status = 1
+			  data.transactionId = charge.id
+			  data.transactionStatus = (charge.status === 'succeeded')?1:0
+			  data.transactionResponceMessage = charge.status
+			  data.transactionAmount = (charge.amount/100)
+			  data.addonId =req.body.planTypeId
+			  data.userSubscriptionId =req.body.planTypeId	
+			  data.pitchUserPaymentStatus =0	
+			  data.pitchUserPaymentStatus =1
+			  data.shippingStatus = 1
+			  data.offerTradeId = req.body.tradeId
+			  data.tradePitchProductId = req.body.pitchProductId
+			  data.tradeSwitchProductId = req.body.switchProductId
+			  query = new Trade(data);
+				console.log("query",query) 
+				//Saving it to the database.    
+			  query.save(function (err, responceData){		  
+				if(err){
+				  return res.send({
+					code: httpResponseCode.BAD_REQUEST,
+					message: httpResponseMessage.INTERNAL_SERVER_ERROR
+				  });
+				}else{
+					
+					//update product and offerTrade status					
+					console.log("responceData",responceData) ; return;
+					let TransactionData = {};
+						TransactionData.transactionId = charge.id
+						TransactionData.transactionType = 'Shipment'										
+						TransactionData.userId = req.body.userId
+						TransactionData.paymentId = charge.id
+						TransactionData.transactionAmount = (charge.amount/100)
+						TransactionData.status = (charge.status === 'succeeded')?1:0
+						TransactionData.transactionDate = new Date();
+						Transaction.create(TransactionData, (err, transactionResp) => {
+							console.log("transactionResp",transactionResp)
+						});	
+						let shippingData = {}
+						shippingData.TradeId = 	req.body.tradeId				
+						shippingData.comments = "Processed"
+						shippingData.status = 1
+						shippingDatatrackingCode = shippingRateResp.tracking_code
+						if(req.body.type ==='Switch'){
+						    shippingData.switchUserId = req.body.userId
+							shippingQuery = new SwitchProductShipping(shippingData);
+						}else{
+							 shippingData.pitchUserId = req.body.userId 
+							 shippingQuery = new PitchProductShipping(shippingData);
+						}
+						query.save().then( shippingResult =>{
+							console.log("shippingResult",shippingResult)
+						})
+						// console.log("responceData",responceData)
+						
+							// setup email data with unicode symbols
+							commonFunction.readHTMLFile('src/views/emailTemplate/switchUserConfirmationEmail.html', function(err, html) {
+							  var template = handlebars.compile(html);
+							  var replacements = {
+								   trnxId:charge.id,
+								   userName:(req.body.userName)?req.body.userName.toUpperCase():'User'
+							  };
+							  var htmlToSend = template(replacements);
+							  let mailOptions = {
+								from: constant.SMTP_FROM_EMAIL, // sender address
+								to: req.body.userEmail+',rajiv.kumar@newmediaguru.net', // list of receivers
+								subject: 'Switch successfully ✔', // Subject line
+								html : htmlToSend
+							  };
+							  commonFunction.transporter.sendMail(mailOptions, function (error, response) {
+								  if (error) {
+									  console.log(error);
+								  }else{
+									console.log('Message sent: %s', info.messageId);
+												// Preview only available when sending through an Ethereal account
+												console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+								  }
+							  });
+						  })
+						
+						 if(req.body.type=='Switch'){ 
+						  // setup email data with unicode symbols
+							commonFunction.readHTMLFile('src/views/emailTemplate/pitchUserConfirmationEmail.html', function(err, html) {
+							  var template = handlebars.compile(html);
+							  var replacements = {
+								   trnxId:charge.id,
+								   userName:(req.body.userName)?req.body.userName.toUpperCase():'User'
+							  };
+							  var htmlToSend = template(replacements);
+							  let mailOptions = {
+								from: constant.SMTP_FROM_EMAIL, // sender address
+								to: req.body.userEmail+',rajiv.kumar@newmediaguru.net', // list of receivers
+								subject: 'Switch successfully  ✔', // Subject line
+								html : htmlToSend
+							  };
+							  commonFunction.transporter.sendMail(mailOptions, function (error, response) {
+								  if (error) {
+									  console.log(error);
+								  }else{
+									console.log('Message sent: %s', info.messageId);
+												// Preview only available when sending through an Ethereal account
+												console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+								  }
+							  });
+						  })
+					  }
+					return res.json({
+						code: httpResponseCode.EVERYTHING_IS_OK,
+						message: httpResponseMessage.CHANGE_STATUS_SUCCESSFULLY,
+					   result: responceData
+					  });
+				  }
+			})
+	})
+	.catch(function(errorInBuy) {
+		console.log("error buy",errorInBuy);
+	});
+})
+.catch(function(error) {
+  console.log("error",error);
+});		
+    
+
+}).catch(function(err) {
+  // Deal with an error
+  return res.json({
+      code: httpResponseCode.BAD_REQUEST,
+      message: err,
+     result: err
+    });
+});
+}
+
+
+
+
 module.exports = {
   listTrades,
   newTrades,
@@ -1213,6 +1390,7 @@ module.exports = {
   submitPitchAgain,
   tradeStatus,
   updateShippingStatus,
-  getShippingCost
+  getShippingCost,
+  payShipment
   
 }
