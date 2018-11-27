@@ -73,7 +73,7 @@ productStatus:{
  type:String,
  trim:true,
  sparse:true,
- default:0
+ default:0 // 0 -> inactive, 1->Active, 2-> sold out
 }
 },
 {

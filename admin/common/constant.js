@@ -7,7 +7,7 @@ module.exports = {
   //'DATABASE':'mongodb://pitchnswitch:pitchnswitch123456@10.0.0.24:27017/pitch-switch-demo',
   'SMTP_HOST':'smtp.sendgrid.net',
   'SMTP_PORT': 587,   
-  'SMTP_USERNAME': '####',
+  'SMTP_USERNAME': '#####',
   'SMTP_PASSWORD': '######',
   'SMTP_FROM_EMAIL': 'rajiv.kumar@nmgtechnologies.com',
   'StripeKeyPublic' : 'pk_test_hd6ILRIbYiaz8udjz91j4orh',

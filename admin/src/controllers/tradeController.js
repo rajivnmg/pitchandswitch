@@ -4,6 +4,9 @@ const Product = require('../models/product')
 const User = require('../models/User')
 const TradeReturn = require('../models/tradeReturn')
 const TradePitchProduct = require('../models/tradePitchProduct')
+const Transaction = require('../models/transaction')
+const SwitchProductShipping = require('../models/switchProductShipping');
+const PitchProductShipping = require('../models/pitchProductShipping');
 const httpResponseCode = require('../helpers/httpResponseCode')
 const httpResponseMessage = require('../helpers/httpResponseMessage')
 const validation = require('../middlewares/validation')
@@ -12,6 +15,7 @@ const commonFunction = require("../../common/commonFunction");
 const moment = require('moment-timezone');
 const md5 = require('md5')
 const nodemailer = require('nodemailer');
+const handlebars = require('handlebars');
 const Notification = require('../models/notification');
 const UserTradeRating = require('../models/userTradeRating');
 var settings = require('../config/settings'); // get settings file
@@ -1196,7 +1200,7 @@ const getShippingCost = (req, res) => {
  *	Description : Function to pay the shipment cost beforw switch the product
  **/
 const payShipment = (req, res) => {
-  //console.log("payOnStripe", req.body); return;
+  console.log("payOnStripe", req.body); return;
   stripe.customers.create({
       email: req.body.userEmail,
       source: {
@@ -1216,13 +1220,14 @@ const payShipment = (req, res) => {
     }).then(function(charge) {
      //console.log("charge",charge); return;       
   // const shipment = easyPostComponent.retrieveShipment(req.body.shipmentId);
-Promise.all([
-   easyPostComponent.retrieveShipment(req.body.shipmentId)
-]).then((shipment) => {	
-	console.log("req.body.shipmentTypeId",req.body.shipmentTypeId)
-	console.log("shipment",shipment[0].lowestRate(['USPS'], ['First']))
-	shipment[0].buy(shipment[0].lowestRate(['USPS'], ['First'])).then(shippingRateResp => {
-		console.log("shippingRateResp",shippingRateResp); return;
+	Promise.all([
+	   easyPostComponent.retrieveShipment(req.body.shipmentId)
+	   
+	]).then((shipment) => {	
+	//console.log("req.body.shipmentTypeId",req.body.shipmentTypeId)
+	//console.log("shipment",shipment[0].lowestRate(['USPS'], ['First']))
+	shipment[0].buy(req.body.shipmentTypeId).then(shippingRateResp => {
+		//console.log("shippingRateResp",shippingRateResp); return;
 			  let data = {}
 			  data.userId = req.body.userId
 			  data.status = 1
@@ -1239,7 +1244,7 @@ Promise.all([
 			  data.tradePitchProductId = req.body.pitchProductId
 			  data.tradeSwitchProductId = req.body.switchProductId
 			  query = new Trade(data);
-				console.log("query",query) 
+				//console.log("query",query) 
 				//Saving it to the database.    
 			  query.save(function (err, responceData){		  
 				if(err){
@@ -1250,7 +1255,7 @@ Promise.all([
 				}else{
 					
 					//update product and offerTrade status					
-					console.log("responceData",responceData) ; return;
+					console.log("responceData",responceData) ; 
 					let TransactionData = {};
 						TransactionData.transactionId = charge.id
 						TransactionData.transactionType = 'Shipment'										
@@ -1263,7 +1268,7 @@ Promise.all([
 							console.log("transactionResp",transactionResp)
 						});	
 						let shippingData = {}
-						shippingData.TradeId = 	req.body.tradeId				
+						shippingData.TradeId = 	responceData._id				
 						shippingData.comments = "Processed"
 						shippingData.status = 1
 						shippingDatatrackingCode = shippingRateResp.tracking_code
@@ -1274,7 +1279,7 @@ Promise.all([
 							 shippingData.pitchUserId = req.body.userId 
 							 shippingQuery = new PitchProductShipping(shippingData);
 						}
-						query.save().then( shippingResult =>{
+						shippingQuery.save().then( shippingResult =>{
 							console.log("shippingResult",shippingResult)
 						})
 						// console.log("responceData",responceData)
@@ -1303,8 +1308,9 @@ Promise.all([
 								  }
 							  });
 						  })
-						
-						 if(req.body.type=='Switch'){ 
+						  						
+						 if(req.body.type === 'Switch'){ 
+							 console.log("req.body.type",req.body.type)
 						  // setup email data with unicode symbols
 							commonFunction.readHTMLFile('src/views/emailTemplate/pitchUserConfirmationEmail.html', function(err, html) {
 							  var template = handlebars.compile(html);
@@ -1316,7 +1322,7 @@ Promise.all([
 							  let mailOptions = {
 								from: constant.SMTP_FROM_EMAIL, // sender address
 								to: req.body.userEmail+',rajiv.kumar@newmediaguru.net', // list of receivers
-								subject: 'Switch successfully  ✔', // Subject line
+								subject: 'Switched Product  ✔', // Subject line
 								html : htmlToSend
 							  };
 							  commonFunction.transporter.sendMail(mailOptions, function (error, response) {
@@ -1356,9 +1362,6 @@ Promise.all([
     });
 });
 }
-
-
-
 
 module.exports = {
   listTrades,
