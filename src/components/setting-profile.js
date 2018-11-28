@@ -221,10 +221,11 @@ class settingProfile extends Component {
     data.set("userStatus", "0");
     data.set("_id", profileForm._id);
     axios.post("/user/changeStatus", data).then(result => {
+		console.log('result',result.data.result);
       if (result.data.code == "200") {
-        this.setState({
-          modalStatus: false
-        });
+        //~ this.setState({
+          //~ modalStatus: false
+        //~ });
         this.props.history.push("/logout");
       }
     });
@@ -632,9 +633,7 @@ class settingProfile extends Component {
                             "DD/MM/YYYY"
                           )}
                         </p>
-                        <button type={"submit"} className={"submitBtn fl"}>
-                          Save
-                        </button>
+                        <button type={"submit"} className={"submitBtn fl"}>Save</button>
                       </div>
                     </div>
                     <div className="cl"> </div>
