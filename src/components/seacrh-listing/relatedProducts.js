@@ -23,13 +23,12 @@ class RelatedProducts extends Component {
           ]
         };
       }
-      
+     //components didMount function call just after rendering the page       
      componentDidMount(){
 		 axios.get('/product/relatedCategoryProduct/'+this.props.productID).then(result => {	
 			this.setState({relatedProduct:result.data.result})		
 		})
-	  }
-    
+	  }    
      render() {
           const settings = {
             dots: false,

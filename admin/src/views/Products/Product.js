@@ -10,6 +10,8 @@ Capitalize(str){
 	return str.charAt(0).toUpperCase() + str.slice(1);
 }
   render() {
+	  
+	const sold = (this.props.product && this.props.product.productStatus === "2")?false:true;
     return (   
       <tr key={this.props.product._id}>	
 		<td>{this.props.sequenceNumber}</td>
@@ -21,15 +23,26 @@ Capitalize(str){
 		<td>{this.props.product.productAge}</td>  
 		<td><img src={'assets/uploads/Products/'+this.props.product.productImages} width="40" alt=""/></td>
 		<td>
-		<Badge className="mousePointer" onClick={this.props.changeStatus.bind(this, this.props.product)} color={(this.props.product.productStatus === '1')?'success':'danger'}>
-		   {(this.props.product.productStatus === '1')?'Active':'Inctive'}
-		</Badge>
+		{sold ? (
+			<Badge className="mousePointer" onClick={this.props.changeStatus.bind(this, this.props.product)} color={(this.props.product.productStatus === '1')?'success':'danger'}>
+			   {(this.props.product.productStatus === '1')?'Active':'Inctive'}
+			</Badge>
+		) : (
+			<Badge className="mousePointer"  color={'danger'}>{'Sold'}</Badge>
+		)}
 		</td>
 		<td>
-		<Link to={'/products/edit/' + this.props.product._id}><i className="fa fa-edit fa-md"></i>&nbsp;</Link>
-		<Link to={'/products/view/' + this.props.product._id}><i className="fa fa-eye fa-md"></i>&nbsp;</Link>
-		<i className="fa fa-trash fa-md mousePointer"  onClick={this.props.onDeleteProduct.bind(this, this.props.product._id)} ></i>&nbsp;
+		{sold ? (
+		<div>
+			<Link to={'/products/edit/' + this.props.product._id}><i className="fa fa-edit fa-md"></i>&nbsp;</Link>
+			<Link to={'/products/view/' + this.props.product._id}><i className="fa fa-eye fa-md"></i>&nbsp;</Link>
+			<i className="fa fa-trash fa-md mousePointer"  onClick={this.props.onDeleteProduct.bind(this, this.props.product._id)} ></i>&nbsp;
+		</div>
+		) : (
+         <p>&nbsp;</p>
+		)}
 		</td>
+		
       </tr>
     );
   }

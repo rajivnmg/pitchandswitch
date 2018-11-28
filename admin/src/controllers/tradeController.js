@@ -1200,7 +1200,7 @@ const getShippingCost = (req, res) => {
  *	Description : Function to pay the shipment cost beforw switch the product
  **/
 const payShipment = (req, res) => {
-  console.log("payOnStripe", req.body); return;
+  console.log("payOnStripe", req.body); 
   stripe.customers.create({
       email: req.body.userEmail,
       source: {
@@ -1219,10 +1219,9 @@ const payShipment = (req, res) => {
       });
     }).then(function(charge) {
      //console.log("charge",charge); return;       
-  // const shipment = easyPostComponent.retrieveShipment(req.body.shipmentId);
+	// const shipment = easyPostComponent.retrieveShipment(req.body.shipmentId);
 	Promise.all([
-	   easyPostComponent.retrieveShipment(req.body.shipmentId)
-	   
+	   easyPostComponent.retrieveShipment(req.body.shipmentId)	   
 	]).then((shipment) => {	
 	//console.log("req.body.shipmentTypeId",req.body.shipmentTypeId)
 	//console.log("shipment",shipment[0].lowestRate(['USPS'], ['First']))
@@ -1279,16 +1278,40 @@ const payShipment = (req, res) => {
 							 shippingData.pitchUserId = req.body.userId 
 							 shippingQuery = new PitchProductShipping(shippingData);
 						}
-						shippingQuery.save().then( shippingResult =>{
+						shippingQuery.save().then( shippingResult =>{							
 							console.log("shippingResult",shippingResult)
-						})
-						// console.log("responceData",responceData)
+							OfferTrade.update({ _id:req.body.tradeId },{ "$set": { "status": 1 } }, { new:true }, (err,statusUpdate) => {
+								console.log("Trade Update as Switched",req.body.tradeId)						  
+							});							
+							var criteria = {
+							 _id:{ $in:  [req.body.pitchProductId,req.body.switchProductId]}
+							};							
+							Product.update(criteria,{ "$set": { "productStatus": 2 } }, { multi: true }, (err,productUpdate) => {
+								console.log("product Updated as Switched",productUpdate,criteria)						  
+							});						
+						});
 						
+						Promise.all([
+								 Product.find({_id:req.body.pitchProductId})
+									.populate('userId', ['firstName', 'lastName', 'profilePic'])
+									.populate('productCategory', ['title']),								
+								Product.find({_id:req.body.switchProductId})
+									.populate('userId', ['firstName', 'lastName', 'profilePic'])
+									.populate('productCategory', ['title'])									
+							]).then((products) => {
+								let productSwitch  = products[0];
+								let productPitch  = products[1];
+								console.log("products",products,productPitch[0],productSwitch['productName'])
+							// console.log("responceData",responceData)						
 							// setup email data with unicode symbols
 							commonFunction.readHTMLFile('src/views/emailTemplate/switchUserConfirmationEmail.html', function(err, html) {
 							  var template = handlebars.compile(html);
 							  var replacements = {
 								   trnxId:charge.id,
+								   switchProduct:products[1].productName,
+								   pitchProduct:products[0].productName,
+								   pitchUser:products[1].userId,
+								   switchUser:products[0].userId,
 								   userName:(req.body.userName)?req.body.userName.toUpperCase():'User'
 							  };
 							  var htmlToSend = template(replacements);
@@ -1307,35 +1330,44 @@ const payShipment = (req, res) => {
 												console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 								  }
 							  });
-						  })
-						  						
-						 if(req.body.type === 'Switch'){ 
-							 console.log("req.body.type",req.body.type)
-						  // setup email data with unicode symbols
-							commonFunction.readHTMLFile('src/views/emailTemplate/pitchUserConfirmationEmail.html', function(err, html) {
-							  var template = handlebars.compile(html);
-							  var replacements = {
-								   trnxId:charge.id,
-								   userName:(req.body.userName)?req.body.userName.toUpperCase():'User'
-							  };
-							  var htmlToSend = template(replacements);
-							  let mailOptions = {
-								from: constant.SMTP_FROM_EMAIL, // sender address
-								to: req.body.userEmail+',rajiv.kumar@newmediaguru.net', // list of receivers
-								subject: 'Switched Product  ✔', // Subject line
-								html : htmlToSend
-							  };
-							  commonFunction.transporter.sendMail(mailOptions, function (error, response) {
-								  if (error) {
-									  console.log(error);
-								  }else{
-									console.log('Message sent: %s', info.messageId);
-												// Preview only available when sending through an Ethereal account
-												console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-								  }
-							  });
-						  })
-					  }
+							})
+												
+							if(req.body.type === 'Switch'){ 
+								 console.log("req.body.type",req.body.type)
+								// setup email data with unicode symbols
+								commonFunction.readHTMLFile('src/views/emailTemplate/pitchUserConfirmationEmail.html', function(err, html) {
+								  var template = handlebars.compile(html);
+								  var replacements = {
+									   trnxId:charge.id,
+									    switchProduct:products[1].productName,
+										pitchProduct:products[0].productName,
+										pitchUser:products[1].userId,
+										switchUser:products[0].userId,
+									   userName:(req.body.userName)?req.body.userName.toUpperCase():'User'
+								  };
+								  var htmlToSend = template(replacements);
+								  let mailOptions = {
+									from: constant.SMTP_FROM_EMAIL, // sender address
+									to: req.body.userEmail+',rajiv.kumar@newmediaguru.net', // list of receivers
+									subject: 'Switched Product  ✔', // Subject line
+									html : htmlToSend
+								  };
+								  commonFunction.transporter.sendMail(mailOptions, function (error, response) {
+									  if (error) {
+										  console.log(error);
+									  }else{
+										console.log('Message sent: %s', info.messageId);
+													// Preview only available when sending through an Ethereal account
+													console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+									  }
+								  });
+								})
+							}
+					})	
+							
+						
+						
+						
 					return res.json({
 						code: httpResponseCode.EVERYTHING_IS_OK,
 						message: httpResponseMessage.CHANGE_STATUS_SUCCESSFULLY,

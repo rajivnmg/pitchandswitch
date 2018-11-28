@@ -1,25 +1,13 @@
 import React, { Component }
 from 'react';
-import Warper from "../common/Warper";
+//import Warper from "../common/Warper";
 import Popup from "reactjs-popup";
 import axios from 'axios'
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import { If, Then, Else } from 'react-if-elseif-else-render';
 import successPic from '../../images/successful_img.png';
-import {
-  Badge,
-  Button,
-  ButtonDropdown,
-  Form,
-  FormGroup,
-  FormText,
-  FormFeedback,
-  Input
-} from 'reactstrap';
 var FD = require('form-data');
-var fs = require('fs');
-
-
-const constant = require('../../config/constant')
+//var fs = require('fs');
+//const constant = require('../../config/constant')
 const contentStyle = {
   maxWidth: "660px",
   width: "90%"

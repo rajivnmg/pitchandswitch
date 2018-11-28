@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import Warper from "../common/Warper";
+//import Warper from "../common/Warper";
 import Popup from "reactjs-popup";
 import rcvProduct from '../../images/rcv-product-img.jpg'
-import offerProduct1 from '../../images/offer-product-img1.jpg'
-import offerProduct3 from '../../images/offer-product-img3.jpg'
+//import offerProduct1 from '../../images/offer-product-img1.jpg'
+//import offerProduct3 from '../../images/offer-product-img3.jpg'
 import userPic from '../../images/user-pic.png'
 import axios from 'axios'
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
-const constant = require('../../config/constant')
+import { If, Then, Else } from 'react-if-elseif-else-render';
+//const constant = require('../../config/constant')
 const contentStyle = {
     maxWidth: "660px",
     width: "90%"
@@ -22,7 +22,7 @@ class viewPitchPopup extends Component {
 		}		
 		console.log(" viewPitchPopup props",this.props.offerTrade.productName)
 	}
-	
+		
 	componentWillMount(){
 		console.log('viewPitchPopup componentWillMount',this.state.offerTrade)
 		this.setState({offerTradeId:this.state.offerTrade._id})
@@ -36,7 +36,6 @@ class viewPitchPopup extends Component {
 			console.log('offerTrade',this.state.offerTrade)
 		})
 	}
-	
 	
 render() {
    return (

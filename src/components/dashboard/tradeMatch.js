@@ -69,13 +69,13 @@ class TradeMatch extends Component {
 							return (
 							<div className="slides-div" key={tradeMatch}>
 								<div key={tradeMatch}>
-									<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+tradeMatch.productImages} /></div>
+									<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+tradeMatch.productImages} alt="UserImg"/></div>
 									<div className='details'>
 										<h4><Link to={"/search-result/"+tradeMatch._id}>{tradeMatch.productName}</Link></h4>
 										<Link className="catLink" to={'/search-listing/'+categoryUrl}>{(tradeMatch.category && (tradeMatch.category.length > 0))?tradeMatch.category[0].title:''}</Link>
 									</div>
 									  <div className="userdiv">
-										<div className="user-pic"><img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} /></div>
+										<div className="user-pic"><img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} alt="UserImg"/></div>
 										<div className="user-name"><Link className="alink" target="_blank" to={'/public-profile/'+publicProfileUrl}>{(tradeMatch.user && tradeMatch.user.length > 0)?tradeMatch.user[0].userName:''}</Link></div>
 									</div>
 								</div>
