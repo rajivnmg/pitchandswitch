@@ -1280,7 +1280,7 @@ const payShipment = (req, res) => {
 						}
 						shippingQuery.save().then( shippingResult =>{							
 							console.log("shippingResult",shippingResult)
-							OfferTrade.update({ _id:req.body.tradeId },{ "$set": { "status": 1 } }, { new:true }, (err,statusUpdate) => {
+							OfferTrade.update({ _id:req.body.tradeId },{ "$set": { "status": 0 } }, { new:true }, (err,statusUpdate) => {
 								console.log("Trade Update as Switched",req.body.tradeId)						  
 							});							
 							var criteria = {
@@ -1293,26 +1293,25 @@ const payShipment = (req, res) => {
 						
 						Promise.all([
 								 Product.find({_id:req.body.pitchProductId})
-									.populate('userId', ['firstName', 'lastName', 'profilePic'])
+									.populate('userId', ['firstName', 'lastName', 'profilePic','userName'])
 									.populate('productCategory', ['title']),								
 								Product.find({_id:req.body.switchProductId})
-									.populate('userId', ['firstName', 'lastName', 'profilePic'])
+									.populate('userId', ['firstName', 'lastName', 'profilePic','userName'])
 									.populate('productCategory', ['title'])									
 							]).then((products) => {
 								let productSwitch  = products[0];
-								let productPitch  = products[1];
-								console.log("products",products,productPitch[0],productSwitch['productName'])
-							// console.log("responceData",responceData)						
+								let productPitch  = products[1];							
+								
+							// console.log("productPitch",productPitch[0].userId.)						
 							// setup email data with unicode symbols
 							commonFunction.readHTMLFile('src/views/emailTemplate/switchUserConfirmationEmail.html', function(err, html) {
 							  var template = handlebars.compile(html);
 							  var replacements = {
 								   trnxId:charge.id,
-								   switchProduct:products[1].productName,
-								   pitchProduct:products[0].productName,
-								   pitchUser:products[1].userId,
-								   switchUser:products[0].userId,
-								   userName:(req.body.userName)?req.body.userName.toUpperCase():'User'
+								   switchProduct:productSwitch[0].productName,
+								   pitchProduct:productPitch[0].productName,
+								   pitchUser:productPitch[0].userId,
+								   switchUser:productSwitch[0].userId
 							  };
 							  var htmlToSend = template(replacements);
 							  let mailOptions = {
@@ -1339,11 +1338,10 @@ const payShipment = (req, res) => {
 								  var template = handlebars.compile(html);
 								  var replacements = {
 									   trnxId:charge.id,
-									    switchProduct:products[1].productName,
-										pitchProduct:products[0].productName,
-										pitchUser:products[1].userId,
-										switchUser:products[0].userId,
-									   userName:(req.body.userName)?req.body.userName.toUpperCase():'User'
+									   switchProduct:productSwitch[0].productName,
+									   pitchProduct:productPitch[0].productName,
+									   pitchUser:productPitch[0].userId,
+									   switchUser:productSwitch[0].userId
 								  };
 								  var htmlToSend = template(replacements);
 								  let mailOptions = {

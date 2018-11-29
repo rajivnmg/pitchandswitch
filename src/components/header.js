@@ -97,7 +97,7 @@ class Header extends Component {
     localStorage.removeItem("userId");
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userName");
-    //this.props.history.push('/login');
+    this.props.history.push('/login');
   };
 
   searchHandler = () => {
