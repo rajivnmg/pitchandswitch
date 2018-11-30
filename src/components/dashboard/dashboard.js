@@ -272,7 +272,7 @@ class Dashboard extends Component {
                       <div className="cl" />
                     </div>
                     <div className="row">
-                      <div className="left-div ">Trade</div>
+                      <div className="left-div ">Trades</div>
                       <div className="rightDiv">
                         {((this.state.userSubscription) && (this.state.userSubscription.subscriptionId
                           ? this.state.userSubscription.subscriptionId
@@ -313,7 +313,7 @@ class Dashboard extends Component {
                           <div className="cl" />
                         </div>
                         <div className="row">
-                          <div className="left-div ">Trade</div>
+                          <div className="left-div ">Trades</div>
                           <div className="rightDiv">
                             {((this.state.userSubscriptionAddons &&
                             (this.state.userSubscriptionAddons.lenght > 0))

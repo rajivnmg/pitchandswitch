@@ -324,13 +324,16 @@ class Register extends React.Component {
                       Login
                     </button>
                   </div>
-                  <div className="form-row no-padding">
+                  <div className="form-row">
                     <p className="no-account">
                       Don&apos;t have an account?{" "}
                       <Link to="/register">Register now</Link>
                     </p>
                     <Link to="/forget">Forgot password?</Link>
                   </div>
+                  <div className="form-row  no-padding">                  
+					 <p align={'center'}><Link to={"/"}>Back To Home</Link></p>
+                 </div>
                 </Form>
               </div>
             </div>

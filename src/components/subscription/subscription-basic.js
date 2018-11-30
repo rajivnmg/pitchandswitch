@@ -241,12 +241,12 @@ render() {
 						<div className="form-row">
 							<div className="colum">
 								<span className="astrik">*</span>
-								<label className="label">Expiry Month</label>                    
+								<label className="label">Expiration Month</label>                    
 								<input type="text" id={"expiryMonth"} required={true} name={"expiryMonth"} type={"expiryMonth"}  onChange={(e) => this.inputChangedHandler(e, 'expiryMonth')} placeholder="07" className="form-control textBox"/>
 							</div>
 							 <div className="colum right">
 								<span className="astrik">*</span>
-								<label className="label">Expiry Year</label>                    
+								<label className="label">Expiration Year</label>                    
 								<input type="text" id={"expiryYear"} required={true} name={"expiryYear"} type={"expiryYear"}  onChange={(e) => this.inputChangedHandler(e, 'expiryYear')} placeholder="2018" className="form-control textBox"/>
 							</div>                
 						</div>

@@ -108,10 +108,10 @@ render() {
 										</div>
 										<h4>{subscription.subscriptionName}</h4>
 										<div className="row-div">
-										   <strong> {(subscription.totalTradePermitted === 9999)?'Unlimited':subscription.totalTradePermitted}</strong> Trade
+										   <strong> {(subscription.totalTradePermitted === 9999)?'Unlimited':subscription.totalTradePermitted}</strong> Trades
 										</div>
 										<div className="row-div">
-											<strong>{(subscription.totalInventoryAllowed === 9999)?'Unlimited':subscription.totalInventoryAllowed} Items</strong> Storage 
+											<strong>{(subscription.totalInventoryAllowed === 9999)?'Unlimited':subscription.totalInventoryAllowed} Items</strong> Stored in Treasure Chest and Wishlist 
 										</div>
 										{/*<div className="row-div">
 											<strong>5 Items</strong> Wishlist

@@ -241,7 +241,7 @@ render() {
 																	<div className="right-div">
 																		<p>Gold Package
 																		<span className="price">${subscription.price} USD/year</span></p> 
-																		<span className="bold active"> </span>Unlimited Trade, Unlimited Items Storage    
+																		<span className="bold active"> </span>Unlimited Trades, Unlimited Items Stored in Treasure Chest and Wishlist    
 																	</div>							
 																<div className="cl"></div>	
 																</Auxios>);

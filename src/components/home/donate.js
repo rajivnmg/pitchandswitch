@@ -45,7 +45,7 @@ class Donate extends Component {
 											<div className='imgDiv'><img src={donateImgs.image} /></div>
 											<div className="details">
 												<h4>{donateImgs.donateTxt}</h4>
-												<Link to="/donated-products">Donate </Link>
+												<Link to={(localStorage.getItem('isLoggedIn') == "1")?'/donate-product':'/login'}>Donate </Link>
 											</div>
 										</div>
 									</div>
