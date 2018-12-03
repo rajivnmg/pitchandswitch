@@ -149,6 +149,7 @@ class ShippingTypePopup extends Component {
 		}		
 		const data = this.state.addPaymentForm;
 		data.userEmail = localStorage.getItem('userEmail');
+		data.userName = localStorage.getItem('userName');
 		data.userId =  localStorage.getItem('userId');
 		data.amount =  this.state.paymentAmount;
 		data.shipmentTypeId =  this.state.shipmentTypeId;		

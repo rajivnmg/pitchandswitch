@@ -240,14 +240,11 @@ refundShipment = (shipmentId) => {
 retrieveShipment = (shippmentId) => {
 	console.log("shippmentId",shippmentId);
 	return api.Shipment.retrieve(shippmentId).then(shipmentObj => {
-		//console.log("shipmentObj",shipmentObj)	;
+		//console.log("shipmentObj",shipmentObj);
 		return shipmentObj;
 	});
     //return api.shipment.retrieve(shippmentId);
 }
-
-
-
 module.exports = {
 	createParcel,
 	createAddress,	

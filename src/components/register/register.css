@@ -1,3 +1,4 @@
 .hide2{ display:none;} 
 .autocomplete-dropdown-container .suggestion-item{ border-bottom:1px solid #ddd; padding:5px 10px; font-size:12px;}
 .autocomplete-dropdown-container .suggestion-item--active{ border-bottom:1px solid #ddd; padding:5px 10px; font-size:12px;}
+.grecaptcha-logo{width:350px;height:100px;position:relative !important;}

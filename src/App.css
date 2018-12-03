@@ -70,3 +70,4 @@ h3 span {font-weight: bold;}
 .alink{cursor: pointer !important; text-decoration: blink !important;color:#414141 !important}
 .userdiv .user-pic img{height: 100% !important; width: 100% !important;}
 .errorMessage{color: red; font-size: 20px;}
+.distance{padding: 0px !important}

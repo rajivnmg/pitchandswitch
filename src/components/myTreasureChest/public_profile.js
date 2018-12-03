@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import PublicReviews from "./public_reviews1";
-import Style from "./myTreasureChest.css";
+//import Style from "./myTreasureChest.css";
 import popularItemImg from "../../images/popular-item1.jpg";
 import userPicture from "../../images/user-pic.png";
-import userPictureLg from "../../images/userProfileLarge.png";
+//import userPictureLg from "../../images/userProfileLarge.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import Select from "react-select";
+//import Select from "react-select";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Spin, Icon, Alert } from "antd";
-import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
+//import { Spin, Icon, Alert } from "antd";
+//import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 library.add(faHeart);

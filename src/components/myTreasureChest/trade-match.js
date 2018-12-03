@@ -11,7 +11,7 @@ import { If, Then, Else } from 'react-if-elseif-else-render';
 import { Alert,Icon } from 'antd';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 library.add(faHeart);
-
+const commonFunction = require('../commonFunction');
 const constant = require('../../config/constant')
 
 const newlyAdded = [
@@ -142,6 +142,7 @@ console.log(id);
 		);
 	}
 	
+	
     render() {
         return (
                 <div className="myTreasure">
@@ -173,6 +174,8 @@ console.log(id);
                         </div>
                         <div className="item-listing">
                             {this.state.tradeMatches.slice(0, this.state.limit).map((tradeMatch, index) => {
+								let dist = commonFunction.distance(localStorage.getItem("Latitude"), localStorage.getItem("Longitude"), tradeMatch.userId.loct.coordinates[0], tradeMatch.userId.loct.coordinates[1], constant.DISTANCE_UNIT);
+								console.log("distance",dist,localStorage.getItem("Latitude"), localStorage.getItem("Longitude"),tradeMatch.userId.loct.coordinates[0],tradeMatch.userId.loct.coordinates[1])
 									var userImage = tradeMatch.userId?tradeMatch.userId.profilePic:null
                                     return(<div className="Items" key={index}>
                                         <div className="pic">
@@ -200,6 +203,7 @@ console.log(id);
                                             <div className="user-pic"> <FontAwesomeIcon icon="heart-o" /> <img className="userProfile" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage}  /></div>
                                             <div className="user-name ">
                                             <Link className="alink" target="_blank" to={"/public-profile/"+((tradeMatch.userId)?tradeMatch.userId._id:'')}>{(tradeMatch.userId)?tradeMatch.userId.userName:''}</Link>
+                                            <p className="distance">{dist} {(constant.DISTANCE_UNIT==='M')?'Miles':'Km'}</p>
                                             </div>
                                         </div>
                                     </div>

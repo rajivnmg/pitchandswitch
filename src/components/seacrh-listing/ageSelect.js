@@ -1,8 +1,8 @@
 import 'rc-tree-select/assets/index.css';
 import TreeSelect from 'rc-tree-select';
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Style from './ageselect.css';
+//import ReactDOM from 'react-dom';
+//import Style from './ageselect.css';
 
 const SHOW_PARENT = TreeSelect.SHOW_PARENT;
 

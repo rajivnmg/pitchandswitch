@@ -3,6 +3,7 @@ import Style from './register.css';
 import registerIcon from '../../images/register-icon.png';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import ReCAPTCHA from "react-google-recaptcha";
 import PlacesAutocomplete from 'react-places-autocomplete';
 import {
   geocodeByAddress,
@@ -10,6 +11,7 @@ import {
   getLatLng,
 } from 'react-places-autocomplete';
 import { Label, Input } from 'reactstrap';
+const TEST_SITE_KEY = "6LcCA34UAAAAAMW_poPblvTfPh6IuCMfqKfpdN_k";
 var FD = require('form-data');
 var fs = require('fs');
 /**
@@ -86,6 +88,7 @@ class Form extends Component {
 class Register extends React.Component {
        constructor(props){
     super(props);
+       
 		this.state = {
 		  type: 'password',
           address: '' ,
@@ -110,24 +113,32 @@ class Register extends React.Component {
 			state:'',
 			city:'',
 			zipCode:''			
-		  }
+		  },
+		 gmapsLoaded: false
 		}
 		this.showHide = this.showHide.bind(this);
 	    this.handleChangeCountry = this.handleChangeCountry.bind(this);
 	    this.handleChangeState = this.handleChangeState.bind(this);
 	    this.handleChangeCity = this.handleChangeCity.bind(this);
+	    this.recaptchaRef = React.createRef();	    
 	}
-        
-        handleChange = address => {
-			const regForm = {...this.state.registerForm};
-        
-			regForm.latitude = "";
-        regForm.longitude = "";
-        
-        this.setState({registerForm:regForm});
-    this.setState({ address });
+	
+ initMap = () => {
+		this.setState({
+		  gmapsLoaded: true
+		});
   };
-  handleSelect = address => {
+
+	handleChange = address => {
+		const regForm = {...this.state.registerForm};
+		regForm.latitude = "";
+		regForm.longitude = "";
+
+		this.setState({registerForm:regForm});
+		this.setState({ address });
+	};
+	
+	handleSelect = address => {
       
    const registForm = {...this.state.registerForm};
     registForm.address = address;
@@ -181,6 +192,8 @@ class Register extends React.Component {
     this.setState({state: event.target.value});
   }
   	componentDidMount(){
+		
+		window.initMap = this.initMap
 		//console.log("COmponentDIDmaount")
 		axios.get('/location/getLocation').then(result => {
 			//	console.log("result", result)
@@ -214,9 +227,16 @@ class Register extends React.Component {
 		});
   };
   
-  submit = () => {
-	// console.log("PROPS",this.state.registerForm);
-	 
+  submit = () => {	
+	const recaptchaValue = this.recaptchaRef.current.getValue();
+	if(!recaptchaValue){
+		this.setState({
+			message: "Captcha is not valid",
+			showFormError: true
+		});
+		window.scrollTo(0, 0);
+		return ;
+	}	
 	 const data =new FD()
 	// console.log("this.firstName.value",this.state.registerForm.name.value)
         data.append('firstName', (this.state.registerForm.name)?this.state.registerForm.name.value:''),
@@ -289,8 +309,8 @@ class Register extends React.Component {
   };
     _renderErrorMessage() {
     return (
-      <div align="center" className={"alert alert-danger mt-4"} role="alert">
-        Oops! Something Went wrong!!!
+      <div align="center" className={"errorMessage alert alert-danger mt-4"} role="alert">
+       {this.state.message}
       </div>
     );
   }
@@ -379,49 +399,51 @@ class Register extends React.Component {
 				<div className="invalid-feedback validation"> </div>   
                 <span className="astrik">*</span>
                   <label className="label" htmlFor={"addressss"}>Address Line1</label>
-        <PlacesAutocomplete
-        value={this.state.address} 
-        onChange={this.handleChange}
-        onSelect={this.handleSelect}
-        name={"address"}
-      >
-	  
-        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-		
-          <div>
-            <input 
-              {...getInputProps({
-                placeholder: 'Search Places ...',
-                className: 'location-search-input form-control'			
+      {this.state.gmapsLoaded && (
+			<PlacesAutocomplete
+			value={this.state.address} 
+			onChange={this.handleChange}
+			onSelect={this.handleSelect}
+			name={"address"}
+			>
+
+			{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+
+			<div>
+			<input 
+			  {...getInputProps({
+				placeholder: 'Search Places ...',
+				className: 'location-search-input form-control'			
 				})}
 				onBlur={this.formatEndpoint}
 				required={true}
-            />
-            <div className="autocomplete-dropdown-container">
-              {loading && <div>Loading...</div>}
-              {suggestions.map(suggestion => {
-                const className = suggestion.active
-                  ? 'suggestion-item--active'
-                  : 'suggestion-item';
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                return (
-                  <div
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style,
-                    })}
-                  >
-                    <span>{suggestion.description}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
-      </PlacesAutocomplete>        
+			/>
+			<div className="autocomplete-dropdown-container">
+			  {loading && <div>Loading...</div>}
+			  {suggestions.map(suggestion => {
+				const className = suggestion.active
+				  ? 'suggestion-item--active'
+				  : 'suggestion-item';
+				// inline style for demonstration purpose
+				const style = suggestion.active
+				  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+				  : { backgroundColor: '#ffffff', cursor: 'pointer' };
+				return (
+				  <div
+					{...getSuggestionItemProps(suggestion, {
+					  className,
+					  style,
+					})}
+				  >
+					<span>{suggestion.description}</span>
+				  </div>
+				);
+			  })}
+			</div>
+			</div>
+			)}
+			</PlacesAutocomplete>        
+       )}
         </div>
             <div className="form-row">
                 <label className="label" htmlFor={"address1"}>Address Line 2</label>
@@ -464,11 +486,11 @@ class Register extends React.Component {
                   <div className="cl"></div>
                   
         </div>
-        <div className="form-row">
-                  <div className="colum">
-                  <div className="invalid-feedback validation"> </div>   
+				<div className="form-row">
+				  <div className="colum">
+				  <div className="invalid-feedback validation"> </div>   
 				  <span className="astrik">*</span>
-        
+
 					<label className="label" htmlFor={"city"}>City</label>
 					 <Input type="select" name="city" id="city" className={"form-control textBox"} onChange={this.handleChangeCity}>					
 					{
@@ -477,19 +499,29 @@ class Register extends React.Component {
 					})
 					}
 				  </Input>
-                 {/* <input id={"city"} className={"form-control textBox"} required={true} name={"city"} type={"text"} placeholder="" />*/}
-                  </div>
-                  <div className="colum right">
-         <div className="invalid-feedback validation"> </div>          
-        <span className="astrik">*</span>
-        
-                  <label className="label" htmlFor={"zipCode"}>ZIP / Postal Code</label>
-                  <input id={"zipCode"} className={"form-control textBox"} required={true} name={"zipCode"} onChange={(e) => this.inputChangedHandler(e, 'zipCode')} type={"text"} placeholder="" />
-                 </div>
-                  <div className="cl"></div>
-                  
-        </div>
+				 {/* <input id={"city"} className={"form-control textBox"} required={true} name={"city"} type={"text"} placeholder="" />*/}
+				  </div>
+				  <div className="colum right">
+				<div className="invalid-feedback validation"> </div>          
+				<span className="astrik">*</span>
+
+				  <label className="label" htmlFor={"zipCode"}>ZIP / Postal Code</label>
+				  <input id={"zipCode"} className={"form-control textBox"} required={true} name={"zipCode"} onChange={(e) => this.inputChangedHandler(e, 'zipCode')} type={"text"} placeholder="" />
+				 </div>
+				  <div className="cl"></div>
+				  
+				</div>
                 
+			<div className="form-row">
+				<ReCAPTCHA
+				  style={{ display: "inline-block" }}
+				  ref={this.recaptchaRef}
+				  size="normal"
+				  sitekey={TEST_SITE_KEY}
+				  badge={"inline"}
+				/>				
+				<div className="cl"></div>
+			</div>
                  <div className="form-row">
                     <button
                       type={"submit"}
@@ -499,7 +531,12 @@ class Register extends React.Component {
                     </button>
                   </div>
                  <div className="form-row no-padding">
+                   <div className="colum">
+					<p className="no-account center-text"><Link to={"/"}>Back To Home</Link></p>
+				   </div>
+				   <div className="colum right">
                     <p className="no-account center-text">Already have an account? <Link to="/Login"> Login</Link></p>
+                   </div>
                  </div>
               </Form>
             </div>

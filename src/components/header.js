@@ -97,7 +97,7 @@ class Header extends Component {
     localStorage.removeItem("userId");
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userName");
-    //this.props.history.push('/login');
+    this.props.history.push('/login');
   };
 
   searchHandler = () => {
@@ -159,6 +159,8 @@ class Header extends Component {
           localStorage.setItem("userId", result.data.result._id);
           localStorage.setItem("userEmail", result.data.result.email);
           localStorage.setItem("userName", result.data.result.userName);
+          localStorage.setItem("Latitude", result.data.result.loct.coordinates[0]);
+          localStorage.setItem("Longitude", result.data.result.loct.coordinates[1]);
           if (
             result.data.result.emailVerified == "1" &&
             result.data.result.subscriptionStatus == "1"

@@ -5,6 +5,7 @@ import LastPitchtedPopup from './lastPitchPopup'
 import ViewDitchPopup from './viewDitchPopup'
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import { Spin, Icon, Alert } from 'antd';
+import {Link} from 'react-router-dom';
 
 class Ditch extends React.Component {
     state = {	
@@ -12,15 +13,9 @@ class Ditch extends React.Component {
 		ditchedPitches: []
 	};
 	
-	// # href click handler
-	handleClick = (e) => {
-		e.preventDefault();
-		console.log('The link was clicked.');
-	};	
-    componentDidMount(){
+    componentWillMount(){
 		axios.get('/trade/ditchTrades').then(result => {
-			if(result.data.code === 200){
-				 
+			if(result.data.code === 200){				 
 				  this.setState({
 					ditchedPitches:result.data.result,
 					currentUser: result.data.currentUser				  
@@ -33,8 +28,7 @@ class Ditch extends React.Component {
 			}
 		});
 	}
-	
-	
+		
     render() {
         return (
          <div>
@@ -52,35 +46,41 @@ class Ditch extends React.Component {
 				var send = (pitch.pitchUserId && pitch.pitchUserId._id == this.state.currentUser)?1:0;	
 				let ditchClasses = ['ditch'];                                                       
 				var ditch = 'Ditched';
-				if(send ===1 && (pitch.ditchCount > 0 && pitch.ditchCount < 2)){
+				if(send ==1 && pitch.ditchCount > 0 && pitch.ditchCount < 2){
 				   var ditch = 'Pitch Again';
 				}  else if(send ==1 && pitch.ditchCount == 2){
 				   var ditch = 'Last Ditch';
 				}
+				let publicProfileUrl =  ((send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId._id:'':(pitch.SwitchUserId)?pitch.pitchUserId._id:'')       
 				{console.log('pitch.ditchCount',pitch.ditchCount)}
 				return (<div className="pitch-row" key={index}>
 				<div className="pitch-div">
 				{(pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
-				<div className="colum user"><span>{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}</span></div>
+				<div className="colum user"><span>
+				  <Link className="alink" target="_blank" to={'/public-profile/'+publicProfileUrl}>
+				  {(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}
+				  </Link>
+				  </span></div>
 				<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
 				<div className="colum"><ViewDitchPopup offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/> </div>
 				<div className="colum message"> </div>
-				 <div className="colum action">				
-				   <If condition={send === 0}>
+				 <div className="colum action">
+				 {console.log('pfffffffffffitch',pitch)}
+				   <If condition={send == 0}>
 				     <Then>
-				       <a href="#" onClick={() => {this.handleClick}} className={'ditch '}>Ditch</a>
+				       <a href="#" className={'ditch '}>Ditch</a>
 				     </Then>
 				   <Else>   
 					 {pitch.ditchCount > 2 ? 
-						 <a href="#" onClick={() => {this.handleClick}} className={'ditch blocked '}>{ditch}</a> : 
+						 <a href="#" className={'ditch blocked '}>{ditch}</a> : 
 						 
 						  <If condition={send ==1 && pitch.ditchCount > 0 && pitch.ditchCount < 2}>
 						   <Then>
-								<a href="#" onClick={() => {this.handleClick}} className={'ditch '}><PitchAgainPopup offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/></a>
+								<a href="#" className={'ditch '}><PitchAgainPopup offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/></a>
 						   </Then>
 						   <Else If condition={send ==1 && pitch.ditchCount == 2}>
 							  <Then>
-								 <a href="#" onClick={() => {this.handleClick}} className={'ditch'}><LastPitchtedPopup offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/></a>
+								 <a href="#" className={'ditch'}><LastPitchtedPopup offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/></a>
 							  </Then>
 						   </Else>
 						  </If>

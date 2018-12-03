@@ -1,28 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import {
-  Badge,
-  Button,
-  ButtonDropdown,
+import { 
+  Button,  
   Card,
-  CardBody,
-  CardFooter,
+  CardBody,  
   CardHeader,
-  Col,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
+  Col,  
   Form,
-  FormGroup,
-  FormText,
+  FormGroup, 
   FormFeedback,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
+  Input,  
   Label,
   Row,
 } from 'reactstrap';
@@ -30,8 +18,8 @@ import {
 import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
 var FD = require('form-data');
-var fs = require('fs');
-// import PropTypes from 'prop-types';
+//var fs = require('fs');
+//import PropTypes from 'prop-types';
 class CmsPageAdd extends Component {
   constructor(props){
     super(props);
