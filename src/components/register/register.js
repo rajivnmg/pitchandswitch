@@ -221,7 +221,7 @@ class Register extends React.Component {
 	// console.log("this.firstName.value",this.state.registerForm.name.value)
         data.append('firstName', (this.state.registerForm.name)?this.state.registerForm.name.value:''),
         data.append('middleName', ''),
-        data.append('lastName',''),
+        data.append('lastName',(this.state.registerForm.lastName)?this.state.registerForm.lastName.value:''),
         data.append('userName', (this.state.registerForm.name)?this.state.registerForm.name.value:''),
         data.append('password',(this.state.registerForm.password)?this.state.registerForm.password.value:''),
         data.append('email', (this.state.registerForm.email)?this.state.registerForm.email.value:''),
@@ -229,6 +229,7 @@ class Register extends React.Component {
         data.append('phoneNumber',(this.state.registerForm.phoneNumber)?this.state.registerForm.phoneNumber.value:''),
         data.append('dob', ''), 
         data.append('address',(this.state.registerForm.address)?this.state.registerForm.address:''),
+        data.append('address1',(this.state.registerForm.address1)?this.state.registerForm.address1:''),
 		data.append('latitude',(this.state.registerForm.latitude)?this.state.registerForm.latitude:''),
 		data.append('longitude',(this.state.registerForm.longitude)?this.state.registerForm.longitude:''),
         data.append('city', this.state.cityId),
@@ -313,18 +314,22 @@ class Register extends React.Component {
                  {this.state.showFormError ? this._renderErrorMessage() : null}
                  
         
-        <div className="form-row">
+               <div className="form-row">
                 <div className="invalid-feedback validation"> </div>   
                 <span className="astrik">*</span>
                   <label className="label" htmlFor={"name"}>Name</label>
                   <input id={"name"} className={"form-control textBox"} required={true} name={"name"} onChange={(e) => this.inputChangedHandler(e, 'name')} type={"name"} placeholder="Enter your name" />
                 </div>
-                        <div className="form-row">
-                        <div className="invalid-feedback validation"> </div>
-                <span className="astrik">*</span>
-                  <label className="label"
-                    htmlFor={"email"}
-                    >
+                 <div className="form-row">
+                  <div className="invalid-feedback validation"> </div>   
+                    <span className="astrik">*</span>
+                     <label className="label" htmlFor={"name"}>Name</label>
+                    <input id={"lastName"} className={"form-control textBox"} required={true} name={"lastName"} onChange={(e) => this.inputChangedHandler(e, 'lastName')} type={"name"} placeholder="Enter your name" />
+                </div>
+                <div className="form-row">
+                <div className="invalid-feedback validation"> </div>
+                   <span className="astrik">*</span>
+                      <label className="label" htmlFor={"email"}>
                     Email Address
                   </label>
                   <input
@@ -418,15 +423,16 @@ class Register extends React.Component {
         )}
       </PlacesAutocomplete>        
         </div>
-                 <div className="form-row">
+            <div className="form-row">
                 <label className="label" htmlFor={"address1"}>Address Line 2</label>
-                  <input id={"address1"} className={"form-control textBox"}  onChange={(e) => this.inputChangedHandler(e, 'address1')} name={"address1"} type={"text"} placeholder="" />
+                  <input id={"address1"} className={"form-control textBox"}   name={"address1"} type={"text"} placeholder="" />
+                  <input className={"form-control textBox hide2"} value={this.state.registerForm.address1} name={"address1"} type={"text"} placeholder="" onChange={(e) => this.inputChangedHandler(e, 'address1')}/>
+                  
                   </div> 
                   <div className="form-row">
                   <div className="colum">
-        <div className="invalid-feedback validation"> </div>             
-        <span className="astrik">*</span>
-                  
+                  <div className="invalid-feedback validation"> </div>             
+                  <span className="astrik">*</span>
                   <Label className="label" htmlFor={"country"}>Country</Label>
 				  <Input type="select" name="country" id="country" className={"form-control textBox"} onChange={this.handleChangeCountry}>
 					<option value="0">Select Country</option>

@@ -63,7 +63,7 @@ class settingProfile extends Component {
       email: "",
       dob: "",
       address: "",
-      address2: "",
+      address1: "",
       country: "",
       state: "",
       city: "",
@@ -142,10 +142,13 @@ class settingProfile extends Component {
     e.preventDefault();
     const data = new FD();
     const profileForm = { ...this.state.profileForm };
-    for (let key in profileForm) {
-      if (profileForm.hasOwnProperty(key)) {
-        if (profileForm[key] instanceof File) data.set(key, profileForm[key]);
-        else data.set(key, profileForm[key].toString());
+    for(let key in profileForm) {
+      if(profileForm.hasOwnProperty(key)) {
+		console.log('profileForm[key]',profileForm[key])
+		if((profileForm[key]) !==''){
+            if(profileForm[key] instanceof File) data.set(key, profileForm[key]);
+            else data.set(key, profileForm[key].toString());
+	     }
       }
     }
     axios.post("/user/updateUser", data).then(result => {
@@ -154,9 +157,12 @@ class settingProfile extends Component {
       }
     });
   };
+  
+  
   componentWillMount() {
     if (localStorage.getItem("jwtToken") !== null) {
       axios.get("/user/myProfle").then(result => {
+		  
         if (result.data.code === 200) {
           const profileForm = { ...this.state.profileForm };
           const form = { _id: null, ...this.form };
@@ -190,7 +196,7 @@ class settingProfile extends Component {
               downloaded: true
             },
             () => {
-              console.log("PPPP", this.state.profileForm);
+
             }
           );
         } else {
@@ -221,7 +227,7 @@ class settingProfile extends Component {
     data.set("userStatus", "0");
     data.set("_id", profileForm._id);
     axios.post("/user/changeStatus", data).then(result => {
-		console.log('result',result.data.result);
+	  console.log('result',result.data.result);
       if (result.data.code == "200") {
         //~ this.setState({
           //~ modalStatus: false
@@ -268,6 +274,7 @@ class settingProfile extends Component {
         />
       );
     }
+    
     let view = null;
     if (this.state.downloaded) {
       view = (
@@ -310,20 +317,13 @@ class settingProfile extends Component {
                     <div className="form-row login-row">
                       <h3>Profile Info</h3>
                       <p className="brdr-btm">
-                        Here you can update your personal details it will not
-                        going to see anyone
+                        Here you can update your personal details it will not going to see anyone
                       </p>
                     </div>
                     <div>
                       <div className="profileRow">
-                        <div
-                          className="pic"
-                          style={{
-                            width: "20%",
-                            float: "left",
-                            verticalAlign: "middle"
-                          }}
-                        >
+                       <div
+                          className="pic" style={{width: "20%",float: "left",verticalAlign: "middle"}}>
                           {profileImageCropper}
                         </div>
                         <div
@@ -348,10 +348,7 @@ class settingProfile extends Component {
                                 onChange={event =>
                                   this.inputChangedHandler(event, "firstName")
                                 }
-                                value={
-                                  this.state.profileForm
-                                    ? this.state.profileForm.firstName
-                                    : ""
+                                value={this.state.profileForm?this.state.profileForm.firstName: ""
                                 }
                               />
                             </div>
@@ -466,17 +463,18 @@ class settingProfile extends Component {
                             Address Line 2:
                           </label>
                           <input
-                            id={"age"}
+                            id={"address1"}
                             className={"form-control textBox"}
-                            name={"address2"}
+                            required={true}
+                            name={"address1"}
                             type={"text"}
                             placeholder=""
                             onChange={event =>
-                              this.inputChangedHandler(event, "address2")
+                              this.inputChangedHandler(event, "address1")
                             }
                             value={
                               this.state.profileForm
-                                ? this.state.profileForm.address2
+                                ? this.state.profileForm.address1
                                 : ""
                             }
                           />

@@ -993,6 +993,7 @@ const myProfle = (req, res) => {
       .populate("state")
       .populate("country")
       .exec(function(err, result) {
+		  console.log('resultrrrrrrrrrrrr',result)
         if (err) {
           return res.send({
             code: httpResponseCode.BAD_REQUEST,
@@ -1025,7 +1026,6 @@ const myProfle = (req, res) => {
 const updateUser = (req, res) => {
   var form = new multiparty.Form();
   form.parse(req, function(err, data, files) {
-    console.log("Update User", data, files);
     let now = new Date();
     User.findOneAndUpdate({ _id: data._id }, data, (err, result) => {
       if (err) {
@@ -1049,21 +1049,16 @@ const updateUser = (req, res) => {
             var ext = path.extname(fileName);
             var newfilename =
               files.profilePic[0].fieldName + "-" + Date.now() + ext;
-            fs.readFile(files.profilePic[0].path, function(err, fileData) {
-              if (err) {
-                //res.send(err);
-                //return;
+              fs.readFile(files.profilePic[0].path, function(err, fileData) {
+              if (err){
                 console.log("readFile err", err);
               }
               fileName = files.profilePic[0].originalFilename;
               ext = path.extname(fileName);
               newfilename = newfilename;
               pathNew = constant.profileimage_path + newfilename;
-              //console.log("pathNew",pathNew)
               fs.writeFile(pathNew, fileData, function(err) {
-                if (err) {
-                  //~ res.send(err);
-                  //~ return;
+                if (err) {                  
                   console.log("writeFile err", err);
                 }
               });
@@ -1096,6 +1091,7 @@ const updateUser = (req, res) => {
               result: result
             });
           }
+          console.log('resesesesessessesessesse',result);
         }
       }
     });
@@ -1138,11 +1134,10 @@ const updateAdmin = (req, res) => {
  *  Date	: June 18, 2018
  *	Description : Function to update the user status.
  **/
-const changeStatus = (req, res) => {	
-
+const changeStatus = (req, res) => {
       var form = new multiparty.Form();
         form.parse(req, function (err, data, files) {
-          console.log('data',data)
+          console.log('data',data._id)
            User.update({_id: data._id}, {"$set": {"userStatus": data.userStatus}}, {new : true}, (err, result) => {
 				if (err) {
 					return res.send({
