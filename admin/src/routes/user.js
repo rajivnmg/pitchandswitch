@@ -17,6 +17,7 @@ router.get('/verifyUserEmail/:id', userController.verifyUserEmail);
 //router.get('/viewPage/:id',pageController.viewPage);
 router.post('/updateUser',userController.updateUser);
 router.post('/changeStatus',userController.changeStatus);
+router.post('/changeUserStatus',userController.changeUserStatus);
 router.delete('/deleteUser/:id',userController.deleteUser);
 router.get('/dashboardStates',userController.dashboardStates);
 router.get('/myProfle',userController.myProfle);

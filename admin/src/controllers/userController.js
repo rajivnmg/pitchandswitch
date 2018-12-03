@@ -1138,11 +1138,40 @@ const updateAdmin = (req, res) => {
  *  Date	: June 18, 2018
  *	Description : Function to update the user status.
  **/
-const changeStatus = (req, res) => {	
+const changeStatus = (req, res) => {
+  User.update({ _id:req.body._id },  { "$set": { "userStatus": req.body.userStatus } }, { new:true }, (err,result) => {
+    if(err){
+		return res.send({
+			code: httpResponseCode.BAD_REQUEST,
+			message: httpResponseMessage.INTERNAL_SERVER_ERROR
+		  });
+    }else {
+      if (!result) {
+        res.json({
+          message: httpResponseMessage.USER_NOT_FOUND,
+          code: httpResponseMessage.BAD_REQUEST
+        });
+      }else {
+        return res.json({
+              code: httpResponseCode.EVERYTHING_IS_OK,
+              message: httpResponseMessage.CHANGE_STATUS_SUCCESSFULLY,
+             result: result
+            });
+      }
+    }
+  })
+}
 
-      var form = new multiparty.Form();
-        form.parse(req, function (err, data, files) {
-          console.log('data',data)
+
+
+/** Auther	: Rajiv Kumar
+ *  Date	: Nov 30, 2018
+ *	Description : Function to update the user status from front user setting by form data.
+ **/
+const changeUserStatus = (req, res) => {
+      var form = new multiparty.Form();     
+        form.parse(req, function (err, data, files) {          
+          if(data !== undefined){
            User.update({_id: data._id}, {"$set": {"userStatus": data.userStatus}}, {new : true}, (err, result) => {
 				if (err) {
 					return res.send({
@@ -1163,7 +1192,13 @@ const changeStatus = (req, res) => {
 						});
 					}
 				}
-			})
+			});
+		}else{
+			res.json({
+				message: httpResponseMessage.USER_NOT_FOUND,
+				code: httpResponseMessage.BAD_REQUEST
+			});
+		}
            
        });
 };
@@ -1953,6 +1988,7 @@ module.exports = {
   verifyEmail,
   verifyUserEmail,
   changeStatus,
+  changeUserStatus,
   deleteUser,
   users,
   contustUs,

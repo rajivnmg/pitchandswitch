@@ -220,7 +220,7 @@ class settingProfile extends Component {
     const data = new FD();
     data.set("userStatus", "0");
     data.set("_id", profileForm._id);
-    axios.post("/user/changeStatus", data).then(result => {
+    axios.post("/user/changeUserStatus", data).then(result => {
 		console.log('result',result.data.result);
       if (result.data.code == "200") {
         //~ this.setState({
