@@ -13,6 +13,13 @@ import DatePicker from "react-date-picker";
 import { Button, Form } from "reactstrap";
 import { Modal } from "antd";
 import pica from "pica";
+import PlacesAutocomplete from 'react-places-autocomplete';
+import {
+  geocodeByAddress,
+  geocodeByPlaceId,
+  getLatLng,
+} from 'react-places-autocomplete';
+
 import "rc-cropping/assets/index.css";
 import "./profile.css";
 const constant = require("../config/constant");
@@ -29,10 +36,11 @@ class DobPicker extends Component {
       date: new Date()
     };
   }
+  
   componentWillMount() {
     if (this.props.dob) {
       const dob = moment(this.props.dob, "YYYY-MM-DD").toDate();
-      if (dob)
+        if (dob)
         this.setState({ date: dob }, function() {
           console.log("GGG", dob, this.state.date);
         });
@@ -41,7 +49,7 @@ class DobPicker extends Component {
 
   onChange = date =>
     this.setState({ date }, () => {
-      this.props.afterChangeDob.dob = moment(date).format("DD/MM/YYYY");
+      this.props.afterChangeDob.dob = moment(date).format("YYYY/MM/DD");
     });
 
   render() {
@@ -63,7 +71,7 @@ class settingProfile extends Component {
       email: "",
       dob: "",
       address: "",
-      address1: "",
+      address2: "",
       country: "",
       state: "",
       city: "",
@@ -94,6 +102,35 @@ class settingProfile extends Component {
       console.log("ProfileImage", this.state);
     });
   };
+  
+    handleSelect = address => {      
+    const registForm = {...this.state.registerForm};
+    registForm.address = address;
+    this.setState({registerForm:registForm});
+    this.setState({address:address});
+    
+    
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => {
+        const regForm = {...this.state.registerForm};
+        regForm.latitude = latLng['lat'];
+        regForm.longitude = latLng['lng'];
+        console.log('HERE',  latLng['short_name'])
+        this.setState({registerForm:regForm});
+    })
+      .catch(error => console.error('Error', error));
+  };
+  
+  handleChange = address => {
+		const regForm = {...this.state.registerForm};
+		regForm.latitude = "";
+		regForm.longitude = "";
+
+		this.setState({registerForm:regForm});
+		this.setState({ address });
+	};
+  
   handleChangeCountry = event => {
     const profileForm = { ...this.state.profileForm };
     profileForm.country = event.target.value;
@@ -125,6 +162,7 @@ class settingProfile extends Component {
       });
     }
   };
+  
   handleChangeCity = event => {
     const profileForm = { ...this.state.profileForm };
     profileForm.city = event.target.value;
@@ -136,6 +174,12 @@ class settingProfile extends Component {
     this.setState({
       modalStatus: true
     });
+  };
+
+   initMap = () => {
+		this.setState({
+		  gmapsLoaded: true
+		});
   };
 
   submitHandler = e => {
@@ -152,10 +196,29 @@ class settingProfile extends Component {
       }
     }
     axios.post("/user/updateUser", data).then(result => {
-      if (result.data.code == "200") {
-        this.props.history.push("/setting-profile");
-      }
-    });
+       if(result.data.code ==200){			    
+			  this.setState({
+				message: result.data.message,
+				code :result.data.code, 
+				showFormSuccess: true,
+				showFormError: false
+			  });
+			  window.scrollTo(0, 0)
+		} else {
+			  this.setState({
+				message: result.data.message,
+				code :result.data.code,
+				showFormError: true,
+				showFormSuccess: false,
+			  });
+			}
+		})
+		 .catch((error) => {
+		   if (!error.status) {
+			 this.setState({ showFormError: true,showFormSuccess: false,message: 'Error in process, Please try again.' });
+			}
+		  });   
+    setTimeout(() => {this.setState({showFormSuccess: false,showFormError: false});}, 12000);
   };
   
   
@@ -211,10 +274,28 @@ class settingProfile extends Component {
       this.setState({ countries: result.data.result });
     });
   }
+  
+  _renderSuccessMessage() {
+    return (
+      <div className={"alert alert-success mt-4"} role="alert">
+           Your profile has been updated.
+       </div>
+    );
+  }
+  
+   _renderErrorMessage() {
+    return (
+      <div align="center" className={"errorMessage alert alert-danger mt-4"} role="alert">
+       {this.state.message}
+      </div>
+    );
+  }
+  
   inputChangedHandler = (event, inputIdentifier) => {
     const profileForm = {
       ...this.state.profileForm
     };
+    
     profileForm[inputIdentifier] = event.target.value;
     this.setState({ profileForm }, () => {
       console.log("Profile form", this.state.profileForm);
@@ -226,9 +307,7 @@ class settingProfile extends Component {
     const data = new FD();
     data.set("userStatus", "0");
     data.set("_id", profileForm._id);
-
-    axios.post("/user/changeUserStatus", data).then(result => {
-		console.log('result',result.data.result);
+    axios.post("/user/changeStatus", data).then(result => {
       if (result.data.code == "200") {
         //~ this.setState({
           //~ modalStatus: false
@@ -255,6 +334,9 @@ class settingProfile extends Component {
     let cityID = this.state.profileForm.city
       ? this.state.profileForm.city._id
       : "";
+      
+    let dob = this.state.profileForm ? moment(this.state.profileForm.dob).format('YYYY/MM/DD'): "";  
+     
     let profileImageCropper = null;
     if (profileForm) {
       profileImageCropper = (
@@ -286,6 +368,7 @@ class settingProfile extends Component {
                 <li>
                   <a href={"/dashboard"}>Home</a>
                 </li>{" "}
+                {this.state.showFormSuccess ? this._renderSuccessMessage() : null}
                 <li>Settings</li>
               </ul>
             </div>
@@ -323,9 +406,8 @@ class settingProfile extends Component {
                     </div>
                     <div>
                       <div className="profileRow">
-                       <div
-                          className="pic" style={{width: "20%",float: "left",verticalAlign: "middle"}}>
-                          {profileImageCropper}
+                       <div className="pic" style={{width: "20%",float: "left",verticalAlign: "middle"}}>
+                          <img src={constant.BASE_IMAGE_URL+'ProfilePic/'+this.state.profileForm.profilePic} alt="" /> {profileImageCropper}
                         </div>
                         <div
                           className="details"
@@ -359,6 +441,7 @@ class settingProfile extends Component {
                               <div className="invalid-feedback validation">
                                 {" "}
                               </div>
+                              <span className="astrik">*</span>
                               <label className="label" htmlFor={"name"}>
                                 Last Name
                               </label>
@@ -429,9 +512,10 @@ class settingProfile extends Component {
                           <label className="label" htmlFor={"dob"}>
                             Date of Birth
                           </label>
-                          <DobPicker
-                            dob={this.state.profileForm.dob}
+                          <DatePicker
+                            value ={dob}
                             afterChangeDob={this.state.profileForm}
+                            
                           />
                         </div>
                         <div className="cl" />
@@ -439,43 +523,70 @@ class settingProfile extends Component {
 
                       <div className="form-row">
                         <div className="colum">
-                          <label className="label" htmlFor={"age"}>
-                            Address Line 1:
-                          </label>
-                          <input
-                            id={"address"}
-                            className={"form-control textBox"}
-                            required={true}
-                            name={"address"}
-                            type={"text"}
-                            placeholder=""
-                            onChange={event =>
-                              this.inputChangedHandler(event, "address")
-                            }
-                            value={
-                              this.state.profileForm
-                                ? this.state.profileForm.address
-                                : ""
-                            }
-                          />
+                          {this.state.gmapsLoaded && (
+							<PlacesAutocomplete
+								value={this.state.address} 
+								onChange={this.handleChange}
+								onSelect={this.handleSelect}
+								name={"address"}
+							>
+
+								{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+
+								<div>
+								<input 
+								  {...getInputProps({
+									placeholder: 'Search Places ...',
+									className: 'location-search-input form-control'			
+									})}
+									onBlur={this.formatEndpoint}
+									required={true}
+								/>
+								<div className="autocomplete-dropdown-container">
+								  {loading && <div>Loading...</div>}
+								  {suggestions.map(suggestion => {
+									const className = suggestion.active
+									  ? 'suggestion-item--active'
+									  : 'suggestion-item';
+									// inline style for demonstration purpose
+									const style = suggestion.active
+									  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+									  : { backgroundColor: '#ffffff', cursor: 'pointer' };
+									return (
+									  <div
+										{...getSuggestionItemProps(suggestion, {
+										  className,
+										  style,
+										})}
+									  >
+										<span>{suggestion.description}</span>
+									  </div>
+									);
+								  })}
+								</div>
+								</div>
+								)}
+								</PlacesAutocomplete>        
+						   )}
+                         
                         </div>
                         <div className="colum right">
                           <label className="label" htmlFor={"age"}>
                             Address Line 2:
                           </label>
                           <input
-                            id={"address1"}
+                            id={"address2"}
                             className={"form-control textBox"}
                             required={true}
-                            name={"address1"}
+                            name={"address2"}
                             type={"text"}
                             placeholder=""
                             onChange={event =>
-                              this.inputChangedHandler(event, "address1")
+                              this.inputChangedHandler(event, "address2")
                             }
                             value={
                               this.state.profileForm
-                                ? this.state.profileForm.address1
+                                ? this.state.profileForm.address2
                                 : ""
                             }
                           />
@@ -629,7 +740,7 @@ class settingProfile extends Component {
                         <p className="createdOn">
                           Account created on{" "}
                           {moment(this.state.profileForm.createdAt).format(
-                            "DD/MM/YYYY"
+                            "YYYY/MM/DD"
                           )}
                         </p>
                         <button type={"submit"} className={"submitBtn fl"}>Save</button>

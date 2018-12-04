@@ -21,7 +21,6 @@ var fs = require('fs');
 class Form extends Component {
     
     
-    
   state = {
     isValidated: false
   };
@@ -317,17 +316,15 @@ class Register extends React.Component {
   render() {
     return (
             <div className="login-container">
-    
-          
         <div  className="container">
            <a href="/" className="backBtn">&nbsp;</a>
         <div className="cl"></div>
           <div className="login">
            {this.state.showFormSuccess ? this._renderSuccessMessage() : null}
             <div className="form-row login-row">
-                                <img className='login-icon' src={registerIcon} alt="" />
-                                <h3>Register</h3>
-                                <p>Fill your details and start swapping</p>
+				<img className='login-icon' src={registerIcon} alt="" />
+				<h3>Register</h3>
+				<p>Fill your details and start swapping</p>
             </div>
           
               <Form submit={this.submit}>
@@ -399,51 +396,50 @@ class Register extends React.Component {
 				<div className="invalid-feedback validation"> </div>   
                 <span className="astrik">*</span>
                   <label className="label" htmlFor={"addressss"}>Address Line1</label>
-      {this.state.gmapsLoaded && (
-			<PlacesAutocomplete
-			value={this.state.address} 
-			onChange={this.handleChange}
-			onSelect={this.handleSelect}
-			name={"address"}
-			>
+					  {this.state.gmapsLoaded && (
+						  <PlacesAutocomplete
+							value={this.state.address} 
+							onChange={this.handleChange}
+							onSelect={this.handleSelect}
+							name={"address"}
+						>
+						{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
 
-			{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-
-			<div>
-			<input 
-			  {...getInputProps({
-				placeholder: 'Search Places ...',
-				className: 'location-search-input form-control'			
-				})}
-				onBlur={this.formatEndpoint}
-				required={true}
-			/>
-			<div className="autocomplete-dropdown-container">
-			  {loading && <div>Loading...</div>}
-			  {suggestions.map(suggestion => {
-				const className = suggestion.active
-				  ? 'suggestion-item--active'
-				  : 'suggestion-item';
-				// inline style for demonstration purpose
-				const style = suggestion.active
-				  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-				  : { backgroundColor: '#ffffff', cursor: 'pointer' };
-				return (
-				  <div
-					{...getSuggestionItemProps(suggestion, {
-					  className,
-					  style,
-					})}
-				  >
-					<span>{suggestion.description}</span>
-				  </div>
-				);
-			  })}
-			</div>
-			</div>
-			)}
-			</PlacesAutocomplete>        
-       )}
+								<div>
+								<input 
+								  {...getInputProps({
+									placeholder: 'Search Places ...',
+									className: 'location-search-input form-control'			
+									})}
+									onBlur={this.formatEndpoint}
+									required={true}
+								/>
+								<div className="autocomplete-dropdown-container">
+								  {loading && <div>Loading...</div>}
+								  {suggestions.map(suggestion => {
+									const className = suggestion.active
+									  ? 'suggestion-item--active'
+									  : 'suggestion-item';
+									// inline style for demonstration purpose
+									const style = suggestion.active
+									  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+									  : { backgroundColor: '#ffffff', cursor: 'pointer' };
+									return (
+									  <div
+										{...getSuggestionItemProps(suggestion, {
+										  className,
+										  style,
+										})}
+									  >
+										<span>{suggestion.description}</span>
+									  </div>
+									);
+								  })}
+								</div>
+								</div>
+								)}
+								</PlacesAutocomplete>        
+						   )}
         </div>
             <div className="form-row">
                 <label className="label" htmlFor={"address1"}>Address Line 2</label>
@@ -468,8 +464,8 @@ class Register extends React.Component {
                   <input id={"country"} className={"form-control textBox"} required={true} name={"country"} type="select" placeholder="" /> */}
                   </div>
                   <div className="colum right">
-        <div className="invalid-feedback validation"> </div>             
-        <span className="astrik">*</span>
+					<div className="invalid-feedback validation"> </div>             
+					<span className="astrik">*</span>
                   <label className="label" htmlFor={"state"}>State</label>
                    <Input type="select" name="state" id="state" className={"form-control textBox"} onChange={this.handleChangeState}>
 					<option value="0">Select State</option>

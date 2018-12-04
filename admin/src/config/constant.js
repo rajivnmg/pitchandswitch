@@ -3,7 +3,7 @@ module.exports = {
   'PUBLIC_URL':'http://localhost:3006/',
   'PUBLIC_URL_WEB':'http://localhost:3002/',
   'PER_PAGE_RECORD': 10,
-  'DATABASE':'mongodb://localhost:27017/pitch-and-switch',
+  'DATABASE':'mongodb://localhost:27017/pitch-switch-demo',
   'SMTP_HOST':'smtp.sendgrid.net',
   'SMTP_PORT': 587,   
   'SMTP_USERNAME': '####',

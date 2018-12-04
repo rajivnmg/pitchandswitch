@@ -38,13 +38,10 @@ class viewPitchPopup extends Component {
 	
 render() {
    return (
-		<Popup trigger={<a className= 'view-pitch'> View Pitch </a>} modal contentStyle = {contentStyle} lockScroll > 
-
-	{ close => (
+    <Popup trigger={<a className= 'view-pitch'> View Pitch </a>} modal contentStyle = {contentStyle} lockScroll > 
+     { close => (
     <div className="modal">
-        <a className="close" onClick={close}>
-            &times;
-        </a>
+     <a className="close" onClick={close}>&times;</a>
         <div className="header">Pitch sent on <input className="ditch-btn" value="Cancel Pitch" type="submit" />
 				<div className="cl"></div>
 			</div>
@@ -96,12 +93,12 @@ render() {
 							</div>)
 							})
 						}
-						</Then>							
-						<Else>
-						   <p>No Image Available</p>
-						</Else>
-						</If>
-					</div>
+					</Then>							
+					<Else>
+					<p>No Image Available</p>
+					</Else>
+				   </If>
+				</div>
 			</div>
 		</div>
     </div>

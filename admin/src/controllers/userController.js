@@ -364,6 +364,7 @@ const userSignup = (req, res) => {
  *	Description : Function to verify user and login
  **/
 const login = (req, res) => {
+	console.log('req',req.body.email)
   
   if (!req.body.email && !req.body.password) {
     return res.json({
@@ -377,6 +378,7 @@ const login = (req, res) => {
     "password",
     "userType"
   ]);
+   console.log("flag",data)
   if (flag) {
     // console.log("flag",flag)
     return res.json(flag);
@@ -993,7 +995,6 @@ const myProfle = (req, res) => {
       .populate("state")
       .populate("country")
       .exec(function(err, result) {
-		  console.log('resultrrrrrrrrrrrr',result)
         if (err) {
           return res.send({
             code: httpResponseCode.BAD_REQUEST,
@@ -1026,6 +1027,7 @@ const myProfle = (req, res) => {
 const updateUser = (req, res) => {
   var form = new multiparty.Form();
   form.parse(req, function(err, data, files) {
+	  console.log('data',data);
     let now = new Date();
     User.findOneAndUpdate({ _id: data._id }, data, (err, result) => {
       if (err) {
@@ -1091,7 +1093,7 @@ const updateUser = (req, res) => {
               result: result
             });
           }
-          console.log('resesesesessessesessesse',result);
+          //console.log('resesesesessessesessesse',result);
         }
       }
     });
