@@ -430,11 +430,28 @@ const CityEdit = Loadable({
   loading: Loading,
 });
 
+//setting
 // Email Notification setting
 const EmailNotification = Loadable({
 	loader:() => import('./views/Notifications/EmailNotification/EmailNotification'),
 	loading : Loading,
 });
+// Modules setting
+const ModulesSetting = Loadable({
+	loader:() => import('./views/Settings/ModulesSetting/ModulesSetting'),
+	loading : Loading,
+});
+//Social Media setting
+const SocialMediaSetting = Loadable({
+	loader:() => import('./views/Settings/SocialMediaSetting/SocialMediaSetting'),
+	loading : Loading,
+});
+//Contact setting
+const ContactSetting = Loadable({
+	loader:() => import('./views/Settings/ContactSetting/ContactSetting'),
+	loading : Loading,
+});
+
 
 const ForgetPassword = Loadable({
   loader:() => import('./views/Pages/Login/ForgetPassword'),
@@ -453,6 +470,11 @@ const EditProfile = Loadable({
   loading : Loading,
 });
 
+// Loading Report component
+const Reports = Loadable({
+  loader: () => import('./views/Reports/Reports'),
+  loading: Loading,
+});
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home', component: DefaultLayout },
@@ -516,14 +538,15 @@ const routes = [
   { path: '/city/edit/:id', name: 'Edit City', component: CityEdit},
   { path: '/city', name: 'City', component: Cities},  
   { path: '/setting/email', name: 'Email Notification', component: EmailNotification},  
-  { path: '/notifications', exact: true, name: 'Notifications', component: Alerts },
-  { path: '/notifications/alerts', name: 'Alerts', component: Alerts },
-  { path: '/notifications/badges', name: 'Badges', component: Badges },
+  { path: '/setting/modules', exact: true, name: 'Modules Setting', component: ModulesSetting },
+  { path: '/setting/social-media', name: 'Social Media', component: SocialMediaSetting },
+  { path: '/setting/contact', name: 'Contact US', component: ContactSetting },
   { path: '/notifications/modals', name: 'Modals', component: Modals },
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/charts', name: 'Charts', component: Charts },
   { path: '/admin/myProfile', name: 'MyProfile', component: MyProfile },
   { path: '/admin/editProfile', name: 'EditProfile', component: EditProfile },
+  { path: '/reports', name: 'Reports', component: Reports },
 ];
 
 export default routes;

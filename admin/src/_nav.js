@@ -229,30 +229,30 @@ export default {
     },
    
     {
-      name: 'Notifications Setting',
+      name: 'Settings',
       url: '/notifications',
       icon: 'icon-bell',
       children: [
       {
-          name: 'Email',
+          name: 'Email Notification',
           url: '/setting/email',
           icon: 'icon-bell',
         },
-        //~ {
-          //~ name: 'Alert',
-          //~ url: '/notifications/alerts',
-          //~ icon: 'icon-bell',
-        //~ },
-        //~ {
-          //~ name: 'Badges',
-          //~ url: '/notifications/badges',
-          //~ icon: 'icon-bell',
-        //~ },
-        //~ {
-          //~ name: 'Modals',
-          //~ url: '/notifications/modals',
-          //~ icon: 'icon-bell',
-        //~ },
+        {
+          name: 'Module',
+          url: '/setting/modules',
+          icon: 'icon-bell',
+        },
+        {
+          name: 'Social Media',
+          url: '/setting/social-media',
+          icon: 'icon-bell',
+        },
+        {
+          name: 'Contact',
+          url: '/setting/contact',
+          icon: 'icon-bell',
+        },
       ],
     },
     //~ {
@@ -297,7 +297,7 @@ export default {
     //~ },
     {
       name: 'Download Reports',
-      url: '#',
+      url: '/reports',
       icon: 'icon-cloud-download',
       class: 'mt-auto',
       variant: 'success',

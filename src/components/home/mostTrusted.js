@@ -54,7 +54,7 @@ class mostTrusted extends Component {
       return (
 
                 <div className="mostTrusted">
-                <h3>{""} </h3>
+                <h3>{"Hall of Fame"} </h3>
         {/*<h3> Most <strong>trusted users</strong> </h3> */}
                     <Slider {...settings}>
                         {this.state.mosttrustedUsers?this.state.mosttrustedUsers.map(function (slide) {

@@ -3,6 +3,7 @@ import Style from "./main.css";
 import "../slick.min.css";
 import { NavLink } from "react-router-dom";
 import Logo from "../images/logo.png";
+//import Logo from "../images/PandS-logo-PNG-13.png";
 import userIMg from "../images/user-pic.png";
 import CategoryMenu from "./categoryMenu";
 import { AutoComplete } from "antd";

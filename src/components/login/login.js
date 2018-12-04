@@ -332,7 +332,7 @@ class Register extends React.Component {
                     <Link to="/forget">Forgot password?</Link>
                   </div>
                   <div className="form-row  no-padding">                  
-					 <p align={'center'}><Link to={"/"}>Back To Home</Link></p>
+					 <p align={'center'}><Link to={"/"}>Home</Link></p>
                  </div>
                 </Form>
               </div>
