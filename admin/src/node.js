@@ -20,6 +20,7 @@ const trade = require("./routes/trade")
 const location = require("./routes/location")
 const transaction = require("./routes/transaction")
 const notification = require("./routes/notification")
+const settingSite = require("./routes/setting")
 const morgan=require('morgan')
 const http = require('http');
 const fs = require('fs');
@@ -90,5 +91,6 @@ app.use('/trade',trade);
 app.use('/location',location)
 app.use('/transaction',transaction);
 app.use('/notification',notification);
+app.use('/setting',settingSite);
 app.listen(app.get('port'), () => console.log('Server running on ' + app.get('port')));
 module.exports = app;

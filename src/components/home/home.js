@@ -18,7 +18,7 @@ class Home extends Component {
 		super(props)
 		this.state = {
 			isPopularItemEnable : true,
-			isHomeSponsorsEnable : false,
+			isHomeSponsorsEnable : true,
 			isTestimonialsEnable : true,			
 			isDonateEnable : true,
 			isNewlyProductsEnable : true,
