@@ -48,7 +48,7 @@ class MyTrades extends Component {
 			<Tab>Ditched</Tab>
 		</TabList>
 		<TabPanel>
-			 <Tabs forceRenderTabPanel>
+			 <Tabs forceRenderTabPanel className="tab_details">
 			     <div className="message-filter">
 			        <TabList>
 						<Tab className='active tradeall'>ALL</Tab>
@@ -72,7 +72,7 @@ class MyTrades extends Component {
 		
 		
 		 <TabPanel>
-			 <Tabs forceRenderTabPanel>
+			 <Tabs forceRenderTabPanel className="tab_details">
 			     <div className="message-filter">
 			        <TabList>
 						<Tab className='active tradeall'>ALL</Tab>
@@ -128,7 +128,7 @@ class MyTrades extends Component {
 		
 															
 		<TabPanel>
-		    <Tabs forceRenderTabPanel>
+		    <Tabs forceRenderTabPanel className="tab_details">
 		        <div className="message-filter">
 			         <TabList>
 						<Tab className='active tradeall'>ALL</Tab>

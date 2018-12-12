@@ -104,7 +104,7 @@
 .productId strong {font-weight:700;}
 .detail-div .btnRow { padding-bottom: 22px}
 .detail-div .btnRow .ditch {border-radius: 25px;   padding: 10px 25px;    background: #dcb73f; color: #fff; text-align: center;display:inline-block; max-width: 170px; text-decoration: none; font-family: Roboto; font-size: 20px;margin-right:20px; }
-.detail-div .btnRow .ditch.add-wishlist { background: #ffffff url(../../images/add-wishlist.png) no-repeat 22px 17px; color: #ff7979; padding-left: 55px; margin-left: 0; margin-right: 0 }
+.detail-div .btnRow .ditch.add-wishlist { background: #ffffff url(../../images/add-wishlist.png) no-repeat 22px 15px; color: #ff7979; padding-left: 55px; margin-left: 0; margin-right: 0 }
 .productDetails {border-top:1px solid #d8d8d8; padding-top: 15px;}
 .productDetails h5 {color: #414141;font-family: "Roboto";font-size: 13px;font-weight: 700;line-height:15px; padding-bottom: 8px;}
 .productDetails table {border:0; border-collapse:collapse;}
