@@ -10,8 +10,21 @@ class SocialMediaSetting extends Component {
   constructor(props){
     super(props);
     this.state = {     
-      moduleSetting : {},
-      modal: false,     
+      moduleSetting : {
+			isPopularItem:true,
+			isDonate:true,
+			isHomeSponsors:true,
+			isTestimonials:true,
+			isNewlyProducts:true,		
+			isWhatOtherSwitched:true,
+			isWhatPitchSwitch:true,
+			isMostTrusted:true,
+			isHowItWorks:true,
+			isWeKeepSafe:true,
+			youTubeVideoId:''
+	  },
+      modal: false,   
+      moduleSettingId:''  
     };    
     this.toggle = this.toggle.bind(this);    
   }
@@ -19,10 +32,13 @@ class SocialMediaSetting extends Component {
   loadCommentsFromServer(){
     axios.get('/setting/getModulesSetting').then(result => {
       if(result.data.code === 200){
-		  console.log("result",result);
-		//~ this.setState({
-          //~ moduleSetting: result.data.result
-        //~ });
+		  console.log("result",result.data.result[0]);
+		  if(result.data.result && result.data.result.length>0){
+			this.setState({
+			  moduleSetting: result.data.result[0],
+			  moduleSettingId : (result.data.result && result.data.result.length > 0)? result.data.result[0]._id :''
+			});
+		}
       }
     })
     .catch((error) => {
@@ -34,14 +50,19 @@ class SocialMediaSetting extends Component {
 
   }
 handleChange(e) {
+	
 	  let data = {};
 	  //let name = e.target.name;	  	 
 	  //console.log(moduleSetting,e,e.target.checked,e.target.name);
 	  data.name = e.target.name;
 	  data.value = e.target.checked;
-	  axios.post('/setting/updateModuleSetting',data).then(result => {	  
+	  data.moduleSettingId = this.state.moduleSettingId;
+	  console.log("data",data);
+	  let moduleSettingData = {...this.state.moduleSetting};
+	  axios.post('/setting/updateModuleSetting',data).then(result => {	
+		  moduleSettingData[e.target.name] = e.target.checked;	  	  
 		this.setState({
-          moduleSetting: result.data.result,          
+			moduleSetting:moduleSettingData
         });
 	})
 	.catch((error) => {
@@ -51,6 +72,31 @@ handleChange(e) {
 	  }
 	});
 }
+	
+	
+  handleInputChange(ex){
+    this.setState({youTubeVideoId: ex.target.value });
+  };
+
+  handleClick =()=> {
+    console.log(this.state.moduleSetting.youTubeVideoId);
+     let data = {};	 
+	  data.name = 'youTubeVideoId';
+	  data.value = this.state.moduleSetting.youTubeVideoId;
+	  data.moduleSettingId = this.state.moduleSettingId;
+	  console.log("data",data);
+	  axios.post('/setting/updateModuleSetting',data).then(result => {	  
+		this.setState({
+          moduleSetting: result.data.result          
+        });
+	})
+	.catch((error) => {
+	console.log('error', error)
+	  if(error.code === 401) {
+		this.props.history.push("/login");
+	  }
+	});
+  };
  
   componentDidMount() {
     //if(localStorage.getItem('jwtToken') != null)
@@ -93,16 +139,16 @@ handleChange(e) {
               <CardHeader>
                 Donate                           
               </CardHeader>              
-					  <CardBody>	
-						  <If condition={(this.state.moduleSetting && this.state.moduleSetting.isDonate === true)}>
-							<Then>
-							 <AppSwitch className={'mx-1'} name={'isDonate'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)} name="myCheckBox1" />	
-							</Then>							
-							<Else>
-							  <AppSwitch className={'mx-1'} name={'isDonate'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
-							</Else>
-						  </If>		
-					  </CardBody>				  
+				  <CardBody>	
+					  <If condition={(this.state.moduleSetting && this.state.moduleSetting.isDonate === true)}>
+						<Then>
+						 <AppSwitch className={'mx-1'} name={'isDonate'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)} name="myCheckBox1" />	
+						</Then>							
+						<Else>
+						  <AppSwitch className={'mx-1'} name={'isDonate'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+						</Else>
+					  </If>		
+				  </CardBody>				  
             </Card>
           </Col>
         </Row>
@@ -154,7 +200,7 @@ handleChange(e) {
 				 <AppSwitch className={'mx-1'} name={'isNewlyProducts'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
 				</Then>							
 				<Else>
-				  <AppSwitch className={'mx-1'} name={'isNewlyProducts'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+				  <AppSwitch className={'mx-1'} name={'isNewlyProducts'} variant={'pill'} color={'success'} label unchecked onChange={e => this.handleChange(e)}/>	
 				</Else>
 			  </If>	
               </CardBody>
@@ -216,9 +262,9 @@ handleChange(e) {
 				  <Col md="9">
 					  <FormGroup>
 						<Label htmlFor="name">YouTube Video Id</Label>
-						<Input type="text" id="youtubeVideoId" name={'youtubeVideoId'} placeholder="Enter Youtube VideoId" required />
+						<Input type="text" id="youtubeVideoId" name={'youTubeVideoId'} onChange={ this.handleInputChange } placeholder="Enter Youtube VideoId" value={(this.state.moduleSetting && this.state.moduleSetting.youTubeVideoId !==null) ? this.state.moduleSetting.youTubeVideoId:null } required />
 					 </FormGroup>
-					 <button className="btn btn-sm btn-success" type="submit"><i className="fa fa-dot-circle-o"></i> Submit</button>
+					 <button className="btn btn-sm btn-success" type="button" onClick={this.handleClick}><i className="fa fa-dot-circle-o"></i> Submit</button>
 				 </Col>
 			 </Row>
               </CardBody>

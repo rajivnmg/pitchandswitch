@@ -182,7 +182,7 @@ class Register extends React.Component {
 			});
 			 this.setState({colors: colors });	
 		 };
-		
+		 		
 		componentWillMount() {		
 			  axios.all([							
 				axios.get('/size/listingsize/'),

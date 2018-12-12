@@ -10,7 +10,7 @@ class State extends Component {
     return (
       <tr key={this.props.state._id}>
       <td>{this.props.sequenceNo+1}</td>
-        <td>{this.props.state.country.countryName}</td>
+        <td>{(this.props.state && this.props.state.country)?this.props.state.country.countryName:''}</td>
         <td>{this.props.state.stateName}</td>
         {/* <td>{this.Capitalize(this.props.testimonial.author.firstName)} {this.Capitalize(this.props.testimonial.author.lastName)}</td>    */}
         <td>

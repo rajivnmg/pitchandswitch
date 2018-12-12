@@ -11,7 +11,7 @@ isPopularItem:{
   default: true
 },
 isHomeSponsors:{
-    type:String,
+    type:Boolean,
     trim:true
 },
 isTestimonials:{
@@ -37,6 +37,11 @@ isMostTrusted:{
 isHowItWorks:{
 	type: Boolean,
 	default: true
+},
+youTubeVideoId:{
+	type:String,
+	trim:true,
+	default: null
 },
 isWeKeepSafe:{
 	type: Boolean,

@@ -26,13 +26,39 @@ class Home extends Component {
 			isMostTrustedEnable : true,
 			isHowItWorksEnable : true,
 			isWeKeepSafeEnable : true,
-			isWhatPitchSwitchEnable : true
+			isWhatPitchSwitchEnable : true,
+			youTubeVideoId:''
 		}		
   }
   
   componentDidMount(){
 	 //write  in this which you want just ofter rendering the page
-	 
+	axios.get('/setting/getModulesSetting').then(result => {
+      if(result.data.code === 200){
+		  console.log("result",result.data.result[0]);
+		  if(result.data.result && result.data.result.length>0){
+			this.setState({
+			isPopularItemEnable : result.data.result[0].isPopularItem,
+			isHomeSponsorsEnable : result.data.result[0].isHomeSponsors,
+			isTestimonialsEnable : result.data.result[0].isTestimonials,			
+			isDonateEnable : result.data.result[0].isDonate,
+			isNewlyProductsEnable : result.data.result[0].isNewlyProducts,
+			isWhatOtherSwitchedEnable : result.data.result[0].isWhatOtherSwitched,
+			isMostTrustedEnable : result.data.result[0].isMostTrusted,
+			isHowItWorksEnable : result.data.result[0].isHowItWorks,
+			isWeKeepSafeEnable : result.data.result[0].isWeKeepSafe,
+			isWhatPitchSwitchEnable : result.data.result[0].isWhatPitchSwitch,
+			youTubeVideoId:result.data.result[0].youTubeVideoId
+			});
+		}
+      }
+    })
+    .catch((error) => {
+    console.log('error', error)
+      if(error.code === 401) {
+        this.props.history.push("/login");
+      }
+    });
   }
   
   render() {

@@ -2,6 +2,7 @@ const router = require('express').Router();
 const locationController = require('../controllers/locationController')
 router.post('/newCountry',locationController.createCountry)
 router.get('/listCountry',locationController.listCountry)
+router.get('/listActiveCountry',locationController.listActiveCountry)
 router.get('/getLocation',locationController.getCountryStateCity)
 router.get('/viewCountry/:id',locationController.viewCountry)
 router.get('/getState/:id',locationController.getState)
@@ -27,4 +28,8 @@ router.post('/status',locationController.Status)
 router.get('/cities/:page', locationController.listCitys)
 router.get('/listingCity', locationController.listingCity)
 router.get('/activeCities', locationController.activeCities)
+
+router.get('/insertTestCountry', locationController.insertTestCountry)
+router.get('/insertTestState', locationController.insertTestState)
+router.get('/insertTestCity', locationController.insertTestCity)
 module.exports = router;

@@ -37,9 +37,7 @@ var async = require("async");
  *  Date	: Nov 5, 2018
  *	Description : Function to list the available mudule setting
  **/
-const getModulesSetting = (req, res) => {
-  var token = commonFunction.getToken(req.headers);
-  if (token) {
+const getModulesSetting = (req, res) => {  
     SettingModules.find({}, (err, result) => {
       if (err) {
         return res.send({
@@ -60,10 +58,7 @@ const getModulesSetting = (req, res) => {
           });
         }
       }
-    });
-  } else {
-    return res.status(403).send({ code: 403, message: "Unauthorized." });
-  }
+    }); 
 };
 
 /** Auther	: Rajiv Kumar
@@ -71,22 +66,49 @@ const getModulesSetting = (req, res) => {
  *	Description : Function to update the site module of home page.
  **/
 const updateModuleSetting = (req, res) => {
-	console.log("BOIDY",req.body.name,req.body.value);  
-	let fName = req.body.name;
-	//~ let updateData = {
-			//~ fName : req.body.value
-		//~ };
-			
-	   var updateObj = {};
+	console.log("BOIDY",req.body.name,req.body.value,req.body.moduleSettingId);  
+	let fName = req.body.name;	
+	 var updateObj = {};
               updateObj[fName] = req.body.value;
-         var settingModules = new SettingModules();
-         
-         settingModules.set({ fName: req.body.value });
-  settingModules.save(function (err, updatedTank) {
-    if (err) return console.log("ERROR")
-    console.log("DONE")
-  });     
               
+	 if(req.body.moduleSettingId && req.body.moduleSettingId !==''){
+		SettingModules.update({_id:req.body.moduleSettingId}, { "$set":updateObj}, { new: true }, function (err, result) {
+		  if (err) {
+			  return res.send({
+			  code: httpResponseCode.BAD_REQUEST,
+			  message: httpResponseMessage.INTERNAL_SERVER_ERROR,
+			  Errors: err
+			});
+		  }else{
+			return res.json({
+					code: httpResponseCode.EVERYTHING_IS_OK,
+					message: httpResponseMessage.SUCCESSFULLY_DONE,
+					result: result
+			});
+		 }
+		});   
+	 }else{		  
+           var settingModules = new SettingModules();         
+         settingModules.set({ fName: req.body.value });
+		  settingModules.save(function (err, updatedModule) {
+			if (err){
+				return res.json({
+						code: httpResponseCode.BAD_REQUEST,
+						message: httpResponseMessage.INTERNAL_SERVER_ERROR,
+						result: err
+				});
+			}else{
+				return res.json({
+						code: httpResponseCode.EVERYTHING_IS_OK,
+						message: httpResponseMessage.SUCCESSFULLY_DONE,
+						result: updatedModule
+				});
+			} 
+				
+		  });     
+              
+	 }
+	 
      return;         
 	//~ SettingModules.update({}, { $set: { updateObj }}, { new: true }, function (err, result) {
 	  //~ if (err) {

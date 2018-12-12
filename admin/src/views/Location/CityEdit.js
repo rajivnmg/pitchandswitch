@@ -156,7 +156,7 @@ class CityEdit extends Component {
   componentDidMount() {
     //if(localStorage.getItem('jwtToken') != null)
       //axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
-	  axios.get('/location/listCountry').then(result => {
+	  axios.get('/location/listActiveCountry').then(result => {
       if(result.data.code === 200){
         const updatedCityForm = {
 		  ...this.state.cityForm

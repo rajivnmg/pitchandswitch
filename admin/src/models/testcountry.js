@@ -1,6 +1,6 @@
 /*  *Country Model
-    *Author: Saurabh Agarwal
-    *Date  : July 16, 2018
+    *Author: Rajiv Kumar
+    *Date  : Nov 16, 2018
 */
 'use strict';
 var mongoose = require('mongoose');
@@ -8,29 +8,35 @@ var Schema = mongoose.Schema;
 global.Promise = mongoose.Promise;
 var bcrypt = require('bcrypt-nodejs');
 
-var CountrySchema = new Schema({
-    countryName: {
+var TestCountrySchema = new Schema({
+	id: {
+        type: Number,
+        trim: true
+    },
+    name: {
         type: String,
         trim: true
     },
-    countryCode: {
+    sortname: {
         type: String,
         trim: true
     },
     status:{
         type:String,
         trim:true,
-        sparse:true,
-        default:0 // 0-> active 1->inactive
+        sparse:true 
        },
-    countryId: []
-    
+    phoneCode:{
+        type:Number,
+        trim:true,
+        sparse:true 
+       }
 },
 {
     timestamps:true
 });
-CountrySchema.methods.toJSON = function() {
+TestCountrySchema.methods.toJSON = function() {
     var obj = this.toObject();
     return obj;
 }
-module.exports = mongoose.model('Country', CountrySchema);
+module.exports = mongoose.model('TestCountry', TestCountrySchema);
