@@ -17,6 +17,10 @@ var CountrySchema = new Schema({
         type: String,
         trim: true
     },
+	id:{
+		type: Number,
+		trim: true
+	},
     status:{
         type:String,
         trim:true,

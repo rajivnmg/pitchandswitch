@@ -109,7 +109,7 @@ const updateModuleSetting = (req, res) => {
               
 	 }
 	 
-     return;         
+           
 	//~ SettingModules.update({}, { $set: { updateObj }}, { new: true }, function (err, result) {
 	  //~ if (err) {
 		  //~ return res.send({
@@ -125,6 +125,85 @@ const updateModuleSetting = (req, res) => {
 		//~ });
 	 //~ }
 	//~ });   
+};
+
+
+/** Auther	: Rajiv Kumar
+ *  Date	: Nov 5, 2018
+ *	Description : Function to list the available mudule setting
+ **/
+const getSocialMediaSetting = (req, res) => {  
+	
+    SettingSocialMedia.find({}, (err, result) => {
+      if (err) {
+        return res.send({
+          code: httpResponseCode.BAD_REQUEST,
+          message: httpResponseMessage.INTERNAL_SERVER_ERROR
+        });
+      } else {
+        if (!result) {
+          res.json({
+            message: httpResponseMessage.USER_NOT_FOUND,
+            code: httpResponseMessage.BAD_REQUEST
+          });
+        } else {
+          return res.json({
+            code: httpResponseCode.EVERYTHING_IS_OK,
+            message: httpResponseMessage.SUCCESSFULLY_DONE,
+            result: result
+          });
+        }
+      }
+    }); 
+};
+
+/** Auther	: Rajiv Kumar
+ *  Date	: Nov 5, 2018
+ *	Description : Function to update the site module of home page.
+ **/
+const updateSocialMediaSetting = (req, res) => {
+	console.log("BOIDY",req.body.name,req.body.value,req.body.moduleSettingId);  
+	let fName = req.body.name;	
+	 var updateObj = {};
+              updateObj[fName] = req.body.value;
+              
+	 if(req.body.moduleSettingId && req.body.moduleSettingId !==''){
+		SettingSocialMedia.update({_id:req.body.moduleSettingId}, { "$set":updateObj}, { new: true }, function (err, result) {
+		  if (err) {
+			  return res.send({
+			  code: httpResponseCode.BAD_REQUEST,
+			  message: httpResponseMessage.INTERNAL_SERVER_ERROR,
+			  Errors: err
+			});
+		  }else{
+			return res.json({
+					code: httpResponseCode.EVERYTHING_IS_OK,
+					message: httpResponseMessage.SUCCESSFULLY_DONE,
+					result: result
+			});
+		 }
+		});   
+	 }else{		  
+           var settingSocialMedia = new SettingSocialMedia();         
+         settingSocialMedia.set({ fName: req.body.value });
+		  settingSocialMedia.save(function (err, updatedSetting) {
+			if (err){
+				return res.json({
+						code: httpResponseCode.BAD_REQUEST,
+						message: httpResponseMessage.INTERNAL_SERVER_ERROR,
+						result: err
+				});
+			}else{
+				return res.json({
+						code: httpResponseCode.EVERYTHING_IS_OK,
+						message: httpResponseMessage.SUCCESSFULLY_DONE,
+						result: updatedSetting
+				});
+			} 
+				
+		  });     
+              
+	 }
 };
 
 // User helf or contact us email
@@ -144,6 +223,8 @@ const contactUsSetting = (req, res) => {
 module.exports = {
   getModulesSetting,
   updateModuleSetting,
+  getSocialMediaSetting,
+  updateSocialMediaSetting,
   contactUsSetting
   
 };

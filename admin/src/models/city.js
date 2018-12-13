@@ -21,6 +21,11 @@ cityName: {
     type: String,
     trim: true,
 },
+id: {
+    type: String,
+    trim: true,
+    default:0
+},
 status:{
  type:String,
  trim:true,

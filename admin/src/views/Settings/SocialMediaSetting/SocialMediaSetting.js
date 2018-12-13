@@ -7,27 +7,35 @@ import { AppSwitch } from '@coreui/react'
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 
 class SocialMediaSetting extends Component {
-  constructor(props){
+ constructor(props){
     super(props);
     this.state = {     
-      user : {},
-      modal: false,     
-    };
-    console.log('THIS OBJ', this);   
+      moduleSetting : {
+			isFacebook:true,
+			facebookUrl:'',
+			isTwitter:true,
+			twitterUrl:'',
+			isLinkedIn:true,		
+			linkedInUrl:''
+			
+	  },
+      modal: false,   
+      moduleSettingId:''  
+    };    
     this.toggle = this.toggle.bind(this);    
   }
-
+    
   loadCommentsFromServer(){
-    axios.get('/notification/email').then(result => {
+    axios.get('/setting/getSocialMediaSetting').then(result => {
       if(result.data.code === 200){
-		this.setState({
-          emailNotification: result.data.result.emailNotification,
-          user:result.data.result          
-        });
-      
-      // console.log('emailNotification',)
+		  console.log("result",result.data.result[0]);
+		  if(result.data.result && result.data.result.length>0){
+			this.setState({
+			  moduleSetting: result.data.result[0],
+			  moduleSettingId : (result.data.result && result.data.result.length > 0)? result.data.result[0]._id :''
+			});
+		}
       }
-      
     })
     .catch((error) => {
     console.log('error', error)
@@ -38,13 +46,19 @@ class SocialMediaSetting extends Component {
 
   }
 handleChange(e) {
-	  let userD = this.state.user;
-	  //this.setState({:e.target.checked})
-	  console.log(userD,e.target.checked)
-	  userD.emailNotification = ((e.target.checked)?0:1).toString()
-	  axios.post('/notification/email',userD).then(result => {	  
+	
+	  let data = {};
+	  //let name = e.target.name;	  	 
+	  //console.log(moduleSetting,e,e.target.checked,e.target.name);
+	  data.name = e.target.name;
+	  data.value = e.target.checked;
+	  data.moduleSettingId = this.state.moduleSettingId;
+	  console.log("data",data);
+	  let moduleSettingData = {...this.state.moduleSetting};
+	  axios.post('/setting/updateSocialMediaSetting',data).then(result => {	
+		  moduleSettingData[e.target.name] = e.target.checked;	  	  
 		this.setState({
-          emailNotification: result.data.result.emailNotification,          
+			moduleSetting:moduleSettingData
         });
 	})
 	.catch((error) => {
@@ -54,6 +68,31 @@ handleChange(e) {
 	  }
 	});
 }
+	
+	
+  handleInputChange(ex){
+    this.setState({facebookUrl: ex.target.value });
+  };
+
+  handleClick =()=> {
+    console.log(this.state.moduleSetting.youTubeVideoId);
+     let data = {};	 
+	  data.name = 'facebookUrl';
+	  data.value = this.state.moduleSetting.facebookUrl;
+	  data.moduleSettingId = this.state.moduleSettingId;
+	  console.log("data",data);
+	  axios.post('/setting/updateSocialMediaSetting',data).then(result => {	  
+		this.setState({
+          moduleSetting: result.data.result          
+        });
+	})
+	.catch((error) => {
+	console.log('error', error)
+	  if(error.code === 401) {
+		this.props.history.push("/login");
+	  }
+	});
+  };
  
   componentDidMount() {
     //if(localStorage.getItem('jwtToken') != null)
@@ -66,7 +105,6 @@ handleChange(e) {
       modal: !this.state.modal
     });
   }
-  
   render() {
    
      const externalCloseBtn = <button className="close" style={{ position: 'absolute', top: '15px', right: '15px' }} onClick={this.toggle}>&times;</button>;
@@ -79,12 +117,12 @@ handleChange(e) {
                 <i className="icon-social-facebook icons font-2xl d-block mt-4"></i>Facebook                           
               </CardHeader>              
 					  <CardBody>	
-						  <If condition={this.state.isFacebook =="0"}>
+						  <If condition={(this.state.moduleSetting && this.state.moduleSetting.isFacebook === true)}>
 							<Then>
-							 <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
+							 <AppSwitch className={'mx-1'} name={'isFacebook'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
 							</Then>							
 							<Else>
-							  <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+							  <AppSwitch className={'mx-1'} name={'isFacebook'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
 							</Else>
 						  </If>		
 					  </CardBody>				  
@@ -98,12 +136,12 @@ handleChange(e) {
                 <i className="icon-social-twitter icons font-2xl d-block mt-4"></i>Twitter
               </CardHeader>
               <CardBody>
-               <If condition={this.state.isTwitter =="0"}>
+               <If condition={(this.state.moduleSetting && this.state.moduleSetting.isTwitter === true)}>
 				<Then>
-				 <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
+				 <AppSwitch className={'mx-1'} variant={'pill'} name={'isTwitter'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
 				</Then>							
 				<Else>
-				  <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+				  <AppSwitch className={'mx-1'} variant={'pill'} name={'isTwitter'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
 				</Else>
 			  </If>	
               </CardBody>
@@ -117,12 +155,12 @@ handleChange(e) {
                 <i className="icon-social-linkedin icons font-2xl d-block mt-4"></i>LinkedIn 
               </CardHeader>
               <CardBody>
-               <If condition={this.state.isLinkedIn =="0"}>
+               <If condition={(this.state.moduleSetting && this.state.moduleSetting.isLinkedIn === true)}>
 				<Then>
-				 <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
+				 <AppSwitch className={'mx-1'} variant={'pill'} name={'isLinkedIn'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
 				</Then>							
 				<Else>
-				  <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+				  <AppSwitch className={'mx-1'} variant={'pill'} name={'isLinkedIn'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
 				</Else>
 			  </If>	
               </CardBody>

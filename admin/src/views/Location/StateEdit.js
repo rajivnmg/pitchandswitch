@@ -86,7 +86,7 @@ class StateEdit extends Component {
         editState.country = this.country.value;
         editState.stateName = this.stateName.value;
         editState.status = this.status.value;
-        console.log("editState",editState)
+        //console.log("editState",editState)
         axios.put('/location/updateState', editState).then(result => {
           if(result.data.code ===200){
             this.props.history.push("/state");
