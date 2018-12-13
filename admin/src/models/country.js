@@ -20,7 +20,8 @@ var CountrySchema = new Schema({
     status:{
         type:String,
         trim:true,
-        sparse:true 
+        sparse:true,
+        default:0 // 0-> active 1->inactive
        },
     countryId: []
     

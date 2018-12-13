@@ -1,5 +1,8 @@
 const bodyParser = require('body-parser')
 const Country = require('../models/country')
+const Testcountry = require('../models/testcountry')
+const Teststate = require('../models/teststate')
+const Testcity = require('../models/testcity')
 const State = require('../models/state')
 const City = require('../models/city')
 const httpResponseCode = require('../helpers/httpResponseCode')
@@ -20,8 +23,7 @@ var gm = require('gm'); //GraphicsMagick for node.js
     *Date  : July 16, 2017
 */
 //Function to save new country in the list
-const createCountry = (req, res) => {
-    console.log('<<<<<<<<<<<', JSON.stringify(req.body))
+const createCountry = (req, res) => {   
     if (!req.body.countryName) {
       return res.send({
         code: httpResponseCode.BAD_REQUEST,
@@ -67,7 +69,7 @@ const listCountry = (req,res) => {
     Country.find({})
       .skip((perPage * page) - perPage)
       .limit(perPage)
-      .sort({createdAt:-1})
+      .sort({countryName:1})
       //.populate({path: "author", model :"User"})
       .exec(function (err, country){
           Country.count().exec(function(err, count) {
@@ -85,6 +87,26 @@ const listCountry = (req,res) => {
         });
 }
 
+  
+/*
+    *Author: Rajiv Kumar
+    *Date  : July 16, 2018
+*/
+//Function to list all active country
+const listActiveCountry = (req,res) => {   
+    Country.find({status:"0"})   
+      .sort({createdAt:-1})     
+      .exec(function (err, country){
+          Country.count().exec(function(err, count) {
+            if (err) return next(err)
+              return res.json({
+                  code: httpResponseCode.EVERYTHING_IS_OK,
+                  message: httpResponseMessage.SUCCESSFULLY_DONE,
+                  result: country                  
+              });
+            })
+        });
+}
   
 /*
     *Author: Rajiv Kumar
@@ -717,10 +739,68 @@ const activeCities = (req,res) => {
 	 });
 }
 
+/** Author	: Saurabh Agarwal
+ *  Date	: July 17, 2018
+ **/
+///function to save new State in the list
+const insertTestCountry = (req, res) => {
+  Testcountry.find({}).exec(function (err, countries) {
+		countries.forEach((country) => {			
+			var string = JSON.stringify(country);
+			var objectValue = JSON.parse(string);
+			var newCountry = {};
+			let data = {}			
+			data.countryName = objectValue['countryName'];
+			data.countryCode = objectValue['countryCode'];
+			data.status = "0";
+			newCountry = new Country(data);		
+			newCountry.save(function (err, responceData){
+				console.log("saved c",responceData)
+			})		
+		})
+	  });
+}
+///function to save new State in the list
+const insertTestState = (req, res) => {
+  Teststate.find({}).exec(function (err, countries) {
+		countries.forEach((country) => {			
+			var string = JSON.stringify(country);
+			var objectValue = JSON.parse(string);
+			var newCountry = {};
+			let data = {}			
+			data.countryName = objectValue['countryName'];
+			data.countryCode = objectValue['countryCode'];
+			data.status = "0";
+			newCountry = new Country(data);		
+			newCountry.save(function (err, responceData){
+				console.log("saved c",responceData)
+			})		
+		})
+	  });
+}
 
+///function to save new State in the list
+const insertTestCity = (req, res) => {
+  Testcity.find({}).exec(function (err, countries) {
+		countries.forEach((country) => {			
+			var string = JSON.stringify(country);
+			var objectValue = JSON.parse(string);
+			var newCountry = {};
+			let data = {}			
+			data.countryName = objectValue['countryName'];
+			data.countryCode = objectValue['countryCode'];
+			data.status = "0";
+			newCountry = new Country(data);		
+			newCountry.save(function (err, responceData){
+				console.log("saved c",responceData)
+			})		
+		})
+	  });
+}
 module.exports = {
   createCountry,
   listCountry,
+  listActiveCountry,
   updateCountry,
   viewCountry,
   deleteCountry,
@@ -743,6 +823,9 @@ module.exports = {
   getCountryStateCity,
   getCity,
   listingCity,
-  activeCities
+  activeCities,
+  insertTestCountry,
+  insertTestState,
+  insertTestCity
 
 }

@@ -18,6 +18,7 @@ import IntegerStep from "./IntegerStep";
 import SelectLocations from "./SelectLocations";
 import BrandToggleBox from "./BrandToggleBox";
 import { Fade, Form, FormGroup, FormText, FormFeedback } from "reactstrap";
+import jquery from 'jquery'
 import Aux from "../../hoc/Aux";
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 const constant = require("../../config/constant");
@@ -812,6 +813,7 @@ class Register extends React.Component {
       <Aux>
         <div className="search-page">
           <div className="container">
+		   <div className="mob_left_box"><span>Filters</span></div>
             <div className="lft-section">
               <Collapse
                 accordion={accordion}

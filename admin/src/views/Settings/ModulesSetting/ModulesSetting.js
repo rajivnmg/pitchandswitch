@@ -10,24 +10,36 @@ class SocialMediaSetting extends Component {
   constructor(props){
     super(props);
     this.state = {     
-      user : {},
-      modal: false,     
-    };
-    console.log('THIS OBJ', this);   
+      moduleSetting : {
+			isPopularItem:true,
+			isDonate:true,
+			isHomeSponsors:true,
+			isTestimonials:true,
+			isNewlyProducts:true,		
+			isWhatOtherSwitched:true,
+			isWhatPitchSwitch:true,
+			isMostTrusted:true,
+			isHowItWorks:true,
+			isWeKeepSafe:true,
+			youTubeVideoId:''
+	  },
+      modal: false,   
+      moduleSettingId:''  
+    };    
     this.toggle = this.toggle.bind(this);    
   }
 
   loadCommentsFromServer(){
-    axios.get('/notification/email').then(result => {
+    axios.get('/setting/getModulesSetting').then(result => {
       if(result.data.code === 200){
-		this.setState({
-          emailNotification: result.data.result.emailNotification,
-          user:result.data.result          
-        });
-      
-      // console.log('emailNotification',)
+		  console.log("result",result.data.result[0]);
+		  if(result.data.result && result.data.result.length>0){
+			this.setState({
+			  moduleSetting: result.data.result[0],
+			  moduleSettingId : (result.data.result && result.data.result.length > 0)? result.data.result[0]._id :''
+			});
+		}
       }
-      
     })
     .catch((error) => {
     console.log('error', error)
@@ -38,13 +50,19 @@ class SocialMediaSetting extends Component {
 
   }
 handleChange(e) {
-	  let userD = this.state.user;
-	  //this.setState({:e.target.checked})
-	  console.log(userD,e.target.checked)
-	  userD.emailNotification = ((e.target.checked)?0:1).toString()
-	  axios.post('/notification/email',userD).then(result => {	  
+	
+	  let data = {};
+	  //let name = e.target.name;	  	 
+	  //console.log(moduleSetting,e,e.target.checked,e.target.name);
+	  data.name = e.target.name;
+	  data.value = e.target.checked;
+	  data.moduleSettingId = this.state.moduleSettingId;
+	  console.log("data",data);
+	  let moduleSettingData = {...this.state.moduleSetting};
+	  axios.post('/setting/updateModuleSetting',data).then(result => {	
+		  moduleSettingData[e.target.name] = e.target.checked;	  	  
 		this.setState({
-          emailNotification: result.data.result.emailNotification,          
+			moduleSetting:moduleSettingData
         });
 	})
 	.catch((error) => {
@@ -54,6 +72,31 @@ handleChange(e) {
 	  }
 	});
 }
+	
+	
+  handleInputChange(ex){
+    this.setState({youTubeVideoId: ex.target.value });
+  };
+
+  handleClick =()=> {
+    console.log(this.state.moduleSetting.youTubeVideoId);
+     let data = {};	 
+	  data.name = 'youTubeVideoId';
+	  data.value = this.state.moduleSetting.youTubeVideoId;
+	  data.moduleSettingId = this.state.moduleSettingId;
+	  console.log("data",data);
+	  axios.post('/setting/updateModuleSetting',data).then(result => {	  
+		this.setState({
+          moduleSetting: result.data.result          
+        });
+	})
+	.catch((error) => {
+	console.log('error', error)
+	  if(error.code === 401) {
+		this.props.history.push("/login");
+	  }
+	});
+  };
  
   componentDidMount() {
     //if(localStorage.getItem('jwtToken') != null)
@@ -80,12 +123,12 @@ handleChange(e) {
                 Popular Items                           
               </CardHeader>              
 					  <CardBody>	
-						  <If condition={this.state.isPopularItem =="0"}>
+						  <If condition={(this.state.moduleSetting && this.state.moduleSetting.isPopularItem === true)}>
 							<Then>
-							 <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
+							 <AppSwitch className={'mx-1'} name={'isPopularItem'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
 							</Then>							
 							<Else>
-							  <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+							  <AppSwitch className={'mx-1'} name={'isPopularItem'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
 							</Else>
 						  </If>		
 					  </CardBody>				  
@@ -96,16 +139,16 @@ handleChange(e) {
               <CardHeader>
                 Donate                           
               </CardHeader>              
-					  <CardBody>	
-						  <If condition={this.state.isDonate =="0"}>
-							<Then>
-							 <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
-							</Then>							
-							<Else>
-							  <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
-							</Else>
-						  </If>		
-					  </CardBody>				  
+				  <CardBody>	
+					  <If condition={(this.state.moduleSetting && this.state.moduleSetting.isDonate === true)}>
+						<Then>
+						 <AppSwitch className={'mx-1'} name={'isDonate'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)} name="myCheckBox1" />	
+						</Then>							
+						<Else>
+						  <AppSwitch className={'mx-1'} name={'isDonate'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+						</Else>
+					  </If>		
+				  </CardBody>				  
             </Card>
           </Col>
         </Row>
@@ -116,12 +159,12 @@ handleChange(e) {
                 Sponsors
               </CardHeader>
               <CardBody>
-               <If condition={this.state.isHomeSponsors =="0"}>
+               <If condition={(this.state.moduleSetting && this.state.moduleSetting.isHomeSponsors === true)}>
 				<Then>
-				 <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
+				 <AppSwitch className={'mx-1'} name={'isHomeSponsors'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
 				</Then>							
 				<Else>
-				  <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+				  <AppSwitch className={'mx-1'} name={'isHomeSponsors'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
 				</Else>
 			  </If>	
               </CardBody>
@@ -133,12 +176,12 @@ handleChange(e) {
                 Testimonials 
               </CardHeader>
               <CardBody>
-               <If condition={this.state.isTestimonials =="0"}>
+               <If condition={(this.state.moduleSetting && this.state.moduleSetting.isTestimonials === true)}>
 				<Then>
-				 <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
+				 <AppSwitch className={'mx-1'} name={'isTestimonials'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
 				</Then>							
 				<Else>
-				  <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+				  <AppSwitch className={'mx-1'} name={'isTestimonials'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
 				</Else>
 			  </If>	
               </CardBody>
@@ -152,12 +195,12 @@ handleChange(e) {
                 Newly Added Products 
               </CardHeader>
               <CardBody>
-               <If condition={this.state.isNewlyProducts =="0"}>
+               <If condition={(this.state.moduleSetting && this.state.moduleSetting.isNewlyProducts === true)}>
 				<Then>
-				 <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
+				 <AppSwitch className={'mx-1'} name={'isNewlyProducts'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
 				</Then>							
 				<Else>
-				  <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+				  <AppSwitch className={'mx-1'} name={'isNewlyProducts'} variant={'pill'} color={'success'} label unchecked onChange={e => this.handleChange(e)}/>	
 				</Else>
 			  </If>	
               </CardBody>
@@ -169,12 +212,12 @@ handleChange(e) {
                What Other Switched 
               </CardHeader>
               <CardBody>
-               <If condition={this.state.isWhatOtherSwitched =="0"}>
+               <If condition={(this.state.moduleSetting && this.state.moduleSetting.isWhatOtherSwitched === true)}>
 				<Then>
-				 <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
+				 <AppSwitch className={'mx-1'} name={'isWhatOtherSwitched'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
 				</Then>							
 				<Else>
-				  <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+				  <AppSwitch className={'mx-1'} name={'isWhatOtherSwitched'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
 				</Else>
 			  </If>	
               </CardBody>
@@ -188,12 +231,12 @@ handleChange(e) {
                Hall of Fame  
               </CardHeader>
               <CardBody>
-               <If condition={this.state.isMostTrusted =="0"}>
+               <If condition={(this.state.moduleSetting && this.state.moduleSetting.isMostTrusted === true)}>
 				<Then>
-				 <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
+				 <AppSwitch className={'mx-1'} name={'isMostTrusted'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
 				</Then>							
 				<Else>
-				  <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+				  <AppSwitch className={'mx-1'} name={'isMostTrusted'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
 				</Else>
 			  </If>	
               </CardBody>
@@ -207,21 +250,21 @@ handleChange(e) {
               <CardBody>
               <Row>
 				<Col  md="3">
-				   <If condition={this.state.isHowItWorks =="0"}>
+				   <If condition={(this.state.moduleSetting && this.state.moduleSetting.isHowItWorks === true)}>
 					<Then>
-					 <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
+					 <AppSwitch className={'mx-1'} name={'isHowItWorks'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
 					</Then>							
 					<Else>
-					  <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+					  <AppSwitch className={'mx-1'} name={'isHowItWorks'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
 					</Else>
 				  </If>	
 				</Col>
 				  <Col md="9">
 					  <FormGroup>
 						<Label htmlFor="name">YouTube Video Id</Label>
-						<Input type="text" id="name" placeholder="Enter Youtube VideoId" required />
+						<Input type="text" id="youtubeVideoId" name={'youTubeVideoId'} onChange={ this.handleInputChange } placeholder="Enter Youtube VideoId" value={(this.state.moduleSetting && this.state.moduleSetting.youTubeVideoId !==null) ? this.state.moduleSetting.youTubeVideoId:null } required />
 					 </FormGroup>
-					 <button class="btn btn-sm btn-success" type="submit"><i class="fa fa-dot-circle-o"></i> Submit</button>
+					 <button className="btn btn-sm btn-success" type="button" onClick={this.handleClick}><i className="fa fa-dot-circle-o"></i> Submit</button>
 				 </Col>
 			 </Row>
               </CardBody>
@@ -236,12 +279,12 @@ handleChange(e) {
                 We Keep Safe 
               </CardHeader>
               <CardBody>
-               <If condition={this.state.isWeKeepSafe =="0"}>
+               <If condition={(this.state.moduleSetting && this.state.moduleSetting.isWeKeepSafe === true)}>
 				<Then>
-				 <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
+				 <AppSwitch className={'mx-1'} name={'isWeKeepSafe'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
 				</Then>							
 				<Else>
-				  <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+				  <AppSwitch className={'mx-1'} name={'isWeKeepSafe'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
 				</Else>
 			  </If>	
               </CardBody>
@@ -253,12 +296,12 @@ handleChange(e) {
                What is Pitch and Switch 
               </CardHeader>
               <CardBody>
-               <If condition={this.state.isWhatPitchSwitch =="0"}>
+               <If condition={(this.state.moduleSetting && this.state.moduleSetting.isWhatPitchSwitch === true)}>
 				<Then>
-				 <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
+				 <AppSwitch className={'mx-1'} name={'isWhatPitchSwitch'} variant={'pill'} color={'success'} label checked   onChange={e => this.handleChange(e)}/>	
 				</Then>							
 				<Else>
-				  <AppSwitch className={'mx-1'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
+				  <AppSwitch className={'mx-1'} name={'isWhatPitchSwitch'} variant={'pill'} color={'success'} label unchecked   onChange={e => this.handleChange(e)}/>	
 				</Else>
 			  </If>	
               </CardBody>

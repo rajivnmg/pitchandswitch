@@ -144,7 +144,7 @@ class Dashboard extends Component {
                   </TabList>
 
                   <TabPanel>
-                    <Tabs forceRenderTabPanel>
+                    <Tabs forceRenderTabPanel className="tab_details">
                       <div className="message-filter">
                         <TabList>
                           <Tab className="active tradeall">ALL</Tab>
@@ -165,7 +165,7 @@ class Dashboard extends Component {
                   </TabPanel>
 
                   <TabPanel>
-                    <Tabs forceRenderTabPanel>
+                    <Tabs forceRenderTabPanel className="tab_details">
                       <div className="message-filter">
                         <TabList>
                           <Tab className="active tradeall">ALL</Tab>
@@ -220,7 +220,7 @@ class Dashboard extends Component {
                   </TabPanel>
 
                   <TabPanel>
-                    <Tabs forceRenderTabPanel>
+                    <Tabs forceRenderTabPanel className="tab_details">
                       <div className="message-filter">
                         <TabList>
                           <Tab className="active tradeall">ALL</Tab>

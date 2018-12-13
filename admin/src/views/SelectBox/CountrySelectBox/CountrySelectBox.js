@@ -16,8 +16,8 @@ class CountrySelectBox extends Component {
   }
   
   componentDidMount(){
-	//getting all countries
-    axios.get('/location/listCountry').then(result => {
+	//getting all countries active
+    axios.get('/location/listActiveCountry').then(result => {
       if(result.data.code === 200){				 
 		
         this.setState({
