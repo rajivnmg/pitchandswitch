@@ -218,7 +218,7 @@ class settingProfile extends Component {
 			 this.setState({ showFormError: true,showFormSuccess: false,message: 'Error in process, Please try again.' });
 			}
 		  });   
-    setTimeout(() => {this.setState({showFormSuccess: false,showFormError: false});}, 12000);
+       setTimeout(() => {this.setState({showFormSuccess: false,showFormError: false});}, 12000);
   };
   
   
