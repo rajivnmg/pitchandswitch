@@ -35,7 +35,8 @@ class ReturnPopup extends Component {
 		}		
 	}
 	
-	componentWillMount(){		
+	componentWillMount(){
+		console.log('dddd',this.state.offerTrade._id);		
         axios.get('/donation/getReturnOption').then(result => {
 			this.setState({conditions: result.data.result});
 		})	
@@ -45,7 +46,7 @@ class ReturnPopup extends Component {
 					this.setState({ 
 						user:result.data.result,
 					})				
-				}else {
+				} else {
 					 this.props.history.push('/login');
 				}
 			})
@@ -65,6 +66,7 @@ class ReturnPopup extends Component {
      }
      
       submitHandler(e){	 
+		
 		const data = new FD();		
 		data.append('TradeId', this.state.offerTrade._id);
 		data.append('UserId', this.state.user._id);

@@ -1,6 +1,6 @@
 .search-page {background-color: #f1f1f1; padding:30px 0}
 .search-page .container { margin:  0 auto; max-width: 1120px}
-.search-page .lft-section{padding:0px; margin:0px; width:250px; float:left; background:#fff; box-shadow: 0 0 10px #cecaca;}
+.search-page .lft-section{padding:0px; margin:0px; width:250px; float:left; background:#fff; box-shadow: 0 0 10px #cecaca; border-radius:5px;}
 .search-page .lft-section .column{padding:20px; margin:0px 0 0px; border-bottom:1px solid #dbdbdb}
 .search-page .lft-section .column h4{padding:0px 0 20px; margin:0px 0 0px; color:#414141; position:relative;}
 .search-page .lft-section .column h4:after{border-right:1px solid #414141;  border-bottom:1px solid #414141;
@@ -12,7 +12,7 @@
 .search-page .lft-section ul.categorie-name li{display:block; padding:0 0 8px;}
 .search-page .lft-section ul.categorie-name li a{color:#969696}
 .search-page .lft-section ul.categorie-name li a.active, .search-page .lft-section ul.categorie-name li a:hover{color:#d0a518;}
-.search-page .lft-section .distance-range{margin:20px 0 0;}
+.search-page .lft-section .distance-range{margin:0;}
 .search-page .lft-section .taglinerow { padding:10px 0 0}
 .search-page .lft-section .tagline {padding:0 5px 0 10px; margin:5px 5px 0 0; color:#fff; background:#dab439; border-radius:25px; font-size:13px; display:inline-block; text-align:center; line-height:20px;}
 .search-page .lft-section .tagline i{color:#fff; font-weight:12px; margin-left:10px;}

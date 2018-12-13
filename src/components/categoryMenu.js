@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Link }
 from 'react-router-dom';
 import icon from '../images/lockicon.png';
 import axios from 'axios';
+import jquery from 'jquery'
 const menuHide = {
     display: 'none'
 }
@@ -78,6 +79,59 @@ class categoryMenu extends Component {
         this.setState({
           category: result.data.result,           
         });
+		
+				
+jquery(".category span").click(function(){	
+
+jquery(this).next().slideToggle();
+
+jquery(this).toggleClass("active");	
+
+
+
+	});
+		
+		jquery("<span class='plusminus'></span>" ).insertAfter(".submenu > a");
+		jquery("<span class='plusminus2'></span>" ).insertAfter(".submenu2 > a");
+		
+jquery(".plusminus").click(function(){	   
+if (jquery(this).next(".drop2").is(':visible')) 
+
+{
+jquery(this).next(".drop2").slideUp(500);
+jquery(".plusminus").removeClass("active");	
+
+} 
+
+else{
+jquery(".drop2").slideUp();
+jquery(".plusminus ").removeClass("active");
+jquery(this).next(".drop2").slideDown();
+jquery(this).addClass("active");	 
+		
+}
+
+});
+
+jquery(".plusminus2").click(function(){	   
+if (jquery(this).next(".drop3").is(':visible')) 
+
+{
+jquery(this).next(".drop3").slideUp(500);
+jquery(".plusminus2").removeClass("active");	
+
+} 
+
+else{
+jquery(".drop3").slideUp();
+jquery(".plusminus2 ").removeClass("active");
+jquery(this).next(".drop3").slideDown();
+jquery(this).addClass("active");	 
+		
+}
+
+});
+		
       }
     })
    .catch((error) => {
@@ -91,7 +145,7 @@ class categoryMenu extends Component {
 	
     render() {
         return(
-		<div className="category">Category
+		<div className="category"><span className="cats">Category</span>
 			<div className="dropDown">
 				<ul>
 					{
@@ -101,13 +155,13 @@ class categoryMenu extends Component {
 								<img src={icon} style= { menuHide } alt={icon} /> <a href={'/search-listing/'+slide._id}>{slide.title}</a>
 								{ 
 									(slide.children && slide.children.length) ? 
-									<ul>
+									<ul className="drop2">
 									{
 										slide.children.map((subMenu, i) => {
 											return (
 												<li  key={subMenu.value}  className={ (subMenu.children && subMenu.children.length)? "submenu" : null }><a href={'/search-listing/'+subMenu._id}>{subMenu.title}</a>
 												{ (subMenu.children && subMenu.children.length)? 
-												<ul>
+												<ul className="drop3">
 												{
 													subMenu.children.map((subMenu, i) => {
 													return (

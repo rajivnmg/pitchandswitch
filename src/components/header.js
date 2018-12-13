@@ -6,6 +6,7 @@ import Logo from "../images/logo.png";
 //import Logo from "../images/PandS-logo-PNG-13.png";
 import userIMg from "../images/user-pic.png";
 import CategoryMenu from "./categoryMenu";
+import jquery from 'jquery'
 import { AutoComplete } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -201,6 +202,25 @@ class Header extends Component {
 		  })
 		})
 	  // console.log("localStorage",localStorage.getItem('isLoggedIn'));
+	  
+	let width = window.innerWidth;
+	  
+	  if (width < 768) {
+
+	   jquery(".mob_search").click(function(){
+		
+		jquery(this).next().slideToggle();
+		jquery(".category .dropDown").hide(500);
+		
+		});
+		
+		jquery(".after-login .drop-arrow").click(function(){
+			
+		jquery(".category .dropDown").hide(500);
+		jquery(".search-container").hide(500)	
+			
+		});
+	 }
 	}
 	
 	// HTTP request to get the list of cities and active product from the server		
@@ -267,7 +287,8 @@ class Header extends Component {
           </If>
         </figure>
         <CategoryMenu />
-
+        
+		<div className="mob_search"> <i className="icon" /></div>
         <div className="search-container">
           <div className="location">
             <input

@@ -33,6 +33,14 @@ pitchUserPaymentStatus:{
   sparse:true,
   default:0
 },
+
+tradePitchPaymentDate:{
+	type: Date,default:Date.now
+},
+
+tradeSwitchPaymentDate:{
+	type: Date,default:Date.now
+},
 switchUserPaymentStatus:{
   type:String,
   trim:true,
@@ -47,14 +55,12 @@ shippingStatus:{
   type:String,
   trim:true,
   sparse:true,
-   default: 0 //0 => Payment Received , 1 =>Picked up , 2 => Shipped, 3=>Out for delivery,4=>Delivered
- }, 
+  default: 0 //0 => Payment Received , 1 =>Picked up , 2 => Shipped, 3=>Out for delivery,4=>Delivered
+}, 
 status:{
-  type:String,
-  trim:true,
-  sparse:true,
-   default:1 //1->switch,2->completed,3->return request,4->returned
- }
+    type:String,
+    default:1 //1->switch,2->completed,3->return request,4->returned
+  }
 },
 {
   timestamps:true
