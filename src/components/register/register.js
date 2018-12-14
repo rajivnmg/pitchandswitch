@@ -317,7 +317,7 @@ class Register extends React.Component {
     return (
             <div className="login-container">
         <div  className="container">
-           <a href="/" className="backBtn">&nbsp;</a>
+          <p className="Backs"><Link to={"/"} className="backBtn">Back to Home </Link></p>
         <div className="cl"></div>
           <div className="login">
            {this.state.showFormSuccess ? this._renderSuccessMessage() : null}
@@ -527,9 +527,7 @@ class Register extends React.Component {
                     </button>
                   </div>
                  <div className="form-row no-padding">
-                   <div className="colum">
-					<p className="no-account center-text"><Link to={"/"}>Home</Link></p>
-				   </div>
+                   
 				   <div className="colum right">
                     <p className="no-account center-text">Already have an account? <Link to="/Login"> Login</Link></p>
                    </div>

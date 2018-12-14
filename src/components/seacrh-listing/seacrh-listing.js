@@ -18,9 +18,9 @@ import IntegerStep from "./IntegerStep";
 import SelectLocations from "./SelectLocations";
 import BrandToggleBox from "./BrandToggleBox";
 import { Fade, Form, FormGroup, FormText, FormFeedback } from "reactstrap";
-import jquery from 'jquery'
-import Aux from "../../hoc/Aux";
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import jquery from "jquery";
+import Aux from "../../hoc/Auxillary";
+import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
 const constant = require("../../config/constant");
 
 var FD = require("form-data");
@@ -30,7 +30,6 @@ const treeData = [
     label: "month - 6 month",
     value: "0-0",
     key: "0-0"
-
   },
   {
     label: "6 month - 1 year",
@@ -179,7 +178,7 @@ class Register extends React.Component {
           if (this.state.query.length % 2 === 0) {
             this.getInfo();
           }
-          } else if (!this.state.query) {
+        } else if (!this.state.query) {
         }
       }
     );
@@ -423,6 +422,13 @@ class Register extends React.Component {
 
       //.then(response => this.setState({ vehicles: response.data }))
       .catch(error => console.log(error));
+      
+         jquery(".mob_left_box").click(function(){
+		
+		jquery(this).next().toggleClass("opens");
+		jquery(this).toggleClass("active");
+		
+		}); 
   }
 
   onAgeChange = value => {
@@ -527,7 +533,7 @@ class Register extends React.Component {
           return null;
         }
       });
-      let conditions = this.state.constantList.map((constant,ckey) => {
+      let conditions = this.state.constantList.map((constant, ckey) => {
         return (
           <div className="check-box" key={ckey}>
             <input
@@ -546,7 +552,7 @@ class Register extends React.Component {
         for (let i = 0; i < to; i++) {
           jsx.push({ id: i });
         }
-        return jsx.map((js,xkey) => {
+        return jsx.map((js, xkey) => {
           return (
             <span className="stardiv" key={xkey}>
               <img src={star} alt={star} />
@@ -554,7 +560,7 @@ class Register extends React.Component {
           );
         });
       };
-      let ratings = this.state.ratings.map((rating,rkey )=> {
+      let ratings = this.state.ratings.map((rating, rkey) => {
         return (
           <div className="check-box" key={rkey}>
             <input
@@ -601,7 +607,7 @@ class Register extends React.Component {
           </Collapse>
         </Panel>
       );
-      
+
       items.push(
         <Panel header={`Location`} key="3">
           <Collapse>
@@ -725,9 +731,8 @@ class Register extends React.Component {
           catName = item.productCategory.title;
         }
 
+        let userID = item.userId ? item.userId._id : "";
 
-    let userID = item.userId?item.userId._id:'';  
-         
         let img = item.userId ? (
           <img
             className="userPicNew"
@@ -739,46 +744,60 @@ class Register extends React.Component {
         return (
           <div className="Items" key={index}>
             <div>
-              <If condition={localStorage.getItem('isLoggedIn') == "1" && localStorage.getItem('userId') === userID}>
-               <Then>
-                   <Link to={'/my-trade-detail/'+item._id}>
-                      <div className="pic">
-						  <img
-							src={
-							  constant.BASE_IMAGE_URL + "Products/" + item.productImages
-							}
-						  />
-						</div>
-					  </Link>
-                 </Then>   
-                  <Else>
+              <If
+                condition={
+                  localStorage.getItem("isLoggedIn") == "1" &&
+                  localStorage.getItem("userId") === userID
+                }
+              >
+                <Then>
+                  <Link to={"/my-trade-detail/" + item._id}>
+                    <div className="pic">
+                      <img
+                        src={
+                          constant.BASE_IMAGE_URL +
+                          "Products/" +
+                          item.productImages
+                        }
+                      />
+                    </div>
+                  </Link>
+                </Then>
+                <Else>
                   <Link to={"/search-result/" + item._id}>
-                   <div className="pic">
-                    <img
-                    src={
-                      constant.BASE_IMAGE_URL + "Products/" + item.productImages
-                    }
-                    />
-                  </div>
-                </Link>
-              </Else>
+                    <div className="pic">
+                      <img
+                        src={
+                          constant.BASE_IMAGE_URL +
+                          "Products/" +
+                          item.productImages
+                        }
+                      />
+                    </div>
+                  </Link>
+                </Else>
               </If>
               <div className="details">
                 <h4>
-                <If condition={localStorage.getItem('isLoggedIn') == "1" && localStorage.getItem('userId') === userID}>
-                  <Then>
-                    <Link to={"/my-trade-detail/" + item._id}>
-                     {item.productName}
-                  </Link>
-                  </Then>
-                   <Else>
-                    <Link to={"/search-result/" + item._id}>
-                    {item.productName}
-                  </Link>
-                   </Else>
-                   </If>
+                  <If
+                    condition={
+                      localStorage.getItem("isLoggedIn") == "1" &&
+                      localStorage.getItem("userId") === userID
+                    }
+                  >
+                    <Then>
+                      <Link to={"/my-trade-detail/" + item._id}>
+                        {item.productName}
+                      </Link>
+                    </Then>
+                    <Else>
+                      <Link to={"/search-result/" + item._id}>
+                        {item.productName}
+                      </Link>
+                    </Else>
+                  </If>
                 </h4>
-                
+
                 <Link className="catLink" to={"/search-listing/" + catId}>
                   {catName}
                 </Link>
@@ -813,7 +832,9 @@ class Register extends React.Component {
       <Aux>
         <div className="search-page">
           <div className="container">
-		   <div className="mob_left_box"><span>Filters</span></div>
+            <div className="mob_left_box">
+              <span>Filters</span>
+            </div>
             <div className="lft-section">
               <Collapse
                 accordion={accordion}
@@ -848,7 +869,7 @@ class Register extends React.Component {
                   </div>
                 </div>
                 <div className="cl" />
-               </div>
+              </div>
               <div className="item-listing">{searchItems}</div>
               <div className="cl" />
             </div>

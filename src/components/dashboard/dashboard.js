@@ -27,7 +27,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import UpgradePlan from "../upgradePlanPopup";
 import { Link } from "react-router-dom";
 import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
-import Aux from "../../hoc/Aux";
+import Aux from "../../hoc/Auxillary";
 var moment = require("moment");
 
 class Dashboard extends Component {
@@ -52,7 +52,6 @@ class Dashboard extends Component {
   }
 
   componentWillMount() {
-
     axios.defaults.headers.common["Authorization"] = localStorage.getItem(
       "jwtToken"
     );
@@ -66,7 +65,7 @@ class Dashboard extends Component {
         .then(
           axios.spread((user, sresult, saresult) => {
             if (user.data.code === 200) {
-				console.log("saresult",saresult)
+              console.log("saresult", saresult);
               this.setState({
                 currentUser: user.data.result,
                 notification_type: user.data.notification_type,
@@ -80,7 +79,6 @@ class Dashboard extends Component {
         )
         .catch(error => console.log(error));
     }
-
   }
 
   componentDidMount() {
@@ -100,7 +98,7 @@ class Dashboard extends Component {
       });
     }
   }
-  
+
   Capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
@@ -258,45 +256,71 @@ class Dashboard extends Component {
                   <div className="brdrBox">
                     <div className="row">
                       <div className="left-div bold">
-                        {((this.state.userSubscription) && (this.state.userSubscription.subscriptionId
-                          ? this.state.userSubscription.subscriptionId
-                              .subscriptionName
-                          : "Basic"))}
+                        {this.state.userSubscription &&
+                          (this.state.userSubscription.subscriptionId
+                            ? this.state.userSubscription.subscriptionId
+                                .subscriptionName
+                            : "Basic")}
                       </div>
                       <div className="rightDiv bold green">
-                        {((this.state.userSubscription) && (this.state.userSubscription.subscriptionId &&
-                        this.state.userSubscription.subscriptionId.price > 0
-                          ? this.state.userSubscription.subscriptionId.price
-                          : "Free"))}
+                        {this.state.userSubscription &&
+                          (this.state.userSubscription.subscriptionId &&
+                          this.state.userSubscription.subscriptionId.price > 0
+                            ? this.state.userSubscription.subscriptionId.price
+                            : "Free")}
                       </div>
                       <div className="cl" />
                     </div>
                     <div className="row">
                       <div className="left-div ">Trades</div>
                       <div className="rightDiv">
-                        {((this.state.userSubscription) && (this.state.userSubscription.subscriptionId
-                          ? this.state.userSubscription.subscriptionId
-                              .totalTradePermitted
-                          : "0"))}
+                        {this.state.userSubscription &&
+                          (this.state.userSubscription.subscriptionId
+                            ? this.state.userSubscription.subscriptionId
+                                .totalTradePermitted
+                            : "0")}
                       </div>
                       <div className="cl" />
                     </div>
                     <div className="row">
                       <div className="left-div">Inventory</div>
                       <div className="rightDiv pink">
-                        {((this.state.userSubscription) && (this.state.userSubscription.subscriptionId
-                          ? this.state.userSubscription.subscriptionId
-                              .totalInventoryAllowed
-                          : "0"))}
+                        {this.state.userSubscription &&
+                          (this.state.userSubscription.subscriptionId
+                            ? this.state.userSubscription.subscriptionId
+                                .totalInventoryAllowed
+                            : "0")}
                       </div>
                       <div className="cl" />
                     </div>
                     <div className="topbrdr-row">
-						<p>Start date: <span>{moment((this.state.userSubscription.subscriptionId)?this.state.userSubscription.subscriptionId.createdAt:Date()).format('LL')}</span></p>
-						<p>End date: <span>{moment((this.state.userSubscription.subscriptionId)?this.state.userSubscription.subscriptionId.createdAt:Date()).add(1, 'years').format('LL')}</span></p>
-						 <UpgradePlan />
-						 <div className="cl"></div>
-					</div>
+                      <p>
+                        Start date:{" "}
+                        <span>
+                          {moment(
+                            this.state.userSubscription.subscriptionId
+                              ? this.state.userSubscription.subscriptionId
+                                  .createdAt
+                              : Date()
+                          ).format("LL")}
+                        </span>
+                      </p>
+                      <p>
+                        End date:{" "}
+                        <span>
+                          {moment(
+                            this.state.userSubscription.subscriptionId
+                              ? this.state.userSubscription.subscriptionId
+                                  .createdAt
+                              : Date()
+                          )
+                            .add(1, "years")
+                            .format("LL")}
+                        </span>
+                      </p>
+                      <UpgradePlan />
+                      <div className="cl" />
+                    </div>
                   </div>
                   <If condition={this.state.userSubscriptionAddons}>
                     <Then>
@@ -305,32 +329,32 @@ class Dashboard extends Component {
                           <div className="left-div bold">Add-on</div>
                           <div className="rightDiv bold green">
                             $
-                            {((this.state.userSubscriptionAddons &&
-                            (this.state.userSubscriptionAddons.lenght > 0))
+                            {this.state.userSubscriptionAddons &&
+                            this.state.userSubscriptionAddons.lenght > 0
                               ? this.state.userSubscription.addonId[0].price
-                              : "0")}
+                              : "0"}
                           </div>
                           <div className="cl" />
                         </div>
                         <div className="row">
                           <div className="left-div ">Trades</div>
                           <div className="rightDiv">
-                            {((this.state.userSubscriptionAddons &&
-                            (this.state.userSubscriptionAddons.lenght > 0))
+                            {this.state.userSubscriptionAddons &&
+                            this.state.userSubscriptionAddons.lenght > 0
                               ? this.state.userSubscriptionAddons.addonId[0]
                                   .totalTradePermitted
-                              : "0")}
+                              : "0"}
                           </div>
                           <div className="cl" />
                         </div>
                         <div className="row">
                           <div className="left-div">Inventory</div>
                           <div className="rightDiv">
-                            {((this.state.userSubscriptionAddons &&
-                            (this.state.userSubscriptionAddons.lenght > 0))
+                            {this.state.userSubscriptionAddons &&
+                            this.state.userSubscriptionAddons.lenght > 0
                               ? this.state.userSubscriptionAddons[0].addonId
                                   .totalInventoryAllowed
-                              : "0")}
+                              : "0"}
                           </div>
                           <div className="cl" />
                         </div>

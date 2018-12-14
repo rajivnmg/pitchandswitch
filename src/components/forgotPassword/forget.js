@@ -168,7 +168,7 @@ class Forget extends React.Component {
     return (
             <div className="login-container">
         <div  className="container">
-           <a href="/" className="backBtn">&nbsp;</a>
+           <p className="Backs"><Link to={"/"} className="backBtn">Back to Home </Link></p>
         <div className="cl"></div>
           <div className="login">          
           
@@ -202,9 +202,7 @@ class Forget extends React.Component {
                    Submit
                     </button>
                   </div>
-					 <div className="form-row no-padding">
-							<p className="no-account center-text">Back to <Link to="/login">Login</Link></p>
-					</div>
+					
               </Form>
             
           
