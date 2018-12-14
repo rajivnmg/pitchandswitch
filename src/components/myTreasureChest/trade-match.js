@@ -175,7 +175,7 @@ console.log(id);
                         <div className="item-listing">
                             {this.state.tradeMatches.slice(0, this.state.limit).map((tradeMatch, index) => {
 								let dist = commonFunction.distance(localStorage.getItem("Latitude"), localStorage.getItem("Longitude"), tradeMatch.userId.loct.coordinates[0], tradeMatch.userId.loct.coordinates[1], constant.DISTANCE_UNIT);
-								console.log("distance",dist,localStorage.getItem("Latitude"), localStorage.getItem("Longitude"),tradeMatch.userId.loct.coordinates[0],tradeMatch.userId.loct.coordinates[1])
+								//console.log("distance",dist,localStorage.getItem("Latitude"), localStorage.getItem("Longitude"),tradeMatch.userId.loct.coordinates[0],tradeMatch.userId.loct.coordinates[1])
 									var userImage = tradeMatch.userId?tradeMatch.userId.profilePic:null
                                     return(<div className="Items" key={index}>
                                         <div className="pic">

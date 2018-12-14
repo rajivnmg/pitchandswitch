@@ -1989,7 +1989,7 @@ module.exports = {
   users,
   contustUs,
   //send,
-  getLoggedInUser,
+  getLoggedInUser, 
   dashboardStates,
   myProfle,
   forgotPassword,

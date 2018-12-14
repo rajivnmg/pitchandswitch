@@ -30,7 +30,9 @@ import {
   getLatLng
 } from "react-places-autocomplete";
 import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
+import $ from 'jquery'
 const constant = require("../config/constant");
+
 const Option = AutoComplete.Option;
 const navHide = { display: "none" };
 
@@ -66,7 +68,8 @@ class Header extends Component {
 
   initMap = () => {
     this.setState({
-      gmapsLoaded: true
+      gmapsLoaded: true,
+      address:localStorage.getItem("address")	
     });
   };
 
@@ -175,7 +178,25 @@ class Header extends Component {
           this.props.history.push("/logout");
         }
       });
-    }
+    }else{
+         $.ajax('http://ip-api.com/json')
+		  .then(
+			  function success(response) {
+				  console.log('User\'s Location Data is ', response);
+				  localStorage.setItem("Latitude", response.lat);
+				  localStorage.setItem("Longitude", response.lon);
+				  localStorage.setItem("ipAddress", response.query);
+				  localStorage.setItem("address",response.city);
+			  },
+			  function fail(data, status) {
+				  //console.log('Request failed.  Returned status of',status);
+					localStorage.setItem("Latitude", '34.052238');
+					localStorage.setItem("Longitude", '-118.243340');
+					localStorage.setItem("ipAddress", '161.149.146.201');
+			  }
+		  );
+        
+	}	
   }
   filterOption = (value, option) => {
     if ((value != undefined || value !== null) && typeof value === "string")
@@ -304,7 +325,7 @@ class Header extends Component {
               name={"longitude"}
               type={"text"}
               placeholder=""
-            />
+            />           
             {this.state.gmapsLoaded && (
               <PlacesAutocomplete
                 value={this.state.address}

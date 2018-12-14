@@ -14,7 +14,6 @@ router.get('/listUser', userController.listUser);
 router.get('/viewUser/:id',userController.viewUser);
 router.get('/verifyEmail/:id', userController.verifyEmail);
 router.get('/verifyUserEmail/:id', userController.verifyUserEmail);
-//router.get('/viewPage/:id',pageController.viewPage);
 router.post('/updateUser',userController.updateUser);
 router.post('/changeStatus',userController.changeStatus);
 router.post('/changeUserStatus',userController.changeUserStatus);

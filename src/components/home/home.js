@@ -95,8 +95,7 @@ class Home extends Component {
 		} 
 		{this.state.isWhatPitchSwitchEnable &&	
 		<WhatPitchSwitch />
-		} 
-		 
+		} 		 
         </div>
       </Aux>
     );
@@ -104,3 +103,4 @@ class Home extends Component {
 }
 export default Home;
 
+	

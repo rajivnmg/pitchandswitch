@@ -482,49 +482,6 @@ const completedTrades = (req, res) => {
     }
 }
 
-const completedTrades = (req, res) => {
-  var token = commonFunction.getToken(req.headers);
-   if (token) {
-     decoded = jwt.verify(token,settings.secret);
-     var userId = decoded._id;
-     var criteria = {}
-      criteria = {'status': 1}
-      OfferTrade.distinct('_id',criteria).or([{ 'pitchUserId':userId  }, { 'SwitchUserId': userId }])
-      .exec(function(err, switchTradesIds) {
-          if(err) return next(err);
-          Trade.find({offerTradeId: {$in: switchTradesIds},'status': 2}).populate({path:'offerTradeId',model:'offerTrade',populate:[{path:"pitchUserId",model:"User"},{path:"SwitchUserId",model:"User"},{path:"SwitchUserProductId",model:"Product"}]}).exec(function(err, switchedTrades) {
-              if(err)
-                  return next(err)
-                  //ok to send the array of mongoose model, will be stringified, each toJSON is called
-                  var newCompletedTrades = [];
-                  for(var i in switchedTrades) {
-                    //var mycat = Object.assign({}, categories[i]);
-                    var mycat = Object.assign({}, switchedTrades[i]);
-                    var cat = mycat._doc;
-                    cat.trackStatus = 0;
-                    cat.messageShow = 0;
-                     UserTradeRating.find({'userId':userId}).populate({path:'userId',model:'User').exec(function(err, tradeRating) {
-					  if (tradeRating){
-					     tradeRatings = tradeRating;    	  
-					  } else{
-						  var tradeRatings = '';  
-					  }
-                    
-                    newCompletedTrades.push(cat);
-                  }
-                  return res.json({
-                       code: httpResponseCode.EVERYTHING_IS_OK,
-                       message: httpResponseMessage.SUCCESSFULLY_DONE,
-                       result: newCompletedTrades,
-                       currentUser:userId,
-                       tradeRatings :tradeRating
-                  });
-            })
-       })
-    } else {
-      return res.status(403).send({code: 403, message: 'Unauthorized.'});
-    }
-}
 
 
 /** Auther	: Rajiv kumar
