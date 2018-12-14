@@ -751,8 +751,7 @@ const insertTestCountry = (req, res) => {
 			var newCountry = {};
 			let data = {}			
 			data.countryName = objectValue['countryName'];
-			data.countryCode = objectValue['countryCode'];
-			data.status = "0";
+			data.countryCode = objectValue['countryCode'];			
 			newCountry = new Country(data);		
 			newCountry.save(function (err, responceData){
 				console.log("saved c",responceData)
@@ -762,40 +761,67 @@ const insertTestCountry = (req, res) => {
 }
 ///function to save new State in the list
 const insertTestState = (req, res) => {
-  Teststate.find({}).exec(function (err, countries) {
-		countries.forEach((country) => {			
-			var string = JSON.stringify(country);
+	
+  Teststate.find({}).exec(function (err, states) {	
+		states.forEach((state) => {			
+			var string = JSON.stringify(state);
 			var objectValue = JSON.parse(string);
 			var newCountry = {};
-			let data = {}			
-			data.countryName = objectValue['countryName'];
-			data.countryCode = objectValue['countryCode'];
-			data.status = "0";
-			newCountry = new Country(data);		
-			newCountry.save(function (err, responceData){
-				console.log("saved c",responceData)
-			})		
+			let data = {}	
+			if(state.country_id ==="101"){	
+				data.stateName = objectValue['name'];				
+				data.status = "0";
+				data.status = "0";
+				data.id = state.id;				
+				data.country = "5c0fb7bacd674450e489a665";
+				newState = new State(data);
+				newState.save(function (err, responceData){
+					console.log("saved India",responceData)
+				})
+				console.log(data)
+			}else if(state.country_id ==="231"){
+				data.stateName = objectValue['name'];				
+				data.status = "0";
+				data.country = "5c0fb7bbcd674450e489a6e7";
+				data.id = state.id;	
+				console.log(data)	
+				newState = new State(data);
+				newState.save(function (err, responceData){
+					console.log("saved India",responceData)
+				})
+			}else{
+				console.log("saved ",state.country_id)
+			}
+					
 		})
 	  });
 }
 
 ///function to save new State in the list
 const insertTestCity = (req, res) => {
-  Testcity.find({}).exec(function (err, countries) {
-		countries.forEach((country) => {			
-			var string = JSON.stringify(country);
-			var objectValue = JSON.parse(string);
-			var newCountry = {};
-			let data = {}			
-			data.countryName = objectValue['countryName'];
-			data.countryCode = objectValue['countryCode'];
-			data.status = "0";
-			newCountry = new Country(data);		
-			newCountry.save(function (err, responceData){
-				console.log("saved c",responceData)
-			})		
-		})
-	  });
+	State.find({}).exec(function (err,states) {
+		states.forEach((state) => {			
+		  Testcity.find({state_id:state.id}).exec(function (err, cities) {	
+			 		
+				cities.forEach((city) => {	
+					console.log("city",city)		
+					var string = JSON.stringify(city);
+					var objectValue = JSON.parse(string);				
+					let data = {}			
+					data.cityName = objectValue['name'];
+					data.countrySelect = state.country;
+					data.stateSelect = state._id;		
+					data.id = city.id;	
+					data.status = "0";
+					newCity = new City(data);
+				//	console.log("newCity",newCity)	;	
+					newCity.save(function (err, responceData){
+						console.log("saved c",responceData)
+					})		
+				})
+			  });
+		  });
+  });
 }
 module.exports = {
   createCountry,

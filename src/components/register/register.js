@@ -190,11 +190,10 @@ class Register extends React.Component {
     this.setState({cityId:event.target.value})
     this.setState({state: event.target.value});
   }
-  	componentDidMount(){
-		
+  componentDidMount(){		
 		window.initMap = this.initMap
 		//console.log("COmponentDIDmaount")
-		axios.get('/location/getLocation').then(result => {
+		axios.get('/location/listActiveCountry').then(result => {
 			//	console.log("result", result)
 				this.setState({countries:result.data.result})
 		})		

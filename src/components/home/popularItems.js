@@ -7,7 +7,12 @@ import Style from "./home.css";
 import Slider from "react-slick";
 import axios from "axios";
 import moreIcon from "../../images/more-icon.png";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  NavLink
+} from "react-router-dom";
 import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
 import popularItemImg from "../../images/popular-item1.jpg";
 const constant = require("../../config/constant");
@@ -89,23 +94,23 @@ class PopularItems extends Component {
               <div className="slides-div" key={item}>
                 <div key={item}>
                   <div className="pic">
-                    <Link to={productUrl}>
+                    <NavLink to={productUrl}>
                       <img
                         className="popularItemImg"
                         src={
                           constant.BASE_IMAGE_URL + "Products/" + productImage
                         }
                       />
-                    </Link>
+                    </NavLink>
                   </div>
                   <div className="details">
                     <h4>
-                      <a href={productUrl}>
+                      <NavLink to={productUrl}>
                         {item._id ? item._id.productName : ""}
                         {}
-                      </a>
+                      </NavLink>
                     </h4>
-                    <Link
+                    <NavLink
                       className="catLink"
                       to={
                         "/search-listing/" +
@@ -121,7 +126,7 @@ class PopularItems extends Component {
                           ? item._id.productCategory.title
                           : ""
                         : ""}
-                    </Link>
+                    </NavLink>
                   </div>
                   <div className="userdiv">
                     <div className="user-pic">
@@ -134,7 +139,7 @@ class PopularItems extends Component {
                       />
                     </div>
                     <div className="user-name">
-                      <Link
+                      <NavLink
                         className="alink"
                         target="_blank"
                         to={
@@ -151,7 +156,7 @@ class PopularItems extends Component {
                             ? item._id.userId.userName
                             : ""
                           : ""}
-                      </Link>
+                      </NavLink>
                     </div>
                   </div>
                 </div>
@@ -165,13 +170,13 @@ class PopularItems extends Component {
                   <div className={"slides-div " + slide.className} key={slide}>
                     <div key={slide}>
                       <div className="pic">
-                        <Link to="/my-trade-detail">
+                        <NavLink to="/my-trade-detail">
                           <img src={slide.image} />
-                        </Link>
+                        </NavLink>
                       </div>
                       <div className="details">
                         <h4>
-                          <a href="/my-trade-detail">{slide.title}</a>
+                          <NavLink to="/my-trade-detail">{slide.title}</NavLink>
                         </h4>
                         <span className="catLink">{slide.category}</span>
                       </div>
@@ -188,7 +193,7 @@ class PopularItems extends Component {
             </Then>
           </If>
         </Slider>
-        {/* <Link to='/' className='more-items'>More items</Link> */}
+        {/* <NavLink to='/' className='more-items'>More items</NavLink> */}
       </div>
     );
   }

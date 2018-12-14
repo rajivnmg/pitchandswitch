@@ -7,5 +7,6 @@ passport.authenticate('jwt', { session: false});
 const settingCOntroller= require('../controllers/settingController');
 router.get('/getModulesSetting',settingCOntroller.getModulesSetting);
 router.post('/updateModuleSetting',settingCOntroller.updateModuleSetting);
-
+router.get('/getSocialMediaSetting',settingCOntroller.getSocialMediaSetting);
+router.post('/updateSocialMediaSetting',settingCOntroller.updateSocialMediaSetting);
 module.exports = router;

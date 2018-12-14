@@ -220,6 +220,38 @@ class settingProfile extends Component {
     setTimeout(() => {
       this.setState({ showFormSuccess: false, showFormError: false });
     }, 12000);
+    axios
+      .post("/user/updateUser", data)
+      .then(result => {
+        if (result.data.code == 200) {
+          this.setState({
+            message: result.data.message,
+            code: result.data.code,
+            showFormSuccess: true,
+            showFormError: false
+          });
+          window.scrollTo(0, 0);
+        } else {
+          this.setState({
+            message: result.data.message,
+            code: result.data.code,
+            showFormError: true,
+            showFormSuccess: false
+          });
+        }
+      })
+      .catch(error => {
+        if (!error.status) {
+          this.setState({
+            showFormError: true,
+            showFormSuccess: false,
+            message: "Error in process, Please try again."
+          });
+        }
+      });
+    setTimeout(() => {
+      this.setState({ showFormSuccess: false, showFormError: false });
+    }, 12000);
   };
 
   componentWillMount() {

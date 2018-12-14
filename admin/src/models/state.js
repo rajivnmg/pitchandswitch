@@ -17,6 +17,11 @@ stateName:{
     type:String,
     trim:true
 },
+
+id:{
+	type: String,
+	trim: true
+},
 status:{
  type:String,
  trim:true,

@@ -26,12 +26,13 @@ review:{
     trim:true,
     default:0
 },
+
 status:{
-  type:String,
-  trim:true,
-  sparse:true,
-  default:0
-},
+     type:String,
+     trim:true,
+     sparse:true,
+     default:0
+   },
 },
 {
  timestamps:true
