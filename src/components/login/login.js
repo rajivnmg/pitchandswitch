@@ -3,7 +3,7 @@ import Style from "./login.css";
 import loginIcon from "../../images/login-page-icon.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import Aux from "../../hoc/Aux";
+import Aux from "../../hoc/Auxillary";
 /**
  * A custom Form component that handles form validation errors.
  * It executes the form's checkValidity
@@ -247,9 +247,7 @@ class Register extends React.Component {
       <Aux>
         <div className="login-container">
           <div className="container">
-            <a href="/" className="backBtn">
-              &nbsp;
-            </a>
+           <p className="Backs"><Link to={"/"} className="backBtn">Back to Home </Link></p>
             <div className="cl" />
             <div className="login">
               {this.state.showEmailVerification
@@ -331,9 +329,9 @@ class Register extends React.Component {
                     </p>
                     <Link to="/forget">Forgot password?</Link>
                   </div>
-                  <div className="form-row  no-padding">                  
-					 <p align={'center'}><Link to={"/"}>Home</Link></p>
-                 </div>
+                  <div className="form-row  no-padding">
+                   
+                  </div>
                 </Form>
               </div>
             </div>

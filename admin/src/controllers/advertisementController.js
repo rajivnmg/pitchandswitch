@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser')
 const Advertisement = require('../models/advertisement')
+const PartnerVisitor = require('../models/partnerVisitor')
 const httpResponseCode = require('../helpers/httpResponseCode')
 const httpResponseMessage = require('../helpers/httpResponseMessage')
 const validation = require('../middlewares/validation')
@@ -173,7 +174,17 @@ const create = (req, res) => {
 const advertisements = (req, res) => { 
     var perPage = constant.PER_PAGE_RECORD
     var page = req.params.page || 1;
-    Advertisement.find({})
+    
+    Advertisement.aggregate([
+            {
+            $lookup: {
+                from: "partnervisitors",
+                localField: "_id",
+                foreignField: "partnerId",
+                as: "visitor"
+            }}
+        ]
+    )
       .skip((perPage * page) - perPage)
       .limit(perPage)
       .sort({createdAt:-1})
@@ -230,9 +241,7 @@ const viewadvertisement = (req, res) => {
  **/
 const updateadvertisement = (req, res) => { 
   var form = new multiparty.Form();
-	form.parse(req, function(err, data, files) {
-	  //console.log('Multiple', err, fields, files);
-	   //console.log('FIELD', fields.pageTitle[0]);
+	form.parse(req, function(err, data, files) {	  
 	  if (!data.advertisementName) {
 		return res.send({
 		  code: httpResponseCode.BAD_REQUEST,
@@ -361,6 +370,62 @@ const updateStatus = (req, res) => {
   })
 }
 
+/** Auther	: Rajiv Kumar
+ *  Date	: June 25, 2018
+ *	Description : Function to update the advertisement status.
+ **/
+const partnerVisitor = (req, res) => { 	
+	//~ PartnerVisitor.update({ _id:req.body._id },  { "$set": { "status": req.body.status } }, { new:true }, (err,result) => {
+    //~ if(err){
+		//~ return res.send({
+			//~ code: httpResponseCode.BAD_REQUEST,
+			//~ message: httpResponseMessage.INTERNAL_SERVER_ERROR
+		  //~ });
+    //~ }else {
+      //~ if (!result) {
+        //~ res.json({
+          //~ message: httpResponseMessage.USER_NOT_FOUND,
+          //~ code: httpResponseMessage.BAD_REQUEST
+        //~ });
+      //~ }else {
+        //~ return res.json({
+              //~ code: httpResponseCode.EVERYTHING_IS_OK,
+              //~ message: httpResponseMessage.CHANGE_STATUS_SUCCESSFULLY,
+             //~ result: result
+          //~ });
+      //~ }
+    //~ }    
+  //~ })
+  
+ 
+  PartnerVisitor.update(
+  { partnerId : req.body.partnerId,ip:req.body.ip },
+  {
+     $set: { userId:req.body.userId }
+  },
+  { upsert: true }, (err,result) => {
+    if(err){
+		return res.send({
+			code: httpResponseCode.BAD_REQUEST,
+			message: httpResponseMessage.INTERNAL_SERVER_ERROR
+		  });
+    }else {
+      if (!result) {
+        res.json({
+          message: httpResponseMessage.USER_NOT_FOUND,
+          code: httpResponseMessage.BAD_REQUEST
+        });
+      }else {
+        return res.json({
+              code: httpResponseCode.EVERYTHING_IS_OK,
+              message: httpResponseMessage.CHANGE_STATUS_SUCCESSFULLY,
+             result: result
+          });
+      }
+    }    
+  });
+}
+
 
 module.exports = {
   create,
@@ -368,5 +433,6 @@ module.exports = {
   viewadvertisement,
   updateadvertisement,
   deleteadvertisement,
-  updateStatus 
+  updateStatus,
+  partnerVisitor
 }

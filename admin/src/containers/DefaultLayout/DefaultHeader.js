@@ -95,8 +95,11 @@ class DefaultHeader extends Component {
           <AppHeaderDropdown direction="down">
             <DropdownToggle nav>
             <NavItem className="d-md-down-none">
-            <NavLink href="#"><i className="icon-bell"></i><Badge pill color="danger">{this.state.totalNotifications}</Badge></NavLink>
-          </NavItem>
+				<NavLink href="#">
+					<i className="icon-bell"></i>
+					<Badge pill color="danger">{this.state.totalNotifications}</Badge>
+				</NavLink>
+			</NavItem>
             </DropdownToggle>
             <DropdownMenu right style={{ right: 'auto' }}>
 				 <DropdownItem header tag="div" className="text-center"><strong>You have {this.state.totalNotifications} notifications</strong></DropdownItem>

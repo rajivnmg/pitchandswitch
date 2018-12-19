@@ -179,7 +179,7 @@ class VerifyUserEmail extends React.Component {
     return (
             <div className="login-container">
         <div  className="container">        	
-           <a href="/" className="backBtn">&nbsp;</a>
+        <p className="Backs"><Link to={"/"} className="backBtn">Back to Home </Link></p>
         <div className="cl"></div>
           <div className="login">
            {this.state.showFormSuccess ? this._renderSuccessMessage() : null}          

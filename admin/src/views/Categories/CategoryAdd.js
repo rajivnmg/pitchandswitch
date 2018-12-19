@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import InputElement from "../InputElement/InputElement";
+import SearchTree from "./SearchTree";
 import {
   Badge,
   Button,
@@ -28,6 +29,50 @@ import {
   Row
 } from "reactstrap";
 // import PropTypes from 'prop-types';
+
+//////////////////
+//~ const x = 3;
+//~ const y = 2;
+//~ const z = 1;
+//~ const gData = [];
+
+//~ const generateData = (_level, _preKey, _tns) => {
+  //~ const preKey = _preKey || '0';
+  //~ const tns = _tns || gData;
+
+  //~ const children = [];
+  //~ for (let i = 0; i < x; i++) {
+    //~ const key = `${preKey}-${i}`;
+    //~ tns.push({ title: key, key });
+    //~ if (i < y) {
+      //~ children.push(key);
+    //~ }
+  //~ }
+  //~ if (_level < 0) {
+    //~ return tns;
+  //~ }
+  //~ const level = _level - 1;
+  //~ children.forEach((key, index) => {
+    //~ tns[index].children = [];
+    //~ return generateData(level, key, tns[index].children);
+  //~ });
+//~ };
+//~ generateData(z);
+//~ const dataList = [];
+//~ const generateList = (data) => {
+  //~ for (let i = 0; i < data.length; i++) {
+    //~ const node = data[i];
+    //~ const key = node.key;
+    //~ dataList.push({ key, title: key });
+    //~ if (node.children) {
+      //~ generateList(node.children, node.key);
+    //~ }
+  //~ }
+//~ };
+//~ generateList(gData);
+
+//////////////////
+
 class CategoryAdd extends Component {
   constructor(props) {
     super(props);
@@ -39,6 +84,7 @@ class CategoryAdd extends Component {
     this.state = {
       addCategory: {},
       message: null,
+      categories: [],
       categoryForm: {
         title: {
           elementType: "input",
@@ -98,20 +144,28 @@ class CategoryAdd extends Component {
     return isValid;
   }
   inputChangedHandler = (event, inputIdentifier) => {
+	let targetValue = null;
+	if(inputIdentifier === 'parent'){
+		targetValue = event;
+	}else{
+		targetValue = event.target.value;
+	}
     const updatedCategory = {
       ...this.state.categoryForm
     };
     const updatedFormElement = {
       ...updatedCategory[inputIdentifier]
     };
-    updatedFormElement.value = event.target.value;
+    updatedFormElement.value = targetValue;
     updatedFormElement.valid = this.checkValidity(
       updatedFormElement.value,
       updatedFormElement.validation
     );
     updatedFormElement.touched = true;
     updatedCategory[inputIdentifier] = updatedFormElement;
-    this.setState({ categoryForm: updatedCategory });
+    this.setState({ categoryForm: updatedCategory }, () => {
+			console.log('data value for category', this.state.categoryForm);
+	});
   };
   handleTreeChange(e, data, inputIdentifier) {
     //this.tree_data = data.selected[0];
@@ -131,7 +185,8 @@ class CategoryAdd extends Component {
           let oldState = this.state.categoryForm;
           oldState.parent.elementConfig.options = result.data.result;
           this.setState({
-            categoryForm: oldState
+            categoryForm: oldState,
+            categories: result.data.result
           });
         }
         //console.log(this.state.categories);
@@ -179,6 +234,9 @@ class CategoryAdd extends Component {
       }, 10000);
     });
   }
+  handleCategorySelect = (category) => {
+	  this.inputChangedHandler(category, 'parent');
+  }
 
   render() {
     const formElementsArray = [];
@@ -188,13 +246,26 @@ class CategoryAdd extends Component {
         config: this.state.categoryForm[key]
       });
     }
-    console.log("Form elements", formElementsArray);
-    let form = (
-      <Form noValidate>
-        {formElementsArray.map(formElement => (
-          <Row key={formElement.id}>
+    let searchTree = null;
+    let selected = [];
+    if(this.state.categoryForm.parent._id){
+		selected.push(this.state.categoryForm.parent._id);
+	}else{
+		selected.push(this.state.categoryForm.parent.value);
+	}
+    if(this.state.categories.length){
+		searchTree = <SearchTree categorydata={this.state.categories} handleOnChange={this.handleCategorySelect} selected={selected}/>;
+	}
+    
+    let formData = formElementsArray.map(formElement => {
+		if(formElement.id === 'parent'){
+			return (<Row key={formElement.id}>
+            <Col xs="4" sm="12">{searchTree}</Col>
+          </Row>);
+		}else{
+          return <Row key={formElement.id}>
             <Col xs="4" sm="12">
-              <InputElement
+			  <InputElement
                 key={formElement.id}
                 label={formElement.config.label}
                 elementType={formElement.config.elementType}
@@ -202,14 +273,17 @@ class CategoryAdd extends Component {
                 changed={event =>
                   this.inputChangedHandler(event, formElement.id)
                 }
-                treechanged={(event, data) => {
-                  return this.handleTreeChange(event, data, formElement.id);
-                }}
                 value={formElement.config.value}
               />
             </Col>
-          </Row>
-        ))}
+          </Row>;
+        }});
+    
+    
+    console.log("Form elements", formElementsArray);
+    let form = (
+      <Form noValidate>
+        {formData}
         <Row>
           <Col xs="6" className="text-right">
             <Button

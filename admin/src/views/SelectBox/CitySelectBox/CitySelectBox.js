@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Form, Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Input } from 'reactstrap';
 import axios from 'axios';
 
 // a select with dynamically created options
@@ -7,7 +7,6 @@ var options = []
 
 class CitySelectBox extends Component {
   constructor(props) {	
-	console.log('PROPS', props); 
     super(props);    
     this.state = { value: 'Select a City'};         
     this.state = {

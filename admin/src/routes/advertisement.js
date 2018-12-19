@@ -7,4 +7,5 @@ router.put('/updateAds',advertisementController.updateadvertisement)
 router.delete('/deleteAds/:id',advertisementController.deleteadvertisement)
 router.post('/updateStatus',advertisementController.updateStatus)
 router.get('/advertisements/:page',advertisementController.advertisements)
+router.post('/partnerVisitor',advertisementController.partnerVisitor)
 module.exports = router;

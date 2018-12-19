@@ -203,6 +203,7 @@ class Users extends Component {
 						<th><Button color="info" onClick={() => this.sortBy('createdAt')} className="mr-1 mousePointer">Started At
 						 <span className ={classValue}></span>
 						</Button></th>
+						<th>User Type</th>
 						<th>Profile Pic</th>
 						<th>Flag</th>
 						<th>Status</th>

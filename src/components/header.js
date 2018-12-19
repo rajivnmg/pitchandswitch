@@ -6,22 +6,11 @@ import Logo from "../images/logo.png";
 //import Logo from "../images/PandS-logo-PNG-13.png";
 import userIMg from "../images/user-pic.png";
 import CategoryMenu from "./categoryMenu";
-import jquery from 'jquery'
+import jquery from "jquery";
 import { AutoComplete } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  fasTag,
-  faTag,
-  faGrinAlt,
-  faFrownOpen,
-  faEnvelope,
-  faTruck,
-  faClock,
-  faTimesCircle,
-  faCog,
-  faIcon
-} from "@fortawesome/free-solid-svg-icons";
+import { faTag } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import PlacesAutocomplete from "react-places-autocomplete";
 import {
@@ -35,9 +24,9 @@ const constant = require("../config/constant");
 
 const Option = AutoComplete.Option;
 const navHide = { display: "none" };
-
+library.add(faTag);
 class Header extends Component {
-  constructor(props) {	  
+  constructor(props) {
     //let categoryId = props.match.params.id;
     super(props);
     this.state = {
@@ -52,14 +41,14 @@ class Header extends Component {
       notifications: [],
       result: [],
       rs: [],
-      options:[],
-      productsListing:[],
+      options: [],
+      productsListing: [],
       searchData: "",
       searchD: "",
       categoryId: "",
-     // latitude: "",
+      // latitude: "",
       //longitude: "",
-      address:"",
+      address: "",
       gmapsLoaded: false
     };
     this.logoutHandler = this.logoutHandler.bind(this);
@@ -67,13 +56,32 @@ class Header extends Component {
   }
 
   initMap = () => {
+    if (navigator.geolocation) {
+      if (!localStorage.getItem("latitude")) {
+        navigator.geolocation.getCurrentPosition(position => {
+          localStorage.setItem("latitude", position.coords.latitude);
+          localStorage.setItem("longitude", position.coords.longitude);
+          this.setState({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          });
+        });
+      } else {
+        if (!this.state.latitude) {
+          this.setState({
+            latitude: localStorage.getItem("latitude"),
+            longitude: localStorage.getItem("longitude")
+          });
+        }
+      }
+    }
     this.setState({
       gmapsLoaded: true,
       address:localStorage.getItem("address")	
     });
   };
 
-  handleChange = address => {	 
+  handleChange = address => {
     this.setState({ address });
   };
   handleSelect = address => {
@@ -102,7 +110,7 @@ class Header extends Component {
     localStorage.removeItem("userId");
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userName");
-    this.props.history.push('/login');
+    this.props.history.push("/login");
   };
 
   searchHandler = () => {
@@ -164,8 +172,14 @@ class Header extends Component {
           localStorage.setItem("userId", result.data.result._id);
           localStorage.setItem("userEmail", result.data.result.email);
           localStorage.setItem("userName", result.data.result.userName);
-          localStorage.setItem("Latitude", result.data.result.loct.coordinates[0]);
-          localStorage.setItem("Longitude", result.data.result.loct.coordinates[1]);
+          localStorage.setItem(
+            "Latitude",
+            result.data.result.loct.coordinates[0]
+          );
+          localStorage.setItem(
+            "Longitude",
+            result.data.result.loct.coordinates[1]
+          );
           if (
             result.data.result.emailVerified == "1" &&
             result.data.result.subscriptionStatus == "1"
@@ -207,74 +221,76 @@ class Header extends Component {
     else return true;
   };
   componentDidMount() {
-	//code for google places api
-	window.initMap = this.initMap
-	const gmapScriptEl = document.createElement(`script`)
-	gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyA_Is11HwzMFGIFAU-q78V2kQUiT9OQiZI&libraries=places&callback=initMap`
-	document.querySelector(`body`).insertAdjacentElement(`beforeend`, gmapScriptEl)
+    //code for google places api
+    window.initMap = this.initMap;
+    const gmapScriptEl = document.createElement(`script`);
+    gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyA_Is11HwzMFGIFAU-q78V2kQUiT9OQiZI&libraries=places&callback=initMap`;
+    document
+      .querySelector(`body`)
+      .insertAdjacentElement(`beforeend`, gmapScriptEl);
 
-	axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
-	if(localStorage.getItem('jwtToken') !== null){
-		axios.get('/user/frontNotification').then(result => {
-		this.setState({
-			notification_type:result.data.notification_type,
-			notifications :result.data.notifications,
-			totalNotifications:result.data.totalNotifications
-		  })
-		})
-	  // console.log("localStorage",localStorage.getItem('isLoggedIn'));
-	  
-	let width = window.innerWidth;
-	  
-	  if (width < 768) {
+    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+      "jwtToken"
+    );
+    if (localStorage.getItem("jwtToken") !== null) {
+      axios.get("/user/frontNotification").then(result => {
+        this.setState({
+          notification_type: result.data.notification_type,
+          notifications: result.data.notifications,
+          totalNotifications: result.data.totalNotifications
+        });
+      });
+      // console.log("localStorage",localStorage.getItem('isLoggedIn'));
 
-	   jquery(".mob_search").click(function(){
-		
-		jquery(this).next().slideToggle();
-		jquery(".category .dropDown").hide(500);
-		
-		});
-		
-		jquery(".after-login .drop-arrow").click(function(){
-			
-		jquery(".category .dropDown").hide(500);
-		jquery(".search-container").hide(500)	
-			
-		});
-	 }
-	}
-	
-	// HTTP request to get the list of cities and active product from the server		
-	axios.all([
-     axios.get('/location/listingCity'),
-     axios.get('/product/activeProducts')
-   ])
-   .then(axios.spread((rcities, rsProduct) => {	  
-	   if(rcities.data.code ===200){
-		   this.setState({ options: rcities.data.result})
-	   }
-	   if(rsProduct.data.code ===200){
-		   
-		   this.setState({productsListing: rsProduct.data.result })
-	   }      
-   }))  
-   .catch(error => console.log(error)); 
-   
+      let width = window.innerWidth;
+
+      if (width < 768) {
+        jquery(".mob_search").click(function() {
+          jquery(this)
+            .next()
+            .slideToggle();
+          jquery(".category .dropDown").hide(500);
+        });
+
+        jquery(".after-login .drop-arrow").click(function() {
+          jquery(".category .dropDown").hide(500);
+          jquery(".search-container").hide(500);
+        });
+      }
+    }
+
+    // HTTP request to get the list of cities and active product from the server
+    axios
+      .all([
+        axios.get("/location/listingCity"),
+        axios.get("/product/activeProducts")
+      ])
+      .then(
+        axios.spread((rcities, rsProduct) => {
+          if (rcities.data.code === 200) {
+            this.setState({ options: rcities.data.result });
+          }
+          if (rsProduct.data.code === 200) {
+            this.setState({ productsListing: rsProduct.data.result });
+          }
+        })
+      )
+      .catch(error => console.log(error));
   }
 
-  Capitalize(str) {	
-		if (str.length == 0) {
-			return str;
-		}else{
-	      return str.charAt(0).toUpperCase() + str.slice(1);
-	   }
+  Capitalize(str) {
+    if (str.length == 0) {
+      return str;
+    } else {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
   }
 
   render() {
     let optionsLists;
     let optionsAll;
     if (this.state.productsListing) {
-      let optionsList = this.state.productsListing;     
+      let optionsList = this.state.productsListing;
       optionsLists = optionsList.map((s, index) => (
         <li
           onClick={() => this.searchCategory(s.productCategory._id)}
@@ -308,8 +324,11 @@ class Header extends Component {
           </If>
         </figure>
         <CategoryMenu />
-        
-		<div className="mob_search"> <i className="icon" /></div>
+
+        <div className="mob_search">
+          {" "}
+          <i className="icon" />
+        </div>
         <div className="search-container">
           <div className="location">
             <input
@@ -374,7 +393,7 @@ class Header extends Component {
               </PlacesAutocomplete>
             )}
           </div>
-          <div className="search">          
+          <div className="search">
             <AutoComplete
               style={{ width: 410 }}
               dataSource={optionsLists}

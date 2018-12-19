@@ -206,25 +206,97 @@ const updateSocialMediaSetting = (req, res) => {
 	 }
 };
 
-// User helf or contact us email
+
 /** Auther	: Rajiv Kumar
  *  Date	: July 6, 2018
  *	Description : Function to send the email of user from contact us page
  **/
-const contactUsSetting = (req, res) => {
-  	return res.json({
-	  code: httpResponseCode.EVERYTHING_IS_OK,
-	  message: httpResponseMessage.PASSWORD_CHANGE_SUCCESSFULLY,
-	  result: result
-	});
+const getContactSetting = (req, res) => {
+  	 SettingContact.find({}, (err, result) => {
+      if (err) {
+        return res.send({
+          code: httpResponseCode.BAD_REQUEST,
+          message: httpResponseMessage.INTERNAL_SERVER_ERROR
+        });
+      } else {
+        if (!result) {
+          res.json({
+            message: httpResponseMessage.USER_NOT_FOUND,
+            code: httpResponseMessage.BAD_REQUEST
+          });
+        } else {
+          return res.json({
+            code: httpResponseCode.EVERYTHING_IS_OK,
+            message: httpResponseMessage.SUCCESSFULLY_DONE,
+            result: result
+          });
+        }
+      }
+    }); 
 
 };
+
+
+/** Auther	: Rajiv Kumar
+ *  Date	: Nov 5, 2018
+ *	Description : Function to update the site contact of home page.
+ **/
+const updateContactSetting = (req, res) => {
+	var form = new multiparty.Form();
+	form.parse(req, function(err, data, files) {		
+	updateData = {};
+	updateData.email = data.email[0];
+	updateData.fromEmail = data.fromEmail[0];
+	updateData.contactNumber = data.contactNumber[0];
+	updateData.address = data.address[0];
+	updateData.zipCode = data.zipCode[0];
+	//console.log("updateData",updateData); return;
+	if(data._id[0] && (data._id[0] !=='' || data._id[0] !== undefined)){ 
+		console.log(data.email[0]) 
+		SettingContact.findOneAndUpdate({ _id:data._id[0] }, updateData, { new:true },(err,result) => {
+		if(err){
+			return res.send({
+				code: httpResponseCode.BAD_REQUEST,
+				message: httpResponseMessage.INTERNAL_SERVER_ERROR,
+				err:err
+			  });
+		}else {
+			   return res.send({
+				code: httpResponseCode.EVERYTHING_IS_OK,
+				message: httpResponseMessage.SUCCESSFULLY_DONE,
+				result:result
+			  });
+			}
+		});
+	}else{
+		  SettingContact.create(updateData, (err, result1) => {			
+			if (err) {
+			  return res.send({
+				errr : err,
+				code: httpResponseCode.BAD_REQUEST,
+				message: httpResponseMessage.INTERNAL_SERVER_ERROR
+			  })
+			} else {
+				 return res.send({
+					code: httpResponseCode.EVERYTHING_IS_OK,
+					message: httpResponseMessage.SUCCESSFULLY_DONE,
+					result:result1
+				});
+			}
+		  });
+	}
+});
+
+};
+
 
 module.exports = {
   getModulesSetting,
   updateModuleSetting,
   getSocialMediaSetting,
   updateSocialMediaSetting,
-  contactUsSetting
+  getContactSetting,
+  updateContactSetting
+  
   
 };

@@ -132,7 +132,8 @@ class Advertisements extends Component {
                     <th>S.No</th>
                     <th>Name</th>  
                     <th>Description</th> 
-                    <th>URL</th>               
+                    <th>URL</th>         
+                    <td>Visitors</td>      
                     <th>Logo</th>
                     
                     <th>Status</th>

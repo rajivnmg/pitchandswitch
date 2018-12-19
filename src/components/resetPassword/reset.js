@@ -159,7 +159,7 @@ class Register extends React.Component {
     return (
             <div className="login-container">
         <div  className="container">
-        <a href="/" className="backBtn">&nbsp;</a>
+      <p className="Backs"><Link to={"/"} className="backBtn">Back to Home </Link></p>
         <div className="cl"></div>
           <div className="login">
          
@@ -226,9 +226,7 @@ class Register extends React.Component {
                      Update
                     </button>
                   </div>
-                 <div className="form-row no-padding">
-                            <p className="no-account center-text">Back to <Link to="/login">Login</Link></p>
-                            </div>
+                
               </Form>
            
           </div>

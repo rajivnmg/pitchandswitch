@@ -1917,8 +1917,7 @@ getPublicProfile = (req, res) => {
           var totalViewUser = 1000;
           var totalProduct = 0;
           var totalTrade = 0;
-          var totalRating = userRateings ? userRateings[0].totalRating : "1";
-
+          var totalRating = (userRateings && userRateings.lenght > 0)? userRateings[0].totalRating : "1";
           Promise.all([
             User.findOne({ _id: userId }),
             /// Get Total products

@@ -5,7 +5,6 @@ import CountrySelectBox from '../SelectBox/CountrySelectBox/CountrySelectBox'
 import StateAllSelectBox from '../SelectBox/StateSelectBox/StateAllSelectBox'
 import CitySelectBox from '../SelectBox/CitySelectBox/CitySelectBox'
 import SubscriptionSelectBox from '../SelectBox/SubscriptionSelectBox/SubscriptionSelectBox'
-
 import {
   Badge,
   Button,
@@ -29,7 +28,7 @@ import {
   InputGroupAddon,
   InputGroupText,
   Label,
-  Row,
+  Row
 } from 'reactstrap';
 var FD = require('form-data');
 var fs = require('fs');
@@ -41,6 +40,7 @@ class UserAdd extends Component {
     this.middleName = React.createRef();
     this.lastName = React.createRef();
     this.username = React.createRef();
+    this.userType = React.createRef();
     this.password = React.createRef();    
     this.phoneNumber = React.createRef();
     this.dob = React.createRef();
@@ -239,6 +239,7 @@ class UserAdd extends Component {
         data.append('middleName', this.middleName.value),
         data.append('lastName', this.lastName.value),
         data.append('userName', this.userName.value),
+        data.append('userType', this.userType.value),
         data.append('password', this.password.value),
         data.append('email', this.email.value),
         data.append('profilePic', this.state.selectedFile)
@@ -250,8 +251,7 @@ class UserAdd extends Component {
         data.append('country', this.state.country),
         data.append('zipCode', this.zipCode.value),
         data.append('subscriptionPlan', this.state.subscriptionPlan)
-        axios.post('/user/signup', data).then(result => {
-          console.log('USERasdasfdasdfasdfasdfasdfasdf', data)
+        axios.post('/user/signup', data).then(result => {          
           if(result.data.code === 200){
             this.props.history.push("/users");
           }
@@ -312,6 +312,14 @@ class UserAdd extends Component {
                   <Label htmlFor="username">Email</Label><span className="required">*</span>
                   <Input type="email" invalid={this.state.validation.email.valid === false} innerRef={input => (this.email = input)} placeholder="Email" />
                   <FormFeedback invalid={this.state.validation.email.valid === false}>{this.state.validation.email.message}</FormFeedback>
+                </FormGroup>
+                <FormGroup>
+					<Label htmlFor="userType">User Type</Label><span className="required">*</span>
+					<Input type="select" innerRef={input => (this.userType = input)} id="userType" name="userType" className="form-control">
+						<option value="">Select UserType</option>
+						<option value="1">Admin</option>
+						<option value="0">User</option>
+					</Input> 
                 </FormGroup>
                  <FormGroup>
                   <Label htmlFor="contactnumber">Contact Number</Label>

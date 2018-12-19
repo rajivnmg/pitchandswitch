@@ -41,6 +41,7 @@ class UserEdit extends Component {
     this.middleName = React.createRef();
     this.lastName = React.createRef();
     this.username = React.createRef();
+    this.userType = React.createRef();
     this.email = React.createRef();
     this.phoneNumber = React.createRef();
     this.dob = React.createRef();
@@ -173,6 +174,7 @@ class UserEdit extends Component {
         data.append('middleName', this.middleName.value)
         data.append('lastName', this.lastName.value)
         data.append('userName', this.userName.value)
+        data.append('userType', this.userType.value)
         data.append('email', this.email.value)
         data.append('phoneNumber', this.phoneNumber.value)
         data.append('dob', this.dob.value)
@@ -207,6 +209,7 @@ class UserEdit extends Component {
           this.lastName.value = result.data.result.lastName;
           this.userName.value = result.data.result.userName;
           this.email.value = result.data.result.email;
+          this.userType.value = result.data.result.userType;         
           this.phoneNumber.value = result.data.result.phoneNumber
           this.dob.value = result.data.result.dob
           this.address.value = result.data.result.address
@@ -270,6 +273,14 @@ class UserEdit extends Component {
                   <Label htmlFor="username">Email</Label>
                   <Input type="email" disabled="disabled" invalid={this.state.validation.email.valid === false} innerRef={input => (this.email = input)} placeholder="Email" />
                   <FormFeedback invalid={this.state.validation.email.valid === false}>{this.state.validation.email.message}</FormFeedback>
+                </FormGroup>
+                <FormGroup>
+					<Label htmlFor="userType">User Type</Label><span className="required">*</span>
+					<Input type="select" innerRef={input => (this.userType = input)} id="userType" name="userType" className="form-control">
+						<option value="">Select UserType</option>
+						<option value="1">Admin</option>
+						<option value="0">User</option>
+					</Input>
                 </FormGroup>
               <FormGroup>
                <Label>Contact Number</Label>

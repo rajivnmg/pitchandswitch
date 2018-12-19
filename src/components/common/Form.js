@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from "react";
+
 class Form extends Component {
   state = {
     isValidated: false
@@ -8,7 +8,7 @@ class Form extends Component {
   validate = () => {
     const formEl = this.formEl;
     const formLength = formEl.length;
-   if (formEl.checkValidity() === false) {
+    if (formEl.checkValidity() === false) {
       for (let i = 0; i < formLength; i++) {
         const elem = formEl[i];
         const errorLabel = elem.parentNode.querySelector(".invalid-feedback");

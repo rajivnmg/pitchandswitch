@@ -211,7 +211,7 @@ class CategoryEdit extends Component {
                 treechanged={(event, data) => {
                   return this.handleTreeChange(event, data, formElement.id);
                 }}
-                value={formElement.config.value}
+                value={formElement.config.value}                
               />
             </Col>
           </Row>
