@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Badge} from 'reactstrap';
 import Moment from 'moment';
-import { Button, Modal} from 'reactstrap';
+import { Button} from 'reactstrap';
 class User extends Component {
   Capitalize(str){
 	return str.charAt(0).toUpperCase() + str.slice(1);

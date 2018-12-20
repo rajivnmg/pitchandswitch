@@ -1,28 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import {    
-  Badge,
-  Button,
-  ButtonDropdown,
+import {
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   Col,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
-  Form,
-  FormGroup,
-  FormText,
-  FormFeedback,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
   Label,
   Row,
   } from 'reactstrap';
@@ -55,7 +38,7 @@ import {
 
 
   render() {
-    const imageStyle = {
+    const userPicStyle = {
         width: 400,
         height: 350
     }
@@ -90,7 +73,7 @@ import {
                                     
                                 
                                 <Col sm = "6">
-                                    <img style={imageStyle} src="https://i.ytimg.com/vi/N1icEHtgb3g/maxresdefault.jpg" />
+                                    <img style={userPicStyle} src="https://i.ytimg.com/vi/N1icEHtgb3g/maxresdefault.jpg" alt="user Profile"/>
                                 </Col>
                             </Row>
                         </CardBody>

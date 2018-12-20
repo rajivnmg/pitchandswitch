@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
+import { AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.png'
 import sygnet from '../../assets/img/brand/sygnet.svg'
 import axios from 'axios'
@@ -15,9 +15,8 @@ class DefaultHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-			user:{},
-			notifications:0,
-			notifications:[]
+			user:{},			
+			notifications:[],
 	}
     this.logoutHandler = this.logoutHandler.bind(this);
   }

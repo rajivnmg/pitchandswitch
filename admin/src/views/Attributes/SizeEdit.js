@@ -2,35 +2,21 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import CategorySelectBox from '../SelectBox/CategorySelectBox/CategorySelectBox'
-import InputElement from "../InputElement/InputElement";
-import {
-  Badge,
-  Button,
-  ButtonDropdown,
+//import InputElement from "../InputElement/InputElement";
+import { 
+  Button, 
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   Col,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
-  Form,
-  FormGroup,
-  FormText,
-  FormFeedback,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
+  FormGroup,  
+  Input, 
   Label,
   Row,
 } from 'reactstrap';
 
 var FD = require('form-data');
-var fs = require('fs');
+//var fs = require('fs');
 
 // import PropTypes from 'prop-types';
 class SizeEdit extends Component {
@@ -82,6 +68,14 @@ class SizeEdit extends Component {
 
                }
               break;
+             default:
+				if(lastValidFieldFlag === true && this[field].value.length === 0){
+                  lastValidFieldFlag = false;
+                  formSubmitFlag = false;
+                  addSize[field].valid = false;
+                  addSize[field].message = addSize[field].rules[fieldCheck].message;
+
+               }
           }
         }
         this.setState({ validation: addSize});

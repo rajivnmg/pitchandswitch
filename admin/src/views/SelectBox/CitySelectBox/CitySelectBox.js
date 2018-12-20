@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { Input } from 'reactstrap';
 import axios from 'axios';
 
-// a select with dynamically created options
-var options = []
-
 class CitySelectBox extends Component {
   constructor(props) {	
     super(props);    

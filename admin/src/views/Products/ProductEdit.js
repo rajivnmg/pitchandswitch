@@ -53,18 +53,27 @@ class ProductEdit extends Component {
     this.productAge = React.createRef();
     this.productImages = React.createRef();
     this.category = React.createRef();
-    this.user = React.createRef();
     this.author = React.createRef();
     this.condition = React.createRef();
     this.brand = React.createRef();
     this.size = React.createRef();
     let productId = this.props.match.params.id;
-
     this.state = {
-      editProduct: {},
+      editProduct: {
+			productName:'',
+			description:'',
+			category:'',
+			brand:'',
+			size:'',
+			color:'',
+			productAge:'',
+			author:''
+		},
       productId: productId,
-      Categories: [],
-      Users: [],
+      Categories: [],      
+      user:'',
+      brand:'',
+      size:'',
       validation:{
         productName:{
           rules: {
@@ -77,7 +86,8 @@ class ProductEdit extends Component {
           message: ''
         },
 
-      }
+      },
+      loadedData: false
     };
     this.categoryhandleContentChange = this.categoryhandleContentChange.bind(this)
   }
@@ -109,7 +119,7 @@ class ProductEdit extends Component {
     }  
     fileChangedHandler = (event) => {
 	  this.setState({selectedFile: event.target.files[0]})
-	   console.log('ddddddddd',this.state.selectedFile);
+	  // console.log('ddddddddd',this.state.selectedFile);
 
    }
    
@@ -177,7 +187,7 @@ class ProductEdit extends Component {
 	    }
 
 	    axios.put('/product/updateProduct', data).then(result => {
-			console.log('ddd',data);
+			//~ console.log('ddd',data);
             if(result.data.code == 200){
                this.props.history.push("/products");
            }
@@ -188,64 +198,110 @@ class ProductEdit extends Component {
    }
 
   componentDidMount() {
-      axios.get('/product/viewProduct/' + this.state.productId).then(result => {
-      if(result.data.code === 200) {
-        this.setState({editProduct: result.data.result});       
-        this.productName.value = result.data.result.productName;
-        this.description.value = result.data.result.description;
-        if(result.data.result.productCategory && result.data.result.productCategory.length > 0){
-			this.category.value = result.data.result.productCategory._id;
+	axios.all([
+     axios.get('/product/viewProduct/' + this.state.productId),
+     axios.get('/category/allCategories'),     
+     axios.get('/donation/getConstant')
+   ])
+   .then(axios.spread((viewproduct,allcategories,allCondition) => {  
+	   if(viewproduct.data.code === 200) {
+        this.setState({editProduct: viewproduct.data.result});
+       // console.log("result.data.result",this)       
+        //this.productName.value = viewproduct.data.result.productName;
+      //  this.description.value = viewproduct.data.result.description;
+        if(viewproduct.data.result.productCategory && viewproduct.data.result.productCategory.length > 0){
+			//this.category.value = viewproduct.data.result.productCategory._id;
 		}
-        if(result.data.result.brand && result.data.result.brand.length > 0){
-			this.brand.value = result.data.result.brand._id;
+        if(viewproduct.data.result.brand && viewproduct.data.result.brand.length > 0){
+			//this.brand.value = viewproduct.data.result.brand._id;
 		}
 
-        if(result.data.result.size && result.data.result.size.length > 0){
-			this.size.value = result.data.result.size._id;
+        if(viewproduct.data.result.size && viewproduct.data.result.size.length > 0){
+			//this.size.value = viewproduct.data.result.size._id;
 		}
-        if(result.data.result.userId && result.data.result.userId.length > 0){
-			this.author.value = result.data.result.userId._id;
+        if(viewproduct.data.result.userId && viewproduct.data.result.userId.length > 0){
+			//this.author.value = viewproduct.data.result.userId._id;
 		}     
-        this.color.value = result.data.result.color;        
-		this.productAge.value = result.data.result.productAge;        
-        this.setState({productImages: result.data.result.productImages});       
-       }      
-      })     
-
-       axios.get('/category/allCategories').then(result => {
-        if(result.data.code === 200){
+       // this.color.value = viewproduct.data.result.color;        
+		//this.productAge.value = viewproduct.data.result.productAge;        
+        this.setState({productImages: viewproduct.data.result.productImages});       
+       } 
+       if(allcategories.data.code === 200){
           this.setState({
-            categories: result.data.result,
+            categories: allcategories.data.result,
           });
-        }
-      })
-
-      axios.get('/user/users/1' ).then(result => {	 
-       if(result.data.code ===200){
-          this.setState({
-            users: result.data.result,         
-          });
+        }   
+       if(allCondition.data.code ===200){
+			this.setState({conditions: allCondition.data.result});
          }
-        console.log(this.state.users);
-      })
-       axios.get('/donation/getConstant').then(result => {
-           this.setState({conditions: result.data.result});
+           
+     this.setState({ loadedData: true });
+   }))
+   //.then(response => this.setState({ vehicles: response.data }))
+ // .catch(error => {console.log(" Product Edit componentDidMount",error);this.setState({ loadedData: true })});
+	  	  
+      //~ axios.get('/product/viewProduct/' + this.state.productId).then(result => {
+      //~ if(result.data.code === 200) {
+        //~ this.setState({editProduct: result.data.result});
+        //~ console.log("result.data.result",result.data.result)       
+        //~ this.productName.value = result.data.result.productName;
+        //~ this.description.value = result.data.result.description;
+        //~ if(result.data.result.productCategory && result.data.result.productCategory.length > 0){
+			//~ this.category.value = result.data.result.productCategory._id;
+		//~ }
+        //~ if(result.data.result.brand && result.data.result.brand.length > 0){
+			//~ this.brand.value = result.data.result.brand._id;
+		//~ }
 
-       })
-      .catch((error) => {
-        if(error.status === 401) {
-          this.props.history.push("/login");
-        }
-      });
+        //~ if(result.data.result.size && result.data.result.size.length > 0){
+			//~ this.size.value = result.data.result.size._id;
+		//~ }
+        //~ if(result.data.result.userId && result.data.result.userId.length > 0){
+			//~ this.author.value = result.data.result.userId._id;
+		//~ }     
+        //~ this.color.value = result.data.result.color;        
+		//~ this.productAge.value = result.data.result.productAge;        
+        //~ this.setState({productImages: result.data.result.productImages});       
+       //~ }      
+      //~ })     
+
+       //~ axios.get('/category/allCategories').then(result => {
+        //~ if(result.data.code === 200){
+          //~ this.setState({
+            //~ categories: result.data.result,
+          //~ });
+        //~ }
+      //~ })
+
+      //~ axios.get('/user/users/1' ).then(result => {	 
+       //~ if(result.data.code ===200){
+          //~ this.setState({
+            //~ users: result.data.result,         
+          //~ });
+         //~ }
+        //~ console.log(this.state.users);
+      //~ })
+       //~ axios.get('/donation/getConstant').then(result => {
+           //~ this.setState({conditions: result.data.result});
+
+       //~ })
+      //~ .catch((error) => {
+        //~ if(error.status === 401) {
+          //~ this.props.history.push("/login");
+        //~ }
+      //~ });
   }
 
   render() {
 	 let optionTemplate;
 	   if(this.state.conditions){
 			let conditionsList = this.state.conditions;
-		    optionTemplate = conditionsList.map(v => (<option value={v.id}>{v.name}</option>));
+		    optionTemplate = conditionsList.map((v,i) => (<option value={v.id} key={i}>{v.name}</option>));
        }
-   return (
+       
+       let currentUser = (this.state.editProduct && this.state.editProduct.userId)?this.state.editProduct.userId._id:'0';
+    if(this.state.loadedData){
+   return (  
 		<div className="animated fadeIn">
 			<Row>
 			<Col xs="12" sm="12">
@@ -259,44 +315,44 @@ class ProductEdit extends Component {
 			<Row>
 			<Col xs="4" sm="12">
 			<FormGroup>
-			<Label htmlFor="company">Name</Label>
-			  <Input type="text" innerRef={input => (this.productName = input)} placeholder="Product Name" /> </FormGroup>
+			<Label htmlFor="productName">Name</Label>
+			  <Input type="text" defaultValue={this.state.editProduct.productName} innerRef={input => (this.productName = input)} placeholder="Product Name" /> </FormGroup>
 			</Col>
 			</Row>
 			<FormGroup>
 			<Label htmlFor="description">Description</Label>
-			  <Input type="textarea" innerRef = {input => (this.description = input)} placeholder="Description" required/>
+			  <Input type="textarea" defaultValue={this.state.editProduct.description} innerRef = {input => (this.description = input)} placeholder="Description" required/>
 			</FormGroup>
 			<FormGroup>
 			<Label htmlFor="category">Category</Label> <br/> 
 			<CategorySelectBox onSelectCategory={this.handleCategory} value={this.state.editProduct.productCategory?this.state.editProduct.productCategory._id:""}/>
 			</FormGroup>
 			<FormGroup>
-			<Label htmlFor="user">User</Label>
-			<UserSelectBox onSelectUser={this.handleUser} value={this.state.editProduct.userId?this.state.editProduct.userId._id:""}/>    
+				<Label htmlFor="user">User</Label><br/>
+				<UserSelectBox onSelectUser={this.handleUser} value={currentUser}/>
 			</FormGroup>
 			<FormGroup>
-			<Label htmlFor="size">Size</Label>                  
+			<Label htmlFor="size">Size</Label><br/>                
 			<SizeSelectBox onSelectSize={this.handleSize}  reference={(size)=> this.size = size} value={(this.state.editProduct.size)?this.state.editProduct.size._id:''}/>
 
 			</FormGroup>
 			<FormGroup>
 			<Label htmlFor="color">Color</Label>
-			<Input type="text" innerRef={input => (this.color = input)} placeholder="Color" />
+			<Input type="text" defaultValue={this.state.editProduct.color} innerRef={input => (this.color = input)} placeholder="Color" />
 			</FormGroup>
 			<FormGroup>
-			<Label htmlFor="brand">Brand</Label>
-			  <BrandSelectBox onSelectBrand={this.handleBrand} reference={(brand)=> this.brand = brand} value={(this.state.editProduct.brand)?this.state.editProduct.brand._id:''}/>
+			<Label htmlFor="brand">Brand</Label><br/>
+			  <BrandSelectBox onSelectBrand={this.handleBrand}  value={(this.state.editProduct.brand)?this.state.editProduct.brand._id:''}/>
 			</FormGroup>
 			<FormGroup>
 			<Label htmlFor="brand">Conditions</Label>
-			<select id="select" reference={(condition)=> this.condition = condition} value={this.state.editProduct.condition} className="form-control" onChange={this.conditionsChange}>
+			<select id="select" reference={this.condition} value={this.state.editProduct.condition} className="form-control" onChange={this.conditionsChange}>
 			{optionTemplate}
 			</select>
 			</FormGroup>
 			<FormGroup>
 			<Label htmlFor="age">Age Of Item</Label>
-			<Input type="text" innerRef={input => (this.productAge = input)} placeholder="Age" />
+			<Input type="text" defaultValue={this.state.editProduct.productAge} innerRef={input => (this.productAge = input)} placeholder="Age" />
 			</FormGroup>
 			<FormGroup>
 			<Label htmlFor="lastname">Product Image</Label>
@@ -318,6 +374,9 @@ class ProductEdit extends Component {
 			</Row>
 		</div>
     );
+}else{
+return null;
+}
   }
 }
 // ProjectItem.propTypes = {

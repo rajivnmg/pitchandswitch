@@ -1,28 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import {
-  Badge,
-  Button,
-  ButtonDropdown,
+import {  
+  Button, 
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   Col,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
-  Form,
-  FormGroup,
-  FormText,
-  FormFeedback,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
+  FormGroup, 
+  Input, 
   Label,
   Row,
 } from 'reactstrap';
@@ -114,6 +100,14 @@ class AddonEdit extends Component {
 
                }
               break;
+             default:
+				if(lastValidFieldFlag === true && this[field].value.length === 0){
+                  lastValidFieldFlag = false;
+                  formSubmitFlag = false;
+                  addonAdd[field].valid = false;
+                  addonAdd[field].message = addonAdd[field].rules[fieldCheck].message;
+
+               }
           }
         }
         this.setState({ validation: addonAdd});

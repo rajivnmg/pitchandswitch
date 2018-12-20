@@ -1,9 +1,9 @@
 import React from "react";
 import { FormGroup, FormFeedback, Label } from "reactstrap";
 import TreeView from "react-simple-jstree";
+import SearchTree from "./SearchTree";
 const inputElement = props => {
   let inputElement = null;
-  console.log('Props', props);
   const iterative = (newElements = [], lavel = 0) => {
     return newElements.map(newElement => {
       let baseCatClass = [];
@@ -123,6 +123,11 @@ const inputElement = props => {
 			  </option>
 		  })}
         </select>
+      );
+      break;
+   case "search-tree":
+      inputElement = (
+        <SearchTree categorydata={props.elementConfig.options} handleOnChange={props.elementConfig.handleCategorySelect} selected={props.elementConfig.selected}/>
       );
       break;
       

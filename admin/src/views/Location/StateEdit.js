@@ -76,6 +76,14 @@ class StateEdit extends Component {
 
                }
               break;
+            default:
+				if(lastValidFieldFlag === true && this[field].value.length === 0){
+					  lastValidFieldFlag = false;
+					  formSubmitFlag = false;
+					  addState[field].valid = false;
+					  addState[field].message = addState[field].rules[fieldCheck].message;
+
+				   }
           }
         }
         this.setState({ validation: addState});
@@ -149,7 +157,7 @@ class StateEdit extends Component {
                       <Label htmlFor="middlename">Status</Label>
                        <Input type="select" innerRef={input => (this.status = input)} id="status" className="form-control" >
 						<option value="0" >Active</option>
-						<option value="1" selected={(this.status.value =="0")?'selected':' '}>Inactive</option>					
+						<option value="1" selected={(this.status.value ==="0")?'selected':' '}>Inactive</option>					
 					  </Input>
                     </FormGroup>
                     </Col>

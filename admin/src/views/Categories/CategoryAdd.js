@@ -84,7 +84,7 @@ class CategoryAdd extends Component {
     this.state = {
       addCategory: {},
       message: null,
-      categories: [],
+      requestStatus: false,
       categoryForm: {
         title: {
           elementType: "input",
@@ -115,9 +115,11 @@ class CategoryAdd extends Component {
           touched: false
         },
         parent: {
-          elementType: "tree",
+          elementType: "search-tree",
           elementConfig: {
-            options: []
+            options: [],
+            selected: [],
+            handleCategorySelect: this.handleCategorySelect
           },
           value: "",
           label: "Parent",
@@ -145,8 +147,10 @@ class CategoryAdd extends Component {
   }
   inputChangedHandler = (event, inputIdentifier) => {
 	let targetValue = null;
+	let selected = [];
 	if(inputIdentifier === 'parent'){
 		targetValue = event;
+		selected = [event];
 	}else{
 		targetValue = event.target.value;
 	}
@@ -161,22 +165,16 @@ class CategoryAdd extends Component {
       updatedFormElement.value,
       updatedFormElement.validation
     );
+    if(inputIdentifier === 'parent'){
+		updatedFormElement.elementConfig.selected = selected;
+	}
     updatedFormElement.touched = true;
     updatedCategory[inputIdentifier] = updatedFormElement;
     this.setState({ categoryForm: updatedCategory }, () => {
 			console.log('data value for category', this.state.categoryForm);
 	});
   };
-  handleTreeChange(e, data, inputIdentifier) {
-    //this.tree_data = data.selected[0];
-    if (
-      e.type == "changed" &&
-      data.node != undefined &&
-      data.node.data != undefined
-    ) {
-      this.tree_data = data.node.data._id;
-    }
-  }
+  
   componentDidMount() {
     axios
       .get("/category/allCategories")
@@ -186,7 +184,7 @@ class CategoryAdd extends Component {
           oldState.parent.elementConfig.options = result.data.result;
           this.setState({
             categoryForm: oldState,
-            categories: result.data.result
+            requestStatus: true
           });
         }
         //console.log(this.state.categories);
@@ -203,39 +201,24 @@ class CategoryAdd extends Component {
   }
   submitHandler(e) {
     e.preventDefault();
-    const updatedCategory = {
-      ...this.state.categoryForm
-    };
-    const updatedFormElement = {
-      ...updatedCategory["parent"]
-    };
-    updatedFormElement.value = this.tree_data;
-    updatedFormElement.valid = this.checkValidity(
-      updatedFormElement.value,
-      updatedFormElement.validation
-    );
-    updatedFormElement.touched = true;
-    updatedCategory["parent"] = updatedFormElement;
-    this.setState({ categoryForm: updatedCategory }, function() {
-      let categoryObj = {};
-      for (let key in this.state.categoryForm) {
-        categoryObj[key] = this.state.categoryForm[key].value;
-      }
-      //console.log('FFFFFFF', categoryObj);
-      axios.post("/category/create", categoryObj).then(result => {
-        if (result.data.code == "200") {
-          this.props.history.push("/categories");
-        } else {
-          this.setState({ message: result.data.message });
-        }
-      });
-      setTimeout(() => {
-        this.setState({ message: null });
-      }, 10000);
-    });
+    let categoryObj = {};
+	for (let key in this.state.categoryForm) {
+		categoryObj[key] = this.state.categoryForm[key].value;
+	}
+	//console.log('FFFFFFF', categoryObj);
+	axios.post("/category/create", categoryObj).then(result => {
+	if (result.data.code == "200") {
+	  this.props.history.push("/categories");
+	} else {
+	  this.setState({ message: result.data.message });
+	}
+	});
+	setTimeout(() => {
+	this.setState({ message: null });
+	}, 10000);
   }
   handleCategorySelect = (category) => {
-	  this.inputChangedHandler(category, 'parent');
+	  this.inputChangedHandler(category, 'parent');	  
   }
 
   render() {
@@ -246,24 +229,10 @@ class CategoryAdd extends Component {
         config: this.state.categoryForm[key]
       });
     }
-    let searchTree = null;
-    let selected = [];
-    if(this.state.categoryForm.parent._id){
-		selected.push(this.state.categoryForm.parent._id);
-	}else{
-		selected.push(this.state.categoryForm.parent.value);
-	}
-    if(this.state.categories.length){
-		searchTree = <SearchTree categorydata={this.state.categories} handleOnChange={this.handleCategorySelect} selected={selected}/>;
-	}
+    let formData = null;
     
-    let formData = formElementsArray.map(formElement => {
-		if(formElement.id === 'parent'){
-			return (<Row key={formElement.id}>
-            <Col xs="4" sm="12">{searchTree}</Col>
-          </Row>);
-		}else{
-          return <Row key={formElement.id}>
+    if(this.state.requestStatus){
+		formData = formElementsArray.map(formElement => <Row key={formElement.id}>
             <Col xs="4" sm="12">
 			  <InputElement
                 key={formElement.id}
@@ -272,12 +241,12 @@ class CategoryAdd extends Component {
                 elementConfig={formElement.config.elementConfig}
                 changed={event =>
                   this.inputChangedHandler(event, formElement.id)
-                }
+                }                
                 value={formElement.config.value}
               />
             </Col>
-          </Row>;
-        }});
+          </Row>);
+	}
     
     
     console.log("Form elements", formElementsArray);

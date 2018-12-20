@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Badge} from 'reactstrap';
-import Moment from 'moment';
+//import { Badge} from 'reactstrap';
+//import Moment from 'moment';
 // import PropTypes from 'prop-types';
 class Size extends Component {
-  constructor(props){
-    super(props);
-  }
+  //~ constructor(props){
+    //~ super(props);
+  //~ }
   render() {
     return (
       <tr key={this.props.size._id}>

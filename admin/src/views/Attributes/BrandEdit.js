@@ -1,37 +1,21 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import CategorySelectBox from '../SelectBox/CategorySelectBox/CategorySelectBox'
+//import CategorySelectBox from '../SelectBox/CategorySelectBox/CategorySelectBox'
 import InputElement from "../InputElement/InputElement";
 
-import {
-  Badge,
-  Button,
-  ButtonDropdown,
+import {  
+  Button,  
   Card,
-  CardBody,
-  CardFooter,
+  CardBody,  
   CardHeader,
-  Col,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
+  Col, 
   Form,
-  FormGroup,
-  FormText,
-  FormFeedback,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Label,
   Row,
 } from 'reactstrap';
 
-var FD = require('form-data');
-var fs = require('fs');
+//var FD = require('form-data');
+//var fs = require('fs');
 
 // import PropTypes from 'prop-types';
 class BrandEdit extends Component {
@@ -79,7 +63,7 @@ class BrandEdit extends Component {
   checkValidity(value, rules) {
     let isValid = false;
     if (rules.required) {
-      isValid = value.trim() != "" && isValid;
+      isValid = value.trim() !=="" && isValid;
     }
     if (rules.minLength) {
       isValid = value.length >= rules.minLength && isValid;
@@ -112,7 +96,7 @@ class BrandEdit extends Component {
     const updatedFormElement = {
       ...updatedBrand[inputIdentifier]
     };
-    if (updatedFormElement.value != data.selected) {
+    if (updatedFormElement.value !== data.selected) {
       updatedFormElement.value = data.selected;
       updatedFormElement.valid = this.checkValidity(
         updatedFormElement.value,
@@ -121,7 +105,7 @@ class BrandEdit extends Component {
       updatedFormElement.touched = true;
       updatedBrand[inputIdentifier] = updatedFormElement;
       this.setState(oldState => {
-        if (oldState.brandForm[inputIdentifier].value != data.selected)
+        if (oldState.brandForm[inputIdentifier].value !== data.selected)
           return { brandForm: updatedBrand };
         return false;
       });
@@ -136,7 +120,7 @@ class BrandEdit extends Component {
       e.preventDefault();
       let formSubmitFlag = true;
       if(formSubmitFlag){        
-        let editBrand = this.state.editBrand;
+        //let editBrand = this.state.editBrand;
          let brandObj = {_id: this.state.brandId};
 			for (let key in this.state.brandForm) {
 			  brandObj[key] = this.state.brandForm[key].value;
@@ -164,7 +148,7 @@ class BrandEdit extends Component {
         }
       })
       .catch(error => {
-        console.log("ERROR", error);
+       // console.log("ERROR", error);
         if (error.status === 401) {
           this.props.history.push("/login");
         }
@@ -172,8 +156,8 @@ class BrandEdit extends Component {
     //if(localStorage.getItem('jwtToken') != null)
       //axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
       axios.get('/brand/viewBrand/' + this.state.brandId).then(result => {
-        if(result.data.code == '200'){
-          console.log('view dddddddddddd',result.data.result);
+        if(result.data.code === '200'){
+       
           let brandForm = this.state.brandForm;
           for (let key in brandForm) {
 			  //~ if(key === 'category'){
@@ -182,7 +166,7 @@ class BrandEdit extends Component {
 				  brandForm[key].value = result.data.result[key];
 			  //~ }
 		  }
-		  console.log('brandForm', brandForm);
+		 // console.log('brandForm', brandForm);
 		  this.setState({brandForm: brandForm});
         }
       })

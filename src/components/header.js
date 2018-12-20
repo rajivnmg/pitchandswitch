@@ -296,7 +296,7 @@ class Header extends Component {
           onClick={() => this.searchCategory(s.productCategory._id)}
           key={index}
         >
-          {s.productName + " - " + s.productCategory.title}{" "}
+          {s.productName + " - " + ((s.productCategory)?s.productCategory.title:"")}{" "}
         </li>
       ));
     }

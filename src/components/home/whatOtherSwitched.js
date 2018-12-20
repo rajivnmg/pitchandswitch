@@ -76,6 +76,7 @@ class WhatOtherSwitched extends Component {
 				var imagePathSwitchUser = switched.offerTradeId?switched.offerTradeId.SwitchUserId.profilePic:'';
 				var userIds = switched.offerTradeId?switched.offerTradeId.SwitchUserId._id:'0';
 				var proIDS = switched.tradePitchProductId?switched.tradePitchProductId._id:'0';	
+				var catIDS = ((switched.tradePitchProductId && switched.tradePitchProductId.productCategory)?switched.tradePitchProductId.productCategory._id:'0');	
 				var productUrl = (localStorage.getItem('isLoggedIn') == 1 && localStorage.getItem('userId') == userIds)?'/my-trade-detail/'+proIDS:'/search-result/'+proIDS															
 					return (					    					
 					    <div className="slides-div"  key={index}>
@@ -88,7 +89,7 @@ class WhatOtherSwitched extends Component {
 						  </div>
 						<div className='details'>						
 						<h4><a href={productUrl} >{switched.tradeSwitchProductId?switched.tradeSwitchProductId.productName:''}</a></h4>
-						<Link className="catLink" replace to={'/search-listing/'+(switched.tradePitchProductId?switched.tradePitchProductId.productCategory._id:"")}>{(switched.tradePitchProductId)?switched.tradePitchProductId.productCategory.title:"NA"}</Link>
+						<Link className="catLink" replace to={'/search-listing/'+catIDS}>{(switched.tradePitchProductId && switched.tradePitchProductId.productCategory)?switched.tradePitchProductId.productCategory.title:"NA"}</Link>
 						</div>
 						<div className="userdiv">
 						<div className="user-pic userProfilePic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+imagePathSwitchUser} height="20px;" width="20px;"/></div>
@@ -103,7 +104,7 @@ class WhatOtherSwitched extends Component {
 						<div className='pic'><img src={constant.BASE_IMAGE_URL+'Products/'+imagePathPitch} /></div>
 						<div className='details'>
 						<h4>{switched.tradePitchProductId?switched.tradePitchProductId.productName:''}</h4>
-						<Link className="catLink" replace to={'/search-listing/'+(switched.tradePitchProductId?switched.tradePitchProductId.productCategory._id:"")}>{switched.tradePitchProductId?switched.tradePitchProductId.productCategory.title:'NA'}</Link>
+						<Link className="catLink" replace to={'/search-listing/'+catIDS}>{(switched.tradePitchProductId && switched.tradePitchProductId.productCategory)?switched.tradePitchProductId.productCategory.title:'NA'}</Link>
 						</div>
 						<div className="userdiv">
 						<div className="user-pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+imagePathPitchUser} height="20px;" width="20px;"/></div>

@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Badge} from 'reactstrap';
-import Moment from 'moment';
+//import Moment from 'moment';
 import ReactStars from 'react-stars'
 import ReadMoreReact from 'read-more-react';
 // import PropTypes from 'prop-types';
 class Testimonial extends Component {
-  constructor(props){
-    super(props);
-  }
-
+ 
 Capitalize(str){
 	return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -23,8 +20,8 @@ Capitalize(str){
         <td>
          <ReactStars  count={5} size={15} color2={'#ffd700'} edit={false} value={this.props.testimonial.review}  /></td>
         <td>
-          <Badge className="mousePointer" onClick={this.props.changeStatus.bind(this, this.props.testimonial)} color={(this.props.testimonial.status == '1')?'success':'danger'}>
-            {(this.props.testimonial.status == '1')?'Active':'Inctive'}
+          <Badge className="mousePointer" onClick={this.props.changeStatus.bind(this, this.props.testimonial)} color={(this.props.testimonial.status === '1')?'success':'danger'}>
+            {(this.props.testimonial.status === '1')?'Active':'Inctive'}
           </Badge>
         </td>
         <td>

@@ -22,6 +22,11 @@ const create = (req, res) => {
       message: httpResponseMessage.REQUIRED_DATA
     });
   }
+ 
+	if(req.body.parent=='' || req.body.parent === undefined){
+		req.body.parent = null;
+	}
+	
   const data = req.body;
   const flag = validation.validate_all_request(data, ["title"]);
   if (flag) {
@@ -226,6 +231,9 @@ const changeStatus = (req, res) => {
  *	Description : Function to update the user details.
  **/
 const updateCategory = (req, res) => {
+	if(req.body.parent=='' || req.body.parent === undefined){
+		req.body.parent = null;
+	}
   Category.findOneAndUpdate(
     { _id: req.body._id },
     req.body,
@@ -234,7 +242,8 @@ const updateCategory = (req, res) => {
       if (err) {
         return res.send({
           code: httpResponseCode.BAD_REQUEST,
-          message: httpResponseMessage.INTERNAL_SERVER_ERROR
+          message: httpResponseMessage.INTERNAL_SERVER_ERROR,
+          error:err
         });
       } else {
         if (!result) {
@@ -408,9 +417,9 @@ const allCategories = (req, res) => {
  *	Description : Function to delete the user
  **/
 const deleteCategory = (req, res) => {
-  Category.find({parent : req.params.id}, function(err,child){
-	  if(child.length == 0 || child == null){
-		  Category.findOneAndRemove(req.params.id, (err, result) => {
+  Category.find({parent : req.params.id}, function(err,child){	  
+	  if(child.length === 0 || child === null){		 
+		  Category.remove({_id:req.params.id}, (err, result) => {
 			if (err) {
 			  return res.json({
 				message: httpResponseMessage.USER_NOT_FOUND,
@@ -425,7 +434,7 @@ const deleteCategory = (req, res) => {
 		  });
 	  }else{
 		return res.json({
-			message: "You can't delete parebt category!",
+			message: "You can't delete parent category!",
 			code: httpResponseMessage.BAD_REQUEST
 		  });
 	  }

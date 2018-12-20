@@ -1,27 +1,13 @@
 import React, { Component } from 'react';
 
 import {
-   Badge,
   Button,
-  ButtonDropdown,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
-  Col,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
-  Form,
+  Col, 
   FormGroup,
-  FormText,
-  FormFeedback,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
+  Input, 
   Label,
   Row,
 } from 'reactstrap';
@@ -42,23 +28,23 @@ class UserView extends Component {
     //if(localStorage.getItem('jwtToken') != null)
       //axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
       axios.get('/user/viewUser/' + this.state.userId).then(result => {
-        if(result.data.code == '200'){
-          console.log('sssss',result);
+        if(result.data.code === '200'){
+         // console.log('sssss',result);
           this.setState({ viewUser: result.data.result});
-          this.firstName.value = result.data.result.firstName
-          this.middleName.value = result.data.result.middleName
-          this.lastName.value = result.data.result.lastName
-          this.userName.value = result.data.result.userName
-          this.email.value = result.data.result.email
-          this.phoneNumber.value = result.data.result.phoneNumber
-          this.dob.value = result.data.result.dob
-          this.address.value = result.data.result.address
-          this.city.value = result.data.result.city
-          this.state.value = result.data.result.state
-          this.country.value = result.data.result.country
-          this.zipCode.value = result.data.result.zipCode
-          this.subscriptionPlan.value = result.data.result.subscriptionPlan
-          this.profilePic.value = result.data.result.profilePic         
+          this.firstName.value = result.data.result.firstName;
+          this.middleName.value = result.data.result.middleName;
+          this.lastName.value = result.data.result.lastName;
+          this.userName.value = result.data.result.userName;
+          this.email.value = result.data.result.email;
+          this.phoneNumber.value = result.data.result.phoneNumber;
+          this.dob.value = result.data.result.dob;
+          this.address.value = result.data.result.address;
+          this.city.value = result.data.result.city;
+          this.mystate.value = result.data.result.state;
+          this.country.value = result.data.result.country;
+          this.zipCode.value = result.data.result.zipCode;
+          this.subscriptionPlan.value = result.data.result.subscriptionPlan;
+          this.profilePic.value = result.data.result.profilePic;    
         }
       })
       .catch((error) => {

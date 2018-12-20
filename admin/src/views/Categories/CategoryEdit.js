@@ -40,6 +40,7 @@ class CategoryEdit extends Component {
 
     this.state = {
       categoryId: categoryId,
+      requestStatus: false,
       categoryForm: {
         title: {
           elementType: "input",
@@ -70,9 +71,11 @@ class CategoryEdit extends Component {
           touched: false
         },
         parent: {
-          elementType: "tree",
+          elementType: "search-tree",
           elementConfig: {
-            options: []
+            options: [],
+            selected: [],
+            handleCategorySelect: this.handleCategorySelect
           },
           value: "",
           label: "Parent",
@@ -84,6 +87,9 @@ class CategoryEdit extends Component {
         }
       }
     };
+  }
+  handleCategorySelect = (category) => {
+	  this.inputChangedHandler(category, 'parent');	  
   }
   checkValidity(value, rules) {
     let isValid = false;
@@ -99,31 +105,34 @@ class CategoryEdit extends Component {
     return isValid;
   }
   inputChangedHandler = (event, inputIdentifier) => {
+	let targetValue = null;
+	let selected = [];
+	if(inputIdentifier === 'parent'){
+		targetValue = event;
+		selected = [event];
+	}else{
+		targetValue = event.target.value;
+	}
     const updatedCategory = {
       ...this.state.categoryForm
     };
     const updatedFormElement = {
       ...updatedCategory[inputIdentifier]
     };
-    updatedFormElement.value = event.target.value;
+    updatedFormElement.value = targetValue;
     updatedFormElement.valid = this.checkValidity(
       updatedFormElement.value,
       updatedFormElement.validation
     );
+    if(inputIdentifier === 'parent'){
+		updatedFormElement.elementConfig.selected = selected;
+	}
     updatedFormElement.touched = true;
     updatedCategory[inputIdentifier] = updatedFormElement;
-    this.setState({ categoryForm: updatedCategory });
+    this.setState({ categoryForm: updatedCategory }, () => {
+			console.log('data value for category', this.state.categoryForm);
+	});
   };
-  handleTreeChange(e, data, inputIdentifier) {
-    //this.tree_data = data.selected[0];
-    if (
-      e.type == "changed" &&
-      data.node != undefined &&
-      data.node.data != undefined
-    ) {
-      this.tree_data = data.node.data._id;
-    }
-  }
   cancelHandler() {
     this.props.history.push("/categories");
   }
@@ -143,48 +152,41 @@ class CategoryEdit extends Component {
   }
 
   componentDidMount() {
-    axios
-      .get("/category/allCategories")
-      .then(result => {
-        if (result.data.code === 200) {
-          let oldState = this.state.categoryForm;
-          oldState.parent.elementConfig.options = result.data.result.filter(
-            cat => cat._id !== this.state.categoryId
-          );
-          this.setState({
-            categoryForm: oldState
-          });
-        }
-      })
-      .catch(error => {
-        console.log("ERROR", error);
-        if (error.status === 401) {
-          this.props.history.push("/login");
-        }
-      });
-
-    axios
-      .get("/category/viewCategory/" + this.state.categoryId)
-      .then(result => {
-        if (result.data.code == "200") {
-          let categoryForm = this.state.categoryForm;
-          for (let key in categoryForm) {
-            if (key === "parent") {
-              categoryForm[key].value = result.data.result[key]._id;
-            } else {
-              categoryForm[key].value = result.data.result[key];
-            }
-          }
-          console.log("categoryForm", categoryForm);
-          this.setState({ categoryForm: categoryForm });
-        }
-      })
-      .catch(error => {
-        if (error.status === 401) {
-          this.props.history.push("/login");
-        }
-      });
-  }
+	  if(!this.state.requestStatus){
+	   axios.all([
+		 axios.get('/category/allCategories'),
+		 axios.get('/category/viewCategory/'+ this.state.categoryId)
+	   ])
+	   .then(axios.spread((allCategories, pCategory) => {
+			//all category data
+			if (allCategories.data.code === 200) {
+			  let oldState = {...this.state.categoryForm};         
+				oldState.parent.elementConfig.options = allCategories.data.result.filter(
+				cat => cat._id !== this.state.categoryId
+			  );
+			  this.setState({
+				categoryForm: oldState           
+			  });
+			}			
+			//parent category data
+			 if (pCategory.data.code === 200) {
+			  let categoryForm = {...this.state.categoryForm};
+			  for (let key in categoryForm) {
+				if (key === "parent") {
+					categoryForm[key].value = pCategory.data.result[key]._id;
+					categoryForm[key].elementConfig.selected = [pCategory.data.result[key]._id];
+				} else {
+				  categoryForm[key].value = pCategory.data.result[key];
+				}
+			  }
+				console.log("categoryForm", categoryForm);
+			  this.setState({ categoryForm: categoryForm, requestStatus: true  }, () => console.log('STATE', this.state));
+			}
+			
+	   }))	  
+	   .catch(error => {console.log("Edit Category ",error);this.setState({requestStatus: true})});  
+   }
+}
 
   render() {
     const formElementsArray = [];
@@ -194,50 +196,50 @@ class CategoryEdit extends Component {
         config: this.state.categoryForm[key]
       });
     }
-    //console.log("Form elements", formElementsArray);
-    let form = (
-      <Form noValidate>
-        {formElementsArray.map(formElement => (
-          <Row key={formElement.id}>
-            <Col xs="4" sm="12" key={formElement.id}>
-              <InputElement
-                key={formElement.id}
-                label={formElement.config.label}
-                elementType={formElement.config.elementType}
-                elementConfig={formElement.config.elementConfig}
-                changed={event =>
-                  this.inputChangedHandler(event, formElement.id)
-                }
-                treechanged={(event, data) => {
-                  return this.handleTreeChange(event, data, formElement.id);
-                }}
-                value={formElement.config.value}                
-              />
-            </Col>
-          </Row>
-        ))}
-        <Row>
-          <Col xs="6" className="text-right">
-            <Button
-              onClick={e => this.submitHandler(e)}
-              color="success"
-              className="px-4"
-            >
-              Submit
-            </Button>
-          </Col>
-          <Col xs="6">
-            <Button
-              onClick={() => this.cancelHandler()}
-              color="primary"
-              className="px-4"
-            >
-              Cancel
-            </Button>
-          </Col>
-        </Row>
-      </Form>
-    );
+    let form = null;
+    
+    if(this.state.requestStatus){
+		form = (
+		  <Form noValidate>
+			{formElementsArray.map(formElement => (
+			  <Row key={formElement.id}>
+				<Col xs="4" sm="12" key={formElement.id}>
+				  <InputElement
+					key={formElement.id}
+					label={formElement.config.label}
+					elementType={formElement.config.elementType}
+					elementConfig={formElement.config.elementConfig}
+					changed={event =>
+					  this.inputChangedHandler(event, formElement.id)
+					}
+					value={formElement.config.value}                
+				  />
+				</Col>
+			  </Row>
+			))}
+			<Row>
+			  <Col xs="6" className="text-right">
+				<Button
+				  onClick={e => this.submitHandler(e)}
+				  color="success"
+				  className="px-4"
+				>
+				  Submit
+				</Button>
+			  </Col>
+			  <Col xs="6">
+				<Button
+				  onClick={() => this.cancelHandler()}
+				  color="primary"
+				  className="px-4"
+				>
+				  Cancel
+				</Button>
+			  </Col>
+			</Row>
+		  </Form>
+		);
+	}
     return (
       <div className="animated fadeIn">
         <Row>

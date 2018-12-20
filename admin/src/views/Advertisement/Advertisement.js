@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Badge} from 'reactstrap';
-import Moment from 'moment';
+//import Moment from 'moment';
 import ReadMoreReact from 'read-more-react';
 // import PropTypes from 'prop-types';
 class Advertisement extends Component {
-  constructor(props){
-    super(props);
-  }
+  //~ constructor(props){
+    //~ super(props);
+  //~ }
   render() {
     return (
       <tr key={this.props.adv._id}>
@@ -18,8 +18,8 @@ class Advertisement extends Component {
         <td>{(this.props.adv && this.props.adv.visitor)?this.props.adv.visitor.length:'0'}</td>  
         <td><img src={'assets/uploads/AdvertisementImage/'+this.props.adv.image} className="avatar" alt=""/></td>
         <td>
-          <Badge className="mousePointer" onClick={this.props.changeStatus.bind(this, this.props.adv)} color={(this.props.adv.status == '1')?'danger':'success'}>
-            {(this.props.adv.status == '1')?'Inctive':'Active'}
+          <Badge className="mousePointer" onClick={this.props.changeStatus.bind(this, this.props.adv)} color={(this.props.adv.status === '1')?'danger':'success'}>
+            {(this.props.adv.status === '1')?'Inctive':'Active'}
           </Badge>
         </td>
         <td>

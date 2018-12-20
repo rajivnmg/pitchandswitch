@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Alert, Form, Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+//import { Alert, Form, Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import axios from 'axios';
-import Select from 'react-styled-select'
-import DropdownTreeSelect from 'react-dropdown-tree-select'
+//import Select from 'react-styled-select'
+//import DropdownTreeSelect from 'react-dropdown-tree-select'
 //import 'react-dropdown-tree-select/dist/styles.css'
 import 'antd/dist/antd.css';
 
 import { TreeSelect } from 'antd';
-const TreeNode = TreeSelect.TreeNode;
+//const TreeNode = TreeSelect.TreeNode;
 
 class CategorySelectBox extends Component {
   constructor(props) {
