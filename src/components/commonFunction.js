@@ -15,6 +15,18 @@ const distance = function distance(lat1, lon1, lat2, lon2, unit) {
 	return dist.toFixed(2)
 };
 
+
+//function to Capitalize the first letter of the string
+const letterCaps = (str) =>  {  
+ if (typeof str !== 'string' || str === null || str === '') return ''; 
+  str = str.toLowerCase().split(' ');
+  for (var i = 0; i < str.length; i++) {
+    str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+  }
+  return str.join(' ');
+}
+
 module.exports = {
-	distance
+	distance,
+	letterCaps
 }

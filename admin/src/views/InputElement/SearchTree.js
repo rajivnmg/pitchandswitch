@@ -5,12 +5,12 @@ const { TreeNode } = Tree;
 const Search = Input.Search;
 
 const getParentKey = (key, tree) => {
-  let parentKey = null;
+  let parentKey;
   for (let i = 0; i < tree.length; i++) {
     const node = tree[i];
     if (node.children) {
       if (node.children.some(item => item._id === key)) {
-        parentKey = node.parent || node._id;
+        parentKey = node._id;
       } else if (getParentKey(key, node.children)) {
         parentKey = getParentKey(key, node.children);
       }
@@ -36,10 +36,11 @@ class SearchTree extends React.Component {
 	//const expandedKeys = [];
 	//console.log('DDDD', this.props.categorydata);
 	generateList(this.props.categorydata, dataList);
+	
 	const expandedKeys = dataList.map((item) => {
       return getParentKey(item._id, this.props.categorydata);
     }).filter((item, i, self) => item && self.indexOf(item) === i);
-	
+	console.log('DDDD',dataList, expandedKeys);
 	this.state = {
 		expandedKeys: expandedKeys,
 		searchValue: '',

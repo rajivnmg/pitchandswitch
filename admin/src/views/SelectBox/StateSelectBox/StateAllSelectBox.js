@@ -38,8 +38,7 @@ class StateAllSelectBox extends Component {
   }
   
   render() {	  
-    return (
-      <div className="form-group">      {this.props.countryId}  
+    return (      
        <Input type="select" 
 		onChange={(e) => this.props.onSelectState(e.target.value)}
 		innerRef={this.props.reference} className="form-control">
@@ -48,8 +47,6 @@ class StateAllSelectBox extends Component {
           return <option value={option._id} key={option.stateName}>{option.stateName.toUpperCase()}</option>
         })}
 	  </Input>
-      </div>
-      
     )
   }
 }

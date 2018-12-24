@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Select } from 'antd';
+import {letterCaps} from '../../../utility';
 const Option = Select.Option;
+
 
 // a select with dynamically created options
 class UserSelectBox extends Component {
-  constructor(props) {
-    super(props);    
-    this.state = {
-		options: []
-	}; 	
-  }
+	  constructor(props) {
+		super(props);    
+		this.state = {
+			options: []
+		}; 	
+	  }
   
-handleChange = (value) => {
-	this.props.onSelectUser(value);
-}
+	handleChange = (value) => {
+		this.props.onSelectUser(value);
+	}
    
   componentDidMount(){
 	if(this.state.options.length === 0){
@@ -30,10 +32,6 @@ handleChange = (value) => {
 		 });
 	 }
   }
-	Capitalize(str){
-		if(str)	return str.charAt(0).toUpperCase() + str.slice(1);
-		return str;
-	}
 
   render() {	  
     return (		
@@ -47,7 +45,7 @@ handleChange = (value) => {
 		defaultValue={this.props.value}		
 	  >
 		{this.state.options.map((opt,k) => 
-			<Option value={opt._id} key={k}>{this.Capitalize(opt.userName)}</Option>
+			<Option value={opt._id} key={k}>{letterCaps(opt.userName)}</Option>
 		)}
 	</Select>
     )

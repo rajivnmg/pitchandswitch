@@ -179,7 +179,6 @@ class CategoryEdit extends Component {
 				  categoryForm[key].value = pCategory.data.result[key];
 				}
 			  }
-				console.log("categoryForm", categoryForm);
 			  this.setState({ categoryForm: categoryForm, requestStatus: true  }, () => console.log('STATE', this.state));
 			}
 			

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import InputElement from "../InputElement/InputElement";
-import SearchTree from "./SearchTree";
 import {
   Badge,
   Button,
@@ -171,7 +170,7 @@ class CategoryAdd extends Component {
     updatedFormElement.touched = true;
     updatedCategory[inputIdentifier] = updatedFormElement;
     this.setState({ categoryForm: updatedCategory }, () => {
-			console.log('data value for category', this.state.categoryForm);
+			//console.log('data value for category', this.state.categoryForm);
 	});
   };
   

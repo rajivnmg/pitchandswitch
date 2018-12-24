@@ -23,7 +23,6 @@ class SizeSelectBox extends Component {
 		  this.setState({
             options: result.data.result,           
           });	
-         console.log("options",this.state.options)		  
       }      
     })
    .catch((error) => {

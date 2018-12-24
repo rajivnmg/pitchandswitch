@@ -42,7 +42,9 @@ class SubscriptionSelectBox extends Component {
       <div className="form-group">{this.props.cityID}  
         <Input type="select" 
 		onChange={(e) => this.props.onSelectSubscription(e.target.value)}
-		innerRef={this.props.reference} className="form-control">
+		innerRef={this.props.reference}
+		defaultValue={this.props.value}
+		className="form-control">
 		<option value="0" >Select Subscription Plan</option>
         {this.state.subscriptions.map(option => {
           return <option value={option._id} key={option.subscriptionName} >{option.subscriptionName}</option>
