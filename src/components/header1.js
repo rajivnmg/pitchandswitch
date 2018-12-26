@@ -75,13 +75,12 @@ class Header extends Component {
                 position.coords.longitude
               ).then(
                 response => {
-                  //console.log('YYYYY', response)
                   const address =
-                    response.results[1].address_components[3].long_name +
+                    response.results[0].address_components[3].long_name +
                     ", " +
-                    response.results[1].address_components[4].long_name +
+                    response.results[0].address_components[4].long_name +
                     ", " +
-                    response.results[1].address_components[7].long_name; //response.results[0].formatted_address;
+                    response.results[0].address_components[7].long_name; //response.results[0].formatted_address;
                   this.setState({ address: address });
                 },
                 error => {
@@ -104,18 +103,13 @@ class Header extends Component {
                 localStorage.getItem("longitude")
               ).then(
                 response => {
-                  //console.log('RRRR', response.results[0])
-                  // if(response.results[0].address_components[0] != undefined && response.results[0].address_components[3].long_name){
-                    //console.log('TEST', response)
-
-                    const address =
-                      response.results[1].address_components[3].long_name +
-                      ", " +
-                      response.results[1].address_components[4].long_name +
-                      ", " +
-                      response.results[1].address_components[7].long_name; //response.results[0].formatted_address;
-                    this.setState({ address: address });
-                  // }
+                  const address =
+                    response.results[0].address_components[3].long_name +
+                    ", " +
+                    response.results[0].address_components[4].long_name +
+                    ", " +
+                    response.results[0].address_components[7].long_name; //response.results[0].formatted_address;
+                  this.setState({ address: address });
                   //console.log("AAAAAAAAAAAAAADRESS" , address, response.results[0].address_components[3].long_name, response.results[0].address_components[4].long_name, response.results[0].address_components[7].long_name  );
                 },
                 error => {
@@ -167,8 +161,64 @@ class Header extends Component {
   };
 
   searchHandler = () => {
-    this.props.setData(this.state.searchData);
-    this.props.history.replace("/search-listing");
+    console.log('search handler', this.state, this.props, this.props.getData())
+    if (this.state.latitude && this.state.longitude) {
+      var searchData = " ";
+      if (this.state.searchData) {
+        this.setState({ searchData: this.state.searchData });
+        searchData = this.state.searchData;
+      } else {
+        this.setState({ searchData: " " });
+      }
+      if (
+        searchData === null ||
+        this.state.latitude === null ||
+        this.state.longitude === null
+      ) {
+        this.props.setData(null);
+        //window.location = constant.PUBLIC_URL + "search-listing";
+        this.props.history.push("/search-listing");
+      } else {
+        this.props.setData(searchData);
+        // window.location =
+        //   constant.PUBLIC_URL +
+        //   "search-listing/" +
+        //   searchData +
+        //   "/" +
+        //   this.state.latitude +
+        //   "/" +
+        //   this.state.longitude;
+        this.props.history.replace("/");
+        this.props.history.push(
+          "search-listing/" +
+            searchData +
+            "/" +
+            this.state.latitude +
+            "/" +
+            this.state.longitude
+        );
+      }
+    } else {
+      var searchData = " ";
+      if (this.state.searchData) {
+        searchData = this.state.searchData;
+        this.setState({ searchData: this.state.searchData });
+      } else {
+        this.setState({ searchData: " " });
+      }
+      this.setState({ latitude: " ", longitude: " " });
+      var latitude = "";
+      var longitude = "";
+      if (searchData === "") {
+        //window.location = constant.PUBLIC_URL + "search-listing";
+        this.props.history.push("/");
+        this.props.history.push("/search-listing");
+      } else {
+        //window.location = constant.PUBLIC_URL + "search-listing/" + searchData;
+        this.props.history.push("/");
+        this.props.history.push("/search-listing/" + searchData);
+      }
+    }
   };
 
   searchCategory = _id => {
@@ -396,7 +446,6 @@ class Header extends Component {
               filterOption={(inputValue, option) =>
                 this.filterOption(inputValue, option)
               }
-              allowClear={true}
             />
           </div>
           <button

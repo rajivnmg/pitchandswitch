@@ -52,47 +52,47 @@ class postReviewPopup extends Component {
 
   submitHandler(e) {
     e.preventDefault();
-    let formSubmitFlag = true;
-    for (let field in this.state.validation) {
-      //let lastValidFieldFlag = true;
-      let addReview = this.state.validation;
-      addReview[field].valid = null;
-      for (let fieldCheck in this.state.validation[field].rules) {
-        switch (fieldCheck) {
-          case "notEmpty":
-            break;
-        }
-      }
-      this.setState({ validation: addReview });
-    }
+    //let formSubmitFlag = true;
+    // for (let field in this.state.validation) {
+    //   //let lastValidFieldFlag = true;
+    //   let addReview = this.state.validation;
+    //   addReview[field].valid = null;
+    //   for (let fieldCheck in this.state.validation[field].rules) {
+    //     switch (fieldCheck) {
+    //       case "notEmpty":
+    //         break;
+    //     }
+    //   }
+    //   this.setState({ validation: addReview });
+    // }
 
-    if (formSubmitFlag) {
-      const data = new FD();
-      data.append("comment", this.state.comments);
-      data.append("review", this.state.review);
-      data.append(
-        "submitUserId",
-        this.state.offerTrade.offerTradeId.SwitchUserId._id
-      );
-      data.append("userId", this.state.offerTrade.offerTradeId.pitchUserId._id);
-      data.append("tradeId", this.state.offerTrade._id);
-      axios.post("/trade/submitReview", data).then(result => {
-        //console.log("result", result.data.result);
-        if (result.data.code === 200) {
-          this.setState({
-            message: result.data.message,
-            code: result.data.code,
-            showFormSuccess: true,
-            showFormError: false,
-            isProcess: false
-          });
-          setTimeout(() => {
-            this.setState({ showFormError: false, showFormSuccess: false });
-            window.location.href = "/dashboard";
-          }, 12000);
-        }
-      });
-    }
+    //if (formSubmitFlag) {
+    const data = new FD();
+    data.append("comment", this.state.comments);
+    data.append("review", this.state.review);
+    data.append(
+      "submitUserId",
+      this.state.offerTrade.offerTradeId.SwitchUserId._id
+    );
+    data.append("userId", this.state.offerTrade.offerTradeId.pitchUserId._id);
+    data.append("tradeId", this.state.offerTrade._id);
+    axios.post("/trade/submitReview", data).then(result => {
+      //console.log("result", result.data.result);
+      if (result.data.code === 200) {
+        this.setState({
+          message: result.data.message,
+          code: result.data.code,
+          showFormSuccess: true,
+          showFormError: false,
+          isProcess: false
+        });
+        setTimeout(() => {
+          this.setState({ showFormError: false, showFormSuccess: false });
+          window.location.href = "/dashboard";
+        }, 12000);
+      }
+    });
+    //}
   }
 
   render() {

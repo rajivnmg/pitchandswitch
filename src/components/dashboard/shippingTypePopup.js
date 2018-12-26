@@ -4,7 +4,7 @@ import Popup from "reactjs-popup";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import truckImg from "../../images/truck-img.png";
 import twoType from "../../images/two-type.png";
-import user from "../../images/user.png";
+//import user from "../../images/user.png";
 import axios from "axios";
 import { If, Then, Else } from "react-if-elseif-else-render";
 import successPic from "../../images/successful_img.png";
@@ -380,7 +380,6 @@ class ShippingTypePopup extends Component {
                                 id={"cardHolderName"}
                                 required={true}
                                 name={"cardHolderName"}
-                                type={"cardHolderName"}
                                 onChange={e =>
                                   this.inputChangedHandler(e, "cardHolderName")
                                 }
@@ -396,7 +395,6 @@ class ShippingTypePopup extends Component {
                                 id={"cardNumber"}
                                 required={true}
                                 name={"cardNumber"}
-                                type={"cardNumber"}
                                 onChange={e =>
                                   this.inputChangedHandler(e, "cardNumber")
                                 }
@@ -413,7 +411,6 @@ class ShippingTypePopup extends Component {
                                   id={"expiryMonth"}
                                   required={true}
                                   name={"expiryMonth"}
-                                  type={"expiryMonth"}
                                   onChange={e =>
                                     this.inputChangedHandler(e, "expiryMonth")
                                   }
@@ -429,7 +426,6 @@ class ShippingTypePopup extends Component {
                                   id={"expiryYear"}
                                   required={true}
                                   name={"expiryYear"}
-                                  type={"expiryYear"}
                                   onChange={e =>
                                     this.inputChangedHandler(e, "expiryYear")
                                   }
@@ -447,7 +443,6 @@ class ShippingTypePopup extends Component {
                                 id={"cardCVV"}
                                 required={true}
                                 name={"cardCVV"}
-                                type={"cardCVV"}
                                 onChange={e =>
                                   this.inputChangedHandler(e, "cardCVV")
                                 }

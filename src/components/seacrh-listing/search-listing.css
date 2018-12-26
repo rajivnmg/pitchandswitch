@@ -54,3 +54,4 @@ button.closed:focus{outline: none;}
 .pitchnowPopup{width: max-content !important; float:right;}
 
 .detail-div .btnRow .ditch.add-wishlist.active{ background: #fff url(../../images/add-wishlist-selected.png) no-repeat  no-repeat 24px 14px;}
+.ant-select-clear-icon{display: none !important;}

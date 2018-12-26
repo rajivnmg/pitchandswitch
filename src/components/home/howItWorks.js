@@ -34,7 +34,7 @@ class HowItWorks extends Component {
             videoId="aSDHbyekk2w"
             onClose={() => this.setState({ isOpen: false })}
           />
-          <Link onClick={this.openModal} className="more-items">
+          <Link to=""  onClick={this.openModal} className="more-items">
             Watch Videos
           </Link>
         </div>

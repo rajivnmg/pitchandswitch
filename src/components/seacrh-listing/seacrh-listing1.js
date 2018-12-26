@@ -78,6 +78,20 @@ function random() {
 class SearchListing extends React.Component {
   constructor(props) {
     super(props);
+    console.log('searching lllllllll', this.props);
+    let categoryId = props.match.params.id;
+    let latitude = props.match.params.latitude;
+    if (latitude !== undefined) {
+      latitude = latitude.replace(" ", "");
+    } else {
+      latitude = "";
+    }
+    let longitude = props.match.params.longitude;
+    if (longitude !== undefined) {
+      longitude = longitude.replace(" ", "");
+    } else {
+      longitude = "";
+    }
     this.state = {
       time: random(),
       accordion: false,
@@ -111,10 +125,9 @@ class SearchListing extends React.Component {
         selectedAges: [],
         selectedRatings: []
       },
-      categoryId: this.props.getData().searchData,
-      flag: this.props.getData().flag,
-      latitude: localStorage.getItem('latitude'),
-      longitude: localStorage.getItem('longitude'),
+      categoryId: categoryId,
+      latitude: latitude,
+      longitude: longitude,
       ids: [],
       colors: [],
       ratings: [
@@ -124,7 +137,6 @@ class SearchListing extends React.Component {
         { id: 2, value: 2, checked: false },
         { id: 1, value: 1, checked: false }
       ],
-      optionsChecked: [],
       showMoreCategories: false,
       showMoreCount: 0,
       showBrandCount: 0,
@@ -132,6 +144,8 @@ class SearchListing extends React.Component {
       locationMin: 0,
       locationMax: 1000
     };
+
+    console.log('HERE in search listing', this.state)
   }
   onChange = activeKey => {
     this.setState({
@@ -411,23 +425,11 @@ class SearchListing extends React.Component {
     return null;
   };
 
-  doSearch = () => {
-    if(this.state.flag != this.props.getData().flag){
-      this.setState({
-        categoryId: this.props.getData().searchData,
-        flag: this.props.getData().flag
-      }, () => {
-        this.executeSearch();
-      });
-    }
-  };
 
-  componentWillReceiveProps(newProps) {
-    this.doSearch();
-  }
 
   componentDidMount() {
-    this.doSearch();
+    console.log('in serch listing componentDidMount', this.props);
+    this.executeSearch();
     jquery(".mob_left_box").click(function() {
       jquery(this)
         .next()
