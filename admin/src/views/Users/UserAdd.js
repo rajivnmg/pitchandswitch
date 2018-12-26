@@ -5,7 +5,6 @@ import CountrySelectBox from '../SelectBox/CountrySelectBox/CountrySelectBox'
 import StateAllSelectBox from '../SelectBox/StateSelectBox/StateAllSelectBox'
 import CitySelectBox from '../SelectBox/CitySelectBox/CitySelectBox'
 import SubscriptionSelectBox from '../SelectBox/SubscriptionSelectBox/SubscriptionSelectBox'
-
 import {
   Badge,
   Button,
@@ -29,7 +28,7 @@ import {
   InputGroupAddon,
   InputGroupText,
   Label,
-  Row,
+  Row
 } from 'reactstrap';
 var FD = require('form-data');
 var fs = require('fs');
@@ -41,6 +40,7 @@ class UserAdd extends Component {
     this.middleName = React.createRef();
     this.lastName = React.createRef();
     this.username = React.createRef();
+    this.userType = React.createRef();
     this.password = React.createRef();    
     this.phoneNumber = React.createRef();
     this.dob = React.createRef();
@@ -55,7 +55,26 @@ class UserAdd extends Component {
     this.profilePic = React.createRef(),
 
     this.state = {
-      addUser: {},
+      addUser: {
+			country:'',
+			firstName : '',
+			middleName : '',
+			lastName : '',
+			username : '',
+			userType : '',
+			password : '',
+			phoneNumber :'',
+			dob : '',
+			address : '',
+			city : '',
+			state : '',
+			country : '',
+			zipCode : '',
+			subscriptionPlan : '',
+			confirmPassword : '',
+			email : '',
+			profilePic : '',
+		},
       validation:{
         firstName:{
           rules: {
@@ -114,7 +133,17 @@ class UserAdd extends Component {
               valid: false
             },
             emailCheck: {
-              message: 'must be a valid email',
+              message: 'Must be a valid email',
+              valid: false
+            }
+          },
+          valid: null,
+          message: ''
+        },
+        userType: {
+          rules: {
+            notEmpty: {
+              message: 'Please choose a userType',
               valid: false
             }
           },
@@ -134,7 +163,7 @@ class UserAdd extends Component {
         address: {
           rules: {
             notEmpty: {
-              message: 'address field can\'t be left blank',
+              message: 'Address field can\'t be left blank',
               valid: false
             }
           },
@@ -154,7 +183,7 @@ class UserAdd extends Component {
         zipCode: {
           rules: {
             notEmpty: {
-              message: 'zipCode fields can\'t be left blank',
+              message: 'ZipCode fields can\'t be left blank',
               valid: false
             }
           },
@@ -239,6 +268,7 @@ class UserAdd extends Component {
         data.append('middleName', this.middleName.value),
         data.append('lastName', this.lastName.value),
         data.append('userName', this.userName.value),
+        data.append('userType', this.userType.value),
         data.append('password', this.password.value),
         data.append('email', this.email.value),
         data.append('profilePic', this.state.selectedFile)
@@ -250,8 +280,7 @@ class UserAdd extends Component {
         data.append('country', this.state.country),
         data.append('zipCode', this.zipCode.value),
         data.append('subscriptionPlan', this.state.subscriptionPlan)
-        axios.post('/user/signup', data).then(result => {
-          console.log('USERasdasfdasdfasdfasdfasdfasdf', data)
+        axios.post('/user/signup', data).then(result => {          
           if(result.data.code === 200){
             this.props.history.push("/users");
           }
@@ -313,25 +342,37 @@ class UserAdd extends Component {
                   <Input type="email" invalid={this.state.validation.email.valid === false} innerRef={input => (this.email = input)} placeholder="Email" />
                   <FormFeedback invalid={this.state.validation.email.valid === false}>{this.state.validation.email.message}</FormFeedback>
                 </FormGroup>
-                 <FormGroup>
-                  <Label htmlFor="contactnumber">Contact Number</Label>
-                  <Input type="text" invalid={this.state.validation.phoneNumber.valid === false} innerRef={input => (this.phoneNumber = input)} placeholder="ContactNumber" />
+                <FormGroup>
+					<Label htmlFor="userType">User Type</Label><span className="required">*</span>
+					<Input type="select" invalid={this.state.validation.userType.valid === false} innerRef={input => (this.userType = input)} id="userType" name="userType" className="form-control" required>
+						<option value="">Select UserType</option>
+						<option value="1">Admin</option>
+						<option value="0">User</option>
+					</Input> 
+					 <FormFeedback invalid={this.state.validation.userType.valid === false}>{this.state.validation.userType.message}</FormFeedback>
                 </FormGroup>
                  <FormGroup>
-                  <Label htmlFor="contactnumber">Address</Label>
+                  <Label htmlFor="contactnumber">Contact Number</Label><span className="required">*</span>
+                  <Input type="text" invalid={this.state.validation.phoneNumber.valid === false} innerRef={input => (this.phoneNumber = input)} placeholder="ContactNumber" />
+                  <FormFeedback invalid={this.state.validation.phoneNumber.valid === false}>{this.state.validation.phoneNumber.message}</FormFeedback>
+                </FormGroup>
+                 <FormGroup>
+                  <Label htmlFor="address">Address</Label><span className="required">*</span>
                   <Input type="textarea" invalid={this.state.validation.address.valid === false} innerRef={input => (this.address = input)} placeholder="Address" />
+                  <FormFeedback invalid={this.state.validation.address.valid === false}>{this.state.validation.address.message}</FormFeedback>
                 </FormGroup>
                <FormGroup>
                <Row>
                   <Col xs="4" sm="4">
-                  <Label htmlFor="username">DOB</Label>
-                  <Input type="date" invalid={this.state.validation.dob.valid === false} innerRef={input => (this.dob = input)} placeholder="DOB" width="20%" />                 
+                  <Label htmlFor="dob">DOB</Label><span className="required">*</span>
+                  <Input type="date" invalid={this.state.validation.dob.valid === false} innerRef={input => (this.dob = input)} placeholder="DOB" width="20%" /> 
+                  <FormFeedback invalid={this.state.validation.dob.valid === false}>{this.state.validation.dob.message}</FormFeedback>                
 				</Col>
                 </Row>
                 </FormGroup>
                
                  <FormGroup>
-                  <Label htmlFor="username">Country</Label><span className="required">*</span>
+                  <Label htmlFor="country">Country</Label><span className="required">*</span>
                   <CountrySelectBox onSelectCountry={this.handleCountry}/>
                 </FormGroup>
                 
@@ -346,8 +387,9 @@ class UserAdd extends Component {
                 </FormGroup>
                 
                  <FormGroup>
-                  <Label htmlFor="text">ZipCode</Label><span className="required">*</span>
+                  <Label htmlFor="zipCode">ZipCode</Label><span className="required">*</span>
                   <Input type="text" invalid={this.state.validation.zipCode.valid === false} innerRef={input => (this.zipCode = input)} placeholder="zipCode" />
+                   <FormFeedback invalid={this.state.validation.zipCode.valid === false}>{this.state.validation.zipCode.message}</FormFeedback>
                 </FormGroup>
                 
                  <FormGroup>

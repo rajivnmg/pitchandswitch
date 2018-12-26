@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Badge} from 'reactstrap';
+//import { Badge} from 'reactstrap';
 import Moment from 'moment';
 import axios from 'axios';
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
-var FD = require('form-data');
-var fs = require('fs');
+//import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+//var FD = require('form-data');
+//var fs = require('fs');
 
 // import PropTypes from 'prop-types';
 class Trade extends Component {

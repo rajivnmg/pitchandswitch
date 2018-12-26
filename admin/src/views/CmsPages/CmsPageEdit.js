@@ -1,28 +1,15 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 import axios from 'axios';
-import {
-  Badge,
-  Button,
-  ButtonDropdown,
+import {  
+  Button,  
   Card,
-  CardBody,
-  CardFooter,
+  CardBody,  
   CardHeader,
-  Col,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
+  Col, 
   Form,
-  FormGroup,
-  FormText,
-  FormFeedback,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
+  FormGroup, 
+  Input, 
   Label,
   Row,
 } from 'reactstrap';
@@ -31,7 +18,7 @@ import ReactQuill from 'react-quill'; // ES6
 import 'react-quill/dist/quill.snow.css'; // ES6
 
 var FD = require('form-data');
-var fs = require('fs');
+//var fs = require('fs');
 
 // import PropTypes from 'prop-types';
 class CmsPageEdit extends Component {
@@ -105,7 +92,15 @@ class CmsPageEdit extends Component {
                   editPage[field].message = editPage[field].rules[fieldCheck].message;
                }
               break;
+             default:
+				if(lastValidFieldFlag === true && this[field].value.length === 0){
+                  lastValidFieldFlag = false;
+                  formSubmitFlag = false;
+                  editPage[field].valid = false;
+                  editPage[field].message = editPage[field].rules[fieldCheck].message;
                }
+             
+          }
         }
         this.setState({ validation: editPage});
       }
@@ -195,7 +190,7 @@ class CmsPageEdit extends Component {
                     <FormGroup>
 						 <Label htmlFor="brand">Banner Image</Label>
 						  <Input type="file" innerRef={input => (this.bannerImage = input)} onChange={this.fileChangedHandler} placeholder="Banner Image" />
-						  <img src={'assets/uploads/cmsPageImage/'+this.state.editPage.bannerImage} width="60"/>
+						  <img src={'assets/uploads/cmsPageImage/'+this.state.editPage.bannerImage} width="60" alt="CMS Page"/>
 					   </FormGroup>
 
                   </Col>

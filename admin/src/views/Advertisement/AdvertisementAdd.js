@@ -2,43 +2,39 @@ import React,{ Component }from 'react'
 import axios from 'axios'
 import {Link} from 'react-router-dom'
 import {
-  Badge,
+  
   Button,
-  ButtonDropdown,
+ 
   Card,
   CardBody,
-  CardFooter,
+ 
   CardHeader,
   Col,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
+ 
+ 
   Form,
   FormGroup,
-  FormText,
+ 
   FormFeedback,
   Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
+ 
+  
   Label,
   Row,
 } from 'reactstrap';
 
 var FD = require('form-data');
-var fs = require('fs');
+//var fs = require('fs');
 
 class AdvertisementAdd extends Component {
 
   constructor(props){
     super(props)
-    this.advertisementName = React.createRef(),
-    this.description = React.createRef(),
-    this.redirectURL = React.createRef(),
-    this.image = React.createRef(),
-    this.status = React.createRef(),
+    this.advertisementName = React.createRef();
+    this.description = React.createRef();
+    this.redirectURL = React.createRef();
+    this.image = React.createRef();
+    this.status = React.createRef();
 
     
     this.state = {
@@ -104,19 +100,26 @@ class AdvertisementAdd extends Component {
 
              }
             break;
-          
+           default:
+			if(lastValidFieldFlag === true && this[field].value.length === 0){
+                lastValidFieldFlag = false;
+                formSubmitFlag = false;
+                addAdv[field].valid = false;
+                addAdv[field].message = addAdv[field].rules[fieldCheck].message;
+
+             }
         }
       }
       this.setState({ validation: addAdv});
     }
     if(formSubmitFlag){
-      const data =new FD()
-      data.append('advertisementName', this.advertisementName.value),
-      data.append('description', this.description.value),
-      data.append('redirectURL', this.redirectURL.value),
-      data.append('status', this.status.value),
+      const data =new FD();
+      data.append('advertisementName', this.advertisementName.value);
+      data.append('description', this.description.value);
+      data.append('redirectURL', this.redirectURL.value);
+      data.append('status', this.status.value);
       //data.append('image', this.state.selectedFile, this.state.selectedFile.name)
-      data.append('image', this.state.selectedFile)
+      data.append('image', this.state.selectedFile);
 
       // let addAdv = this.state.addAdv;
       // addAdv.advertisementName = this.advertisementName.value;
@@ -125,7 +128,7 @@ class AdvertisementAdd extends Component {
       // addAdv.image = this.image.value;
       //console.log('asdasdfasfasfdasdf',data);
       axios.post('/advertisement/newAds', data).then(result => {
-        if(result.data.code ==200){
+        if(result.data.code === 200){
           this.props.history.push('/advertisement');
         }
       })

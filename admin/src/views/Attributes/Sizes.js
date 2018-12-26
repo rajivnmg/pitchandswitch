@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import axios from 'axios';
 import ReactPaginate from 'react-paginate';
 import Size from './Size'
 var FD = require('form-data');
-var fs = require('fs');
+//var fs = require('fs');
 
 
 class Sizes extends Component {
@@ -20,8 +20,8 @@ class Sizes extends Component {
       totalPages: 1,
       sizesCount: 0
     };
-    console.log('THIS OBJ', this);
-    if(this.props.match.params.page != undefined){
+   // console.log('THIS OBJ', this);
+    if(this.props.match.params.page !== undefined){
       this.setState({currentPage: this.props.match.params.page});
     }
     this.toggle = this.toggle.bind(this);
@@ -78,7 +78,7 @@ class Sizes extends Component {
 				 this.props.history.push("/login");
 			 }
 		});
-		console.log('ddddd',this.state.sizes); 
+		//console.log('ddddd',this.state.sizes); 
     }
   
   componentDidMount() {

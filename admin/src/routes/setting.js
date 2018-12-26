@@ -9,4 +9,6 @@ router.get('/getModulesSetting',settingCOntroller.getModulesSetting);
 router.post('/updateModuleSetting',settingCOntroller.updateModuleSetting);
 router.get('/getSocialMediaSetting',settingCOntroller.getSocialMediaSetting);
 router.post('/updateSocialMediaSetting',settingCOntroller.updateSocialMediaSetting);
+router.get('/getContactSetting',settingCOntroller.getContactSetting);
+router.post('/updateContactSetting',settingCOntroller.updateContactSetting);
 module.exports = router;

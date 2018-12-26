@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { 
-    Badge,
+  
     Col, 
     Nav, 
     NavItem, 
@@ -8,13 +8,9 @@ import {
     Row, 
     TabContent, 
     TabPane,
-    Button,
-    Card,
-    CardBody,
-    CardFooter,
-    CardHeader,
-    FormGroup,
-    Input,
+  
+ 
+  
     Label, } from 'reactstrap';
 
 import classnames from 'classnames';
@@ -37,7 +33,7 @@ class CmsPageView extends Component {
     //if(localStorage.getItem('jwtToken') != null)
       //axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
       axios.get('/page/viewPage/' + this.state.pageId).then(result => {
-        if(result.data.code == '200'){
+        if(result.data.code === '200'){
           //localStorage.setItem('jwtToken', result.data.result.accessToken);
           this.setState({ viewPage: result.data.result});
           this.pageTitle.value = result.data.result.pageTitle;
@@ -84,7 +80,7 @@ class CmsPageView extends Component {
               <Col xs='12' md='4'>
               {this.state.viewPage.pageTitle} <br></br></Col>
               <Col xs='12' md='5'>
-            <img  src= {'assets/uploads/cmsPageImage/'+this.state.viewPage.bannerImage} width='120'/>
+            <img  src= {'assets/uploads/cmsPageImage/'+this.state.viewPage.bannerImage} width='120' alt=""/>
             </Col>
               </Row>
               <Row>

@@ -86,6 +86,13 @@ class CmsPageAdd extends Component {
                   newPage[field].message = newPage[field].rules[fieldCheck].message;
                }
               break;
+            default:
+             if(lastValidFieldFlag === true && this[field].value.length === 0){
+                  lastValidFieldFlag = false;
+                  formSubmitFlag = false;
+                  newPage[field].valid = false;
+                  newPage[field].message = newPage[field].rules[fieldCheck].message;
+               }              
           }
         }
         this.setState({ validation: newPage});
@@ -124,7 +131,7 @@ class CmsPageAdd extends Component {
                   <Col xs="4" sm="12">
                     <FormGroup>
                       <Label htmlFor="pagetitle">Page Title</Label>
-                      <Input type="text" invalid={this.state.validation.pageTitle.valid == false} innerRef={input => (this.pageTitle = input)} placeholder="Page Title" />
+                      <Input type="text" invalid={this.state.validation.pageTitle.valid === false} innerRef={input => (this.pageTitle = input)} placeholder="Page Title" />
 
                       <FormFeedback invalid={this.state.validation.pageTitle.valid === false}>{this.state.validation.pageTitle.message}</FormFeedback>
 

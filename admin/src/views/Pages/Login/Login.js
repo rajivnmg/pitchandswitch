@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert, Form, Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import axios from 'axios';
 import { Link } from "react-router-dom";
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+//import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 
 class Login extends Component {
   constructor() {
@@ -50,7 +50,7 @@ class Login extends Component {
 
   
   render() {
-    const { email, password, message } = this.state;
+    const { message } = this.state;
     return (
       <div className="app flex-row align-items-center">
         <Container>

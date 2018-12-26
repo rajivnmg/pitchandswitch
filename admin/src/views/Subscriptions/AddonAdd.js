@@ -1,28 +1,16 @@
 import React,{ Component }from 'react'
 import axios from 'axios'
-import {Link} from 'react-router-dom'
-import {
-  Badge,
-  Button,
-  ButtonDropdown,
+//import {Link} from 'react-router-dom'
+import {  
+  Button, 
   Card,
-  CardBody,
-  CardFooter,
+  CardBody, 
   CardHeader,
-  Col,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
+  Col, 
   Form,
-  FormGroup,
-  FormText,
+  FormGroup, 
   FormFeedback,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
+  Input, 
   Label,
   Row,
 } from 'reactstrap';
@@ -30,11 +18,11 @@ class AddonAdd extends Component {
 
   constructor(props){
     super(props)
-    this.packageName = React.createRef(),
-    this.description = React.createRef(),
-    this.price = React.createRef(),
-    this.totalTradePermitted = React.createRef(),
-    this.totalInventoryAllowed = React.createRef(),    
+    this.packageName = React.createRef();
+    this.description = React.createRef();
+    this.price = React.createRef();
+    this.totalTradePermitted = React.createRef();
+    this.totalInventoryAllowed = React.createRef();
     this.state = {
       addonAdd: {},
       validation:{
@@ -111,6 +99,14 @@ class AddonAdd extends Component {
 
              }
             break;
+          default:
+			if(lastValidFieldFlag === true && this[field].value.length === 0){
+                lastValidFieldFlag = false;
+                formSubmitFlag = false;
+                addonAdd[field].valid = false;
+                addonAdd[field].message = addonAdd[field].rules[fieldCheck].message;
+
+             }
           
         }
       }
@@ -124,7 +120,7 @@ class AddonAdd extends Component {
       addonAdd.totalTradePermitted = this.totalTradePermitted.value;
       addonAdd.totalInventoryAllowed = this.totalInventoryAllowed.value;
       axios.post('/subscription/newAddon', addonAdd  ).then(result => {
-        if(result.data.code == '200'){
+        if(result.data.code === '200'){
           this.props.history.push('./Addon');
         }
       })

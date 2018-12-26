@@ -1,53 +1,53 @@
 import React, { Component } from 'react';
-import { Alert, Form, Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import axios from 'axios';
-import Select from 'react-styled-select'
+import { Select } from 'antd';
+import {letterCaps} from '../../../utility';
+const Option = Select.Option;
+
 
 // a select with dynamically created options
-var options = []
-
 class UserSelectBox extends Component {
-  constructor(props) {
-    super(props);    
-    this.state = { value: 'Select an Auther'} ; 
-    this.state = { user : ''}    
-    this.state = { selectedValue : ''}    
-  }
+	  constructor(props) {
+		super(props);    
+		this.state = {
+			options: []
+		}; 	
+	  }
   
-  onChange(e){
-	 if(e){
-	    console.log('e',e);
-	   this.setState({selectedValue: e});
-	   this.props.onSelectUser(e);  
-      }
-  }
-  
-  
+	handleChange = (value) => {
+		this.props.onSelectUser(value);
+	}
+   
   componentDidMount(){
-    axios.get('/user/listUser').then(result => {
-      if(result.data.code === 200){		  
-		 this.setState({
-            options: result.data.result,           
-          });
-       }      
-    })
-    .catch((error) => {
-      console.log('error', error)
-        if(error.code === 401) {
-          this.props.history.push("/login");
-        }
-     });
+	if(this.state.options.length === 0){
+		axios.get('/user/listUser').then(result => {
+		  if(result.data.code === 200){		  
+			 this.setState({
+				options: result.data.result          
+			  });
+		   }      
+		})
+		.catch((error) => {
+		  console.log('error UserSelectBox', error)			
+		 });
+	 }
   }
-  
+
   render() {	  
-     let optionsLists;
-      if(this.state.options){
-        let optionsList = this.state.options;                
-         optionsLists = optionsList.map(option => ({ label: option.userName, value: option._id }));  
-     }	
-    return (
-     <Select options={optionsLists}	value={this.props.value} onChange ={this.onChange.bind(this)} innerRef={this.props.reference} classes={{  selectValue: 'my-custom-value', selectArrow: 'my-custom-arrow'}}
-		/>
+    return (		
+		<Select
+		showSearch
+		style={{ width: 200 }}
+		placeholder="Select a person"
+		optionFilterProp="children"
+		onChange={this.handleChange}   
+		filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+		defaultValue={this.props.value}		
+	  >
+		{this.state.options.map((opt,k) => 
+			<Option value={opt._id} key={k}>{letterCaps(opt.userName)}</Option>
+		)}
+	</Select>
     )
   }
 }

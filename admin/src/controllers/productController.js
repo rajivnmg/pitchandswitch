@@ -1069,6 +1069,8 @@ const searchresult = (req, res) => {
                   "userId.firstName": 1,
                   "userId.lastName": 1,
                   "userId.profilePic": 1,
+                  "userId.loc": 1,
+                  "userId.loct": 1,
                   "userId._id": 1
                 }
               }

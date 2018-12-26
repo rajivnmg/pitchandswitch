@@ -13,8 +13,17 @@ isContact:{
 email:{
 	type:String,
 	sparse: true,
-	lowercase:true,
-	required:true
+	lowercase:true
+	//required:true
+},
+fromEmail:{
+	type:String,
+	sparse: true	
+},
+contactNumber:{
+	type:String,
+	sparse: true
+	
 },
 address:{
 	type:String,
@@ -22,19 +31,23 @@ address:{
 },
 city:{
 	type:String,
-	trim:true
+	trim:true,
+	default:null
 },
 state:{
 	type:String,
-	trim:true
+	trim:true,
+	default:null
 },
 country:{
 	type:String,
-	trim:true
+	trim:true,
+	default:null
 },
 zipCode:{
 	type:String,
-	trim:true
+	trim:true,
+	default:null
 },
 },
 {

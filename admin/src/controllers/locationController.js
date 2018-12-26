@@ -405,7 +405,7 @@ const viewStates = (req, res) => {
   })
 }
   
-const getState = (req, res) => { 
+const getState = (req, res) => { 	
   State.find({ country:req.params.id }, req.body, { new:true },(err,result) => {
     if(err){
 		return res.send({

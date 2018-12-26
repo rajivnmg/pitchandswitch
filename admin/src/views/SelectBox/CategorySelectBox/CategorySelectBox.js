@@ -1,52 +1,38 @@
 import React, { Component } from 'react';
-import { Alert, Form, Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+//import { Alert, Form, Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import axios from 'axios';
-import Select from 'react-styled-select'
-import DropdownTreeSelect from 'react-dropdown-tree-select'
+//import Select from 'react-styled-select'
+//import DropdownTreeSelect from 'react-dropdown-tree-select'
 //import 'react-dropdown-tree-select/dist/styles.css'
 import 'antd/dist/antd.css';
 
 import { TreeSelect } from 'antd';
-const TreeNode = TreeSelect.TreeNode;
+//const TreeNode = TreeSelect.TreeNode;
 
 class CategorySelectBox extends Component {
   constructor(props) {
-    super(props);
-    console.log("valuevaluevalue",this.props)  
-    this.state = { value: 'Select Category', category : '',	data:[]};
-    // this.onChange = this.onChange.bind(this)
-   //  this.onDefaultValues(this.props.value)
-
+    super(props);    
+    this.state = { 
+		value:props.value, 
+		category : '',
+		data:[]
+	};
   }
 
-  //~ onChange(currentNode, selectedNodes) {
-		//~ selectedNodes = currentNode;
-		//~ console.log('State Properties', this.state,this.props);
-		//~ console.log('currentNode', currentNode);
-		//~ console.log('selectedNodes',selectedNodes);
-  //~ }
-
-  onChange = (value) => {
-    //console.log(value);
-    this.setState({value});
+ onChange = (value) => {
+    this.setState({value});        
     this.props.onSelectCategory(value);
     this.setState({category:value});
   }
 
   onDefaultValues = (value) => {
-    //this.setState({category:value});
-    console.log('defaultvalue',value);
     this.props.onDefaultValuesSet(value);
   }
-
-componetWillMount(){
-	console.log("componetWillMount called")
-}
 
   componentDidMount(){
     axios.get('/category/allCategories').then(result => {
       if(result.data.code === 200){
-		  console.log("allCategories",result.data.result)
+		//  console.log("allCategories",result.data.result)
         this.setState({
           data: result.data.result,
         });
@@ -61,14 +47,13 @@ componetWillMount(){
   }
 
   render() {
-
     return (
       <TreeSelect
         style={{ width: 300 }}
-        value={this.props.value}
+        value={this.state.value}
         dropdownStyle={{ maxHeight: 300, overflow: 'auto' }}
         treeData={this.state.data}
-        placeholder="Please select"
+        placeholder="Select a Category"
         treeDefaultExpandAll
         onChange={this.onChange}
       />

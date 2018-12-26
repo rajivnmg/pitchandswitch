@@ -4,9 +4,38 @@ import iconLI from '../images/icon-linkedin.png';
 import iconTW from '../images/icon-twitter.png';
 import { Link } from 'react-router-dom';
 import { If, Then} from 'react-if-elseif-else-render';
-
+import axios from 'axios';
 class Footer extends Component {
-	
+	constructor (props) {
+		super(props)
+		this.state = {
+			isFacebook : true,
+			isTwitter : true,
+			isLinkedIn : true
+		}		
+  }
+    
+  componentDidMount(){
+	 //write  in this which you want just ofter rendering the page
+	axios.get('/setting/getSocialMediaSetting').then(result => {
+      if(result.data.code === 200){
+		 // console.log("result",result.data.result[0]);
+		  if(result.data.result && result.data.result.length>0){
+			this.setState({
+				isFacebook : result.data.result[0].isFacebook,
+				isTwitter : result.data.result[0].isTwitter,
+				isLinkedIn : result.data.result[0].isLinkedIn
+			});
+		}
+      }
+    })
+    .catch((error) => {
+    console.log('error', error)
+      if(error.code === 401) {
+        this.props.history.push("/login");
+      }
+    });
+  }
     render() {
 		let  isLoggedIn = (localStorage.getItem('jwtToken') === null)?false:true;
         return(
@@ -27,10 +56,16 @@ class Footer extends Component {
                             </ul>
                             <p>&copy; 2018 Pitch and Switch, Inc.</p>
                         </div>
-                        <div className="right-div">
-                            <a href="https://www.facebook.com" target="_blank"><img src={iconFB} alt={iconFB} /></a>
-                            <a href="https://twitter.com/login" target="_blank"><img src={iconTW} alt={iconTW} /></a>
-                            <a href="https://www.linkedin.com/start/join" target="_blank"><img src={iconLI} alt={iconLI} /></a>
+                        <div className="right-div">							
+						{this.state.isFacebook &&	
+							<a href="https://www.facebook.com" target="_blank"><img src={iconFB} alt={iconFB} /></a>
+						}
+						{this.state.isTwitter &&	
+							<a href="https://twitter.com/login" target="_blank"><img src={iconTW} alt={iconTW} /></a>
+						}
+						{this.state.isLinkedIn &&	
+							<a href="https://www.linkedin.com/start/join" target="_blank"><img src={iconLI} alt={iconLI} /></a>
+						}
                         </div>
                         <div className="cl"></div>
                     </div>

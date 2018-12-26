@@ -57,7 +57,7 @@ class Testimonials extends Component {
 				<h3><span>Testimonials</span></h3>
 				<Slider {...settings}>
 				{this.state.testimonials.map(function (testimonial) {
-					{console.log('testimonial',testimonial)}
+					/*{console.log('testimonial',testimonial)}*/
 					var userName = (testimonial.author)?testimonial.author.userName:'';
 				return (
 				<div key={testimonial}>

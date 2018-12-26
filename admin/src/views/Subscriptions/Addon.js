@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Badge} from 'reactstrap';
-import Moment from 'moment';
+//import Moment from 'moment';
 // import PropTypes from 'prop-types';
 class Addon extends Component {
-  constructor(props){
-    super(props);
-  }
+  //~ constructor(props){
+    //~ super(props);
+  //~ }
   render() {
     return (
       <tr key={this.props.addon._id}>
@@ -17,8 +17,8 @@ class Addon extends Component {
         <td>{this.props.addon.totalTradePermitted}</td>
         <td>{this.props.addon.totalInventoryAllowed}</td>   
         <td>
-          <Badge className="mousePointer" onClick={this.props.changeStatus.bind(this, this.props.addon)} color={(this.props.addon.status == '1')?'success':'danger'}>
-            {(this.props.addon.status == '1')?'Active':'Inctive'}
+          <Badge className="mousePointer" onClick={this.props.changeStatus.bind(this, this.props.addon)} color={(this.props.addon.status === '1')?'success':'danger'}>
+            {(this.props.addon.status === '1')?'Active':'Inctive'}
           </Badge>
         </td>
         <td>

@@ -53,7 +53,16 @@ class ProductAdd extends Component {
     this.brand = React.createRef();
     this.size = React.createRef();
     this.state = {
-       addProduct: {},
+       addProduct: {
+		   productName:'',
+			description:'',
+			category:'',
+			brand:'',
+			size:'',
+			color:'',
+			productAge:'',
+			author:''
+	  },
        Categories: [],
        Users: [],
        categoryValue: '',
@@ -65,7 +74,17 @@ class ProductAdd extends Component {
               valid: false
             }
           },
-          valid: null,
+          valid: true,
+          message: ''
+        },
+         description:{
+          rules: {
+            notEmpty: {
+              message: 'Description field can\'t be left blank',
+              valid: false
+            }
+          },
+          valid: true,
           message: ''
         }
       }
@@ -122,17 +141,18 @@ class ProductAdd extends Component {
               if(lastValidFieldFlag === true && this[field].value.length === 0){
                   lastValidFieldFlag = false;
                   formSubmitFlag = false;
-                  addProduct[field].valid = false;
-                  addProduct[field].message = addProduct[field].addProduct[fieldCheck].message;
+                  addProduct[field].valid = false;                  
+                  addProduct[field].message = addProduct[field].rules[fieldCheck].message;
                }
               break;
+             default:
+				 formSubmitFlag = true;
           }
         }
         this.setState({ validation: addProduct});
       }
 
-      if(formSubmitFlag){
-        console.log("state",this.state)
+      if(formSubmitFlag){        
         const data = new FD();
         console.log('FORM DATA START', this.productName.value);
         data.append('productName', this.productName.value)
@@ -203,33 +223,34 @@ class ProductAdd extends Component {
                   <Col xs="4" sm="12">
                     <FormGroup>
                       <Label htmlFor="company">Name</Label>
-                      <Input type="text" invalid={this.state.validation.productName.valid === false} innerRef={input => (this.productName = input)} placeholder="Product Name" />
-                      <FormFeedback invalid={this.state.validation.productName.valid === false}>{this.state.validation.productName.message}</FormFeedback>
+                      <Input type="text" invalid={this.state.validation.productName.valid === false} innerRef={input => (this.productName = input)} placeholder="Product Name" defaultValue={this.state.addProduct.productName}/>                     
+                      <FormFeedback tooltip invalid={this.state.validation.productName.valid === false}>{this.state.validation.productName.message}</FormFeedback>
                     </FormGroup>
                     </Col>
                 </Row>
                 <FormGroup>
                   <Label htmlFor="description">Description</Label>
-                    <Input type="textarea" innerRef = {input => (this.description = input)} placeholder="Description" required/>
+                    <Input type="textarea" invalid={this.state.validation.description.valid === false} innerRef = {input => (this.description = input)} placeholder="Description" required defaultValue={this.state.addProduct.description}/>
+                     <FormFeedback tooltip invalid={this.state.validation.description.valid === false}>{this.state.validation.description.message}</FormFeedback>
                </FormGroup>
                 <FormGroup>
                   <Label htmlFor="category">Category</Label><br/>
                     <CategorySelectBox onSelectCategory={this.handleCategory}/>
                 </FormGroup>
                  <FormGroup>
-                  <Label htmlFor="user">User</Label>
+                  <Label htmlFor="user">User</Label><br/>
 					<UserSelectBox onSelectUser={this.handleUser}/>
                 </FormGroup>
                  <FormGroup>
-                  <Label htmlFor="size">Size</Label>
+                  <Label htmlFor="size">Size</Label><br/>
                   <SizeSelectBox onSelectSize={this.handleSize}/>
                 </FormGroup>
                 <FormGroup>
                   <Label htmlFor="color">Color</Label>
-                  <Input type="text" innerRef={input => (this.color = input)} placeholder="Color" />
+                  <Input type="text" innerRef={input => (this.color = input)} placeholder="Color" value={this.state.addProduct.color}/>
                 </FormGroup>
                    <FormGroup>
-                 <Label htmlFor="brand">Brand</Label>
+                 <Label htmlFor="brand">Brand</Label><br/>
                   <BrandSelectBox onSelectBrand={this.handleBrand}/>
                 </FormGroup>
                  <FormGroup>

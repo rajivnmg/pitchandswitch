@@ -5,8 +5,6 @@ import Select from "react-select";
 import { Link } from "react-router-dom";
 //import colorImg from "../../images/color.png";
 import star from "../../images/star.png";
-//import { Slider, InputNumber, Row, Col } from 'antd';
-
 import Colors from "./colors";
 import UserAutosearch from "./userSelect";
 import axios from "axios";
@@ -21,9 +19,14 @@ import jquery from "jquery";
 import Aux from "../../hoc/Auxillary";
 import { If, Then /*, ElseIf*/, Else } from "react-if-elseif-else-render";
 const constant = require("../../config/constant");
-
+const commonFunction = require('../commonFunction');
 var FD = require("form-data");
+<<<<<<< HEAD
 //var fs = require("fs");
+=======
+var fs = require("fs");
+const dist = 2;
+>>>>>>> a2eb69643d84b1c0ac8a3f8ab442b0955eac6b4b
 const treeData = [
   {
     label: "month - 6 month",
@@ -738,9 +741,12 @@ class SearchListing extends React.Component {
           catId = item.productCategory._id;
           catName = item.productCategory.title;
         }
-
-        let userID = item.userId ? item.userId._id : "";
-
+		// Get The distance from lat log of user	
+		let UserLatitude = item.userId?item.userId.loct.coordinates[0]:localStorage.getItem("Latitude");
+		let UserLongitude = item.userId?item.userId.loct.coordinates[1]:localStorage.getItem("Longitude");
+		let dist = commonFunction.distance(localStorage.getItem("Latitude"), localStorage.getItem("Longitude"), UserLatitude, UserLongitude, constant.DISTANCE_UNIT);
+						
+		let userID = item.userId?item.userId._id:'';          
         let img = item.userId ? (
           <img
             className="userPicNew"
@@ -831,6 +837,7 @@ class SearchListing extends React.Component {
                   >
                     {item.userId ? item.userId.firstName : ""}
                   </Link>
+                  <p className="distance">{dist} {(constant.DISTANCE_UNIT==='M')?'Miles':'Km'}</p>
                 </div>
               </div>
             </div>

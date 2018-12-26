@@ -603,7 +603,7 @@ const payOnStripe = (req, res) => {
 			
 			let TransactionData = {};
 				TransactionData.transactionId = charge.id
-				TransactionData.transactionType = 'Subscription'
+				TransactionData.transactionType = 'Subscription purchased'
 				TransactionData.userId = req.body.userId
 				TransactionData.paymentId = charge.id
 				TransactionData.transactionAmount = (charge.amount/100)
@@ -713,9 +713,9 @@ const updateUserPlan = (req, res) => {
 			let TransactionData = {};
 				TransactionData.transactionId = charge.id
 				if(req.body.planType ==='addon'){
-					TransactionData.transactionType = 'Addons'
+					TransactionData.transactionType = 'Addons purchased'
 				}else{
-					TransactionData.transactionType = 'Subscription'
+					TransactionData.transactionType = 'Subscription purchased'
 				}				
 				TransactionData.userId = req.body.userId
 				TransactionData.paymentId = charge.id

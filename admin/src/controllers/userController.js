@@ -769,33 +769,27 @@ const updateNewPassword = (req, res) => {
  **/
 const listUser = (req, res) => {
   var token = commonFunction.getToken(req.headers);
-  if (token) {
-    decoded = jwt.verify(token, settings.secret);
-    var userId = decoded.id;
+  //~ if (token) {
+    //~ decoded = jwt.verify(token, settings.secret);
+    //~ var userId = decoded.id;
+    //console.log("userId",userId)
     User.find({}, (err, result) => {
       if (err) {
         return res.send({
           code: httpResponseCode.BAD_REQUEST,
           message: httpResponseMessage.INTERNAL_SERVER_ERROR
         });
-      } else {
-        if (!result) {
-          res.json({
-            message: httpResponseMessage.USER_NOT_FOUND,
-            code: httpResponseMessage.BAD_REQUEST
-          });
-        } else {
+      } else {       
           return res.json({
             code: httpResponseCode.EVERYTHING_IS_OK,
             message: httpResponseMessage.LOGIN_SUCCESSFULLY,
             result: result
           });
-        }
       }
     });
-  } else {
-    return res.status(403).send({ code: 403, message: "Unauthorized." });
-  }
+  //~ } else {
+    //~ return res.status(403).send({ code: 403, message: "Unauthorized." });
+  //~ }
 };
 /** Auther	: KS
  *  Date	: September 23, 2018
@@ -1917,8 +1911,7 @@ getPublicProfile = (req, res) => {
           var totalViewUser = 1000;
           var totalProduct = 0;
           var totalTrade = 0;
-          var totalRating = userRateings ? userRateings[0].totalRating : "1";
-
+          var totalRating = (userRateings && userRateings.lenght > 0)? userRateings[0].totalRating : "1";
           Promise.all([
             User.findOne({ _id: userId }),
             /// Get Total products
@@ -1989,7 +1982,7 @@ module.exports = {
   users,
   contustUs,
   //send,
-  getLoggedInUser,
+  getLoggedInUser, 
   dashboardStates,
   myProfle,
   forgotPassword,

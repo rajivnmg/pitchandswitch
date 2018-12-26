@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Badge} from 'reactstrap';
 import Moment from 'moment';
-import { Button, Modal} from 'reactstrap';
+import { Button} from 'reactstrap';
 class User extends Component {
   Capitalize(str){
 	return str.charAt(0).toUpperCase() + str.slice(1);
@@ -15,6 +15,7 @@ class User extends Component {
         <td>{ this.props.user.userName }</td>
         <td>{ this.props.user.email }</td>
         <td>{ Moment(this.props.user.createdAt).format('Y-M-D') }</td>
+         <td>{(this.props.user && this.props.user.userType === "1")?'Admin':'User'}</td>
         <td><img src={'assets/uploads/ProfilePic/'+ this.props.user.profilePic } className="avatar" alt=""/></td>
         <td><Button color="info" onClick={this.props.onflagUsers.bind(this, this.props.user._id)} className="mr-1">{this.props.user.userFlag.length}</Button></td>
         <td>

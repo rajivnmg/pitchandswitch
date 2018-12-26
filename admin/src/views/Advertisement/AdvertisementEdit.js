@@ -1,34 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import {
-  Badge,
-  Button,
-  ButtonDropdown,
+import { 
+  Button, 
   Card,
-  CardBody,
-  CardFooter,
+  CardBody, 
   CardHeader,
-  Col,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
-  Form,
-  FormGroup,
-  FormText,
-  FormFeedback,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
+  Col, 
+  FormGroup, 
+  Input, 
   Label,
   Row,
 } from 'reactstrap';
 
 var FD = require('form-data');
-var fs = require('fs');
+//var fs = require('fs');
 
 // import PropTypes from 'prop-types';
 class AdvertisementEdit extends Component {
@@ -100,6 +86,14 @@ class AdvertisementEdit extends Component {
 
                }
               break;
+             default:
+				if(lastValidFieldFlag === true && this[field].value.length === 0){
+                  lastValidFieldFlag = false;
+                  formSubmitFlag = false;
+                  addAdv[field].valid = false;
+                  addAdv[field].message = addAdv[field].rules[fieldCheck].message;
+
+               }
           }
         }
         this.setState({ validation: addAdv});
@@ -193,7 +187,7 @@ class AdvertisementEdit extends Component {
 						<FormGroup>
 						 <Label htmlFor="brand">Image</Label>                  
 						  <Input type="file" innerRef={input => (this.image = input)} onChange={this.fileChangedHandler} placeholder="Advertisement Image" /> 	
-						  <img src={'assets/uploads/AdvertisementImage/'+this.state.editAdv.image} width="60"/>
+						  <img src={'assets/uploads/AdvertisementImage/'+this.state.editAdv.image} width="60" alt="Advertisement Banner"/>
 					   </FormGroup>
                    </Col>
                 <Row>
