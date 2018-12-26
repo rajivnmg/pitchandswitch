@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import {Input} from 'reactstrap';
+import { FormGroup, FormFeedback, Label } from "reactstrap";
 import axios from 'axios';
 import InputElement from "../../InputElement/InputElement";
 import Aux from "../../Auxillary";
 class GroupBox extends Component {
-  constructor(props) {		 
+  constructor(props) {
 		super(props);    
-		console.log('in group box', this.props);      
 		this.state = {
 		  countryLoaded: false,
 		  countries : [],
@@ -36,18 +35,21 @@ class GroupBox extends Component {
     });
   }
   
-  onChangeGetStates = (countryId) => {
+  onChangeGetStates = (event) => {
+	  const countryId = event.target.value;
+	  this.props.inputChangedHandler(event, 'country');
 	  if(countryId === null) return null;
 	  axios.get('/location/getState/'+countryId).then(result => {
 		  if(result.data.code === 200){				 
 			this.setState({
-			  states: result.data.result,
-			          
-			}, ()=>{
-				if(this.props.stateID){
-					this.props.onSelectState(this.props.stateID);
-					this.props.reference = this.props.stateID;
-				}
+			  states: result.data.result,	
+			  countryLoaded: true   		          
+			}, ()=>{	
+				console.log('STATE', this.state.states);			
+				//~ if(this.props.stateID){
+					//~ this.props.onSelectState(this.props.stateID);
+					//~ this.props.reference = this.props.stateID;
+				//~ }
 			});
 		  }
 		  
@@ -65,7 +67,8 @@ class GroupBox extends Component {
 	  axios.get('/location/getCity/'+stateId).then(result => {
 		  if(result.data.code === 200){	
 			this.setState({
-			  cities: result.data.result,          
+			  cities: result.data.result,   
+			  countryLoaded: true          
 			});
 		  }		  
 		})
@@ -86,22 +89,34 @@ class GroupBox extends Component {
 					label={"Country"}
 					elementType={"group-box"}
 					elementConfig={{options: this.state.countries, reference: this.props.countryRef}}
-					changed={event =>
-					  this.props.inputChangedHandler(event, 'country')
+					changed={event => 
+						this.onChangeGetStates(event)					  
 					}
 					title={"countryName"}
 					value={this.props.countryID}                
 				  />: null}
 		{(this.props.stateId) ? 
-       <InputElement
-					label={"State"}
-					elementType={"group-box"}
-					elementConfig={{options: this.state.states, reference: this.props.stateRef}}
-					changed={event =>
-					  this.props.inputChangedHandler(event, 'state')
-					}
-					value={this.props.stateId}                
-				  />: null}
+       <FormGroup>
+      <Label htmlFor={this.props.label}>{this.props.label}</Label>
+      <select
+          key={this.props.key}
+          onChange={event => 
+			this.onChangeGetStates(event)					  
+		  }
+          value={this.props.value}
+          ref={this.props.elementConfig.reference}
+        >
+          <option value="0" key="0">
+            --Select--
+          </option>
+          {console.log('IN RENDER STATES', this.state.states)}
+          
+          {this.state.states.map(option1 => { console.log('option1', option1);
+			  return <option value={option1._id} key={option1._id}>
+				{option1[this.props.title]}
+			  </option>
+		  })}
+        </select></FormGroup>: null}
 		{(this.props.cityId) ? 
        <InputElement
 					label={"City"}

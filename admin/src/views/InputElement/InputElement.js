@@ -1,184 +1,275 @@
-import React from "react";
+import React, {Component} from "react";
 import { FormGroup, FormFeedback, Label } from "reactstrap";
 import TreeView from "react-simple-jstree";
-import SearchTree from "./SearchTree";
-const inputElement = props => {
-  let inputElement = null;
-  console.log('PPPP', props);
-  const iterative = (newElements = [], lavel = 0) => {
-    return newElements.map(newElement => {
-      let baseCatClass = [];
-      if (lavel === 0) {
-        baseCatClass.push("base-category");
-      }
-      if (newElement.children && newElement.children.length) {
-        let title = `${"_".repeat(lavel)} ${newElement.title}`;
-        let option = (
-          <option
-            key={newElement._id}
-            value={newElement._id}
-            className={baseCatClass.join(" ")}
-          >
-            {title}
-          </option>
-        );
-        lavel++;
-        return option;
-      }
-      let title = `${"_".repeat(lavel)} ${newElement.title}`;
+import SearchTree from "./SearchTree"
+import moment from "moment";
+import { DatePicker } from 'antd';
+import axios from 'axios';
+class InputElement extends Component{
+	
+	constructor(props){
+		super(props);	
+		this.state = {
+			...props,
+			countries:[],
+			states: [],
+			cities: []
+		};
+		console.log('PPPPP', props);
+	}
+	getCountry = () => {
+	  return axios.get('/location/listActiveCountry');
+	};
 
-      let option = (
-        <option
-          key={newElement._id}
-          value={newElement._id}
-          className={baseCatClass.join(" ")}
-        >
-          {title}
-        </option>
-      );
-      lavel = 0;
-      return option;
-    });
-  };
-  let inputClasses = ["form-control"];
-  if (props.touched && !props.valid) {
-    inputClasses.push("is-invalid");
-  }
-  switch (props.elementType) {
-    case "input":
-      inputElement = (
-        <input
-          {...props.elementConfig}
-          onChange={props.changed}
-          className={inputClasses.join(" ")}
-          value={props.value}
-        />
-      );
-      break;
-    case "password":
-      inputElement = (
-        <input
-          {...props.elementConfig}
-          onChange={props.changed}
-          className={inputClasses.join(" ")}
-          value={props.value}
-        />
-      );
-      break;
-    case "textarea":
-      inputElement = (
-        <textarea
-          {...props.elementConfig}
-          onChange={props.changed}
-          className={inputClasses.join(" ")}
-          value={props.value}
-        />
-      );
-      break;
-    case "select":
-      inputElement = (
-        <select
-          key={props.key}
-          className={inputClasses.join(" ")}
-          onChange={props.changed}
-          value={props.value}
-        >
-          <option value="0" key="0">
-            --Select--
-          </option>
-          {iterative(props.elementConfig.options, 0)}
-        </select>
-      );
-      break;
-    case "select-simple":
-      inputElement = (
-        <select
-          key={props.key}
-          className={inputClasses.join(" ")}
-          onChange={props.changed}
-          value={props.value}
-        >
-          <option value="0" key="0">
-            --Select--
-          </option>
-          {props.elementConfig.options.map(option => {
-			  return <option value={option._id} key={option._id}>
-				{option[props.title]}
-			  </option>
-		  })}
-        </select>
-      );
-      break;
-    case "group-box":
-      inputElement = (
-        <select
-          key={props.key}
-          className={inputClasses.join(" ")}
-          onChange={props.changed}
-          value={props.value}
-          ref={props.elementConfig.reference}
-        >
-          <option value="0" key="0">
-            --Select--
-          </option>
-          {props.elementConfig.options.map(option => {
-			  return <option value={option._id} key={option._id}>
-				{option[props.title]}
-			  </option>
-		  })}
-        </select>
-      );
-      break;
-    case "select-status":
-      inputElement = (
-        <select
-          key={props.key}
-          className={inputClasses.join(" ")}
-          onChange={props.changed}
-          value={props.value}
-        >
-         
-          {props.elementConfig.options.map(option => {
-			  return <option value={option._id} key={option._id}>
-				{option.title}
-			  </option>
-		  })}
-        </select>
-      );
-      break;
-   case "search-tree":
-      inputElement = (
-        <SearchTree categorydata={props.elementConfig.options} handleOnChange={props.elementConfig.handleCategorySelect} selected={props.elementConfig.selected}/>
-      );
-      break;
-      
-      
-    case "tree":
-      inputElement = (
-        <TreeView
-          treeData={{ core: { data: props.elementConfig.options } }}
-          onChange={(e, data) => props.treechanged(e, data)}
-        />
-      );
-      break;
-    default:
-      inputElement = (
-        <input
-          className={inputClasses.join(" ")}
-          onChange={props.changed}
-          {...props.elementConfig}
-          value={props.value}
-        />
-      );
-  }
-  return (
-    <FormGroup>
-      <Label htmlFor={props.label}>{props.label}</Label>
-      {inputElement}
-      <FormFeedback className={!props.valid ? "invalid-feedback" : ""}>
-        {props.message}
-      </FormFeedback>
-    </FormGroup>
-  );
-};
-export default inputElement;
+	getState = (countryId) => {
+	  return axios.get('/location/getState/'+countryId);
+	};
+
+	getCity = (stateId) => {
+	  return axios.get('/location/getCity/'+stateId);
+	};
+	  
+	componentWillReceiveProps(nextProps){
+		console.log('InputElement componentWillReceiveProps', nextProps);
+		this.setState({...this.state, ...nextProps});
+		//return true;
+	}
+	
+	//~ componentShouldUpdate(prevProps, nextProps){
+		//~ if(this.state.key === nextProps.key) return true;
+		//~ return false;
+	//~ }
+	 componentDidMount(){
+		if(this.state.countries.length === 0){
+			  this.getCountry().then((data) => { 
+				  if(data.data.code === 200) this.setState({countries: data.data.result})
+			  });
+		  }
+	  }
+	  onDropdownChange = (event, key) => {
+		  let value = event.target.value;	
+		  if(value != ''){
+			  switch(key){
+				  case 'stateName':
+					  this.state.changed(event, 'state');
+					  this.getCity(value).then((data) => {
+						  if(data.data.code === 200) this.setState({cities: data.data.result})
+					  });break;
+				  default:
+					  this.state.changed(event, 'country');
+					  this.getState(value).then((data) => {console.log('Here in onDropdownChange country', data);
+						  if(data.data.code === 200) this.setState({states: data.data.result}, () => {
+							console.log('HHHHHHHH', this.state);  
+						  })
+					  });
+				  
+			  }
+		  }
+	  }
+	render(){
+		let inputElement = null;
+		let inputClasses = ["form-control"];
+		if (this.state.touched && !this.state.valid) {
+			inputClasses.push("is-invalid");
+		}
+		switch (this.state.elementType) {
+			case "input":
+			  inputElement = (
+				<input
+				  {...this.state.elementConfig}
+				  onChange={this.state.changed}
+				  className={inputClasses.join(" ")}
+				  value={this.state.value}
+				/>
+			  );
+			  break;
+			case "password":
+			  inputElement = (
+				<input
+				  {...this.state.elementConfig}
+				  onChange={this.state.changed}
+				  className={inputClasses.join(" ")}
+				  value={this.state.value}
+				/>
+			  );
+			  break;
+			case "textarea":
+			  inputElement = (
+				<textarea
+				  {...this.state.elementConfig}
+				  onChange={this.state.changed}
+				  className={inputClasses.join(" ")}
+				  value={this.state.value}
+				/>
+			  );
+			  break;
+			case "date":
+			  //~ inputElement = (
+				//~ <input
+				  //~ {...props.elementConfig}
+				  //~ onChange={props.changed}
+				  //~ className={inputClasses.join(" ")}
+				  //~ value={props.value}
+				//~ /> 
+			  //~ );
+			  inputElement = ( <DatePicker {...this.state.elementConfig}
+				onChange={(value) => this.state.changed({target: {value}})} className={inputClasses.join(" ")} 
+				defaultValue={moment(this.state.value, this.state.elementConfig.format)} 
+				format={this.state.elementConfig.format} />)
+			  break;
+			  
+			case "select-simple":
+			  inputElement = (
+				<select
+				  key={this.state.key}
+				  className={inputClasses.join(" ")}
+				  onChange={this.state.changed}
+				  value={this.state.value}
+				>
+				  <option value="">
+					--Select--
+				  </option>
+				  {this.state.elementConfig.options.map(option => {
+					  return <option value={option._id} key={option._id}>
+						{option[this.state.elementConfig.title]}
+					  </option>
+				  })}
+				</select>
+			  );
+			  break;
+			case "group-box":
+			  inputElement = (
+				<select
+				  key={this.state.key}
+				  className={inputClasses.join(" ")}
+				  onChange={this.state.changed}
+				  value={this.state.value}
+				  ref={this.state.elementConfig.reference}
+				>
+				  <option value="">
+					--Select--
+				  </option>
+				  {this.state.elementConfig.options.map(option => {
+					  return <option value={option._id} key={option._id}>
+						{option[this.state.title]}
+					  </option>
+				  })}
+				</select>
+			  );
+			  break;
+			case "group-box-country":
+			  inputElement = (
+				<select
+				  key={this.state.key}
+				  className={inputClasses.join(" ")}
+				  onChange={(e) => this.onDropdownChange(e, this.state.elementConfig.title)}
+				  value={this.state.value}
+				  ref={this.state.elementConfig.reference}
+				>
+				  <option value="">
+					--Select--
+				  </option>
+				  {this.state.countries.map(option => {
+					  return <option value={option._id} key={option._id}>
+						{option[this.state.elementConfig.title]}
+					  </option>
+				  })}
+				</select>
+			  );
+			  break;
+			case "group-box-state":
+			  inputElement = (
+				<select
+				  key={this.state.key}
+				  className={inputClasses.join(" ")}
+				  onChange={(e) => this.onDropdownChange(e, this.state.elementConfig.title)}
+				  value={this.state.value}
+				  ref={this.state.elementConfig.reference}
+				>
+				  <option value="">
+					--Select--
+				  </option>
+				  {this.state.states.map(option => {
+					  return <option value={option._id} key={option._id}>
+						{option[this.state.elementConfig.title]}
+					  </option>
+				  })}
+				</select>
+			  );
+			  break;
+			 case "group-box-city":
+			  inputElement = (
+				<select
+				  key={this.state.key}
+				  className={inputClasses.join(" ")}
+				  onChange={(e) => this.onDropdownChange(e, this.state.elementConfig.title)}
+				  value={this.state.value}
+				  ref={this.state.elementConfig.reference}
+				>
+				  <option value="">
+					--Select--
+				  </option>
+				  {this.state.cities.map(option => {
+					  return <option value={option._id} key={option._id}>
+						{option[this.state.elementConfig.title]}
+					  </option>
+				  })}
+				</select>
+			  );
+			  break;
+			case "select-status":
+			  inputElement = (
+				<select
+				  key={this.state.key}
+				  className={inputClasses.join(" ")}
+				  onChange={this.state.changed}
+				  value={this.state.value}
+				>
+				 
+				  {this.state.elementConfig.options.map(option => {
+					  return <option value={option._id} key={option._id}>
+						{option.title}
+					  </option>
+				  })}
+				</select>
+			  );
+			  break;
+		   case "search-tree":
+			  inputElement = (
+				<SearchTree categorydata={this.state.elementConfig.options} 
+				handleOnChange={this.state.elementConfig.handleCategorySelect} selected={this.state.elementConfig.selected}/>
+			  );
+			  break;
+			  
+			  
+			case "tree":
+			  inputElement = (
+				<TreeView
+				  treeData={{ core: { data: this.state.elementConfig.options } }}
+				  onChange={(e, data) => this.state.treechanged(e, data)}
+				/>
+			  );
+			  break;
+			default:
+			  inputElement = (
+				<input
+				  className={inputClasses.join(" ")}
+				  onChange={this.state.changed}
+				  {...this.state.elementConfig}
+				  value={this.state.value}
+				/>
+			  );
+		  }
+		return (
+			<FormGroup>
+			  <Label htmlFor={this.state.label}>{this.state.label}</Label>
+			  {inputElement}
+			  <FormFeedback className={!this.state.valid ? "invalid-feedback" : ""}>
+				{this.state.message}
+			  </FormFeedback>
+			</FormGroup>
+		);
+	}
+	
+}
+export default InputElement;

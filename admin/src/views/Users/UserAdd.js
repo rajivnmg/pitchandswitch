@@ -1,429 +1,578 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
-import CountrySelectBox from '../SelectBox/CountrySelectBox/CountrySelectBox'
-import StateAllSelectBox from '../SelectBox/StateSelectBox/StateAllSelectBox'
-import CitySelectBox from '../SelectBox/CitySelectBox/CitySelectBox'
-import SubscriptionSelectBox from '../SelectBox/SubscriptionSelectBox/SubscriptionSelectBox'
-import {
-  Badge,
-  Button,
-  ButtonDropdown,
+import CountrySelectBox from '../SelectBox/CountrySelectBox/CountrySelectBox';
+import StateAllSelectBox from '../SelectBox/StateSelectBox/StateAllSelectBox';
+import StateSelectBox from '../SelectBox/StateSelectBox/StateSelectBox';
+import CitySelectBox from '../SelectBox/CitySelectBox/CitySelectBox';
+import SubscriptionSelectBox from '../SelectBox/SubscriptionSelectBox/SubscriptionSelectBox';
+import InputElement from "../InputElement/InputElement";
+import GroupBox from '../SelectBox/GroupBox/GroupBox';
+import moment from "moment";
+import { 
+  Button,  
   Card,
-  CardBody,
-  CardFooter,
+  CardBody,  
   CardHeader,
-  Col,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
+  Col,        
   Form,
-  FormGroup,
-  FormText,
+  FormGroup, 
   FormFeedback,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
+  Input, 
   Label,
-  Row
+  Row,
 } from 'reactstrap';
 var FD = require('form-data');
 var fs = require('fs');
+const constant = require("../../config/constant");
 // import PropTypes from 'prop-types';
-class UserAdd extends Component {
+class UserEdit extends Component {
   constructor(props){
-    super(props);
-    this.firstName = React.createRef();
-    this.middleName = React.createRef();
-    this.lastName = React.createRef();
-    this.username = React.createRef();
-    this.userType = React.createRef();
-    this.password = React.createRef();    
-    this.phoneNumber = React.createRef();
-    this.dob = React.createRef();
-    this.address = React.createRef();
-    this.city = React.createRef();
-    this.state = React.createRef();
-    this.country = React.createRef();
-    this.zipCode = React.createRef();
-    this.subscriptionPlan = React.createRef();    
-    this.confirmPassword = React.createRef();
-    this.email = React.createRef();
-    this.profilePic = React.createRef(),
-
+    super(props);    
+    this.profilePic = React.createRef();
     this.state = {
-      addUser: {
-			country:'',
-			firstName : '',
-			middleName : '',
-			lastName : '',
-			username : '',
-			userType : '',
-			password : '',
-			phoneNumber :'',
-			dob : '',
-			address : '',
-			city : '',
-			state : '',
-			country : '',
-			zipCode : '',
-			subscriptionPlan : '',
-			confirmPassword : '',
-			email : '',
-			profilePic : '',
-		},
-      validation:{
-        firstName:{
-          rules: {
-            notEmpty: {
-              message: 'First name field can\'t be left blank',
-              valid: false
-            }
-          },
-          valid: null,
-          message: ''
-        },
-        userName:{
-          rules: {
-            notEmpty: {
-              message: 'Username field can\'t be left blank',
-              valid: false
-            }
-          },
-          valid: null,
-          message: ''
-        },
-        password:{
-          rules: {
-            notEmpty: {
-              message: 'Password field can\'t be left blank',
-              valid: false
-            },
-            minLength: {
-              length: 6,
-              message: 'Password field must have at least 6 characters long',
-              valid: false
-            }
-          },
-          valid: null,
-          message: ''
-        },
-        confirmPassword:{
-          rules: {
-            notEmpty: {
-              message: 'Confirm password field can\'t be left blank',
-              valid: false
-            },
-            matchWith: {
-              matchWithField: 'password',
-              message: 'Confirm password must be validate with password',
-              valid: false
-            }
-          },
-          valid: null,
-          message: ''
-        },
-        email: {
-          rules: {
-            notEmpty: {
-              message: 'Email field can\'t be left blank',
-              valid: false
-            },
-            emailCheck: {
-              message: 'Must be a valid email',
-              valid: false
-            }
-          },
-          valid: null,
-          message: ''
-        },
-        userType: {
-          rules: {
-            notEmpty: {
-              message: 'Please choose a userType',
-              valid: false
-            }
-          },
-          valid: null,
-          message: ''
-        },
-        dob: {
-          rules: {
-            notEmpty: {
-              message: 'Dob field can\'t be left blank',
-              valid: false
-            }
-          },
-          valid: null,
-          message: ''
-        },
-        address: {
-          rules: {
-            notEmpty: {
-              message: 'Address field can\'t be left blank',
-              valid: false
-            }
-          },
-          valid: null,
-          message: ''
-        },
-        phoneNumber: {
-          rules: {
-            notEmpty: {
-              message: 'Contact fields can\'t be left blank',
-              valid: false
-            }
-          },
-          valid: null,
-          message: ''
-        },
-        zipCode: {
-          rules: {
-            notEmpty: {
-              message: 'ZipCode fields can\'t be left blank',
-              valid: false
-            }
-          },
-          valid: null,
-          message: ''
-        },
-      }
+		subscriptions: [],
+		countries:[],
+		states: [],
+		cities: [],
+		editUser: {
+			firstName: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+				placeholder: "First Name"
+			  },
+			  value: "",
+			  label: "First Name",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			middleName: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+				placeholder: "Middle Name"
+			  },
+			  value: "",
+			  label: "Middle Name",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			lastName: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+				placeholder: "First Name"
+			  },
+			  value: "",
+			  label: "Last Name",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			userName: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+				placeholder: "User Name"
+			  },
+			  value: "",
+			  label: "Username",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},	
+			password: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "password",
+				placeholder: "Password"
+			  },
+			  value: "",
+			  label: "Password",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},	
+			confirmPassword: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "password",
+				placeholder: "Confirm Password"
+			  },
+			  value: "",
+			  label: "Confirm Password",
+			  validation: {
+				required: true,
+				validWith: 'password'
+			  },
+			  valid: false,
+			  touched: false
+			},			
+			userType: {
+			  elementType: "select-simple",
+			  elementConfig: {
+				type: "select",
+				options: [],
+				title: 'name'		
+			  },
+			  value: "",
+			  label: "User Type",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			email: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+				placeholder: "First Name"
+			  },
+			  value: "",
+			  label: "Email",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			phoneNumber: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+				placeholder: "First Name"
+			  },
+			  value: "",
+			  label: "Phone Number",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			dob: {
+			  elementType: "date",
+			  elementConfig: {
+				type: "date",
+				placeholder: "DOB",
+				format: "DD/MM/YYYY"
+			  },
+			  value: "",
+			  label: "DOB",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			address: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+				placeholder: "Address"
+			  },
+			  value: "",
+			  label: "Address",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			country: {
+			  elementType: "group-box-country",
+			  elementConfig: {
+				type: "select",
+				options: [],
+				title:'countryName'
+			  },
+			  value: "",
+			  label: "Country",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false,
+			  countryId: true
+			}, 
+			state: {
+			  elementType: "group-box-state",
+			  elementConfig: {
+				type: "select",
+				options: [],
+				title:'stateName'
+			  },
+			  value: "",
+			  label: "State",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false,
+			  stateId: true
+			},
+			city: {
+			  elementType: "group-box-city",
+			  elementConfig: {
+				type: "select",
+				options: [],
+				title:'cityName'
+			  },
+			  value: "",
+			  label: "City",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false,
+			  cityId: true
+			},		 
+			zipCode: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+			  },
+			  value: "",
+			  label: "Zip Code",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			subscriptionPlan: {
+			  elementType: "select-simple",
+			  elementConfig: {
+				type: "select",
+				options: [],
+				title: 'subscriptionName'		
+			  },
+			  value: "",
+			  label: "Subscription Plan",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			}
+		},		  
+		  loadedData:false,
+		  selectedFile:''
     };
   }
-  
-  handleCountry = (country) => {
-        this.setState({country: country});
-  }
-  handleState = (state) => {
-        this.setState({state: state});
-  }
-  handleCity = (city) => {
-        this.setState({city: city});
-  }
-  
-  handleSubscription = (subscriptions) => {
-      this.setState({subscriptionPlan: subscriptions});        
-  }
- 
+  checkValidity(value, rules) {
+    let isValid = true;
+	console.log('Validity', value);
+    if (rules.required) {
+      isValid = typeof(value) === 'string' && value.trim() != "" && isValid;
+    }
+    if (rules.minLength) {
+      isValid = value.length >= rules.minLength && isValid;
+    }
+    if (rules.maxLength) {
+      isValid = value.length <= rules.maxLength && isValid;
+    }
+    if(rules.validWith){
+		const editUser = {...this.state.editUser};		
+		isValid = value ===  editUser[rules.validWith].value && isValid;
+	}
     
+    return isValid;
+  }
+  inputChangedHandler = (event, inputIdentifier) => {
+	let targetValue = event.target.value;
+    const updatedUser = {
+      ...this.state.editUser
+    };
+    const updatedFormElement = {
+      ...updatedUser[inputIdentifier]
+    };
+    updatedFormElement.value = targetValue;
+    updatedFormElement.valid = this.checkValidity(
+      targetValue,
+      updatedFormElement.validation
+    );
+    updatedFormElement.touched = true;
+    updatedUser[inputIdentifier] = updatedFormElement;
+    this.setState({ editUser: updatedUser }, () => {
+		console.log('data USER : ' + inputIdentifier, this.state.editUser);
+	});
+  };
+    
+   fileChangedHandler = (event) => {
+	  this.setState({selectedFile: event.target.files[0]}, function(){
+		  console.log('Current state', this.state.selectedFile)
+		});
+   }
+   handleCountry = (country) => {
+     this.setState({country: country});
+   }
+   handleState = (state) => {
+      this.setState({state: state}, function(){
+		  console.log('Current state', this.state.state)
+		});
+   }
+   handleCity = (city) => {
+      this.setState({city: city});
+   }
+   handleSubscription = (subscriptions) => {
+       this.setState({subscriptions: subscriptions});
+   }
+
   cancelHandler(){
     this.props.history.push("/users");
   }
   
-  fileChangedHandler = (event) => {
-    this.setState({selectedFile: event.target.files[0]})
-  }
+  
   submitHandler(e){
       e.preventDefault();
       let formSubmitFlag = true;
-      for (let field in this.state.validation) {
-        let lastValidFieldFlag = true;
-        let addUser = this.state.validation;
-        addUser[field].valid = null;
-        for(let fieldCheck in this.state.validation[field].rules){
-          switch(fieldCheck){
-            case 'notEmpty':
-              if(lastValidFieldFlag === true && this[field].value.length === 0){
-                  lastValidFieldFlag = false;
-                  formSubmitFlag = false;
-                  addUser[field].valid = false;
-                  addUser[field].message = addUser[field].rules[fieldCheck].message;
-
-               }
-              break;
-            case 'emailCheck':
-              if(lastValidFieldFlag === true && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this[field].value)){
-                lastValidFieldFlag = false;
-                formSubmitFlag = false;
-                addUser[field].valid = false;
-                addUser[field].message = addUser[field].rules[fieldCheck].message;
-              }
-              break;
-            case 'minLength':
-              if(lastValidFieldFlag === true && this[field].value.length < parseInt(this.state.validation[field].rules[fieldCheck].length)){
-                lastValidFieldFlag = false;
-                formSubmitFlag = false;
-                addUser[field].valid = false;
-                addUser[field].message = addUser[field].rules[fieldCheck].message;
-              }
-              break;
-            case 'matchWith':
-              if(lastValidFieldFlag === true && this[field].value !== this[this.state.validation[field].rules[fieldCheck].matchWithField].value){
-                lastValidFieldFlag = false;
-                formSubmitFlag = false;
-                addUser[field].valid = false;
-                addUser[field].message = addUser[field].rules[fieldCheck].message;
-              }
-              break;
-          }
-        }
-        this.setState({ validation: addUser});
-      }
+      const updatedUser = {...this.state.editUser};		
+      for (let key in this.state.editUser) {
+		const updatedFormElement = {
+			...updatedUser[key]
+		};
+		updatedFormElement.valid = this.checkValidity(
+		  updatedFormElement.value,
+		  updatedFormElement.validation
+		);
+		updatedFormElement.touched = true;
+		updatedUser[key] = updatedFormElement;
+		formSubmitFlag = updatedFormElement.valid && formSubmitFlag;
+	  }
+	  this.setState({editUser:updatedUser});
+      console.log('FORM Data', this.state.editUser);
       if(formSubmitFlag){
-        const data =new FD()
-        data.append('firstName', this.firstName.value),
-        data.append('middleName', this.middleName.value),
-        data.append('lastName', this.lastName.value),
-        data.append('userName', this.userName.value),
-        data.append('userType', this.userType.value),
-        data.append('password', this.password.value),
-        data.append('email', this.email.value),
-        data.append('profilePic', this.state.selectedFile)
-        data.append('phoneNumber', this.phoneNumber.value),
-        data.append('dob', this.dob.value), 
-        data.append('address', this.address.value),
-        data.append('city', this.state.city),
-        data.append('state', this.state.state),
-        data.append('country', this.state.country),
-        data.append('zipCode', this.zipCode.value),
-        data.append('subscriptionPlan', this.state.subscriptionPlan)
-        axios.post('/user/signup', data).then(result => {          
-          if(result.data.code === 200){
+		e.preventDefault();
+		const data = new FD()
+		for (let key in this.state.editUser) {
+		  //userObj[key] = this.state.editUser[key].value;
+		  data.append(key, this.state.editUser[key].value);
+		}
+		data.append('_id', this.props.match.params.id);
+		if(this.state.selectedFile){
+          data.append('profilePic', this.state.selectedFile)
+        }
+		
+        axios.post('/user/signup', data).then(result => {
+          if(result.data.code == '200'){
             this.props.history.push("/users");
           }
         });
       }
   }
 
+  componentWillMount(){	
+	  //if(localStorage.getItem('jwtToken') != null)
+      //axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
+	  axios.get('/subscription/listingsubscription').then(result => {
+		  if(result.data.code === 200){	
+			 const editUser = {...this.state.editUser};
+			  editUser['subscriptionPlan'].elementConfig.options = result.data.result;
+			  editUser['userType'].elementConfig.options = constant.userType;
+			this.setState({ editUser,loadedData:true},()=>{
+				console.log('userType subscription', editUser, constant.userType);
+				});
+		  }
+	  })
+      //~ axios.get('/user/viewUser/' + this.state.userId).then(result => {
+        //~ if(result.data.code == 200){
+			
+		 //~ let editUser = {...this.state.editUser};
+		 //~ for(let key in editUser){
+			//~ if(result.data.result[key]){
+				//~ if(key === 'dob')
+				  //~ editUser[key].value = moment(result.data.result[key], "YYYY-MM-DD").format("DD/MM/YYYY");
+				//~ else if(key === 'country')	
+				  //~ editUser[key].value = result.data.result[key]._id;
+				//~ else if(key === 'state')	
+				  //~ editUser[key].value = result.data.result[key]._id;
+				//~ else if(key === 'city')	
+				  //~ editUser[key].value = result.data.result[key]._id;
+				//~ else
+				  //~ editUser[key].value = result.data.result[key];
+			//~ }
+		 //~ }
+		
+          //~ this.setState({ loadedData:true, editUser}, () => {
+			//~ if(this.state.editUser.country){
+				//~ let e = {target: {value: this.state.editUser.country.value}};
+				//~ this.onDropdownChange(e, 'country');
+			//~ }  
+		  //~ });
+         
+        //~ }
+      //~ });
+      //~ .catch((error) => {
+        //~ if(error.status === 401) {
+          //~ this.props.history.push("/login");
+        //~ }
+      //~ });
+  }
+  
+  
+  
   render() {
-    return (
-      <div className="animated fadeIn">
-        <Row>
-          <Col xs="12" sm="12">
-            <Card>
-              <CardHeader>
-                <strong>Add New User</strong>
-                <small></small>
-              </CardHeader>
-              <CardBody>
-              <Form noValidate>
-                <Row>
-                  <Col xs="4" sm="12">
-                    <FormGroup>
-                      <Label htmlFor="company">First name</Label><span className="required">*</span>
-                      <Input type="text" invalid={this.state.validation.firstName.valid === false} innerRef={input => (this.firstName = input)} placeholder="First name" />
-                       <FormFeedback invalid={this.state.validation.firstName.valid === false}>{this.state.validation.firstName.message}</FormFeedback>
-
-                    </FormGroup>
-                    </Col>
-                    <Col xs="4" sm="12">
-                    <FormGroup>
-                      <Label htmlFor="middlename">Middle name</Label>
-                      <Input type="text" innerRef={input => (this.middleName = input)} placeholder="Middle name" />
-                    </FormGroup>
-                    </Col>
-                    <Col xs="4" sm="12">
-                    <FormGroup>
-                      <Label htmlFor="lastname">Last name</Label>
-                      <Input type="text" innerRef={input => (this.lastName = input)} placeholder="Last name" />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <FormGroup>
-                  <Label htmlFor="username">Username</Label><span className="required">*</span>
-                  <Input type="text" invalid={this.state.validation.userName.valid === false}  innerRef={input => (this.userName = input)} placeholder="Username" />
-                  <FormFeedback invalid={this.state.validation.userName.valid === false}>{this.state.validation.userName.message}</FormFeedback>
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="password">Password</Label><span className="required">*</span>
-                  <Input type="password" invalid={this.state.validation.password.valid === false}  innerRef={input => (this.password = input)} placeholder="Password" />
-                  <FormFeedback invalid={this.state.validation.password.valid === false}>{this.state.validation.password.message}</FormFeedback>
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="conform-password">Confirm Password</Label><span className="required">*</span>
-                  <Input type="password" invalid={this.state.validation.confirmPassword.valid === false}  innerRef={input => (this.confirmPassword = input)} placeholder="Confirm Password" />
-                  <FormFeedback invalid={this.state.validation.confirmPassword.valid === false}>{this.state.validation.confirmPassword.message}</FormFeedback>
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="username">Email</Label><span className="required">*</span>
-                  <Input type="email" invalid={this.state.validation.email.valid === false} innerRef={input => (this.email = input)} placeholder="Email" />
-                  <FormFeedback invalid={this.state.validation.email.valid === false}>{this.state.validation.email.message}</FormFeedback>
-                </FormGroup>
-                <FormGroup>
-					<Label htmlFor="userType">User Type</Label><span className="required">*</span>
-					<Input type="select" invalid={this.state.validation.userType.valid === false} innerRef={input => (this.userType = input)} id="userType" name="userType" className="form-control" required>
-						<option value="">Select UserType</option>
-						<option value="1">Admin</option>
-						<option value="0">User</option>
-					</Input> 
-					 <FormFeedback invalid={this.state.validation.userType.valid === false}>{this.state.validation.userType.message}</FormFeedback>
-                </FormGroup>
-                 <FormGroup>
-                  <Label htmlFor="contactnumber">Contact Number</Label><span className="required">*</span>
-                  <Input type="text" invalid={this.state.validation.phoneNumber.valid === false} innerRef={input => (this.phoneNumber = input)} placeholder="ContactNumber" />
-                  <FormFeedback invalid={this.state.validation.phoneNumber.valid === false}>{this.state.validation.phoneNumber.message}</FormFeedback>
-                </FormGroup>
-                 <FormGroup>
-                  <Label htmlFor="address">Address</Label><span className="required">*</span>
-                  <Input type="textarea" invalid={this.state.validation.address.valid === false} innerRef={input => (this.address = input)} placeholder="Address" />
-                  <FormFeedback invalid={this.state.validation.address.valid === false}>{this.state.validation.address.message}</FormFeedback>
-                </FormGroup>
-               <FormGroup>
-               <Row>
-                  <Col xs="4" sm="4">
-                  <Label htmlFor="dob">DOB</Label><span className="required">*</span>
-                  <Input type="date" invalid={this.state.validation.dob.valid === false} innerRef={input => (this.dob = input)} placeholder="DOB" width="20%" /> 
-                  <FormFeedback invalid={this.state.validation.dob.valid === false}>{this.state.validation.dob.message}</FormFeedback>                
-				</Col>
-                </Row>
-                </FormGroup>
-               
-                 <FormGroup>
-                  <Label htmlFor="country">Country</Label><span className="required">*</span>
-                  <CountrySelectBox onSelectCountry={this.handleCountry}/>
-                </FormGroup>
-                
-                 <FormGroup>
-                  <Label htmlFor="state">State</Label><span className="required">*</span>
-                  <StateAllSelectBox onSelectState={this.handleState}/>
-                </FormGroup>
-                 
-                 <FormGroup>
-                  <Label htmlFor="city">City</Label><span className="required">*</span>
-                  <CitySelectBox onSelectCity={this.handleCity}/>
-                </FormGroup>
-                
-                 <FormGroup>
-                  <Label htmlFor="zipCode">ZipCode</Label><span className="required">*</span>
-                  <Input type="text" invalid={this.state.validation.zipCode.valid === false} innerRef={input => (this.zipCode = input)} placeholder="zipCode" />
-                   <FormFeedback invalid={this.state.validation.zipCode.valid === false}>{this.state.validation.zipCode.message}</FormFeedback>
-                </FormGroup>
-                
-                 <FormGroup>
-                  <Label htmlFor="username">Subscription Plan</Label>                 
-                  <SubscriptionSelectBox onSelectSubscription={this.handleSubscription}/>
-                </FormGroup>
-                <FormGroup row>
-                <Col md="3">
-                      <Label htmlFor="image">Profile Image</Label>
-                    </Col>
-                    <Col xs="12" md="9">
-                      <Input type="file" innerRef={input => (this.profilePic = input)} onChange={this.fileChangedHandler} name="profilePic" />
-                      {/* <FormFeedback invalid={this.state.validation.image.valid === false}>{this.state.validation.image.message}</FormFeedback> */}
-                    </Col>
-                  </FormGroup>
-                  
-                <Row>
-                  <Col xs="6" className="text-right">
-                    <Button onClick={(e)=>this.submitHandler(e)} color="success" className="px-4">Submit</Button>
-                  </Col>
-                  <Col xs="6">
-                    <Button onClick={()=>this.cancelHandler()} color="primary" className="px-4">Cancel</Button>
-                  </Col>
-                </Row>
-                </Form>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-        </div>
-    );
+	  const formElementsArray = [];
+	
+    for (let key in this.state.editUser) {
+      formElementsArray.push({
+        id: key,
+        config: this.state.editUser[key]
+      });
+    }
+    let groupFlag = false;
+    let formData = null;
+    if(this.state.editUser.subscriptionPlan.elementConfig.options.length){
+		  formData = formElementsArray.map(formElement => {
+			//if(formElement.config.elementType !== 'group-box-multiple'){
+			return <Row key={formElement.id}>
+					<Col xs="4" sm="12">
+					  <InputElement
+						key={formElement.id}
+						label={formElement.config.label}
+						elementType={formElement.config.elementType}
+						elementConfig={formElement.config.elementConfig}
+						changed={event =>
+						  this.inputChangedHandler(event, formElement.id)
+						}
+						valid={formElement.config.valid}            
+						touched={formElement.config.touched}
+						value={formElement.config.value}
+					  />
+					</Col>
+				  </Row>;
+		   //~ }else{		   
+			 //~ switch(formElement.id){
+			  //~ case 'country':
+			  //~ return <Row key={formElement.id}>
+					//~ <Col xs="4" sm="12"><FormGroup>
+					  //~ <Label htmlFor={formElement.config.label}>{formElement.config.label}</Label>
+					  //~ <select
+						  //~ key={formElement.id}
+						  //~ className="form-control"
+						  //~ onChange={event => 
+							//~ this.onDropdownChange(event, 'country')					  
+						  //~ }
+						  //~ value={formElement.config.value}
+						  //~ ref={formElement.config.elementConfig.reference}
+						//~ >
+						  //~ <option value="" >
+							//~ --Select--
+						  //~ </option>
+						  //~ {this.state.countries.map(option => {
+							  //~ return <option value={option._id} key={option._id}>
+								//~ {option[formElement.config.elementConfig.title]}
+							  //~ </option>
+						  //~ })}
+						//~ </select></FormGroup></Col>
+							  //~ </Row>;
+			 //~ case 'state':
+			  //~ return <Row key={formElement.id}>
+					//~ <Col xs="4" sm="12"><FormGroup>
+					  //~ <Label htmlFor={formElement.config.label}>{formElement.config.label}</Label>
+					  //~ <select
+						  //~ key={formElement.id}
+						  //~ className="form-control"
+						  //~ onChange={event => 
+							//~ this.onDropdownChange(event, 'state')					  
+						  //~ }
+						  //~ value={formElement.config.value}
+						  //~ ref={formElement.config.elementConfig.reference}
+						//~ >
+						  //~ <option value="">
+							//~ --Select--
+						  //~ </option>
+						  
+						  //~ {this.state.states.map(option => {
+							  //~ return <option value={option._id} key={option._id}>
+								//~ {option[formElement.config.elementConfig.title]}
+							  //~ </option>
+						  //~ })}
+						//~ </select></FormGroup></Col>
+					 //~ </Row>;
+				//~ default:
+					//~ return <Row key={formElement.id}>
+					//~ <Col xs="4" sm="12">
+					//~ <FormGroup>
+					  //~ <Label htmlFor={formElement.config.label}>{formElement.config.label}</Label>
+					  //~ <select
+						  //~ key={formElement.id}
+						  //~ className="form-control"
+						  //~ onChange={event => 
+							//~ this.inputChangedHandler(event, 'city')					  
+						  //~ }
+						  //~ value={formElement.config.value}
+						  //~ ref={formElement.config.elementConfig.reference}
+						//~ >
+						  //~ <option value="" >
+							//~ --Select--
+						  //~ </option>
+						  
+						  //~ {this.state.cities.map(option => {
+							  //~ return <option value={option._id} key={option._id}>
+								//~ {option[formElement.config.elementConfig.title]}
+							  //~ </option>
+						  //~ })}
+						//~ </select>
+					//~ </FormGroup>
+					//~ </Col>
+				//~ </Row>;
+				//~ }
+		   //~ }
+		 });
+	  }
+	  
+	  if(this.state.loadedData){
+		return (
+		  <div className="animated fadeIn">
+			<Row>
+			  <Col xs="12" sm="12">
+				<Card>
+				  <CardHeader>
+					<strong>User Edit</strong>
+					<small> </small>
+				  </CardHeader>
+				  <CardBody>
+				  <Form noValidate>				 
+						{formData}				 
+					<FormGroup>
+					 <Label htmlFor="brand">Profile Image</Label>
+					  <Input type="file" innerRef={input => (this.profilePic = input)} onChange={this.fileChangedHandler} placeholder="Advertisement Image" />
+					  <img src={'assets/uploads/ProfilePic/'+this.state.editUser.profilePic} width="60"/>
+					</FormGroup>
+					<Row>
+					  <Col xs="6" className="text-right">
+						<Button onClick={(e)=>this.submitHandler(e)} color="success" className="px-4">Submit</Button>
+					  </Col>
+					  <Col xs="6">
+						<Button onClick={()=>this.cancelHandler()} color="primary" className="px-4">Cancel</Button>
+					  </Col>
+					</Row>
+					</Form>
+				  </CardBody>
+				</Card>
+			  </Col>
+			</Row>
+			</div>
+		);
+	}else{
+		return null;
+	}
   }
 }
-// ProjectItem.propTypes = {
-//   project: PropTypes.object
-// };
-export default UserAdd;
+export default UserEdit;
