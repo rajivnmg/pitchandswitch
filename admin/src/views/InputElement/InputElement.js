@@ -4,31 +4,16 @@ import TreeView from "react-simple-jstree";
 import SearchTree from "./SearchTree"
 import moment from "moment";
 import { DatePicker } from 'antd';
-import axios from 'axios';
+
 class InputElement extends Component{
 	
 	constructor(props){
-		super(props);	
+		super(props);
 		this.state = {
-			...props,
-			countries:[],
-			states: [],
-			cities: []
+			...props
 		};
-		console.log('PPPPP', props);
 	}
-	getCountry = () => {
-	  return axios.get('/location/listActiveCountry');
-	};
-
-	getState = (countryId) => {
-	  return axios.get('/location/getState/'+countryId);
-	};
-
-	getCity = (stateId) => {
-	  return axios.get('/location/getCity/'+stateId);
-	};
-	  
+	
 	componentWillReceiveProps(nextProps){
 		console.log('InputElement componentWillReceiveProps', nextProps);
 		this.setState({...this.state, ...nextProps});
@@ -39,33 +24,6 @@ class InputElement extends Component{
 		//~ if(this.state.key === nextProps.key) return true;
 		//~ return false;
 	//~ }
-	 componentDidMount(){
-		if(this.state.countries.length === 0){
-			  this.getCountry().then((data) => { 
-				  if(data.data.code === 200) this.setState({countries: data.data.result})
-			  });
-		  }
-	  }
-	  onDropdownChange = (event, key) => {
-		  let value = event.target.value;	
-		  if(value != ''){
-			  switch(key){
-				  case 'stateName':
-					  this.state.changed(event, 'state');
-					  this.getCity(value).then((data) => {
-						  if(data.data.code === 200) this.setState({cities: data.data.result})
-					  });break;
-				  default:
-					  this.state.changed(event, 'country');
-					  this.getState(value).then((data) => {console.log('Here in onDropdownChange country', data);
-						  if(data.data.code === 200) this.setState({states: data.data.result}, () => {
-							console.log('HHHHHHHH', this.state);  
-						  })
-					  });
-				  
-			  }
-		  }
-	  }
 	render(){
 		let inputElement = null;
 		let inputClasses = ["form-control"];
@@ -146,7 +104,7 @@ class InputElement extends Component{
 				  value={this.state.value}
 				  ref={this.state.elementConfig.reference}
 				>
-				  <option value="">
+				  <option value="0" key="0">
 					--Select--
 				  </option>
 				  {this.state.elementConfig.options.map(option => {
@@ -157,66 +115,26 @@ class InputElement extends Component{
 				</select>
 			  );
 			  break;
-			case "group-box-country":
-			  inputElement = (
-				<select
-				  key={this.state.key}
-				  className={inputClasses.join(" ")}
-				  onChange={(e) => this.onDropdownChange(e, this.state.elementConfig.title)}
-				  value={this.state.value}
-				  ref={this.state.elementConfig.reference}
-				>
-				  <option value="">
-					--Select--
-				  </option>
-				  {this.state.countries.map(option => {
-					  return <option value={option._id} key={option._id}>
-						{option[this.state.elementConfig.title]}
-					  </option>
-				  })}
-				</select>
-			  );
-			  break;
-			case "group-box-state":
-			  inputElement = (
-				<select
-				  key={this.state.key}
-				  className={inputClasses.join(" ")}
-				  onChange={(e) => this.onDropdownChange(e, this.state.elementConfig.title)}
-				  value={this.state.value}
-				  ref={this.state.elementConfig.reference}
-				>
-				  <option value="">
-					--Select--
-				  </option>
-				  {this.state.states.map(option => {
-					  return <option value={option._id} key={option._id}>
-						{option[this.state.elementConfig.title]}
-					  </option>
-				  })}
-				</select>
-			  );
-			  break;
-			 case "group-box-city":
-			  inputElement = (
-				<select
-				  key={this.state.key}
-				  className={inputClasses.join(" ")}
-				  onChange={(e) => this.onDropdownChange(e, this.state.elementConfig.title)}
-				  value={this.state.value}
-				  ref={this.state.elementConfig.reference}
-				>
-				  <option value="">
-					--Select--
-				  </option>
-				  {this.state.cities.map(option => {
-					  return <option value={option._id} key={option._id}>
-						{option[this.state.elementConfig.title]}
-					  </option>
-				  })}
-				</select>
-			  );
-			  break;
+			//~ case "group-box-multiple":
+			  //~ inputElement = (
+				//~ <select
+				  //~ key={props.key}
+				  //~ className={inputClasses.join(" ")}
+				  //~ onChange={props.changed}
+				  //~ value={props.value}
+				  //~ ref={props.elementConfig.reference}
+				//~ >
+				  //~ <option value="0" key="0">
+					//~ --Select--
+				  //~ </option>
+				  //~ {props.elementConfig.options.map(option => {
+					  //~ return <option value={option._id} key={option._id}>
+						//~ {option[props.elementConfig.title]}
+					  //~ </option>
+				  //~ })}
+				//~ </select>
+			  //~ );
+			  //~ break;
 			case "select-status":
 			  inputElement = (
 				<select

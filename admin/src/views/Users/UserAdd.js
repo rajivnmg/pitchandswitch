@@ -171,7 +171,7 @@ class UserEdit extends Component {
 				placeholder: "DOB",
 				format: "DD/MM/YYYY"
 			  },
-			  value: "",
+			  value: new Date(),
 			  label: "DOB",
 			  validation: {
 				required: true
@@ -194,7 +194,7 @@ class UserEdit extends Component {
 			  touched: false
 			},
 			country: {
-			  elementType: "group-box-country",
+			  elementType: "group-box-multiple",
 			  elementConfig: {
 				type: "select",
 				options: [],
@@ -210,7 +210,7 @@ class UserEdit extends Component {
 			  countryId: true
 			}, 
 			state: {
-			  elementType: "group-box-state",
+			  elementType: "group-box-multiple",
 			  elementConfig: {
 				type: "select",
 				options: [],
@@ -226,7 +226,7 @@ class UserEdit extends Component {
 			  stateId: true
 			},
 			city: {
-			  elementType: "group-box-city",
+			  elementType: "group-box-multiple",
 			  elementConfig: {
 				type: "select",
 				options: [],
@@ -337,7 +337,17 @@ class UserEdit extends Component {
     this.props.history.push("/users");
   }
   
+  getCountry = () => {
+	  return axios.get('/location/listActiveCountry');
+  };
   
+  getState = (countryId) => {
+	  return axios.get('/location/getState/'+countryId);
+  };
+  
+  getCity = (stateId) => {
+	  return axios.get('/location/getCity/'+stateId);
+  };
   submitHandler(e){
       e.preventDefault();
       let formSubmitFlag = true;
@@ -424,7 +434,37 @@ class UserEdit extends Component {
       //~ });
   }
   
-  
+  componentDidMount(){
+	  if(this.state.countries.length === 0){
+		  this.getCountry().then((data) => { 
+			  if(data.data.code === 200) this.setState({countries: data.data.result}, () => {
+				  console.log('componentDidMount', this.state.editUser);
+				
+			  })
+		  });
+	  }
+  }
+  onDropdownChange = (event, key) => {
+	  let value = event.target.value;	
+	  if(value != ''){
+		  switch(key){
+			  case 'state':
+				  this.inputChangedHandler(event, 'state');
+				  this.getCity(value).then((data) => {
+					  if(data.data.code === 200) this.setState({cities: data.data.result})
+				  });break;
+			  default:
+				  this.inputChangedHandler(event, 'country');
+				  this.getState(value).then((data) => {console.log('Here in onDropdownChange country', data);
+					  if(data.data.code === 200) this.setState({states: data.data.result}, () => {
+						  let e = {target: {value: this.state.editUser.state.value}};
+						  this.onDropdownChange(e, 'state');
+					  })
+				  });
+			  
+		  }
+	  }
+  }
   
   render() {
 	  const formElementsArray = [];
@@ -439,7 +479,7 @@ class UserEdit extends Component {
     let formData = null;
     if(this.state.editUser.subscriptionPlan.elementConfig.options.length){
 		  formData = formElementsArray.map(formElement => {
-			//if(formElement.config.elementType !== 'group-box-multiple'){
+			if(formElement.config.elementType !== 'group-box-multiple'){
 			return <Row key={formElement.id}>
 					<Col xs="4" sm="12">
 					  <InputElement
@@ -456,84 +496,84 @@ class UserEdit extends Component {
 					  />
 					</Col>
 				  </Row>;
-		   //~ }else{		   
-			 //~ switch(formElement.id){
-			  //~ case 'country':
-			  //~ return <Row key={formElement.id}>
-					//~ <Col xs="4" sm="12"><FormGroup>
-					  //~ <Label htmlFor={formElement.config.label}>{formElement.config.label}</Label>
-					  //~ <select
-						  //~ key={formElement.id}
-						  //~ className="form-control"
-						  //~ onChange={event => 
-							//~ this.onDropdownChange(event, 'country')					  
-						  //~ }
-						  //~ value={formElement.config.value}
-						  //~ ref={formElement.config.elementConfig.reference}
-						//~ >
-						  //~ <option value="" >
-							//~ --Select--
-						  //~ </option>
-						  //~ {this.state.countries.map(option => {
-							  //~ return <option value={option._id} key={option._id}>
-								//~ {option[formElement.config.elementConfig.title]}
-							  //~ </option>
-						  //~ })}
-						//~ </select></FormGroup></Col>
-							  //~ </Row>;
-			 //~ case 'state':
-			  //~ return <Row key={formElement.id}>
-					//~ <Col xs="4" sm="12"><FormGroup>
-					  //~ <Label htmlFor={formElement.config.label}>{formElement.config.label}</Label>
-					  //~ <select
-						  //~ key={formElement.id}
-						  //~ className="form-control"
-						  //~ onChange={event => 
-							//~ this.onDropdownChange(event, 'state')					  
-						  //~ }
-						  //~ value={formElement.config.value}
-						  //~ ref={formElement.config.elementConfig.reference}
-						//~ >
-						  //~ <option value="">
-							//~ --Select--
-						  //~ </option>
+		   }else{		   
+			 switch(formElement.id){
+			  case 'country':
+			  return <Row key={formElement.id}>
+					<Col xs="4" sm="12"><FormGroup>
+					  <Label htmlFor={formElement.config.label}>{formElement.config.label}</Label>
+					  <select
+						  key={formElement.id}
+						  className="form-control"
+						  onChange={event => 
+							this.onDropdownChange(event, 'country')					  
+						  }
+						  value={formElement.config.value}
+						  ref={formElement.config.elementConfig.reference}
+						>
+						  <option value="0" key="0">
+							--Select--
+						  </option>
+						  {this.state.countries.map(option => {
+							  return <option value={option._id} key={option._id}>
+								{option[formElement.config.elementConfig.title]}
+							  </option>
+						  })}
+						</select></FormGroup></Col>
+							  </Row>;
+			 case 'state':
+			  return <Row key={formElement.id}>
+					<Col xs="4" sm="12"><FormGroup>
+					  <Label htmlFor={formElement.config.label}>{formElement.config.label}</Label>
+					  <select
+						  key={formElement.id}
+						  className="form-control"
+						  onChange={event => 
+							this.onDropdownChange(event, 'state')					  
+						  }
+						  value={formElement.config.value}
+						  ref={formElement.config.elementConfig.reference}
+						>
+						  <option value="" key="0">
+							--Select--
+						  </option>
 						  
-						  //~ {this.state.states.map(option => {
-							  //~ return <option value={option._id} key={option._id}>
-								//~ {option[formElement.config.elementConfig.title]}
-							  //~ </option>
-						  //~ })}
-						//~ </select></FormGroup></Col>
-					 //~ </Row>;
-				//~ default:
-					//~ return <Row key={formElement.id}>
-					//~ <Col xs="4" sm="12">
-					//~ <FormGroup>
-					  //~ <Label htmlFor={formElement.config.label}>{formElement.config.label}</Label>
-					  //~ <select
-						  //~ key={formElement.id}
-						  //~ className="form-control"
-						  //~ onChange={event => 
-							//~ this.inputChangedHandler(event, 'city')					  
-						  //~ }
-						  //~ value={formElement.config.value}
-						  //~ ref={formElement.config.elementConfig.reference}
-						//~ >
-						  //~ <option value="" >
-							//~ --Select--
-						  //~ </option>
+						  {this.state.states.map(option => {
+							  return <option value={option._id} key={option._id}>
+								{option[formElement.config.elementConfig.title]}
+							  </option>
+						  })}
+						</select></FormGroup></Col>
+					 </Row>;
+				default:
+					return <Row key={formElement.id}>
+					<Col xs="4" sm="12">
+					<FormGroup>
+					  <Label htmlFor={formElement.config.label}>{formElement.config.label}</Label>
+					  <select
+						  key={formElement.id}
+						  className="form-control"
+						  onChange={event => 
+							this.inputChangedHandler(event, 'city')					  
+						  }
+						  value={formElement.config.value}
+						  ref={formElement.config.elementConfig.reference}
+						>
+						  <option value="0" key="0">
+							--Select--
+						  </option>
 						  
-						  //~ {this.state.cities.map(option => {
-							  //~ return <option value={option._id} key={option._id}>
-								//~ {option[formElement.config.elementConfig.title]}
-							  //~ </option>
-						  //~ })}
-						//~ </select>
-					//~ </FormGroup>
-					//~ </Col>
-				//~ </Row>;
-				//~ }
-		   //~ }
+						  {this.state.cities.map(option => {
+							  return <option value={option._id} key={option._id}>
+								{option[formElement.config.elementConfig.title]}
+							  </option>
+						  })}
+						</select>
+					</FormGroup>
+					</Col>
+				</Row>;
+				}
+		   }
 		 });
 	  }
 	  
