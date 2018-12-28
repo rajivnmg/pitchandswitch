@@ -20,6 +20,7 @@ import BrandToggleBox from "./BrandToggleBox";
 import jquery from "jquery";
 import Aux from "../../hoc/Auxillary";
 import { If, Then /*, ElseIf*/, Else } from "react-if-elseif-else-render";
+import commonFunction from "../commonFunction";
 const constant = require("../../config/constant");
 
 var FD = require("form-data");
@@ -738,8 +739,12 @@ class SearchListing extends React.Component {
           catName = item.productCategory.title;
         }
 
-        let userID = item.userId ? item.userId._id : "";
+		// Get The distance from lat log of user
+		let UserLatitude = (item.userId && item.userId.loct)?item.userId.loct.coordinates[0]:localStorage.getItem("Latitude");
+		let UserLongitude = (item.userId && item.userId.loct)?item.userId.loct.coordinates[1]:localStorage.getItem("Longitude");
+		let dist = commonFunction.distance(localStorage.getItem("Latitude"), localStorage.getItem("Longitude"), UserLatitude, UserLongitude, constant.DISTANCE_UNIT);
 
+		let userID = item.userId?item.userId._id:'';
         let img = item.userId ? (
           <img
             className="userPicNew"
@@ -830,6 +835,7 @@ class SearchListing extends React.Component {
                   >
                     {item.userId ? item.userId.firstName : ""}
                   </Link>
+                    <p className="distance">{dist} {(constant.DISTANCE_UNIT==='M')?'Miles':'Km'}</p>
                 </div>
               </div>
             </div>

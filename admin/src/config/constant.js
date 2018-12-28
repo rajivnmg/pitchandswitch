@@ -136,6 +136,10 @@ module.exports = {
       color: "16",
       disabled: false
     }
-  ]
+  ],
+   userType: [
+    { _id: "1", name: "Admin" },
+    { _id: "0", name: "User" }
+  ],
   
 };

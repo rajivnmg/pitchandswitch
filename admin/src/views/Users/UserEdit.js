@@ -8,34 +8,23 @@ import CitySelectBox from '../SelectBox/CitySelectBox/CitySelectBox';
 import SubscriptionSelectBox from '../SelectBox/SubscriptionSelectBox/SubscriptionSelectBox';
 import InputElement from "../InputElement/InputElement";
 import GroupBox from '../SelectBox/GroupBox/GroupBox';
-
-import {
-  Badge,
-  Button,
-  ButtonDropdown,
+import moment from "moment";
+import { 
+  Button,  
   Card,
-  CardBody,
-  CardFooter,
+  CardBody,  
   CardHeader,
-  Col,
-  Collapse,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Fade,
+  Col,        
   Form,
-  FormGroup,
-  FormText,
+  FormGroup, 
   FormFeedback,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
+  Input, 
   Label,
   Row,
 } from 'reactstrap';
 var FD = require('form-data');
 var fs = require('fs');
+const constant = require("../../config/constant");
 // import PropTypes from 'prop-types';
 class UserEdit extends Component {
   constructor(props){
@@ -59,208 +48,226 @@ class UserEdit extends Component {
     let userId = this.props.match.params.id;
     
     this.state = {
-      editUser: {
-        firstName: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-            placeholder: "First Name"
-          },
-          value: "",
-          label: "First Name",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        middleName: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-            placeholder: "First Name"
-          },
-          value: "",
-          label: "Middle Name",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        lastName: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-            placeholder: "First Name"
-          },
-          value: "",
-          label: "Last Name",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        userName: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-            placeholder: "User Name"
-          },
-          value: "",
-          label: "Username",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        userType: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-          },
-          value: "",
-          label: "User Type",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        email: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-            placeholder: "First Name"
-          },
-          value: "",
-          label: "Email",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        phoneNumber: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-            placeholder: "First Name"
-          },
-          value: "",
-          label: "Phone Number",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        dob: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-            placeholder: "DOB"
-          },
-          value: "",
-          label: "DOB",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        address: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-            placeholder: "DOB"
-          },
-          value: "",
-          label: "Address",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        city: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-          },
-          value: "",
-          label: "DOB",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        state: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-          },
-          value: "",
-          label: "State",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        country: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-          },
-          value: "",
-          label: "Country",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-      
-        zipCode: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-          },
-          value: "",
-          label: "Zip Code",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-        subscriptionPlan: {
-          elementType: "input",
-          elementConfig: {
-            type: "text",
-          },
-          value: "",
-          label: "Subscription Plan",
-          validation: {
-            required: true
-          },
-          valid: false,
-          touched: false
-        },
-      },
-      userId: userId,
-      loadedData:false,
-      selectedFile:''
+		subscriptions: [],
+		countries:[],
+		states: [],
+		cities: [],
+		editUser: {
+			firstName: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+				placeholder: "First Name"
+			  },
+			  value: "",
+			  label: "First Name",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			middleName: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+				placeholder: "Middle Name"
+			  },
+			  value: "",
+			  label: "Middle Name",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			lastName: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+				placeholder: "Last Name"
+			  },
+			  value: "",
+			  label: "Last Name",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			userName: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+				placeholder: "User Name"
+			  },
+			  value: "",
+			  label: "Username",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},			
+			userType: {
+			  elementType: "select-simple",
+			  elementConfig: {
+				type: "select",
+				options: [],
+				title: 'name'		
+			  },
+			  value: "",
+			  label: "User Type",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			email: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+				placeholder: "Email"
+			  },
+			  value: "",
+			  label: "Email",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			phoneNumber: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+				placeholder: "Phone Number"
+			  },
+			  value: "",
+			  label: "Phone Number",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			dob: {
+			  elementType: "date",
+			  elementConfig: {
+				type: "date",
+				placeholder: "DOB",
+				format: "DD/MM/YYYY"
+			  },
+			  value: "",
+			  label: "DOB",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			address: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+				placeholder: "Address"
+			  },
+			  value: "",
+			  label: "Address",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			country: {
+			  elementType: "group-box-multiple",
+			  elementConfig: {
+				type: "select",
+				options: [],
+				title:'countryName'
+			  },
+			  value: "",
+			  label: "Country",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false,
+			  countryId: true
+			}, 
+			state: {
+			  elementType: "group-box-multiple",
+			  elementConfig: {
+				type: "select",
+				options: [],
+				title:'stateName'
+			  },
+			  value: "",
+			  label: "State",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false,
+			  stateId: true
+			},
+			city: {
+			  elementType: "group-box-multiple",
+			  elementConfig: {
+				type: "select",
+				options: [],
+				title:'cityName'
+			  },
+			  value: "",
+			  label: "City",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false,
+			  cityId: true
+			},		 
+			zipCode: {
+			  elementType: "input",
+			  elementConfig: {
+				type: "text",
+			  },
+			  value: "",
+			  label: "Zip Code",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			},
+			subscriptionPlan: {
+			  elementType: "select-simple",
+			  elementConfig: {
+				type: "select",
+				options: [],
+				title: 'subscriptionName'		
+			  },
+			  value: "",
+			  label: "Subscription Plan",
+			  validation: {
+				required: true
+			  },
+			  valid: false,
+			  touched: false
+			}
+		},
+		  userId: userId,
+		  loadedData:false,
+		  selectedFile:''
     };
   }
   checkValidity(value, rules) {
     let isValid = false;
+	console.log('Validity', value);
     if (rules.required) {
-      isValid = value.trim() != "" && isValid;
+      isValid = typeof(value) === 'string' && value.trim() != "" && isValid;
     }
     if (rules.minLength) {
       isValid = value.length >= rules.minLength && isValid;
@@ -280,13 +287,13 @@ class UserEdit extends Component {
     };
     updatedFormElement.value = targetValue;
     updatedFormElement.valid = this.checkValidity(
-      updatedFormElement.value,
+      targetValue,
       updatedFormElement.validation
     );
     updatedFormElement.touched = true;
     updatedUser[inputIdentifier] = updatedFormElement;
     this.setState({ editUser: updatedUser }, () => {
-			//console.log('data value for category', this.state.categoryForm);
+		console.log('data value for category', this.state.editUser);
 	});
   };
   
@@ -314,73 +321,95 @@ class UserEdit extends Component {
     this.props.history.push("/users");
   }
   
+  getCountry = () => {
+	  return axios.get('/location/listActiveCountry');
+  };
+  
+  getState = (countryId) => {
+	  return axios.get('/location/getState/'+countryId);
+  };
+  
+  getCity = (stateId) => {
+	  return axios.get('/location/getCity/'+stateId);
+  };
   submitHandler(e){
       e.preventDefault();
       let formSubmitFlag = true;
-      for(let field in this.state.validation) {
-        let lastValidFieldFlag = true;
-        let addUser = this.state.validation;
-        addUser[field].valid = null;
-        for(let fieldCheck in this.state.validation[field].rules){
-          switch(fieldCheck){
-            case 'notEmpty':
-              if(lastValidFieldFlag === true && this[field].value.length === 0){
-                  lastValidFieldFlag = false;
-                  formSubmitFlag = false;
-                  addUser[field].valid = false;
-                  addUser[field].message = addUser[field].rules[fieldCheck].message;
+      //~ for(let field in this.state.validation) {
+        //~ let lastValidFieldFlag = true;
+        //~ let addUser = this.state.validation;
+        //~ addUser[field].valid = null;
+        //~ for(let fieldCheck in this.state.validation[field].rules){
+          //~ switch(fieldCheck){
+            //~ case 'notEmpty':
+              //~ if(lastValidFieldFlag === true && this[field].value.length === 0){
+                  //~ lastValidFieldFlag = false;
+                  //~ formSubmitFlag = false;
+                  //~ addUser[field].valid = false;
+                  //~ addUser[field].message = addUser[field].rules[fieldCheck].message;
 
-               }
-              break;
-            case 'emailCheck':
-              if(lastValidFieldFlag === true && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this[field].value)){
-                lastValidFieldFlag = false;
-                formSubmitFlag = false;
-                addUser[field].valid = false;
-                addUser[field].message = addUser[field].rules[fieldCheck].message;
-              }
-              break;
-            case 'minLength':
-              if(lastValidFieldFlag === true && this[field].value.length < parseInt(this.state.validation[field].rules[fieldCheck].length)){
-                lastValidFieldFlag = false;
-                formSubmitFlag = false;
-                addUser[field].valid = false;
-                addUser[field].message = addUser[field].rules[fieldCheck].message;
-              }
-              break;
-            case 'matchWith':
-              if(lastValidFieldFlag === true && this[field].value !== this[this.state.validation[field].rules[fieldCheck].matchWithField].value){
-                lastValidFieldFlag = false;
-                formSubmitFlag = false;
-                addUser[field].valid = false;
-                addUser[field].message = addUser[field].rules[fieldCheck].message;
-              }
-              break;
-          }
-        }
-        this.setState({ validation: addUser});
-      }
+               //~ }
+              //~ break;
+            //~ case 'emailCheck':
+              //~ if(lastValidFieldFlag === true && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(this[field].value)){
+                //~ lastValidFieldFlag = false;
+                //~ formSubmitFlag = false;
+                //~ addUser[field].valid = false;
+                //~ addUser[field].message = addUser[field].rules[fieldCheck].message;
+              //~ }
+              //~ break;
+            //~ case 'minLength':
+              //~ if(lastValidFieldFlag === true && this[field].value.length < parseInt(this.state.validation[field].rules[fieldCheck].length)){
+                //~ lastValidFieldFlag = false;
+                //~ formSubmitFlag = false;
+                //~ addUser[field].valid = false;
+                //~ addUser[field].message = addUser[field].rules[fieldCheck].message;
+              //~ }
+              //~ break;
+            //~ case 'matchWith':
+              //~ if(lastValidFieldFlag === true && this[field].value !== this[this.state.validation[field].rules[fieldCheck].matchWithField].value){
+                //~ lastValidFieldFlag = false;
+                //~ formSubmitFlag = false;
+                //~ addUser[field].valid = false;
+                //~ addUser[field].message = addUser[field].rules[fieldCheck].message;
+              //~ }
+              //~ break;
+          //~ }
+        //~ }
+        //~ this.setState({ validation: addUser});
+      //~ }
 
       if(formSubmitFlag){
-        const data = new FD()
-        data.append('_id', this.props.match.params.id)
-        data.append('firstName', this.firstName.value)
-        data.append('middleName', this.middleName.value)
-        data.append('lastName', this.lastName.value)
-        data.append('userName', this.userName.value)
-        data.append('userType', this.userType.value)
-        data.append('email', this.email.value)
-        data.append('phoneNumber', this.phoneNumber.value)
-        data.append('dob', this.dob.value)
-        data.append('address', this.address.value)
-        data.append('city', this.city.value)
-        data.append('state',this.state.value)
-        data.append('country',this.country.value)
-        data.append('zipCode', this.zipCode.value)
-        data.append('subscriptionPlan',this.subscriptionPlan.value)
-        if(this.state.selectedFile){
+		e.preventDefault();
+		const data = new FD()
+		for (let key in this.state.editUser) {
+		  //userObj[key] = this.state.editUser[key].value;
+		  data.append(key, this.state.editUser[key].value);
+		}
+		data.append('_id', this.props.match.params.id);
+		if(this.state.selectedFile){
           data.append('profilePic', this.state.selectedFile)
         }
+		
+        //~ const data = new FD()
+        //~ data.append('_id', this.props.match.params.id)
+        //~ data.append('firstName', this.firstName.value)
+        //~ data.append('middleName', this.middleName.value)
+        //~ data.append('lastName', this.lastName.value)
+        //~ data.append('userName', this.userName.value)
+        //~ data.append('userType', this.userType.value)
+        //~ data.append('email', this.email.value)
+        //~ data.append('phoneNumber', this.phoneNumber.value)
+        //~ data.append('dob', this.dob.value)
+        //~ data.append('address', this.address.value)
+        //~ data.append('city', this.city.value)
+        //~ data.append('state',this.state.value)
+        //~ data.append('country',this.country.value)
+        //~ data.append('zipCode', this.zipCode.value)
+        //~ data.append('subscriptionPlan',this.subscriptionPlan.value)
+        //~ if(this.state.selectedFile){
+          //~ data.append('profilePic', this.state.selectedFile)
+        //~ }
         axios.post('/user/updateUser', data).then(result => {
           if(result.data.code == '200'){
             this.props.history.push("/users");
@@ -392,11 +421,41 @@ class UserEdit extends Component {
   componentWillMount(){	
 	  //if(localStorage.getItem('jwtToken') != null)
       //axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');
+	  axios.get('/subscription/listingsubscription').then(result => {
+		  if(result.data.code === 200){	
+			 const editUser = {...this.state.editUser};
+			  editUser['subscriptionPlan'].elementConfig.options = result.data.result;
+			  editUser['userType'].elementConfig.options = constant.userType;
+			this.setState({ editUser},()=>{
+				console.log('userType subscription', editUser, constant.userType);
+				});
+		  }
+	  })
       axios.get('/user/viewUser/' + this.state.userId).then(result => {
         if(result.data.code == 200){
-          this.setState({ editUser: result.data.result,loadedData:true},function(){
-          //  console.log("editUser",this.state.editUser.country._id)
-          });
+			//~ editUser: result.data.result,
+		 let editUser = {...this.state.editUser};
+		 for(let key in editUser){
+			if(result.data.result[key]){
+				if(key === 'dob')
+				  editUser[key].value = moment(result.data.result[key], "YYYY-MM-DD").format("DD/MM/YYYY");
+				else if(key === 'country')	
+				  editUser[key].value = result.data.result[key]._id;
+				else if(key === 'state')	
+				  editUser[key].value = result.data.result[key]._id;
+				else if(key === 'city')	
+				  editUser[key].value = result.data.result[key]._id;
+				else
+				  editUser[key].value = result.data.result[key];
+			}
+		 }
+		
+          this.setState({ loadedData:true, editUser}, () => {
+			if(this.state.editUser.country){
+				let e = {target: {value: this.state.editUser.country.value}};
+				this.onDropdownChange(e, 'country');
+			}  
+		  });
           //~ this.firstName.value = result.data.result.firstName;
           //~ this.middleName.value = result.data.result.middleName;
           //~ this.lastName.value = result.data.result.lastName;
@@ -414,7 +473,7 @@ class UserEdit extends Component {
           //this.profilePic.value = result.data.result.profilePic
 
         }
-      })
+      });
       //~ .catch((error) => {
         //~ if(error.status === 401) {
           //~ this.props.history.push("/login");
@@ -422,30 +481,147 @@ class UserEdit extends Component {
       //~ });
   }
   
+  componentDidMount(){
+	  if(this.state.countries.length === 0){
+		  this.getCountry().then((data) => { 
+			  if(data.data.code === 200) this.setState({countries: data.data.result}, () => {
+				  console.log('componentDidMount', this.state.editUser);
+				
+			  })
+		  });
+	  }
+  }
+  onDropdownChange = (event, key) => {
+	  let value = event.target.value;
+	 // console.log('HHHHHHHHHHH onDropdownChange', event)
+	  if(value != ''){
+		  switch(key){
+			  case 'state':
+				  this.inputChangedHandler(event, 'state');
+				  this.getCity(value).then((data) => {
+					  if(data.data.code === 200) this.setState({cities: data.data.result})
+				  });break;
+			  default:
+				  this.inputChangedHandler(event, 'country');
+				  this.getState(value).then((data) => {console.log('Here in onDropdownChange country', data);
+					  if(data.data.code === 200) this.setState({states: data.data.result}, () => {
+						  let e = {target: {value: this.state.editUser.state.value}};
+						  this.onDropdownChange(e, 'state');
+					  })
+				  });
+			  
+		  }
+	  }
+  }
+  
   render() {
 	  const formElementsArray = [];
+	
     for (let key in this.state.editUser) {
       formElementsArray.push({
         id: key,
         config: this.state.editUser[key]
       });
     }
+    let groupFlag = false;
     let formData = null;
-	  formData = formElementsArray.map(formElement => <Row key={formElement.id}>
-            <Col xs="4" sm="12">
-			  <InputElement
-                key={formElement.id}
-                label={formElement.config.label}
-                elementType={formElement.config.elementType}
-                elementConfig={formElement.config.elementConfig}
-                changed={event =>
-                  this.inputChangedHandler(event, formElement.id)
-                }                
-                value={formElement.config.value}
-              />
-            </Col>
-          </Row>);
-	  
+    if(this.state.editUser.subscriptionPlan.elementConfig.options.length){
+		  formData = formElementsArray.map(formElement => {
+			if(formElement.config.elementType !== 'group-box-multiple'){
+			return <Row key={formElement.id}>
+					<Col xs="4" sm="12">
+					  <InputElement
+						key={formElement.id}
+						label={formElement.config.label}
+						elementType={formElement.config.elementType}
+						elementConfig={formElement.config.elementConfig}
+						changed={event =>
+						  this.inputChangedHandler(event, formElement.id)
+						}                
+						value={formElement.config.value}
+					  />
+					</Col>
+				  </Row>;
+		   }else{		   
+			 switch(formElement.id){
+			  case 'country':
+			  return <Row key={formElement.id}>
+					<Col xs="4" sm="12"><FormGroup>
+					  <Label htmlFor={formElement.config.label}>{formElement.config.label}</Label>
+					  <select
+						  key={formElement.id}
+						  className="form-control"
+						  onChange={event => 
+							this.onDropdownChange(event, 'country')					  
+						  }
+						  value={formElement.config.value}
+						  ref={formElement.config.elementConfig.reference}
+						>
+						  <option value="0" key="0">
+							--Select--
+						  </option>
+						  {this.state.countries.map(option => {
+							  return <option value={option._id} key={option._id}>
+								{option[formElement.config.elementConfig.title]}
+							  </option>
+						  })}
+						</select></FormGroup></Col>
+							  </Row>;
+			 case 'state':
+			  return <Row key={formElement.id}>
+					<Col xs="4" sm="12"><FormGroup>
+					  <Label htmlFor={formElement.config.label}>{formElement.config.label}</Label>
+					  <select
+						  key={formElement.id}
+						  className="form-control"
+						  onChange={event => 
+							this.onDropdownChange(event, 'state')					  
+						  }
+						  value={formElement.config.value}
+						  ref={formElement.config.elementConfig.reference}
+						>
+						  <option value="0" key="0">
+							--Select--
+						  </option>
+						  
+						  {this.state.states.map(option => {
+							  return <option value={option._id} key={option._id}>
+								{option[formElement.config.elementConfig.title]}
+							  </option>
+						  })}
+						</select></FormGroup></Col>
+					 </Row>;
+				default:
+					return <Row key={formElement.id}>
+					<Col xs="4" sm="12">
+					<FormGroup>
+					  <Label htmlFor={formElement.config.label}>{formElement.config.label}</Label>
+					  <select
+						  key={formElement.id}
+						  className="form-control"
+						  onChange={event => 
+							this.inputChangedHandler(event, 'city')					  
+						  }
+						  value={formElement.config.value}
+						  ref={formElement.config.elementConfig.reference}
+						>
+						  <option value="0" key="0">
+							--Select--
+						  </option>
+						  
+						  {this.state.cities.map(option => {
+							  return <option value={option._id} key={option._id}>
+								{option[formElement.config.elementConfig.title]}
+							  </option>
+						  })}
+						</select>
+					</FormGroup>
+					</Col>
+				</Row>;
+				}
+		   }
+		 });
+	  }
 	  
 	  if(this.state.loadedData){
 		return (
@@ -482,14 +658,7 @@ class UserEdit extends Component {
                   </Col>
                 </Row>*/}
 						{formData}
-				  <GroupBox 
-					countryId={(this.state.editUser.country)?this.state.editUser.country._id:''}
-					stateId={(this.state.editUser.state)?this.state.editUser.state._id:''}
-					cityId={this.state.editUser.city} 
-					countryRef={(country)=> this.country=country}
-					stateRef={(state)=> this.state=state} 
-					cityRef={(city)=> this.city=city}					
-					/>
+				  
 				  {/*
 					  <FormGroup>
 				   <Label>Country</Label>
@@ -506,11 +675,11 @@ class UserEdit extends Component {
 				  </FormGroup>
 					  
 					  */}
-					{/*<FormGroup>
+					<FormGroup>
 					 <Label htmlFor="brand">Profile Image</Label>
 					  <Input type="file" innerRef={input => (this.profilePic = input)} onChange={this.fileChangedHandler} placeholder="Advertisement Image" />
 					  <img src={'assets/uploads/ProfilePic/'+this.state.editUser.profilePic} width="60"/>
-					</FormGroup>*/}
+					</FormGroup>
 					<Row>
 					  <Col xs="6" className="text-right">
 						<Button onClick={(e)=>this.submitHandler(e)} color="success" className="px-4">Submit</Button>
