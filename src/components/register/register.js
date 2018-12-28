@@ -28,7 +28,7 @@ class Form extends Component {
     const formLength = formEl.length;
    if (formEl.checkValidity() === false) {
       for (let i = 0; i < formLength; i++) {
-		  //console.log("formEl[i]",formEl[i])
+		  console.log("formEl[i]",formEl[i])
         const elem = formEl[i];
         const errorLabel = elem.parentNode.querySelector(".invalid-feedback");
         if (errorLabel && elem.nodeName.toLowerCase() !== "button") {
@@ -327,20 +327,18 @@ class Register extends React.Component {
             </div>
           
               <Form submit={this.submit}>
-                 {this.state.showFormError ? this._renderErrorMessage() : null}
-                 
-        
+                 {this.state.showFormError ? this._renderErrorMessage() : null}        
                <div className="form-row">
-                <div className="invalid-feedback validation"> </div>   
-                <span className="astrik">*</span>
-                  <label className="label" htmlFor={"name"}>First Name</label>
-                  <input id={"name"} className={"form-control textBox"} required={true} name={"name"} onChange={(e) => this.inputChangedHandler(e, 'name')} type={"name"} placeholder="Enter your name" />
+                 <div className="invalid-feedback validation"> </div>    
+					<span className="astrik">*</span>
+					<label className="label" htmlFor={"name"}>First Name</label>
+					<input id={"name"} className={"form-control textBox"} required={true} name={"name"} onChange={(e) => this.inputChangedHandler(e, 'name')} type={"name"} placeholder="Enter your First name" />
                 </div>
                  <div className="form-row">
                   <div className="invalid-feedback validation"> </div>   
                     <span className="astrik">*</span>
-                     <label className="label" htmlFor={"name"}>Last Name</label>
-                    <input id={"lastName"} className={"form-control textBox"} required={true} name={"lastName"} onChange={(e) => this.inputChangedHandler(e, 'lastName')} type={"name"} placeholder="Enter your name" />
+                     <label className="label" htmlFor={"lastName"}>Last Name</label>
+                    <input id={"lastName"} className={"form-control textBox"} required={true} name={"lastName"} onChange={(e) => this.inputChangedHandler(e, 'lastName')} type={"name"} placeholder="Enter your Last name" />
                 </div>
                 <div className="form-row">
                 <div className="invalid-feedback validation"> </div>

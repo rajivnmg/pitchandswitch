@@ -447,12 +447,12 @@ const login = (req, res) => {
               // set the use data in to session
               req.session.user = result;
               // console.log("LOgin SESSION ", req.session)
-              req.session.reload(function() {
-                req.session.save(function(err) {
-                  if (err) return res.end(err.message);
-                  res.end("saved");
-                });
-              });
+              //~ req.session.reload(function() {
+                //~ req.session.save(function(err) {
+                  //~ if (err) return res.end(err.message);
+                  //~ res.end("saved");
+                //~ });
+              //~ });
 
               //////////////////// JWT Token   ///////////////////
               // if user is found and password is right create a token

@@ -11,8 +11,7 @@ class AboutUs extends React.Component {
 				page:[]
 			}
 	}		
-	componentWillMount(){	
-		let privacy = 'privacy'
+	componentWillMount(){			
 		axios.get('/page/getPage/about').then(result =>{	
 				if(result.data.code === 200){
 					this.setState({page:result.data.result[0]})

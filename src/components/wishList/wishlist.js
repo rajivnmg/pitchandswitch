@@ -4,6 +4,7 @@ import popularItemImg from '../../images/popular-item1.jpg';
 import userPicture from '../../images/user-pic.png';
 import Select from 'react-select';
 import ClearWishListPopup from './clearWishListPopup'
+import Aux from "../../hoc/Auxillary";
 import axios from 'axios'
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import { Spin, Icon, Alert } from 'antd';
@@ -66,7 +67,7 @@ class wishList extends Component {
 
     render() {
         return (
-                <div className="myTreasure">
+                <Aux><div className="myTreasure">
                     <div className="container">
                         <div className="breadcrumb">
                             <ul>
@@ -120,7 +121,7 @@ class wishList extends Component {
                         {this.state.wishlists.length > this.state.limit ? <div>{this.state.loadMore ? <a className="more-items" href="javascript:void()" onClick={this.onLoadMore}>Load more</a> : ''}</div> : '' } 
                         <div>&nbsp;</div>                
                     </div>
-                </div>
+                </div></Aux>
                     );
     }
 }
