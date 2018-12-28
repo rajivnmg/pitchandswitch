@@ -730,8 +730,8 @@ class Register extends React.Component {
           catName = item.productCategory.title;
         }
 		// Get The distance from lat log of user	
-		let UserLatitude = item.userId?item.userId.loct.coordinates[0]:localStorage.getItem("Latitude");
-		let UserLongitude = item.userId?item.userId.loct.coordinates[1]:localStorage.getItem("Longitude");
+		let UserLatitude = (item.userId && item.userId.loct)?item.userId.loct.coordinates[0]:localStorage.getItem("Latitude");
+		let UserLongitude = (item.userId && item.userId.loct)?item.userId.loct.coordinates[1]:localStorage.getItem("Longitude");
 		let dist = commonFunction.distance(localStorage.getItem("Latitude"), localStorage.getItem("Longitude"), UserLatitude, UserLongitude, constant.DISTANCE_UNIT);
 						
 		let userID = item.userId?item.userId._id:'';          

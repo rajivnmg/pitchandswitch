@@ -19,8 +19,6 @@ var fs = require('fs');
  * It executes the form's checkValidity
  **/
 class Form extends Component {
-    
-    
   state = {
     isValidated: false
   };
@@ -98,7 +96,7 @@ class Register extends React.Component {
 		  cityId : '',
 		  countries:[{_id:'',countryName:''}],
 		  states:[{_id:'',stateName:''}],
-		  cities:[{_id:'0',cityName:'Select City'}],
+		  cities:[{_id:'',cityName:'Select City'}],
 		  registerForm: {
 			name: '',
 			email:'',
@@ -153,7 +151,7 @@ class Register extends React.Component {
         
         regForm.latitude = latLng['lat'];
         regForm.longitude = latLng['lng'];
-        console.log('HERE',  latLng['short_name'])
+       // console.log('HERE',  latLng['short_name'])
         this.setState({registerForm:regForm});
     })
       .catch(error => console.error('Error', error));
@@ -270,6 +268,7 @@ class Register extends React.Component {
 			  });
 			  window.scrollTo(0, 0)
 			}else{
+			  window.scrollTo(0, 0)
 			  this.setState({
 				message: result.data.message,
 				code :result.data.code,
@@ -452,8 +451,8 @@ class Register extends React.Component {
                   <div className="invalid-feedback validation"> </div>             
                   <span className="astrik">*</span>
                   <Label className="label" htmlFor={"country"}>Country</Label>
-				  <Input type="select" name="country" id="country" className={"form-control textBox"} onChange={this.handleChangeCountry}>
-					<option value="0">Select Country</option>
+				  <Input type="select" name="country" id="country" required={true} className={"form-control textBox"} onChange={this.handleChangeCountry}>
+					<option value="">Select Country</option>
 					{
 						this.state.countries.map( function(country,index) { 
 						return(<option key={index} value={country._id}>{country.countryName}</option>);
@@ -467,8 +466,8 @@ class Register extends React.Component {
 					<div className="invalid-feedback validation"> </div>             
 					<span className="astrik">*</span>
                   <label className="label" htmlFor={"state"}>State</label>
-                   <Input type="select" name="state" id="state" className={"form-control textBox"} onChange={this.handleChangeState}>
-					<option value="0">Select State</option>
+                   <Input type="select" name="state" id="state" required={true} className={"form-control textBox"} onChange={this.handleChangeState}>
+					<option value="">Select State</option>
 					{
 						this.state.states.map( function(state,index){ 
 						return(<option key={index} value={state._id}>{state.stateName}</option>);
@@ -488,7 +487,7 @@ class Register extends React.Component {
 				  <span className="astrik">*</span>
 
 					<label className="label" htmlFor={"city"}>City</label>
-					 <Input type="select" name="city" id="city" className={"form-control textBox"} onChange={this.handleChangeCity}>					
+					 <Input type="select" name="city" id="city" className={"form-control textBox"} required={true} onChange={this.handleChangeCity}>					
 					{
 						this.state.cities.map( function(city,index) { 
 						return(<option key={index} value={city._id}>{city.cityName}</option>);
@@ -497,15 +496,14 @@ class Register extends React.Component {
 				  </Input>
 				 {/* <input id={"city"} className={"form-control textBox"} required={true} name={"city"} type={"text"} placeholder="" />*/}
 				  </div>
-				  <div className="colum right">
-				<div className="invalid-feedback validation"> </div>          
-				<span className="astrik">*</span>
-
-				  <label className="label" htmlFor={"zipCode"}>ZIP / Postal Code</label>
-				  <input id={"zipCode"} className={"form-control textBox"} required={true} name={"zipCode"} onChange={(e) => this.inputChangedHandler(e, 'zipCode')} type={"text"} placeholder="" />
+				  <div className="colum right">	
+						<div className="invalid-feedback validation"> </div>
+						<span className="astrik">*</span>
+						<label className="label" htmlFor={"zipCode"}>ZIP / Postal Code</label>
+						<input id={"zipCode"} className={"form-control textBox"} required={true} name={"zipCode"} onChange={(e) => this.inputChangedHandler(e, 'zipCode')} type={"text"} placeholder="" />
+					
 				 </div>
-				  <div className="cl"></div>
-				  
+				  <div className="cl"></div>				  
 				</div>
                 
 			<div className="form-row">

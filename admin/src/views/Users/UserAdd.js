@@ -68,7 +68,7 @@ class UserEdit extends Component {
 			  elementType: "input",
 			  elementConfig: {
 				type: "text",
-				placeholder: "First Name"
+				placeholder: "Last Name"
 			  },
 			  value: "",
 			  label: "Last Name",
@@ -140,7 +140,7 @@ class UserEdit extends Component {
 			  elementType: "input",
 			  elementConfig: {
 				type: "text",
-				placeholder: "First Name"
+				placeholder: "Email"
 			  },
 			  value: "",
 			  label: "Email",
@@ -154,7 +154,7 @@ class UserEdit extends Component {
 			  elementType: "input",
 			  elementConfig: {
 				type: "text",
-				placeholder: "First Name"
+				placeholder: "Phone Number"
 			  },
 			  value: "",
 			  label: "Phone Number",

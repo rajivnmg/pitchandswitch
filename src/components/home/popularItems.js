@@ -81,87 +81,89 @@ class PopularItems extends Component {
         </h3>
         <Slider {...settings}>
           {this.state.popularItems.map(function(item) {
-            var productImage = item._id ? item._id.productImages[0] : "";
-            var userImage = item._id ? item._id.userId.profilePic : "";
-            var userIds = item._id ? item._id.userId._id : "0";
-            var productUrl =
-              localStorage.getItem("isLoggedIn") == 1 &&
-              localStorage.getItem("userId") == userIds
-                ? "/my-trade-detail/" + item._id
-                : "/search-result/" + item._id;
+			if(item._id){
+				var productImage = item._id ? item._id.productImages[0] : "";
+				var userImage = item._id ? item._id.userId.profilePic : "";
+				var userIds = item._id ? item._id.userId._id : "0";
+				var productUrl =
+				  localStorage.getItem("isLoggedIn") == 1 &&
+				  localStorage.getItem("userId") == userIds
+					? "/my-trade-detail/" + item._id
+					: "/search-result/" + item._id;
 
-            return (
-              <div className="slides-div" key={item}>
-                <div key={item}>
-                  <div className="pic">
-                    <NavLink to={productUrl}>
-                      <img
-                        className="popularItemImg"
-                        src={
-                          constant.BASE_IMAGE_URL + "Products/" + productImage
-                        }
-                      />
-                    </NavLink>
-                  </div>
-                  <div className="details">
-                    <h4>
-                      <NavLink to={productUrl}>
-                        {item._id ? item._id.productName : ""}
-                        {}
-                      </NavLink>
-                    </h4>
-                    <NavLink
-                      className="catLink"
-                      to={
-                        "/search-listing/" +
-                        (item._id
-                          ? item._id.productCategory
-                            ? item._id.productCategory._id
-                            : ""
-                          : "")
-                      }
-                    >
-                      {item._id
-                        ? item._id.productCategory
-                          ? item._id.productCategory.title
-                          : ""
-                        : ""}
-                    </NavLink>
-                  </div>
-                  <div className="userdiv">
-                    <div className="user-pic">
-                      <img
-                        src={
-                          constant.BASE_IMAGE_URL + "ProfilePic/" + userImage
-                        }
-                        height="20px;"
-                        width="20px;"
-                      />
-                    </div>
-                    <div className="user-name">
-                      <NavLink
-                        className="alink"
-                        target="_blank"
-                        to={
-                          "/public-profile/" +
-                          (item._id
-                            ? item._id.userId
-                              ? item._id.userId._id
-                              : ""
-                            : "")
-                        }
-                      >
-                        {item._id
-                          ? item._id.userId
-                            ? item._id.userId.userName
-                            : ""
-                          : ""}
-                      </NavLink>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
+				return (
+				  <div className="slides-div" key={item}>
+					<div key={item}>
+					  <div className="pic">
+						<NavLink to={productUrl}>
+						  <img
+							className="popularItemImg"
+							src={
+							  constant.BASE_IMAGE_URL + "Products/" + productImage
+							}
+						  />
+						</NavLink>
+					  </div>
+					  <div className="details">
+						<h4>
+						  <NavLink to={productUrl}>
+							{item._id ? item._id.productName : ""}
+							{}
+						  </NavLink>
+						</h4>
+						<NavLink
+						  className="catLink"
+						  to={
+							"/search-listing/" +
+							(item._id
+							  ? item._id.productCategory
+								? item._id.productCategory._id
+								: ""
+							  : "")
+						  }
+						>
+						  {item._id
+							? item._id.productCategory
+							  ? item._id.productCategory.title
+							  : ""
+							: ""}
+						</NavLink>
+					  </div>
+					  <div className="userdiv">
+						<div className="user-pic">
+						  <img
+							src={
+							  constant.BASE_IMAGE_URL + "ProfilePic/" + userImage
+							}
+							height="20px;"
+							width="20px;"
+						  />
+						</div>
+						<div className="user-name">
+						  <NavLink
+							className="alink"
+							target="_blank"
+							to={
+							  "/public-profile/" +
+							  (item._id
+								? item._id.userId
+								  ? item._id.userId._id
+								  : ""
+								: "")
+							}
+						  >
+							{item._id
+							  ? item._id.userId
+								? item._id.userId.userName
+								: ""
+							  : ""}
+						  </NavLink>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				);
+			}
           })}
           <If condition={this.state.popularItems.length > 10}>
             <Then>
