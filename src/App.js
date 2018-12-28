@@ -41,10 +41,12 @@ import Style1 from "./media.css";
 import axios from "axios";
 import NotFound from "./NotFound";
 import asyncComponent from "./hoc/asyncComponent/asyncComponent";
-const constant = require("./config/constant");
+
 const SearchListing = asyncComponent(() => {
   return import("./components/seacrh-listing/seacrh-listing");
 });
+//import SearchListing from "./components/seacrh-listing/seacrh-listing";
+const constant = require("./config/constant");
 const Header = asyncComponent(() => {
   return import("./components/header");
 });
@@ -111,7 +113,7 @@ class App extends Component {
                 component={SearchDetail}
               />
               <Route
-                path="/search-listing/:id?/:latitude?/:longitude?"
+                path="/search-listing"
                 render={props => (
                   <SearchListing {...props} getData={this.getSearchData}/>
                 )}/>

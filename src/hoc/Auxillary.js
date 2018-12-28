@@ -9,7 +9,7 @@ const ALLOWED_PATHS = [
   "/verifyUserEmail/:id?",
   "/subscription",
   "/search-result/:id?",
-  "/search-listing/:id?/:latitude?/:longitude?",
+  "/search-listing",
   "/search-result",
   "/public-profile/:id",
   "/help",

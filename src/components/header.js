@@ -106,19 +106,13 @@ class Header extends Component {
                 localStorage.getItem("longitude")
               ).then(
                 response => {
-                  //console.log('RRRR', response.results[0])
-                  // if(response.results[0].address_components[0] != undefined && response.results[0].address_components[3].long_name){
-                    //console.log('TEST', response)
-
-                    const address =
+                  const address =
                       response.results[1].address_components[3].long_name +
                       ", " +
                       response.results[1].address_components[4].long_name +
                       ", " +
                       response.results[1].address_components[7].long_name; //response.results[0].formatted_address;
                     this.setState({ address: address });
-                  // }
-                  //console.log("AAAAAAAAAAAAAADRESS" , address, response.results[0].address_components[3].long_name, response.results[0].address_components[4].long_name, response.results[0].address_components[7].long_name  );
                 },
                 error => {
                   console.error(error);
