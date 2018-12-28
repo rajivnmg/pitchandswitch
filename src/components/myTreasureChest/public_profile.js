@@ -33,7 +33,7 @@ class publicProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      limit: 10,
+      limit: 2,
       loadMore: true,
 
       publicProfile: {},
@@ -84,6 +84,7 @@ class publicProfile extends Component {
                 }
                 height="100px"
                 width="100px"
+                alt=""
               />
             </div>
             <div className="details">
@@ -91,8 +92,8 @@ class publicProfile extends Component {
                 {this.state.publicProfile
                   ? this.state.publicProfile.firstName
                   : ""(this.state.publicProfile)
-                    ? this.state.publicProfile.lastName
-                    : ""}
+                  ? this.state.publicProfile.lastName
+                  : ""}
               </h2>
               <p className="date">
                 Member since:{" "}
@@ -141,7 +142,7 @@ class publicProfile extends Component {
                     <div className="Items" key={index}>
                       <div className="pic">
                         <div className="overlay">
-                         {/* <a href="#" className="favourite">
+                          {/* <a href="#" className="favourite">
                             <FontAwesomeIcon icon="heart" /> fav
                           </a> */}
                         </div>
@@ -183,6 +184,7 @@ class publicProfile extends Component {
                               "ProfilePic/" +
                               this.state.publicProfile.profilePic
                             }
+                            alt=""
                           />
                         </div>
                         <div className="user-name">
@@ -199,13 +201,14 @@ class publicProfile extends Component {
             {this.state.products.length > this.state.limit ? (
               <div>
                 {this.state.loadMore ? (
-                  <a
+                  <button
                     className="more-items"
-                    href="javascript:void()"
+                    type="button"
+                    style={{ cursor: "pointer" }}
                     onClick={this.onLoadMore}
                   >
                     Load more
-                  </a>
+                  </button>
                 ) : (
                   ""
                 )}

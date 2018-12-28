@@ -8,7 +8,7 @@ src/config/constant.js
 node_modules_latest/*
 # production
 /build
-
+admin/*
 #Assets directory for unwanted image and file
 public/assets/uploads/*
 # misc

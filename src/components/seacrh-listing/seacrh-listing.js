@@ -1,29 +1,30 @@
 import "rc-collapse/assets/index.css";
 import Collapse, { Panel } from "rc-collapse";
 import React from "react";
-import ReactDOM from "react-dom";
 import Select from "react-select";
 import { Link } from "react-router-dom";
-import colorImg from "../../images/color.png";
+//import colorImg from "../../images/color.png";
 import star from "../../images/star.png";
+//import { Slider, InputNumber, Row, Col } from 'antd';
+
 import Colors from "./colors";
 import UserAutosearch from "./userSelect";
 import axios from "axios";
 import CategoryToggleBox from "./CategoryToggleBox";
 import AgeSelectUser from "./ageSelect";
-import Style from "./search-listing.css";
+import "./search-listing.css";
 import IntegerStep from "./IntegerStep";
-import SelectLocations from "./SelectLocations";
+//import SelectLocations from "./SelectLocations";
 import BrandToggleBox from "./BrandToggleBox";
-import { Fade, Form, FormGroup, FormText, FormFeedback } from "reactstrap";
+//import { Fade, Form, FormGroup, FormText, FormFeedback } from "reactstrap";
 import jquery from "jquery";
 import Aux from "../../hoc/Auxillary";
-import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
+import { If, Then /*, ElseIf*/, Else } from "react-if-elseif-else-render";
+import commonFunction from "../commonFunction";
 const constant = require("../../config/constant");
-const commonFunction = require('../commonFunction');
+
 var FD = require("form-data");
-var fs = require("fs");
-const dist = 2;
+//var fs = require("fs");
 const treeData = [
   {
     label: "month - 6 month",
@@ -51,46 +52,33 @@ const treeData = [
     key: "0-4"
   }
 ];
-let catArr;
+//let catArr;
 const filterSearch = [
   { label: "Newly Added", value: 1 },
   { label: "A - Z", value: 2 },
   { label: "Z - A", value: 3 }
 ];
 
-var Style1 = { columnCount: 7 };
-var Style2 = { minWidth: 1610 };
+//var Style1 = { columnCount: 7 };
+//var Style2 = { minWidth: 1610 };
 
-const options = [
-  { value: "Texes", label: "Texes" },
-  { value: "Delhi", label: "Delhi" },
-  { value: "Haryana", label: "Haryana" }
-];
+// const options = [
+//   { value: "Texes", label: "Texes" },
+//   { value: "Delhi", label: "Delhi" },
+//   { value: "Haryana", label: "Haryana" }
+// ];
 
-const Hide = {
-  display: "none"
-};
+// const Hide = {
+//   display: "none"
+// };
 
 function random() {
   return parseInt(Math.random() * 10, 10) + 1;
 }
 
-class Register extends React.Component {
+class SearchListing extends React.Component {
   constructor(props) {
     super(props);
-    let categoryId = props.match.params.id;
-    let latitude = props.match.params.latitude;
-    if (latitude != undefined) {
-      latitude = latitude.replace(" ", "");
-    } else {
-      latitude = "";
-    }
-    let longitude = props.match.params.longitude;
-    if (longitude != undefined) {
-      longitude = longitude.replace(" ", "");
-    } else {
-      longitude = "";
-    }
     this.state = {
       time: random(),
       accordion: false,
@@ -124,10 +112,10 @@ class Register extends React.Component {
         selectedAges: [],
         selectedRatings: []
       },
-      categoryId: categoryId,
-      latitude: latitude,
-      longitude: longitude,
-      optionsChecked: [],
+      categoryId: this.props.getData().searchData,
+      flag: this.props.getData().flag,
+      latitude: localStorage.getItem('latitude'),
+      longitude: localStorage.getItem('longitude'),
       ids: [],
       colors: [],
       ratings: [
@@ -137,12 +125,11 @@ class Register extends React.Component {
         { id: 2, value: 2, checked: false },
         { id: 1, value: 1, checked: false }
       ],
-      showFormSuccess: false,
+      optionsChecked: [],
       showMoreCategories: false,
       showMoreCount: 0,
       showBrandCount: 0,
       isBrandOpen: false,
-      checkedCategories: [],
       locationMin: 0,
       locationMax: 1000
     };
@@ -267,7 +254,7 @@ class Register extends React.Component {
     let showMoreCount = 0;
     let checkedArray = [];
     categories.map((item, index) => {
-      if (categories[index].checked == undefined)
+      if (categories[index].checked === undefined)
         categories[index].checked = false;
       if (item._id === e.target.value) {
         categories[index].checked = !categories[index].checked;
@@ -291,7 +278,7 @@ class Register extends React.Component {
     let showBrandCount = 0;
     let selectedBrands = [];
     brands.map((item, index) => {
-      if (brands[index].checked == undefined) brands[index].checked = false;
+      if (brands[index].checked === undefined) brands[index].checked = false;
       if (item._id === e.target.value) {
         brands[index].checked = !brands[index].checked;
       }
@@ -326,7 +313,7 @@ class Register extends React.Component {
     const colors = this.state.colors;
     let selectedColors = [];
     colors.map((item, index) => {
-      if (colors[index].checked == undefined) colors[index].checked = false;
+      if (colors[index].checked === undefined) colors[index].checked = false;
       if (item.id === e.target.value) {
         colors[index].checked = !colors[index].checked;
       }
@@ -344,7 +331,8 @@ class Register extends React.Component {
     }
     return url;
   };
-  componentDidMount() {
+
+  executeSearch = () => {
     let url = "/product/searchresult";
     url += this.getExtraParams();
     axios
@@ -370,7 +358,7 @@ class Register extends React.Component {
                 let showMoreCount = 0;
                 let checkedArray = [];
                 categories.map((item, index) => {
-                  if (categories[index].checked == undefined)
+                  if (categories[index].checked === undefined)
                     categories[index].checked = false;
                   if (item._id === this.state.categoryId) {
                     categories[index].checked = !categories[index].checked;
@@ -418,16 +406,34 @@ class Register extends React.Component {
           }
         })
       )
-
-      //.then(response => this.setState({ vehicles: response.data }))
+      .then(r => {
+        this.loadFilterData();
+      })
       .catch(error => console.log(error));
-      
-         jquery(".mob_left_box").click(function(){
-		
-		jquery(this).next().toggleClass("opens");
-		jquery(this).toggleClass("active");
-		
-		}); 
+    return null;
+  };
+
+  doSearch = () => {
+      this.setState({
+        categoryId: this.props.getData().searchData,
+        flag: this.props.getData().flag
+      }, () => {
+        this.executeSearch();
+      });
+  };
+
+  componentWillReceiveProps(newProps) {
+    this.doSearch();
+  }
+
+  componentDidMount() {
+    this.doSearch();
+    jquery(".mob_left_box").click(function() {
+      jquery(this)
+        .next()
+        .toggleClass("opens");
+      jquery(this).toggleClass("active");
+    });
   }
 
   onAgeChange = value => {
@@ -439,24 +445,26 @@ class Register extends React.Component {
     const contants = [...this.state.constantList];
     let selectedConditions = [];
     contants.map((item, index) => {
-      if (contants[index].checked == undefined) contants[index].checked = false;
+      if (contants[index].checked === undefined)
+        contants[index].checked = false;
       if (item.id === e.target.value) {
         contants[index].checked = !contants[index].checked;
       }
       if (contants[index].checked) selectedConditions.push(item.id);
     });
-    console.log("changeConstant", selectedConditions, contants, e.target.value);
+    //console.log("changeConstant", selectedConditions, contants, e.target.value);
     let filters = { ...this.state.filters };
     filters.selectedConditions = selectedConditions;
     this.setState(
       { constantList: contants, filters: filters },
       this.loadFilterData
     );
+    return null;
   };
 
   onUserChange = tags => {
     if (tags) {
-      const userdata = new FD();
+      //const userdata = new FD();
       let ids = [];
       tags.map((tag, index) => {
         ids.push(tag.id);
@@ -465,6 +473,7 @@ class Register extends React.Component {
       filters.selectedUsers = ids;
       this.setState({ filters: filters }, this.loadFilterData);
     }
+    return null;
   };
   onRatingChange = (e, rating) => {
     let filters = { ...this.state.filters };
@@ -714,7 +723,7 @@ class Register extends React.Component {
 
   render() {
     const accordion = this.state.accordion;
-    const btn = accordion ? "Mode: accordion" : "Mode: collapse";
+    //const btn = accordion ? "Mode: accordion" : "Mode: collapse";
     const activeKey = this.state.activeKey;
 
     let searchItems = null;
@@ -729,18 +738,20 @@ class Register extends React.Component {
           catId = item.productCategory._id;
           catName = item.productCategory.title;
         }
-		// Get The distance from lat log of user	
+
+		// Get The distance from lat log of user
 		let UserLatitude = (item.userId && item.userId.loct)?item.userId.loct.coordinates[0]:localStorage.getItem("Latitude");
 		let UserLongitude = (item.userId && item.userId.loct)?item.userId.loct.coordinates[1]:localStorage.getItem("Longitude");
 		let dist = commonFunction.distance(localStorage.getItem("Latitude"), localStorage.getItem("Longitude"), UserLatitude, UserLongitude, constant.DISTANCE_UNIT);
-						
-		let userID = item.userId?item.userId._id:'';          
+
+		let userID = item.userId?item.userId._id:'';
         let img = item.userId ? (
           <img
             className="userPicNew"
             src={
               constant.BASE_IMAGE_URL + "ProfilePic/" + item.userId.profilePic
             }
+            alt=""
           />
         ) : null;
         return (
@@ -748,7 +759,7 @@ class Register extends React.Component {
             <div>
               <If
                 condition={
-                  localStorage.getItem("isLoggedIn") == "1" &&
+                  localStorage.getItem("isLoggedIn") === "1" &&
                   localStorage.getItem("userId") === userID
                 }
               >
@@ -774,6 +785,7 @@ class Register extends React.Component {
                           "Products/" +
                           item.productImages
                         }
+                        alt=""
                       />
                     </div>
                   </Link>
@@ -783,7 +795,7 @@ class Register extends React.Component {
                 <h4>
                   <If
                     condition={
-                      localStorage.getItem("isLoggedIn") == "1" &&
+                      localStorage.getItem("isLoggedIn") === "1" &&
                       localStorage.getItem("userId") === userID
                     }
                   >
@@ -823,7 +835,7 @@ class Register extends React.Component {
                   >
                     {item.userId ? item.userId.firstName : ""}
                   </Link>
-                  <p className="distance">{dist} {(constant.DISTANCE_UNIT==='M')?'Miles':'Km'}</p>
+                    <p className="distance">{dist} {(constant.DISTANCE_UNIT==='M')?'Miles':'Km'}</p>
                 </div>
               </div>
             </div>
@@ -884,4 +896,4 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+export default SearchListing;

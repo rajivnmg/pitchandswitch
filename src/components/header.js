@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Style from "./main.css";
 import "../slick.min.css";
-import { NavLink } from "react-router-dom";
+import { withRouter, NavLink } from "react-router-dom";
 import Logo from "../images/logo.png";
 //import Logo from "../images/PandS-logo-PNG-13.png";
 import userIMg from "../images/user-pic.png";
@@ -18,6 +18,7 @@ import {
   geocodeByPlaceId,
   getLatLng
 } from "react-places-autocomplete";
+import Geocode from "react-geocode";
 import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
 import $ from 'jquery'
 const constant = require("../config/constant");
@@ -29,6 +30,7 @@ class Header extends Component {
   constructor(props) {
     //let categoryId = props.match.params.id;
     super(props);
+    console.log('HEader props', this.props)
     this.state = {
       user: {
         email: "",
@@ -46,13 +48,16 @@ class Header extends Component {
       searchData: "",
       searchD: "",
       categoryId: "",
-      // latitude: "",
-      //longitude: "",
+      latitude: "",
+      longitude: "",
       address: "",
-      gmapsLoaded: false
+      gmapsLoaded: false,
+      value: ""
     };
+
+    Geocode.setApiKey("AIzaSyA_Is11HwzMFGIFAU-q78V2kQUiT9OQiZI");
+    Geocode.enableDebug();
     this.logoutHandler = this.logoutHandler.bind(this);
-    this.onSearchHandler = this.searchHandler.bind(this);
   }
 
   initMap = () => {
@@ -61,23 +66,66 @@ class Header extends Component {
         navigator.geolocation.getCurrentPosition(position => {
           localStorage.setItem("latitude", position.coords.latitude);
           localStorage.setItem("longitude", position.coords.longitude);
-          this.setState({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          });
+          this.setState(
+            {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            },
+            () => {
+              Geocode.fromLatLng(
+                position.coords.latitude,
+                position.coords.longitude
+              ).then(
+                response => {
+                  //console.log('YYYYY', response)
+                  const address =
+                    response.results[1].address_components[3].long_name +
+                    ", " +
+                    response.results[1].address_components[4].long_name +
+                    ", " +
+                    response.results[1].address_components[7].long_name; //response.results[0].formatted_address;
+                  this.setState({ address: address });
+                },
+                error => {
+                  console.error(error);
+                }
+              );
+            }
+          );
         });
       } else {
-        if (!this.state.latitude) {
-          this.setState({
-            latitude: localStorage.getItem("latitude"),
-            longitude: localStorage.getItem("longitude")
-          });
+        if (!this.state.address) {
+          this.setState(
+            {
+              latitude: localStorage.getItem("latitude"),
+              longitude: localStorage.getItem("longitude")
+            },
+            () => {
+              Geocode.fromLatLng(
+                localStorage.getItem("latitude"),
+                localStorage.getItem("longitude")
+              ).then(
+                response => {
+                  const address =
+                      response.results[1].address_components[3].long_name +
+                      ", " +
+                      response.results[1].address_components[4].long_name +
+                      ", " +
+                      response.results[1].address_components[7].long_name; //response.results[0].formatted_address;
+                    this.setState({ address: address });
+                },
+                error => {
+                  console.error(error);
+                }
+              );
+            }
+          );
         }
       }
     }
     this.setState({
       gmapsLoaded: true,
-      address:localStorage.getItem("address")	
+      address:localStorage.getItem("address")
     });
   };
 
@@ -90,6 +138,8 @@ class Header extends Component {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => {
+        localStorage.setItem("latitudeNew", latLng["lat"]),
+          localStorage.setItem("longitudeNew", latLng["lng"]);
         this.setState({ latitude: latLng["lat"], longitude: latLng["lng"] });
       })
       .catch(error => console.error("Error", error));
@@ -114,51 +164,13 @@ class Header extends Component {
   };
 
   searchHandler = () => {
-    if (this.state.latitude && this.state.longitude) {
-      var searchData = " ";
-      if (this.state.searchData) {
-        this.setState({ searchData: this.state.searchData });
-        searchData = this.state.searchData;
-      } else {
-        this.setState({ searchData: " " });
-      }
-      if (
-        searchData === null ||
-        this.state.latitude === null ||
-        this.state.longitude === null
-      ) {
-        window.location = constant.PUBLIC_URL + "search-listing";
-      } else {
-        window.location =
-          constant.PUBLIC_URL +
-          "search-listing/" +
-          searchData +
-          "/" +
-          this.state.latitude +
-          "/" +
-          this.state.longitude;
-      }
-    } else {
-      var searchData = " ";
-      if (this.state.searchData) {
-        searchData = this.state.searchData;
-        this.setState({ searchData: this.state.searchData });
-      } else {
-        this.setState({ searchData: " " });
-      }
-      this.setState({ latitude: " ", longitude: " " });
-      var latitude = "";
-      var longitude = "";
-      if (searchData === "") {
-        window.location = constant.PUBLIC_URL + "search-listing";
-      } else {
-        window.location = constant.PUBLIC_URL + "search-listing/" + searchData;
-      }
-    }
+    this.props.setData(this.state.searchData);
+    this.props.history.replace("/search-listing");
   };
 
   searchCategory = _id => {
     this.setState({ searchData: _id });
+    return true;
   };
 
   componentWillMount() {
@@ -209,20 +221,32 @@ class Header extends Component {
 					localStorage.setItem("ipAddress", '161.149.146.201');
 			  }
 		  );
-        
-	}	
+
+	}
   }
   filterOption = (value, option) => {
     if ((value != undefined || value !== null) && typeof value === "string")
       return (
-        value.toLowerCase() ===
-        option.props.children[0].substring(0, value.length).toLowerCase()
+        value.toLowerCase() === option.props.children.substring(0, value.length).toLowerCase()
       );
-    else return true;
+    return false;
   };
   componentDidMount() {
     //code for google places api
     window.initMap = this.initMap;
+    if(localStorage.getItem('latitudeNew')){
+      if(!this.state.latitude)
+      this.setState({
+        latitude: localStorage.getItem('latitudeNew'),
+        longitude: localStorage.getItem('longitudeNew')
+      });
+    }else{
+      if(localStorage.getItem('latitude') && !this.state.latitude)
+      this.setState({
+        latitude: localStorage.getItem('latitude'),
+        longitude: localStorage.getItem('longitude')
+      });
+    }
     const gmapScriptEl = document.createElement(`script`);
     gmapScriptEl.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyA_Is11HwzMFGIFAU-q78V2kQUiT9OQiZI&libraries=places&callback=initMap`;
     document
@@ -290,14 +314,14 @@ class Header extends Component {
     let optionsLists;
     let optionsAll;
     if (this.state.productsListing) {
-      let optionsList = this.state.productsListing;
-      optionsLists = optionsList.map((s, index) => (
-        <li
-          onClick={() => this.searchCategory(s.productCategory._id)}
-          key={index}
+      const optionsList = [...this.state.productsListing];
+      optionsLists = optionsList.map(category => (
+        <Option
+          onClick={() => this.searchCategory(category.productCategory._id)}
+          key={category._id + ":" + category.productCategory._id}
         >
-          {s.productName + " - " + ((s.productCategory)?s.productCategory.title:"")}{" "}
-        </li>
+          {category.productName + " - " + category.productCategory.title}
+        </Option>
       ));
     }
     if (this.state.options) {
@@ -331,20 +355,6 @@ class Header extends Component {
         </div>
         <div className="search-container">
           <div className="location">
-            <input
-              className={"form-control textBox hide2"}
-              value={this.state.latitude}
-              name={"latitude"}
-              type={"text"}
-              placeholder=""
-            />
-            <input
-              className={"form-control textBox hide2"}
-              value={this.state.longitude}
-              name={"longitude"}
-              type={"text"}
-              placeholder=""
-            />           
             {this.state.gmapsLoaded && (
               <PlacesAutocomplete
                 value={this.state.address}
@@ -396,21 +406,23 @@ class Header extends Component {
           <div className="search">
             <AutoComplete
               style={{ width: 410 }}
-              dataSource={optionsLists}
               placeholder="Search"
-              defaultValue={this.state.value}
+              dataSource={optionsLists}
               filterOption={(inputValue, option) =>
                 this.filterOption(inputValue, option)
               }
+              allowClear={true}
             />
           </div>
-          <input
-            type="submit"
-            value="search"
-            onClick={this.onSearchHandler.bind(this)}
+          <button
+            type="button"
+            onClick={this.searchHandler}
             className="search-icon"
-          />
+          >
+            &nbsp;
+          </button>
           <div className="cl" />
+          {this.state.value}
         </div>
         <If condition={localStorage.getItem("isLoggedIn") == "1"}>
           <Then>
@@ -528,4 +540,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

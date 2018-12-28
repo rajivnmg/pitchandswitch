@@ -4,7 +4,7 @@ import Style from "./App.css";
 import "./App.scss";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-import Header from "./components/header";
+
 import Footer from "./components/footer";
 // import LeftNav from './components/leftNav'
 import MyTrades from "./components/myTrades/MyTrades";
@@ -17,7 +17,6 @@ import Forget from "./components/forgotPassword/forget";
 import Reset from "./components/resetPassword/reset";
 import Subscription from "./components/subscription/subscription";
 import Dashboard from "./components/dashboard/dashboard";
-import SearchListing from "./components/seacrh-listing/seacrh-listing";
 import SearchDetail from "./components/seacrh-listing/searchDetail";
 import AddNewProduct from "./components/addNewProduct/addnewproduct";
 import EditProduct from "./components/addNewProduct/editproduct";
@@ -41,7 +40,16 @@ import aboutUs from "./components/pages/about";
 import Style1 from "./media.css";
 import axios from "axios";
 import NotFound from "./NotFound";
+import asyncComponent from "./hoc/asyncComponent/asyncComponent";
+
+const SearchListing = asyncComponent(() => {
+  return import("./components/seacrh-listing/seacrh-listing");
+});
+//import SearchListing from "./components/seacrh-listing/seacrh-listing";
 const constant = require("./config/constant");
+const Header = asyncComponent(() => {
+  return import("./components/header");
+});
 //import http from 'http';
 const port = 4001;
 const basePath = ""; // '/react-test';
@@ -56,6 +64,12 @@ axios.defaults.headers.common["Authorization"] = localStorage.getItem(
 class App extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      listing: {
+        searchData: null,
+        flag: false
+      },
+    };
     //console.log('Version', React.version);
     //console.log('TOken', localStorage.getItem('jwtToken'),window.location.href, constant.PUBLIC_URL+'login');
     if (
@@ -65,14 +79,23 @@ class App extends Component {
       //window.location.href="/login";
     }
   }
-  componentDidMount() {
-    //the function call just after render the html
+
+  setSearchData = searchData => {
+    const listing = {...this.state.listing};
+    listing.searchData = searchData;
+    listing.flag = !listing.flag;
+    this.setState({
+      listing
+    });
   }
+
+  getSearchData = () => this.state.listing;
+
   render() {
     return (
       <Router>
         <div className="layout">
-          <Header />
+          <Header setData={this.setSearchData} getData={this.getSearchData}/>
           <div id="content">
             <Switch>
               <Route exact path="/" component={Home} />
@@ -90,9 +113,10 @@ class App extends Component {
                 component={SearchDetail}
               />
               <Route
-                path="/search-listing/:id?/:latitude?/:longitude?"
-                component={SearchListing}
-              />
+                path="/search-listing"
+                render={props => (
+                  <SearchListing {...props} getData={this.getSearchData}/>
+                )}/>
               <Route exact path="/search-result" component={SearchDetail} />
               <Route exact path="/add-new-product" component={AddNewProduct} />
               <Route exact path="/edit-product/:id?" component={EditProduct} />
