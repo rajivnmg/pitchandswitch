@@ -91,7 +91,7 @@ class viewPitchPopup extends Component {
 			<div className="cl"></div>
 			</p>
 
-        <If condition={this.state.offerTradeProducts}>
+        <If condition={this.state.offerTradeProducts && this.state.offerTradeProducts.products}>
 			<Then>
 			  	{ this.state.offerTradeProducts.products.map((productList, index) => {			
 				var productImages = (productList.productImages)?productList.productImages[0]:'';

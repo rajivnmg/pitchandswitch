@@ -9,7 +9,7 @@ class HowItWorks extends Component {
     return (
       <div className="weKeepSafe">
         <div className="container">
-          <h3>We keeps you Safe</h3>
+          <h3>We keep you safe</h3>
           <ul>
             <li>
               <div className="icon">

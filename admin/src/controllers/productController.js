@@ -1236,8 +1236,8 @@ const relatedCategoryProduct = (req, res) => {
     Product.findById({_id: id})
             .populate({path: "productCategory", model: "Category"})
             .populate({path: "userId", model: "User"})
-            .exec(function (err, products) {
-                if (products.productCategory) {
+            .exec(function (err, products) {				
+                if (products && products.productCategory) {
                     const categoryID = products.productCategory._id;
                     //console.log('categoryID',categoryID)
                     Product.find({productCategory: categoryID})

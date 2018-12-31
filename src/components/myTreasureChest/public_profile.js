@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PublicReviews from "./public_reviews1";
 //import Style from "./myTreasureChest.css";
 import popularItemImg from "../../images/popular-item1.jpg";
-import userPicture from "../../images/user-pic.png";
+import userPicture from "../../images/default_user@1x.png";
 //import userPictureLg from "../../images/userProfileLarge.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";

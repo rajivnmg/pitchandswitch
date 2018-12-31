@@ -98,7 +98,9 @@ class App extends Component {
           <Header setData={this.setSearchData} getData={this.getSearchData}/>
           <div id="content">
             <Switch>
-              <Route exact path="/" component={Home} />
+              <Route exact path="/" render={props => (
+                  <Home {...props} setData={this.setSearchData} getData={this.getSearchData}/>
+                )} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/logout" component={Logout} />
               <Route exact path="/register" component={Register} />

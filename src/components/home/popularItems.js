@@ -81,15 +81,16 @@ class PopularItems extends Component {
         </h3>
         <Slider {...settings}>
           {this.state.popularItems.map(function(item) {
-			if(item._id){
+			if(item._id){				
 				var productImage = item._id ? item._id.productImages[0] : "";
 				var userImage = item._id ? item._id.userId.profilePic : "";
 				var userIds = item._id ? item._id.userId._id : "0";
+				var productId = item._id ? item._id._id : "0";
 				var productUrl =
-				  localStorage.getItem("isLoggedIn") == 1 &&
-				  localStorage.getItem("userId") == userIds
-					? "/my-trade-detail/" + item._id
-					: "/search-result/" + item._id;
+				  (localStorage.getItem("isLoggedIn") == 1 &&
+				  localStorage.getItem("userId") == userIds)
+					? "/my-trade-detail/" + productId
+					: "/search-result/" + productId;
 
 				return (
 				  <div className="slides-div" key={item}>

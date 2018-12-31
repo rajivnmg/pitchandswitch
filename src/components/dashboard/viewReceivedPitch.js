@@ -136,11 +136,11 @@ return (
 			</span>		
 		</p>
 		<div className="cl"></div>
-		<If condition={this.state.offerTradeProducts}>
+		<If condition={this.state.offerTradeProducts && this.state.offerTradeProducts.products}>
 			<Then>
 				{ (this.state.offerTradeProducts && this.state.offerTradeProducts.products)?this.state.offerTradeProducts.products.map((productList, index) => {			
 				var productImages = (productList.productImages)?productList.productImages[0]:'';
-				var productCategoryID = productList?productList.productCategory._id:"";		
+				var productCategoryID = (productList && productList.productCategory)?productList.productCategory._id:"";		
 						return(
 						<div className="switch-product-box" key={index}>
 							<div className="switch-product-image-box">
@@ -161,7 +161,7 @@ return (
 							</div>
 							<div className="switch-product-content-box">
 							<h4>{productList.productName}</h4>
-							<a className="catLink" href={'search-listing/'+productCategoryID}>{productList.productCategory.title}</a>
+							<a className="catLink" href={'search-listing/'+productCategoryID}>{(productList && productList.productCategory)?productList.productCategory.title:""}</a>
 							</div>
 						</div>
 						)
