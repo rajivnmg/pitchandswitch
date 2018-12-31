@@ -154,7 +154,7 @@
     "start-js": "PORT=3002 node scripts/start.js",
     "server-js": "nodemon ./bin/www",
     "admin": "cd admin && npm start",
-    "start": "npm-run-all -p start-js",
+    "start": "npm-run-all -p start-js admin",
     "build-js": "node scripts/build.js",
     "build": "npm-run-all build-css build-js",
     "test": "node scripts/test.js --env=jsdom",

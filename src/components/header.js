@@ -79,11 +79,11 @@ class Header extends Component {
                 response => {
                   //console.log('YYYYY', response)
                   const address =
-                    response.results[1].address_components[3].long_name +
+                    (response.results[1].address_components[0].long_name +
                     ", " +
-                    response.results[1].address_components[4].long_name +
-                    ", " +
-                    response.results[1].address_components[7].long_name; //response.results[0].formatted_address;
+                    response.results[1].address_components[1].long_name);
+                    //", " +
+                    //response.results[1].address_components[7].long_name; //response.results[0].formatted_address;
                   this.setState({ address: address });
                 },
                 error => {
@@ -106,12 +106,14 @@ class Header extends Component {
                 localStorage.getItem("longitude")
               ).then(
                 response => {
+					console.log("response",response)
+					
                   const address =
-                      response.results[1].address_components[3].long_name +
+                      (response.results[1].address_components[0].long_name +
                       ", " +
-                      response.results[1].address_components[4].long_name +
-                      ", " +
-                      response.results[1].address_components[7].long_name; //response.results[0].formatted_address;
+                      response.results[1].address_components[1].long_name);//+
+                      //", " +
+                      //response.results[1].address_components[6].long_name); //response.results[0].formatted_address;
                     this.setState({ address: address });
                 },
                 error => {
@@ -138,8 +140,8 @@ class Header extends Component {
     geocodeByAddress(address)
       .then(results => getLatLng(results[0]))
       .then(latLng => {
-        localStorage.setItem("latitudeNew", latLng["lat"]),
-          localStorage.setItem("longitudeNew", latLng["lng"]);
+        localStorage.setItem("latitude", latLng["lat"]),
+          localStorage.setItem("longitude", latLng["lng"]);
         this.setState({ latitude: latLng["lat"], longitude: latLng["lng"] });
       })
       .catch(error => console.error("Error", error));
@@ -209,15 +211,15 @@ class Header extends Component {
 		  .then(
 			  function success(response) {
 				  console.log('User\'s Location Data is ', response);
-				  localStorage.setItem("Latitude", response.lat);
-				  localStorage.setItem("Longitude", response.lon);
+				  localStorage.setItem("latitude", response.lat);
+				  localStorage.setItem("longitude", response.lon);
 				  localStorage.setItem("ipAddress", response.query);
 				  localStorage.setItem("address",response.city);
 			  },
 			  function fail(data, status) {
 				  //console.log('Request failed.  Returned status of',status);
-					localStorage.setItem("Latitude", '34.052238');
-					localStorage.setItem("Longitude", '-118.243340');
+					localStorage.setItem("latitude", '34.052238');
+					localStorage.setItem("longitude", '-118.243340');
 					localStorage.setItem("ipAddress", '161.149.146.201');
 			  }
 		  );
@@ -315,14 +317,16 @@ class Header extends Component {
     let optionsAll;
     if (this.state.productsListing) {
       const optionsList = [...this.state.productsListing];
-      optionsLists = optionsList.map(category => (
+      optionsLists = optionsList.map(category => 
+		  (		  
         <Option
           onClick={() => this.searchCategory(category.productCategory._id)}
           key={category._id + ":" + category.productCategory._id}
         >
           {category.productName + " - " + category.productCategory.title}
         </Option>
-      ));
+    
+      ) );
     }
     if (this.state.options) {
       let optionsListing = this.state.options;
@@ -405,7 +409,7 @@ class Header extends Component {
           </div>
           <div className="search">
             <AutoComplete
-              style={{ width: 410 }}
+              style={{ width: 380 }}
               placeholder="Search"
               dataSource={optionsLists}
               filterOption={(inputValue, option) =>
@@ -433,7 +437,7 @@ class Header extends Component {
                     <img src={userIMg} alt={userIMg} />
                   </span>
                   <a className="drop-arrow" href="#">
-                    {this.Capitalize(this.state.user.userName.substring(0, 5))}
+                    {this.Capitalize(this.state.user.userName.substring(0, 10))}
                   </a>
                   <ul className="dashboard-subnav">
                     <li>

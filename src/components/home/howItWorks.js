@@ -25,12 +25,17 @@ class HowItWorks extends Component {
           </h3>
           <p>
            Pitch and Switch is the easiest way to alleviate clutter and simultaneously get something you want, all on your own terms. Repurposing your older items saves time, money, space and also enables everyone to become an instant entrepreneur. Simply register to start your journey of consumer empowerment. 
-			<ul>
-				<ol>Upload items you wish to trade.</ol>
-				<ol>Review trade matches or browse items you wish to receive in return.</ol>
-				<ol>Send trade pitch, negotiate if needed, and execute trade in a manner that works best for both parties.</ol>
-			</ul> 
           </p>
+          
+          <ul className="hmlist">
+          
+          <li>Upload items you wish to trade.</li>
+		 <li>Review trade matches or browse items you wish to receive in return.</li>
+		<li>Send trade pitch, negotiate if needed, and execute trade in a manner that works best for both parties.</li>
+          
+          </ul>
+ 
+          
           <ModalVideo
             channel="youtube"
             ratio={"16:9"}
