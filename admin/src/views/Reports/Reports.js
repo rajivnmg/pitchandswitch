@@ -56,8 +56,7 @@ class Reports extends Component {
   componentDidMount() {
     this.loadCommentsFromServer();
     axios.get('/transaction/transactions/' + this.state.currentPage).then(result => {
-        if(result.data.code == 200){
-			console.log('rsssssssss',result);
+        if(result.data.code == 200){			
           this.setState({
             transactions: result.data.result,
             currentPage: result.data.current,
@@ -87,19 +86,47 @@ class Reports extends Component {
   }
   
   searchHandler = () => {	  
-	   if(this.state.startDt || this.state.endDt) {
-		   const data = new FD();
-		   data.append('start', this.state.startDt) 
-           data.append('end', this.state.endDt) 
-           axios.post('/transaction/searchQuery', data).then(result => {
-		   console.log('resultsssssssssssss'.result);
-		   if(result.data.code === 200) {
-				//let transactions = this.state.transactions;       
-				//this.loadCommentsFromServer();
+	   if(this.state.startDt && this.state.endDt) {			   
+		   //~ const data = new FD();
+		   //~ data.append('start', this.state.startDt) 
+           //~ data.append('end', this.state.endDt)           
+           //~ axios.post('/transaction/searchQuery', data).then(result => {		 
+		   //~ if(result.data.code === 200) {			   
+			   //~ this.setState({transactions:result.data.result},()=>{
+				    //~ console.log("transactions", this.state.transactions)
+				   //~ })
+				//~ //let transactions = this.state.transactions;       
+				//~ //this.loadCommentsFromServer();
+			//~ }
+		 //~ });	        
+           axios.get('/transaction/transactionsFilterBydate/'+this.state.currentPage+'/'+this.state.startDt+'/'+this.state.endDt).then(result => {		 
+		   if(result.data.code === 200) {			   
+			   this.setState({
+					transactions: result.data.result,
+					currentPage: result.data.current,
+					PerPage: result.data.perPage,
+					totalPages: result.data.pages,
+					transactionsCount:result.data.total})			
 			}
 		 });
       }   
   }
+  //~ searchHandler = () => {	  
+	   //~ if(this.state.startDt && this.state.endDt) {
+		   //~ const data = new FD();
+		   //~ data.append('start', this.state.startDt) 
+           //~ data.append('end', this.state.endDt)           
+           //~ axios.post('/transaction/searchQuery', data).then(result => {		 
+		   //~ if(result.data.code === 200) {			   
+			   //~ this.setState({transactions:result.data.result},()=>{
+				    //~ console.log("transactions", this.state.transactions)
+				   //~ })
+				//~ //let transactions = this.state.transactions;       
+				//~ //this.loadCommentsFromServer();
+			//~ }
+		 //~ });
+      //~ }   
+  //~ }
  
   changeStatusHandler(transaction) {
     transaction.status = (1 - parseInt(transaction.status)).toString();
@@ -161,7 +188,7 @@ class Reports extends Component {
 						<ExcelSheet data={dataSet1} name="transactionId">
 							<ExcelColumn label="Transaction Id" value="transactionId"/>
 							<ExcelColumn label="Transaction Type" value="transactionType"/>
-							<ExcelColumn label="User Id" value="userId"/>
+							<ExcelColumn label="User Id" value={(col) => col.userId ? col.userId.userName : "N/A"}/>
 							<ExcelColumn label="Payment Id" value="paymentId"/>
 							<ExcelColumn label="Transaction Amount" value="transactionAmount"/>
 							<ExcelColumn label="Transaction Date" value="transactionDate"/>

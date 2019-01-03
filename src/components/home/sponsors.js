@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import "./home.css";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
-var FD = require("form-data");
+//import { NavLink } from "react-router-dom";
+//var FD = require("form-data");
 const constant = require("../../config/constant");
 
 class HomeSponsors extends Component {

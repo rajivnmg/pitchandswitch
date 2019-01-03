@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import ReactDOM from "react-dom";
+//import ReactDOM from "react-dom";
 import Style from './home.css';
 import Slider from "react-slick";
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import donateBanner from '../../images/small-banner.jpg';
 
 class Donate extends Component {
@@ -42,10 +42,10 @@ class Donate extends Component {
 								return (
 									<div key={donateImgs}>
 										<div className="donate-div" key={donateImgs}>
-											<div className='imgDiv'><img src={donateImgs.image} /></div>
+											<div className='imgDiv'><img src={donateImgs.image} alt={"Donate Thumb"}/></div>
 											<div className="details">
 												<h4>{donateImgs.donateTxt}</h4>
-												<Link to={(localStorage.getItem('isLoggedIn') == "1")?'/donate-product':'/login'}>Donate </Link>
+												<Link to={(localStorage.getItem('isLoggedIn') === "1")?'/donate-product':'/login'}>Donate </Link>
 											</div>
 										</div>
 									</div>

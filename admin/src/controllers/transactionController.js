@@ -26,7 +26,7 @@ const listTransaction = (req, res) => {
       //.populate('parent',['title'])
       .populate({path:'userId',model:'User'})
       .exec(function (err, country){
-          Transaction.count().exec(function(err, count) {
+	          Transaction.countDocuments().exec(function(err, count) {
             if (err) return next(err)
               return res.json({
                   code: httpResponseCode.EVERYTHING_IS_OK,
@@ -44,16 +44,24 @@ const listTransaction = (req, res) => {
 /** Auther	: Rajiv Kumar
  *  Date	: June 18, 2018
  */
-/// function to list all category available in  collection
-const transactions = (req, res) => {
+/// function to list all transaction available in  collection
+const transactionsFilterBydate = (req, res) => {
   var perPage = constant.PER_PAGE_RECORD
   var page = req.params.page || 1;
-  Transaction.find({})
+  var start = req.params.start; 
+  var end =  req.params.end;   
+  Transaction.find({transactionDate: {
+                    $gte: start,
+                    $lte: end
+                }})
     .skip((perPage * page) - perPage)
-    .limit(perPage)
-    .populate('parent',['title'])
+    .limit(perPage)   
+    .populate({path:'userId',model:'User'})
     .exec(function(err, categories) {
-        Transaction.countDocuments().exec(function(err, count) {
+        Transaction.find({transactionDate: {
+                    $gte: start,
+                    $lte: end
+                }}).countDocuments().exec(function(err, count) {
           if (err) return next(err)
             return res.json({
                 code: httpResponseCode.EVERYTHING_IS_OK,
@@ -131,7 +139,7 @@ const changeStatus = (req, res) => {
 const searchQuery =  (req, res) => {	
   var form = new multiparty.Form();
     form.parse(req, function(err, data, files) {
-	  console.log('data',data);			  
+	  //console.log('data',data);			  
 	  //~ Transaction.find({
 			//~ transactionDate: {
 				//~ $gt:  data.start,
@@ -147,17 +155,13 @@ const searchQuery =  (req, res) => {
 			//~ }
 		//~ }
 		
-		var start,
-            end;
+		var start, end;
 
         // set time zone
         //  moment().tz("Europe/Copenhagen").format();
 
         start = data.start[0];
-        end = data.end[0];
-        console.log("start",start)
-        console.log("end",end)        
-
+        end = data.end[0];           
         Transaction.
             find({
                 transactionDate: {
@@ -166,18 +170,19 @@ const searchQuery =  (req, res) => {
                 }
             },{transactionDate: 1}).
             exec(function(err, bookings) {
-                if (err) console.log(err);
-                console.log(bookings);
-
-                res.json(bookings);
-            });
+		          return res.json({
+					code: httpResponseCode.EVERYTHING_IS_OK,
+					message: httpResponseMessage.CHANGE_STATUS_SUCCESSFULLY,
+					result: bookings
+				 });
+		    });
     });
 };
 
 
 //contactus form 
 module.exports = {
-	transactions,
+	transactionsFilterBydate,
 	viewTransaction,
 	changeStatus,
 	listTransaction,

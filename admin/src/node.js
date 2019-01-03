@@ -31,7 +31,8 @@ var expressSession =  require('cookie-session');
 var auth = require('./routes/auth');
 
 //database connection
-mongoose.connect(constant.DATABASE)
+mongoose.set('useCreateIndex', true);
+mongoose.connect(constant.DATABASE,{ useNewUrlParser: true });
 
 //mongoose.connect('mongodb://pitchswitch:nmg251@ds251622.mlab.com:51622/pitch-switch');
 //mongoose.connect('mongodb://pitchswitch:nmg251@ds213183.mlab.com:13183/pitch-switch-demo');

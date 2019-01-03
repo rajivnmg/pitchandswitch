@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import Warper from "../common/Warper";
+//import Warper from "../common/Warper";
 import Popup from "reactjs-popup";
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import rcvProduct from '../../images/rcv-product-img.jpg'
-import offerProduct1 from '../../images/offer-product-img1.jpg'
-import offerProduct3 from '../../images/offer-product-img3.jpg'
-import userPic from '../../images/user-pic.png'
+import { Link } from 'react-router-dom';
+//import rcvProduct from '../../images/rcv-product-img.jpg'
+//import offerProduct1 from '../../images/offer-product-img1.jpg'
+//import offerProduct3 from '../../images/offer-product-img3.jpg'
+//import userPic from '../../images/user-pic.png'
 import axios from 'axios'
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
-import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
+import { If, Then, Else } from 'react-if-elseif-else-render';
+//import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
 const constant = require('../../config/constant')
 const contentStyle = {
     maxWidth: "660px",
@@ -62,7 +62,7 @@ render() {
 			<div className="received-product">
 			<div className="received-product-box">
 			<div className="received-product-image-box">
-			  <img src={constant.BASE_IMAGE_URL+'Products/'+proImg} alt="recieved-product image" />
+			  <img src={constant.BASE_IMAGE_URL+'Products/'+proImg} alt="recieved-product Thumb" />
 			</div>
 			<div className="received-product-content-box">
 			<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId._id:""}</strong></span>
@@ -94,7 +94,7 @@ render() {
 				return(
 				<div className="switch-product-box">
 					<div className="switch-product-image-box">
-					<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+					<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product Thumb" />
 					<div className="switch-option-mask">
 						<a className="view-btn" href={'/search-result/'+productList._id+'/'}>View</a>
 					</div>

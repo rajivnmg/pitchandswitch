@@ -1,3 +1,4 @@
+var fs = require("fs");
 //function to get the actual distance between two points
 const distance = function distance(lat1, lon1, lat2, lon2, unit) {
   var radlat1 = (Math.PI * lat1) / 180;
@@ -32,7 +33,18 @@ const letterCaps = (str) =>  {
   return str.join(' ');
 }
 
+// function to check file exist
+const fsExistsSync = (file)=>{
+  try {
+    fs.accessSync(file);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 module.exports = {
 	distance,
-	letterCaps
+	letterCaps,
+	fsExistsSync
 }

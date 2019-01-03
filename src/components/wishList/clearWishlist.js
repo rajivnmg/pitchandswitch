@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import Style from './wishlist.css';
-import popularItemImg from '../../images/popular-item1.jpg';
+//import popularItemImg from '../../images/popular-item1.jpg';
 import emptyArt from '../../images/empty_art.png';
-import Select from 'react-select';
-import DitchPopup from './clearWishListPopup'
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+//import Select from 'react-select';
+//import DitchPopup from './clearWishListPopup'
+import { If, Then} from 'react-if-elseif-else-render';
 import axios from 'axios'
-import { Route, Redirect } from 'react-router'
+import { Redirect } from 'react-router'
 class myTreasureChest extends Component {
 	constructor(props){
 		super(props)
@@ -48,7 +48,7 @@ class myTreasureChest extends Component {
                         </div>
                         <div className="item-listing donateProducts">
                         <div className="empltyArt">
-                          <img src={emptyArt} />
+                          <img src={emptyArt} alt={" Empty wishlist"}/>
                           <p>You Haven't save anything yet.</p>
                             <div className="cl"></div>
                             </div>

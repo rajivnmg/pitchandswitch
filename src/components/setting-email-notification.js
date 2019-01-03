@@ -32,8 +32,8 @@ class settingEmailNotification extends Component {
           localStorage.setItem("userEmail", result.data.result.email);
           localStorage.setItem("userName", result.data.result.userName);
           if (
-            result.data.result.emailVerified == "1" &&
-            result.data.result.subscriptionStatus == "1"
+            result.data.result.emailVerified === "1" &&
+            result.data.result.subscriptionStatus === "1"
           ) {
             localStorage.setItem("isLoggedIn", 1);
           } else {

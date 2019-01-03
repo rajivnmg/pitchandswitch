@@ -88,18 +88,20 @@ class Transactions extends Component {
   
   searchHandler = () => {	  
 	   if(this.state.startDt || this.state.endDt) {
-		   const data = new FD();
-		   data.append('start', this.state.startDt) 
-           data.append('end', this.state.endDt) 
-           axios.post('/transaction/searchQuery', data).then(result => {
-		   console.log('resultsssssssssssss'.result);
-		   if(result.data.code === 200) {
-				//let transactions = this.state.transactions;       
-				//this.loadCommentsFromServer();
+		  axios.get('/transaction/transactionsFilterBydate/'+this.state.currentPage+'/'+this.state.startDt+'/'+this.state.endDt).then(result => {		 
+		   if(result.data.code === 200) {			   
+			   this.setState({
+					transactions: result.data.result,
+					currentPage: result.data.current,
+					PerPage: result.data.perPage,
+					totalPages: result.data.pages,
+					transactionsCount:result.data.total})			
 			}
 		 });
       }   
   }
+  
+  
  
   changeStatusHandler(transaction) {
     transaction.status = (1 - parseInt(transaction.status)).toString();
@@ -161,7 +163,7 @@ class Transactions extends Component {
 						<ExcelSheet data={dataSet1} name="transactionId">
 							<ExcelColumn label="Transaction Id" value="transactionId"/>
 							<ExcelColumn label="Transaction Type" value="transactionType"/>
-							<ExcelColumn label="User Id" value="userId"/>
+							<ExcelColumn label="User" value={(col) => col.userId ? col.userId.userName : "N/A"}/>
 							<ExcelColumn label="Payment Id" value="paymentId"/>
 							<ExcelColumn label="Transaction Amount" value="transactionAmount"/>
 							<ExcelColumn label="Transaction Date" value="transactionDate"/>

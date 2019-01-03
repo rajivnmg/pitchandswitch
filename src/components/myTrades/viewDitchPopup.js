@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import Warper from "../common/Warper";
+//import Warper from "../common/Warper";
 import Popup from "reactjs-popup";
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import rcvProduct from '../../images/rcv-product-img.jpg'
-import offerProduct1 from '../../images/offer-product-img1.jpg'
-import offerProduct3 from '../../images/offer-product-img3.jpg'
-import userPic from '../../images/user-pic.png'
+import { Link } from 'react-router-dom';
+//import rcvProduct from '../../images/rcv-product-img.jpg'
+//import offerProduct1 from '../../images/offer-product-img1.jpg'
+//import offerProduct3 from '../../images/offer-product-img3.jpg'
+//import userPic from '../../images/user-pic.png'
 import axios from 'axios'
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import { If, Then, Else } from 'react-if-elseif-else-render';
 
-import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
+//import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
 const constant = require('../../config/constant')
 const contentStyle = {
     maxWidth: "660px",
@@ -46,7 +46,7 @@ class ViewDitchPopup extends Component {
 	
 	
 render() {
-	const proImg = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
+	const proIMG = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
 	const productIMG = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.profilePic:"";
 	const productCategoryID = this.state.productData?this.state.productData.productCategory._id:"";
 	const userID = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId._id:"";
@@ -63,7 +63,7 @@ render() {
 			<div className="received-product">
 			<div className="received-product-box">
 			<div className="received-product-image-box">
-			  <img src={constant.BASE_IMAGE_URL+'Products/'+proImg} alt="recieved-product image" />
+			  <img src={constant.BASE_IMAGE_URL+'Products/'+proIMG} alt="recieved-product thumb" />
 			</div>
 			<div className="received-product-content-box">
 			<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId._id:""}</strong></span>
@@ -91,11 +91,11 @@ render() {
         <If condition={this.state.offerTradeProducts}>
 			<Then>
 			  	{ this.state.offerTradeProducts.products.map((productList, index) => {			
-				var productImages = (productList.productImages)?productList.productImages[0]:'';
+				var productImng = (productList.productImages)?productList.productImages[0]:'';
 				return(
 				<div className="switch-product-box">
 					<div className="switch-product-image-box">
-					<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+					<img src={constant.BASE_IMAGE_URL+'Products/'+productImng} alt="recieved-product thumb" />
 					<div className="switch-option-mask">
 						<a className="view-btn" href={'/search-result/'+productList._id+'/'}>View</a>
 					</div>

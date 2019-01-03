@@ -32,8 +32,8 @@ class settingChangePassword extends Component {
           localStorage.setItem("userEmail", result.data.result.email);
           localStorage.setItem("userName", result.data.result.userName);
           if (
-            result.data.result.emailVerified == "1" &&
-            result.data.result.subscriptionStatus == "1"
+            result.data.result.emailVerified === "1" &&
+            result.data.result.subscriptionStatus === "1"
           ) {
             localStorage.setItem("isLoggedIn", 1);
           } else {
@@ -105,8 +105,7 @@ class settingChangePassword extends Component {
                       type={"password"}
                       minLength={6}
                       pattern="(?=.*\d)(?=.*[a-z]).{6, }"
-                      placeholder={""}
-                      type={this.state.type}
+                      placeholder={""}                     
                     />
                     <small className="small-instruction">
                       Must be at least 6 characters long, contain letters and
@@ -126,8 +125,7 @@ class settingChangePassword extends Component {
                       type={"password"}
                       minLength={6}
                       pattern="(?=.*\d)(?=.*[a-z]).{6, }"
-                      placeholder={""}
-                      type={this.state.type}
+                      placeholder={""}                      
                     />
                   </div>
                   <div className="form-row password-row">
@@ -144,7 +142,7 @@ class settingChangePassword extends Component {
                       minLength={6}
                       pattern="(?=.*\d)(?=.*[a-z]).{6, }"
                       placeholder={""}
-                      type={this.state.type}
+                    
                     />
                   </div>
                   <div className="form-row">

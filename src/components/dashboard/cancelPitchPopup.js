@@ -1,6 +1,5 @@
-import React, { Component }
-from 'react';
-import Warper from "../common/Warper";
+import React, { Component } from 'react';
+//import Warper from "../common/Warper";
 import Popup from "reactjs-popup";
 import axios from 'axios'
 import jquery from 'jquery'
