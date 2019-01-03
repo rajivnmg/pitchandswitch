@@ -22,9 +22,6 @@ class Banner extends Component {
         <img src={bannerImg} alt={bannerImg} />
         <div className="banner-details">
           <h1>Be your own entrepreneur</h1>
-          <Link className="home-btn" to={"/login"}>
-            Start Swapping
-          </Link>
           <ModalVideo
             channel="youtube"
             ratio={"16:9"}
@@ -35,6 +32,10 @@ class Banner extends Component {
           <Link onClick={this.openModal} className="home-btn">
             How It Works?
           </Link>
+          <Link className="home-btn" to={"/login"}>
+            Start Swapping
+          </Link>
+          
           <div className="cl" />
         </div>
       </div>

@@ -129,3 +129,6 @@
 
 .hmlist{ text-align:center;}
 .hmlist li{ display:inline-block; list-style:disc; color: #ffffff; font-family: Roboto; font-size:14px; font-weight:400; width:100%;}
+
+.banner-details{text-align:center;}
+.banner-details a.home-btn{ display:inline-block; margin:20px 10px;}
