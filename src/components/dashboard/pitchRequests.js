@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 import msgSent from '../../images/msg-img.png'
 import Messages from './message'
 import DitchPopup from './ditchPopup'
-import CancelPitch from './cancelPitch'
+import cancelPitch from './cancelPitch'
+import TradeInfo from './tradeInfo'
 import CancelPitchPopup from './cancelPitchPopup'
 import ViewPitchPopup from './viewPitchPopup'
-import LastPitchPopup from './lditch'
-import {Link} from 'react-router-dom';
 import ViewReceivedPitch from './viewReceivedPitch'
-import PitchAgainPopup from './PitchAgainPopup'
+import LastPitchPopup from './lditch'
 import axios from 'axios'
 import { Spin, Icon, Alert } from 'antd';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
-
+import {Link} from 'react-router-dom';
 
 class PitchRequests extends React.Component {
     constructor(props) {
@@ -21,41 +20,35 @@ class PitchRequests extends React.Component {
 			currentUser:'',
             pitches: [],
             showLoader :  true
-        }
+		}
     };
-    componentWillMount(){		
-		axios.get('/trade/offerTrades').then(result => {
-		  if(result.data.code === 200){				  
-			this.setState({
-				pitches: result.data.result,
-				currentUser: result.data.currentUser,
-				showLoader : false			  
-			});
-		  }
-	})
-	  .catch((error) => {		
-	    if(error.code === 401) {
-		  this.props.history.push("/login");
-	   }
-	  });
-	}
+        
+	TrackHandler = (id) => {
+		let pitches = this.state.pitches;
+		let index = pitches.findIndex(pitch => pitch.id === id);
+		pitches[index].messageShow = 1 - parseInt(pitches[index].messageShow);
+		this.setState({pitches: pitches});
+	};
     
-     render() {
-		 let countSend = 0;
-		 let countReceived = 0;
+    componentDidMount(){
+		axios.get('/trade/offerTrades').then(result => {
+			  if(result.data.code === 200){				  
+				this.setState({
+					pitches: result.data.result,
+					currentUser: result.data.currentUser				  
+				});
+			  }
+			})
+			.catch((error) => {		
+			  if(error.code === 401) {
+				this.props.history.push("/login");
+			}
+		});
+	}
+    render() {
         return (<div>
-			<If condition={this.state.pitches.length === 0 && this.state.showLoader === true}>
-				<Then>
-					<Spin tip="Loading...">
-					<Alert
-						message="Data Loading "
-						description="Please wait..."
-						type="info"
-					/>
-					</Spin>
-				</Then>	
-			</If>
-			<If condition={this.state.pitches.length === 0 && this.state.showLoader === false}>
+			{console.log('length',this.state.pitches)}
+			<If condition={this.state.pitches.length == 0}>
 				<Then>					
 					<Alert
 					  message="Data Status"
@@ -65,72 +58,47 @@ class PitchRequests extends React.Component {
 					/>				
 				</Then>								
 			</If>
-            {this.state.pitches.map((pitch, index) => {
-				var send = (pitch.pitchUserId &&  pitch.pitchUserId._id == this.state.currentUser)?1:0;
-					let ditchClasses = ['ditch'];                                                       
-					var ditch = 'Ditch';
-					if(send===1 && pitch.ditchCount <= 3){
-						var ditch = 'Cancel Pitch';
-					} else if(send===0 && pitch.ditchCount > 3){
-						var ditch = 'Last Ditch';
-					} 
-					
-					if(send==1 && (pitch.status=="0" || pitch.status=="3")){
-						countSend = countSend +1;
-					}else{
-						countReceived = countReceived +1;	
-					}
-					let publicProfileUrl =  ((send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId._id:'':(pitch.pitchUserId)?pitch.pitchUserId._id:'')       
-					return (<div key={index}>
-					<If condition={send==1 && (pitch.status=="0" || pitch.status=="3")}>
-						<Then>			
-						<div className="pitch-row" key={index}>	
-						<div className="pitch-div" key={index}>
-							{ (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
-							<div className="colum user width1"> <span>
-							<Link className="alink" target="_blank" to={'/public-profile/'+publicProfileUrl}>
-							{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}							
-							</Link></span></div>
-							<div className="colum status"><span className={'sent'}>{'Sent'}</span></div>			
-							<div className="colum action"><span className="view-pitch pointer cursorPointer">
-							<ViewPitchPopup offerTrade={pitch}  proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""} pitchAgain={(pitch.status =="3")?"1":"0"}/>
-							</span></div> 
-							<div className="colum message"></div>  
-							<div className="colum action">							 
-							 {send == 0 && pitch.status=="0"? <DitchPopup offerTrade={pitch}/> : (pitch.status =="3")?<div class="colum action"><a href="#" class="ditch ditched">Cancelled</a></div>:<CancelPitchPopup offerTrade={pitch}/>}
-							</div>
-						</div>
-						</div>
-					</Then>
-					<ElseIf condition={send===0 && (pitch.status=="0")}>
-					    <div className="pitch-row" key={index}>				
-						<div className="pitch-div" key={index}>
-							{ (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
-							<div className="colum user width1"> <span>
-							<Link className="alink" target="_blank" to={'/public-profile/'+(pitch.pitchUserId?pitch.pitchUserId._id:'')}>
-							{(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}
-							</Link>
-							</span></div>
-							<div className="colum status"><span className={'received'}>{'Received'}</span></div>
-							<div className="colum action"><span className="view-pitch pointer cursorPointer">
-							<ViewReceivedPitch offerTrade={pitch}  proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""} pitchAgain={(pitch.status =="3")?"1":"0"}/>
-							</span></div> 
-							<div className="colum message"></div>  
-							<div className="colum action">							 
-							 {pitch.status=="0"? <DitchPopup offerTrade={pitch}/> : (pitch.status =="3")?<div class="colum action"><a href="#" class="ditch ditched">Cancelled</a></div>:<CancelPitchPopup offerTrade={pitch}/>}
-							</div>
-						</div>
-						</div>				
-					</ElseIf>
-					<ElseIf condition={countReceived == 0 && countSend == 0}>					
-						No Record Found
-					</ElseIf>
-				</If>
-				</div>)
-                  }
-            )}
+			{this.state.pitches.map((pitch, index) => {
+			var send = (pitch.pitchUserId &&  pitch.pitchUserId._id == this.state.currentUser)?1:0;
+			let ditchClasses = ['ditch'];                                                       
+			var ditch = 'Ditch';
+			if(send===1 && pitch.ditchCount <= 3){
+				var ditch = 'Cancel Pitch';
+			} else if(send===0 && pitch.ditchCount > 3){
+				var ditch = 'Last Ditch';
+			}         					
+			return (			
+		    <div className="pitch-row" key={index}>
+			<div className="pitch-div">
+				{/* (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null */}
+				<div className="colum user"> <span>
+				<Link className="alink" target="_blank" to={'/public-profile/'+(pitch.SwitchUserId?pitch.SwitchUserId._id:'')}>
+				{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}
+				</Link>
+				</span></div>
+				<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Sent':'Received'}</span></div>
+				<div className="colum"><a href="#" className="view-pitch">
+				<If condition={send === 1}>
+					<Then>
+						<ViewPitchPopup offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/>										 
+					</Then>	
+					<Else>						
+						<ViewReceivedPitch offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/>
+					</Else>						
+				 </If>
+				</a></div>
+				<div className="colum"></div>
+				<div className="colum message"></div>  
+				<div className="colum action">	
+				{console.log('pitch',pitch)}									
+				{send == 0? <DitchPopup offerTrade={pitch}/> :<CancelPitchPopup offerTrade={pitch}/>}
+				</div>								   
+			</div>									                                     
+			</div>)
+			}
+			)}
         </div>
-           );
+       );
     }
 }
 

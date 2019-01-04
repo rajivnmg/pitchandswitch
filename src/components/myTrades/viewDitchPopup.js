@@ -102,7 +102,7 @@ render() {
 					</div>
 					<div className="switch-product-content-box">
 					<h4>{productList.productName}</h4>
-					<a className="catLink" href={'/search-listing/'+productList.productCategory._id}>{productList.productCategory.title}</a>
+					<a className="catLink" href={'/search-listing/'+((productList&& productList.productCategory)?productList.productCategory._id:"0")}>{(productList&& productList.productCategory)?productList.productCategory.title:"N/A"}</a>
 					</div>
 				</div>
 				)

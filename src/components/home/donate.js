@@ -4,6 +4,7 @@ import Style from './home.css';
 import Slider from "react-slick";
 import { Link } from 'react-router-dom';
 import donateBanner from '../../images/small-banner.jpg';
+import donateBanner2 from '../../images/small-banner2.jpg';
 
 class Donate extends Component {
     constructor(props)
@@ -16,7 +17,7 @@ class Donate extends Component {
                 },
                 {
                     "donateTxt": "Disability may be present from birth or a person may acquire it at any time in life",
-                    "image": donateBanner,
+                    "image": donateBanner2,
                 },
                 {
                     "donateTxt": "Disability may be present from birth or a person may acquire it at any time in life",

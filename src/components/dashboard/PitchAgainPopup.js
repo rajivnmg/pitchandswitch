@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-import Warper from "../common/Warper";
+//import Warper from "../common/Warper";
 import Popup from "reactjs-popup";
-import rcvProduct from '../../images/rcv-product-img.jpg';
-import offerProduct1 from '../../images/offer-product-img1.jpg';
-import offerProduct3 from '../../images/offer-product-img3.jpg';
-import userPic from '../../images/user-pic.png';
+//import rcvProduct from '../../images/rcv-product-img.jpg';
+//import offerProduct1 from '../../images/offer-product-img1.jpg';
+//import offerProduct3 from '../../images/offer-product-img3.jpg';
+//import userPic from '../../images/user-pic.png';
 import rejected from '../../images/rejected.png';
 import successPic from '../../images/successful_img.png';
 import axios from 'axios';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { /*BrowserRouter as Router, Switch, Route,*/ Link } from 'react-router-dom';
 import {
-  Badge,
+
   Button
 } from 'reactstrap';
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import { If, Then, Else } from 'react-if-elseif-else-render';
 var FD = require('form-data');
-var fs = require('fs');
+//var fs = require('fs');
 const constant = require('../../config/constant')
-const modalStyle = {  maxWidth: "460px",  width: "90%"};  
+//const modalStyle = {  maxWidth: "460px",  width: "90%"};  
 const contentStyle = { maxWidth: "900px", width: "90%" };
 
 
@@ -42,7 +42,7 @@ class PitchAgainPopup extends Component {
 	    var stateChange = []
 		var el = e.target.value
 		var name = el.name
-		var type = el.type
+		//var type = el.type
 		var selectedOptions = []			
 		 if(el.checked){
 			selectedOptions.push(el)
@@ -68,21 +68,7 @@ class PitchAgainPopup extends Component {
 		    })
       } 
 	
-	componentWillMount(){
-		this.setState({offerTradeId:this.props.offerTrade._id})
-		   axios.get('/trade/getAllProduct/').then(result => {
-			  if(result.data.code === 200){
-			    this.setState({getAllProduct:result.data.result})				
-		    }
-		})
-		axios.get('/category/categoriesActive/').then(result => {
-			if(result.data.code === 200){
-			  this.setState({categoryActive:result.data.result})				
-		   }
-		})	
-    }
 	
-
 changeEvent(event){
   let checkedArray = this.state.optionsChecked;	
 	let selectedValue = event.target.value;	
@@ -164,7 +150,7 @@ changeEvent(event){
 		   }		  
 		})
 		
-		var switched = [];
+		//var switched = [];
 		axios.get('/trade/switchedProduct/'+this.state.offerTrade._id).then(switchedResult => {	
 			if(switchedResult.data.code === 200){
 			   this.setState({switchedProducts:switchedResult.data.result});				
@@ -212,7 +198,7 @@ render() {
 						<div className="header centerheading"><span>Pitch Again 
 						</span> Successfully<div className="cl"></div></div>
 						<p className="textSuccessful"><span classNamne="gray">You have successfully pitched Again to same Product.</span>
-						    {this.props.offerTrade.productName} ~ {this.props.offerTrade.productCategory?this.props.offerTrade.productCategory.description:""} 
+						    {(this.props.offerTrade)?this.props.offerTrade.productName:""} ~ {(this.props.offerTrade && this.props.offerTrade.productCategory)?this.props.offerTrade.productCategory.description:""} 
 						</p>
 						<div class="successIcon">
 						    <img src={successPic} alt="" />
@@ -231,16 +217,16 @@ render() {
 			<div className="received-product">
 				<div className="received-product-box">
 					<div className="received-product-image-box">
-						<img src={constant.BASE_IMAGE_URL+'Products/'+productImg} alt="recieved-product image" />
+						<img src={constant.BASE_IMAGE_URL+'Products/'+productImg} alt="recieved-product Thumb" />
 					</div>
 					<div className="received-product-content-box">
 						<span>Product ID: <strong>{this.state.proID}</strong></span>
-						<h4>{this.state.productData.productName}</h4>
-						<a className="catLink" href={'search-listing/'+(this.state.productData.productCategory?this.state.productData.productCategory._id:0)}>{this.state.productData.productCategory.title}</a>
+						<h4>{(this.state.productData)?this.state.productData.productName:"N/A"}</h4>
+						<a className="catLink" href={'search-listing/'+((this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory._id:0)}>{(this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory.title:"N/A"}</a>
 						<div className="ratingRow">
-						<Link to={'public-profile/'+(this.state.productData.userId?this.state.productData.userId._id:0)}>
+						<Link to={'public-profile/'+((this.state.productData && this.state.productData.userId)?this.state.productData.userId._id:0)}>
 							<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} alt="" /></div>
-							<p>{this.state.productData.userId.firstName}</p>
+							<p>{(this.state.productData && this.state.productData.userId)?this.state.productData.userId.firstName:"N/A"}</p>
 						</Link>
 						<div className="rated">4</div>
 						<div className="cl"></div>
@@ -259,11 +245,11 @@ render() {
 						return(
 							<div className={"switch-product-box " +className+" "}>
 							<div className="switch-product-image-box">
-							<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+							<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product Thumb" />
 							 <div className="switch-option-mask">							
 							<If condition={(this.state.switchedProductsID.indexOf(productsListing._id) !== -1 )} >
 							 <Then> 
-							  <img src={rejected} alt="recieved-product image" />
+							  <img src={rejected} alt="recieved-product Thumb" />
 							 </Then>
 							 <Else>
 								<div className="check-box">

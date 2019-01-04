@@ -147,7 +147,7 @@ class settingChangePassword extends Component {
                   </div>
                   <div className="form-row">
                     <button type={"submit"} className={"submitBtn fl"}>
-                      Change
+                      Save
                     </button>
                   </div>
                 </div>

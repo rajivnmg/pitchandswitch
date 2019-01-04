@@ -70,7 +70,7 @@ class PitchRequests extends React.Component {
 			return (			
 		    <div className="pitch-row" key={index}>
 			<div className="pitch-div">
-				{ (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
+				{/* (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null */}
 				<div className="colum user"> <span>
 				<Link className="alink" target="_blank" to={'/public-profile/'+(pitch.SwitchUserId?pitch.SwitchUserId._id:'')}>
 				{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}

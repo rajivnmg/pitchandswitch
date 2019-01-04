@@ -149,7 +149,7 @@ class settingEmailNotification extends Component {
                   <div>&nbsp;</div>
                   <div className="form-row">
                     <button type={"submit"} className={"submitBtn fl"}>
-                      Change
+                      Save
                     </button>
                   </div>
                 </div>

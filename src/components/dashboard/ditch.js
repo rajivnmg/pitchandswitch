@@ -12,11 +12,6 @@ class Ditch extends React.Component {
 		ditchedPitches: []
 	};
 	
-	// # href click handler
-	handleClick = (e) => {
-		e.preventDefault();
-		console.log('The link was clicked.');
-	};	
     componentDidMount(){
 		axios.get('/trade/ditchTrades').then(result => {
 			if(result.data.code === 200){
@@ -33,8 +28,7 @@ class Ditch extends React.Component {
 			}
 		});
 	}
-	
-	
+		
     render() {
         return (
          <div>
@@ -52,7 +46,7 @@ class Ditch extends React.Component {
 				var send = (pitch.pitchUserId && pitch.pitchUserId._id == this.state.currentUser)?1:0;	
 				let ditchClasses = ['ditch'];                                                       
 				var ditch = 'Ditched';
-				if(send ===1 && (pitch.ditchCount > 0 && pitch.ditchCount < 2)){
+				if(send ==1 && pitch.ditchCount > 0 && pitch.ditchCount < 2){
 				   var ditch = 'Pitch Again';
 				}  else if(send ==1 && pitch.ditchCount == 2){
 				   var ditch = 'Last Ditch';
@@ -60,27 +54,27 @@ class Ditch extends React.Component {
 				{console.log('pitch.ditchCount',pitch.ditchCount)}
 				return (<div className="pitch-row" key={index}>
 				<div className="pitch-div">
-				{(pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
+				{/*{(pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null } */}
 				<div className="colum user"><span>{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}</span></div>
 				<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
 				<div className="colum"><ViewDitchPopup offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/> </div>
 				<div className="colum message"> </div>
 				 <div className="colum action">				
-				   <If condition={send === 0}>
+				   <If condition={send == 0}>
 				     <Then>
-				       <a href="#" onClick={() => {this.handleClick}} className={'ditch '}>Ditch</a>
+				       <a href={"#"} className={'ditch '}>Ditch</a>
 				     </Then>
 				   <Else>   
 					 {pitch.ditchCount > 2 ? 
-						 <a href="#" onClick={() => {this.handleClick}} className={'ditch blocked '}>{ditch}</a> : 
+						 <a href="#" className={'ditch blocked '}>{ditch}</a> : 
 						 
-						  <If condition={send ==1 && pitch.ditchCount > 0 && pitch.ditchCount < 2}>
+						  <If condition={send ==1 && pitch.ditchCount > 0 && pitch.ditchCount < 3}>
 						   <Then>
-								<a href="#" onClick={() => {this.handleClick}} className={'ditch '}><PitchAgainPopup offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/></a>
+								<span><PitchAgainPopup offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/></span>
 						   </Then>
 						   <Else If condition={send ==1 && pitch.ditchCount == 2}>
 							  <Then>
-								 <a href="#" onClick={() => {this.handleClick}} className={'ditch'}><LastPitchtedPopup offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/></a>
+								 <span><LastPitchtedPopup offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/></span>
 							  </Then>
 						   </Else>
 						  </If>

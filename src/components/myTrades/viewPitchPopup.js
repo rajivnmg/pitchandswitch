@@ -20,7 +20,8 @@ class viewPitchPopup extends Component {
 		this.state = {				
 			offerTrade:this.props.offerTrade,
 			proID:this.props.proID,
-			offerTradeProducts:[]
+			offerTradeProducts:[],
+			dataLoaded : false,
 		}			
 	}
 	
@@ -28,17 +29,27 @@ class viewPitchPopup extends Component {
 		this.setState({offerTradeId:this.state.offerTrade._id})
 	}
 	 
-	componentDidMount(){
-		axios.get('/trade/pitchedProductList/'+this.state.offerTrade._id).then(result => {
-			if(result.data.code === 200){		
-				this.setState({offerTradeProducts:result.data.result})				
+	componentDidMount(){			
+		axios.all([
+			axios.get('/trade/pitchedProductList/'+this.props.offerTrade._id),
+			axios.get('/product/productDetails/'+ this.props.offerTrade.SwitchUserProductId._id)
+		]).then(axios.spread((pitchedProductList, productDetails) => {
+			if(pitchedProductList.data.code === 200){		
+				this.setState({offerTradeProducts:pitchedProductList.data.result,productData:productDetails.data.result})				
 			}
-		})
-		 axios.get('/product/productDetails/'+ this.state.offerTrade.SwitchUserProductId._id).then(result => {
-		    this.setState({
-				productData:result.data.result,
-			});
-		})
+		}))  
+	  .catch(error => console.log(error,this.props.offerTrade));
+		
+		//~ axios.get('/trade/pitchedProductList/'+this.state.offerTrade._id).then(result => {
+			//~ if(result.data.code === 200){		
+				//~ this.setState({offerTradeProducts:result.data.result})				
+			//~ }
+		//~ })
+		 //~ axios.get('/product/productDetails/'+ this.state.offerTrade.SwitchUserProductId._id).then(result => {
+		    //~ this.setState({
+				//~ productData:result.data.result,
+			//~ });
+		//~ })
 		 if (localStorage.getItem("jwtToken") !== null) {
 			  axios.get("/user/getLoggedInUser").then(result => {
 				if(result.data.code === 200) {
@@ -51,7 +62,7 @@ class viewPitchPopup extends Component {
      render() {
 	 const proImg = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
 	 const productIMG = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.profilePic:"";
-	// const categoryID = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productCategory._id:""
+//	 const categoryID = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productCategory._id:""
 	
 	
    return (
@@ -76,7 +87,7 @@ class viewPitchPopup extends Component {
 			<a className="catLink" href={"search-listing/"+((this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory._id:'')}>{((this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory.title:"")}</a>
 
 		    <div className="ratingRow">
-			<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+productIMG} alt="user thumb" /></div>
+			<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+productIMG} alt="" /></div>
 			<p>{((this.state.offerTrade && this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:"")}</p>
 			<div className="rated">4</div>
 			<div className="cl"></div>
@@ -90,10 +101,10 @@ class viewPitchPopup extends Component {
 			<span className="pitch-offer">Pitch offered To </span> {(this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:''}</span>
 			<div className="cl"></div>
 			</p>
-
-        <If condition={this.state.offerTradeProducts}>
+		
+        <If condition={this.state.offerTradeProducts && this.state.offerTradeProducts.products}>
 			<Then>
-			  	{ this.state.offerTradeProducts.products.map((productList, index) => {			
+			  	{this.state.offerTradeProducts.products && this.state.offerTradeProducts.products.map((productList, index) => {			
 				var productImages = (productList.productImages)?productList.productImages[0]:'';
 				return(
 				<div className="switch-product-box">
@@ -112,7 +123,7 @@ class viewPitchPopup extends Component {
 					</div>
 					<div className="switch-product-content-box">
 					<h4>{productList.productName}</h4>
-					<a className="catLink" href={"/search-listing/"+productList.productCategory._id}>{productList.productCategory.title}</a>
+					<a className="catLink" href={"/search-listing/"+((productList.productCategory)?productList.productCategory._id:"0")}>{(productList.productCategory)?productList.productCategory.title:""}</a>
 					</div>
 				</div>
 				)
