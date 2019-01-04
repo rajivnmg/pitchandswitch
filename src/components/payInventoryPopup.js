@@ -151,8 +151,7 @@ class payInventoryPopup extends Component {
 			this.setState({ addPaymentForm: paymentForm });
 		};	
 	submit = () => {		
-		if(this.state.planTypeId ==''){		
-			console.log("planTypeId",this.state.planTypeId)	
+		if(this.state.planTypeId ==''){					
 				this.setState({showFormError: true,message: 'Please choose a plan'});				
 				setTimeout(() => {this.setState({showFormError: false});}, 12000);
 			return false;
@@ -164,8 +163,7 @@ class payInventoryPopup extends Component {
 		data.planTypeId =  this.state.planTypeId;
 		data.planType =  this.state.planType;
 		data.totalInventory = this.state.totalInventoryAllowed;
-		data.totalTrade = this.state.totalTradePermitted;		
-		//console.log("submit",data); return;
+		data.totalTrade = this.state.totalTradePermitted;				
 		this.setState({isProcess:true})
         axios.post('/subscription/updateUserPlan', data).then(result => {        
          if(result.data.code === 200){
@@ -260,7 +258,7 @@ render() {
 													<div className="right-div">
 														<p>{addon.packageName} 
 														<span className="price">${addon.price} USD/year</span></p> 
-														<span className="bold active"> </span>{addon.totalTradePermitted} Trade, {addon.totalInventoryAllowed} Items Storage  
+														<span className="bold active"> </span>{addon.totalTradePermitted} Trade, {addon.totalInventoryAllowed} Stored in Treasure Chest and Wishlist
 													</div>							
 													<div className="cl"></div>	
 													</Auxios>		

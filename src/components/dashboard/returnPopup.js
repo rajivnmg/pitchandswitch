@@ -86,7 +86,7 @@ class ReturnPopup extends Component {
      }
      
    return (
-    <Popup trigger={ < a className = 'ditch' > Return < /a>} modal contentStyle = { contentStyle }
+    <Popup trigger={ < a className = 'ditch' > Report a Problem < /a>} modal contentStyle = { contentStyle }
     lockScroll >
     {
      close => (
@@ -108,14 +108,14 @@ class ReturnPopup extends Component {
 				</div>
 			  </Then>	
 		<Else>  
-		<div className="header">Return request 
+		<div className="header">Report a problem
 			<div className="cl"></div>
 		</div>
 		<div className="content">
 			<div className="return-request-form">
 				<div className="form-row">
 					<span className="astrik">*</span>
-					<label className="label">Return Reason</label>
+					<label className="label">Issue</label>
 					<div className="select-box">
 					   <select id="select" innerRef={input => (this.condition = input)} className="form-control" onChange={this.conditionsChange}>
 						{optionTemplate}
