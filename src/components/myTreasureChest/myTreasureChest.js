@@ -128,7 +128,7 @@ Capitalize(str){
                     <div className="container">
                         <div className="breadcrumb">
                             <ul>
-                                <li><a href="/">Home</a></li><li>My Trades</li>
+                                <li><a href="/">Home</a></li><li>My Treasure Chest</li>
                             </ul>
                         </div>
                         <div className="heading-row">.
