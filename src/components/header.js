@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Style from "./main.css";
+import "./main.css";
 import "../slick.min.css";
 import "../media.css";
 import { withRouter, NavLink } from "react-router-dom";
