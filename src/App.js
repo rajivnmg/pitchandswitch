@@ -37,7 +37,7 @@ import contactUs from "./components/pages/contactUs";
 import privacy from "./components/pages/privacy";
 import term from "./components/pages/terms";
 import aboutUs from "./components/pages/about";
-//import Style1 from "./media.css";
+//import "./media.css";
 import axios from "axios";
 import NotFound from "./NotFound";
 import asyncComponent from "./hoc/asyncComponent/asyncComponent";

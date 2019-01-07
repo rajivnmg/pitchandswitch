@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Style from "./main.css";
 import "../slick.min.css";
+import "../media.css";
 import { withRouter, NavLink } from "react-router-dom";
 import Logo from "../images/logo.png";
 //import Logo from "../images/PandS-logo-PNG-13.png";

@@ -49,7 +49,7 @@ class myTreasureChest extends Component {
                         <div className="item-listing donateProducts">
                         <div className="empltyArt">
                           <img src={emptyArt} alt={" Empty wishlist"}/>
-                          <p>You Haven't save anything yet.</p>
+                          <p>“You haven’t liked any items yet. Browse our catalog and click the heart icon to add items to your wishlist.</p>
                             <div className="cl"></div>
                             </div>
                         </div>
