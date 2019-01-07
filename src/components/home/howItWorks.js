@@ -24,9 +24,18 @@ class HowItWorks extends Component {
             <a name="how-it-works">How it works</a>
           </h3>
           <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
+           Pitch and Switch is the easiest way to alleviate clutter and simultaneously get something you want, all on your own terms. Repurposing your older items saves time, money, space and also enables everyone to become an instant entrepreneur. Simply register to start your journey of consumer empowerment. 
           </p>
+          
+          <ul className="hmlist">
+          
+          <li>Upload items you wish to trade.</li>
+		 <li>Review trade matches or browse items you wish to receive in return.</li>
+		<li>Send trade pitch, negotiate if needed, and execute trade in a manner that works best for both parties.</li>
+          
+          </ul>
+ 
+          
           <ModalVideo
             channel="youtube"
             ratio={"16:9"}

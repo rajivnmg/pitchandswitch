@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import ReactDOM from "react-dom";
+//import ReactDOM from "react-dom";
 import Style from './dashboard.css';
 import Slider from "react-slick";
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import popularItemImg from '../../images/popular-item1.jpg';
 
 class PopularItems extends Component {
@@ -91,7 +91,7 @@ class PopularItems extends Component {
                                         return (
                                                 <div class="slides-div">
                                                     <div key={slide}>
-                                                        <div className='pic'><img src={slide.image} /></div>
+                                                        <div className='pic'><img src={slide.image} alt={"category"}/></div>
                                                         <div className='details'>
                                                             <h4>{slide.title}</h4>
                                                             <Link className="catLink" to='/'>{slide.category}</Link>

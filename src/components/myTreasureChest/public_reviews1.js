@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Style from './myTreasureChest.css';
-import popularItemImg from '../../images/popular-item1.jpg';
-import userPicture from '../../images/user-pic.png';
+//import popularItemImg from '../../images/popular-item1.jpg';
+//import userPicture from '../../images/user-pic.png';
 import axios from 'axios';
-import {Link} from 'react-router-dom';
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+//import {Link} from 'react-router-dom';
+//import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 class publicReviews extends Component {
     constructor(props)
     {
@@ -85,7 +85,7 @@ class publicReviews extends Component {
                                             </div>)
                             })
                             }
-                            {this.state.userReviews.length > this.state.limit ? <div>{this.state.loadMore ? <a className="more-items" href="javascript:void()" onClick={this.onLoadMore}>Load more</a> : ''}</div> : '' }                            
+	                            {this.state.userReviews.length > this.state.limit ? <div>{this.state.loadMore ? <a className="more-items" href={"#/"} onClick={this.onLoadMore}>Load more</a> : ''}</div> : '' }                            
                         </div>
                 
                     </div>

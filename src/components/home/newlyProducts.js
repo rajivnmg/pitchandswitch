@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import ReactDOM from "react-dom";
+//import ReactDOM from "react-dom";
 import Style from './home.css';
 // import imgPath from '../../images'
 // import "~slick-carousel/slick/slick.css"; 
 //import "~slick-carousel/slick/slick-theme.css"; 
 import Slider from "react-slick";
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import popularItemImg from '../../images/popular-item1.jpg';
+import { Link } from 'react-router-dom';
+//import popularItemImg from '../../images/popular-item1.jpg';
 import axios from 'axios';
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+//import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 const constant = require("../../config/constant");
 class NewlyProducts extends Component {
    constructor(props)
@@ -65,17 +65,17 @@ class NewlyProducts extends Component {
                         {(this.state.newlyProducts.length)?this.state.newlyProducts.map(function (newlyProduct,index) {							
 							var userImage = ((newlyProduct.user && (newlyProduct.user.length > 0))?newlyProduct.user[0].profilePic:null)
 							var userIds =((newlyProduct.user && (newlyProduct.user.length > 0))?newlyProduct.user[0]._id:'0');
-							var productUrl = (localStorage.getItem('isLoggedIn') == 1 && localStorage.getItem('userId') == userIds)?'/my-trade-detail/'+newlyProduct._id:'/search-result/'+newlyProduct._id
+							var productUrl = (localStorage.getItem('isLoggedIn') === 1 && localStorage.getItem('userId') === userIds)?'/my-trade-detail/'+newlyProduct._id:'/search-result/'+newlyProduct._id
 						return (
 							<div className="slides-div" key={index}>
 								<div key={newlyProduct}>
-								<div className='pic'><Link to={productUrl} ><img src={constant.BASE_IMAGE_URL+'Products/'+newlyProduct.productImages} /></Link></div>
+								<div className='pic'><Link to={productUrl} ><img src={constant.BASE_IMAGE_URL+'Products/'+newlyProduct.productImages} alt={"Product Thumb"}/></Link></div>
 									<div className='details'>
 									<h4><a href={productUrl}>{newlyProduct.productName}</a></h4>
 										<Link className="catLink" to={'/search-listing/'+newlyProduct.productCategory}>{(newlyProduct.category && (newlyProduct.category.length > 0))?newlyProduct.category[0].title:''}</Link>
 									</div>
 									  <div className="userdiv">
-										<div className="user-pic"><img className="userPicNew"src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} /></div>
+										<div className="user-pic"><img className="userPicNew"src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} alt={"User Thumb"}/></div>
 										<div className="user-name">
 										<Link className="alink" target="_blank" to={'/public-profile/'+((newlyProduct.user && (newlyProduct.user.length > 0))?newlyProduct.user[0]._id:'')}>
 											{(newlyProduct.user  && (newlyProduct.user.length > 0))?newlyProduct.user[0].userName:''}

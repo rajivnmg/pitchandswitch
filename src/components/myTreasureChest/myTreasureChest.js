@@ -66,8 +66,7 @@ class myTreasureChest extends Component {
 	componentDidMount(){
 			axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');			
 			if(localStorage.getItem('jwtToken') !== null){
-				axios.get('/user/getLoggedInUser').then(result => {	
-					console.log("resultresult",result)				
+				axios.get('/user/getLoggedInUser').then(result => {						
 					this.setState({ 
 						user:result.data.result,
 						notification_type:result.data.notification_type,

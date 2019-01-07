@@ -1,26 +1,22 @@
 import React, { Component } from 'react';
-import Warper from "../common/Warper";
+//import Warper from "../common/Warper";
 import Popup from "reactjs-popup";
-import rcvProduct from '../../images/rcv-product-img.jpg';
-import offerProduct1 from '../../images/offer-product-img1.jpg';
-import offerProduct3 from '../../images/offer-product-img3.jpg';
-import userPic from '../../images/user-pic.png';
-import rejected from '../../images/rejected.png';
+//import rcvProduct from '../../images/rcv-product-img.jpg';
+//import offerProduct1 from '../../images/offer-product-img1.jpg';
+//import offerProduct3 from '../../images/offer-product-img3.jpg';
+//import userPic from '../../images/user-pic.png';
+//import rejected from '../../images/rejected.png';
 import { Scrollbars } from 'react-custom-scrollbars';
 import successPic from '../../images/successful_img.png';
 import axios from 'axios';
-import {
-  Badge,
-  Button
-} from 'reactstrap';
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import { Button } from 'reactstrap';
+import { If, Then, Else } from 'react-if-elseif-else-render';
 var FD = require('form-data');
-var fs = require('fs');
+//var fs = require('fs');
 
 const constant = require('../../config/constant')
-const modalStyle = {  maxWidth: "460px",  width: "90%"};  
+//const modalStyle = {  maxWidth: "460px",  width: "90%"};  
 const contentStyle = { maxWidth: "900px", width: "90%" };
-
 
 class viewPitchPopup extends Component {
 	constructor(props) {
@@ -41,7 +37,7 @@ class viewPitchPopup extends Component {
 		   var stateChange = []
 		    var el = e.target.value
 			var name = el.name
-			var type = el.type
+			//var type = el.type
 			var selectedOptions = []			
 			 if(el.checked){
 				selectedOptions.push(el)
@@ -133,22 +129,7 @@ changeEvent(event){
 				}
 			})
 		} 
-
-
-	  componentWillMount(){
-		   this.setState({offerTradeId:this.props.proID})
-			axios.get('/trade/getAllProduct/').then(result => {
-			  if(result.data.code === 200){
-				this.setState({getAllProduct:result.data.result})
-			}
-	  })
-	  axios.get('/category/categoriesActive/').then(result => {
-		   if(result.data.code === 200){
-				this.setState({categoryActive:result.data.result})				
-				}
-			})	
-	  }
-		
+	
 	  componentDidMount(){
 		axios.get('/trade/offerTradeProduct/'+this.props.proID).then(result => {
 			if(result.data.code === 200){				
@@ -206,7 +187,7 @@ render() {
 				<div className="received-product">
 				<div className="received-product-box">
 				<div className="received-product-image-box">
-				<img src={constant.BASE_IMAGE_URL+'Products/'+productImg} alt="recieved-product image" />
+				<img src={constant.BASE_IMAGE_URL+'Products/'+productImg} alt="recieved-product Thumb" />
 				</div>
 				<div className="received-product-content-box">
 				<span>Product ID: <strong>{this.props.proID}</strong></span>
@@ -237,7 +218,7 @@ render() {
 					return(				
 				<div className="switch-product-box ">
 				<div className="switch-product-image-box">
-				<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+				<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product Thumb" />
 				<div className="switch-option-mask">
 				<div className="check-box">
 				<input name="Apple" value={productsListing._id}  id={"pitch"+count} type="checkbox" name="productIDS" value={productsListing._id} onChange={this.changeEvent.bind(this)}  disabled={this.state.disabled}/>

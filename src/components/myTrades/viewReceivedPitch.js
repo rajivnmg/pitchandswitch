@@ -1,23 +1,21 @@
 import React, { Component } from 'react';
-import Warper from "../common/Warper";
+//import Warper from "../common/Warper";
 import Popup from "reactjs-popup";
-import rcvProduct from '../../images/rcv-product-img.jpg'
-import offerProduct1 from '../../images/offer-product-img1.jpg'
-import offerProduct3 from '../../images/offer-product-img3.jpg'
-import userPic from '../../images/user-pic.png'
+//import rcvProduct from '../../images/rcv-product-img.jpg'
+//import offerProduct1 from '../../images/offer-product-img1.jpg'
+//import offerProduct3 from '../../images/offer-product-img3.jpg'
+//import userPic from '../../images/user-pic.png'
 import axios from 'axios'
 import successPic from '../../images/successful_img.png';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+//import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Button /*,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row, */} from 'reactstrap';
+import { If, Then, Else } from 'react-if-elseif-else-render';
 import ShippingTypePopup from './shippingTypePopup'
 const constant = require('../../config/constant')
-const contentStyle = {
-    maxWidth: "660px",
-    width: "90%"
+const contentStyle = { maxWidth: "660px", width: "90%"
 };
 var FD = require('form-data');
-var fs = require('fs');
+//var fs = require('fs');
 var tempDate = new Date();
 var date = tempDate.getFullYear() + '-' + (tempDate.getMonth()+1) + '-' + tempDate.getDate() +' '+ tempDate.getHours()+':'+ tempDate.getMinutes()+':'+ tempDate.getSeconds();
 
@@ -61,16 +59,28 @@ class viewReceivedPopup extends Component {
    }
 	
 	componentDidMount(){
-		axios.get('/trade/tradingProduct/'+this.state.offerTrade._id).then(result => {
-			if(result.data.code === 200){					
-				this.setState({offerTradeProducts:result.data.result})				
+		axios.all([
+			axios.get('/trade/tradingProduct/'+this.props.offerTrade._id),
+			axios.get('/product/productDetails/'+ this.props.proID)
+		]).then(axios.spread((tradingProduct, productDetails) => {
+			if(tradingProduct.data.code === 200){		
+				this.setState({offerTradeProducts:tradingProduct.data.result})
 			}
-		})
-		 axios.get('/product/productDetails/'+ this.state.proID).then(result => {
-		    this.setState({
-				productData:result.data.result,
-			});
-		})
+			if(productDetails.data.code === 200){		
+				this.setState({productData:productDetails.data.result})
+			}
+		}))  
+	  .catch(error => console.log(error,this.props.offerTrade));
+		//~ axios.get('/trade/tradingProduct/'+this.state.offerTrade._id).then(result => {
+			//~ if(result.data.code === 200){					
+				//~ this.setState({offerTradeProducts:result.data.result})				
+			//~ }
+		//~ })
+		 //~ axios.get('/product/productDetails/'+ this.state.proID).then(result => {
+		    //~ this.setState({
+				//~ productData:result.data.result,
+			//~ });
+		//~ })
 		 if (localStorage.getItem("jwtToken") !== null) {
 			  axios.get("/user/getLoggedInUser").then(result => {
 				if(result.data.code === 200) {
@@ -82,7 +92,7 @@ class viewReceivedPopup extends Component {
 
     render() {
 	  const proImg = this.state.offerTrade.SwitchUserProductId.productImages?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
-	  const userID = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId._id:"";
+	  //const userID = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId._id:"";
 	
 return (
 <Popup
@@ -118,13 +128,13 @@ return (
 		<div className="received-product">
 		<div className="received-product-box">
 		<div className="received-product-image-box">
-		   <img src={constant.BASE_IMAGE_URL+'Products/'+proImg} alt="recieved-product image" />
+		   <img src={constant.BASE_IMAGE_URL+'Products/'+proImg} alt="recieved-product Thumb" />
 		</div>
 		<div className="received-product-content-box">
 		<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId._id}</strong></span>
 		<h4>{this.state.offerTrade.SwitchUserProductId.productName} </h4>
 		<span> {this.state.offerTrade.SwitchUserProductId.description} </span>
-		<a className="catLink" href={"search-listing/"+this.state.productData.productCategory._id}>{this.state.productData.productCategory?this.state.productData.productCategory.title:""}</a>
+		<a className="catLink" href={"search-listing/"+((this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory._id:"")}>{(this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory.title:""}</a>
 		</div>
 		</div>
 		<div className="cl"></div>
@@ -139,12 +149,12 @@ return (
 			<Then>
 				{ this.state.offerTradeProducts.products.map((productList, index) => {			
 				var productImages = (productList.productImages)?productList.productImages[0]:'';
-				var productCategoryID = productList?productList.productCategory._id:"";
+				var productCategoryID = (productList && productList.productCategory)?productList.productCategory._id:"";
 		
 		return(
 		<div className="switch-product-box">
 			<div className="switch-product-image-box">
-			<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+			<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product Thumb" />
 			<div className="switch-option-mask">
 			 <If condition={localStorage.getItem('userId') === productList.userId}>
                <Then>
@@ -161,7 +171,7 @@ return (
 			</div>
 			<div className="switch-product-content-box">
 			<h4>{productList.productName}</h4>
-			<a className="catLink" href={'search-listing/'+productCategoryID}>{productList.productCategory.title}</a>
+			<a className="catLink" href={'search-listing/'+productCategoryID}>{(productList.productCategory)?productList.productCategory.title:""}</a>
 			</div>
 		</div>
 		)

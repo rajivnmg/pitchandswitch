@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PublicReviews from "./public_reviews1";
 //import Style from "./myTreasureChest.css";
 import popularItemImg from "../../images/popular-item1.jpg";
-import userPicture from "../../images/user-pic.png";
+import userPicture from "../../images/default_user@1x.png";
 //import userPictureLg from "../../images/userProfileLarge.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -12,6 +12,8 @@ import { Link } from "react-router-dom";
 //import { Spin, Icon, Alert } from "antd";
 //import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import {fsExistsSync} from "../../components/commonFunction";
+var fs = require("fs");
 
 library.add(faHeart);
 const constant = require("../../config/constant");
@@ -33,7 +35,7 @@ class publicProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      limit: 2,
+      limit: constant.PER_PAGE_RECORD,
       loadMore: true,
 
       publicProfile: {},
@@ -71,17 +73,17 @@ class publicProfile extends Component {
   }
 
   render() {
+	  let userIhumb = userPicture;
+	  if(fsExistsSync(constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.publicProfile.profilePic)){
+			userIhumb = constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.publicProfile.profilePic;
+	   }
     return (
       <div className="myTreasure noMargin">
         <div className="profile_header">
           <div className="container">
             <div className="pic">
               <img
-                src={
-                  constant.BASE_IMAGE_URL +
-                  "ProfilePic/" +
-                  this.state.publicProfile.profilePic
-                }
+                src={userIhumb}
                 height="100px"
                 width="100px"
                 alt=""

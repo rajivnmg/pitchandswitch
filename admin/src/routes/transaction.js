@@ -7,5 +7,5 @@ router.get('/viewTransaction/:id',transactionController.viewTransaction);
 router.get('/transactions/:page', transactionController.listTransaction);
 router.post('/changeStatus',transactionController.changeStatus);
 router.post('/searchQuery',transactionController.searchQuery);
-router.get('/transactions',transactionController.transactions)
+router.get('/transactionsFilterBydate/:page/:start/:end',transactionController.transactionsFilterBydate)
 module.exports = router;

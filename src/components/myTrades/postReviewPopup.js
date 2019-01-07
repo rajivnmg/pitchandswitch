@@ -1,24 +1,15 @@
 import React, { Component } from "react";
-import Warper from "../common/Warper";
+//import Warper from "../common/Warper";
 import Popup from "reactjs-popup";
-import starRating from "../../images/star-rating.png";
+//import starRating from "../../images/star-rating.png";
 import ReactStars from "react-stars";
 import axios from "axios";
-import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
+import { If, Then, Else } from "react-if-elseif-else-render";
 import successPic from "../../images/successful_img.png";
 
-import {
-  Badge,
-  Button,
-  ButtonDropdown,
-  Form,
-  FormGroup,
-  FormText,
-  FormFeedback,
-  Input
-} from "reactstrap";
+//import { Badge, Button, ButtonDropdown, Form, FormGroup, FormText, FormFeedback, Input} from "reactstrap";
 var FD = require("form-data");
-var fs = require("fs");
+//var fs = require("fs");
 
 const contentStyle = {
   maxWidth: "660px",
@@ -65,13 +56,15 @@ class postReviewPopup extends Component {
     e.preventDefault();
     let formSubmitFlag = true;
     for (let field in this.state.validation) {
-      let lastValidFieldFlag = true;
+      //let lastValidFieldFlag = true;
       let addReview = this.state.validation;
       addReview[field].valid = null;
       for (let fieldCheck in this.state.validation[field].rules) {
         switch (fieldCheck) {
           case "notEmpty":
             break;
+          default:
+			break;
         }
       }
       this.setState({ validation: addReview });

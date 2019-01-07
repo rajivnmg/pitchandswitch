@@ -171,7 +171,7 @@ class Dashboard extends Component {
                           <Tab className="received tabreceived">Received</Tab>
                         </TabList>
                       </div>
-                      <h4>Switched and Completed</h4>
+                      {/*<h4>Switched and Completed</h4>*/}
                       <TabPanel>
                         <Tabs>
                           <TabList>
@@ -226,7 +226,7 @@ class Dashboard extends Component {
                           <Tab className="received tabreceived">Received</Tab>
                         </TabList>
                       </div>
-                      <h4>Ditched</h4>
+                     {/* <h4>Ditched</h4>*/}
                       <TabPanel>
                         <Ditch />
                       </TabPanel>

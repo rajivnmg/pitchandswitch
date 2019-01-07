@@ -1,5 +1,4 @@
-import React, { Component }
-from 'react';
+import React, { Component } from 'react';
 import Warper from "../common/Warper";
 import Popup from "reactjs-popup";
 import rcvProduct from '../../images/rcv-product-img.jpg'

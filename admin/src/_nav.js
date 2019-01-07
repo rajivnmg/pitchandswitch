@@ -230,14 +230,14 @@ export default {
    
     {
       name: 'Settings',
-      url: '/notifications',
-      icon: 'icon-bell',
+      url: '/setting',
+      icon: 'nav-icon icon-layers',
       children: [
-      {
-          name: 'Email Notification',
-          url: '/setting/email',
-          icon: 'icon-bell',
-        },
+      //~ {
+          //~ name: 'Email Notification',
+          //~ url: '/setting/email',
+          //~ icon: 'icon-bell',
+        //~ },
         {
           name: 'Module',
           url: '/setting/modules',
@@ -246,12 +246,12 @@ export default {
         {
           name: 'Social Media',
           url: '/setting/social-media',
-          icon: 'icon-bell',
+          icon: 'nav-icon icon-puzzle',
         },
         {
           name: 'Contact',
           url: '/setting/contact',
-          icon: 'icon-bell',
+          icon: 'nav-icon icon-note',
         },
       ],
     },

@@ -843,8 +843,7 @@ class SearchListing extends React.Component {
         );
       });
     }
-    return (
-      <Aux>
+    return (     
         <div className="search-page">
           <div className="container">
             <div className="mob_left_box">
@@ -890,8 +889,7 @@ class SearchListing extends React.Component {
             </div>
             <div className="cl" />
           </div>
-        </div>
-      </Aux>
+        </div>     
     );
   }
 }

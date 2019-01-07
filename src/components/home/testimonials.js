@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import ReactDOM from "react-dom";
-import Style from './home.css';
+//import ReactDOM from "react-dom";
+//import Style from './home.css';
 import Slider from "react-slick";
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import starRatingImg from '../../images/star-rating.png';
+//import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+//import starRatingImg from '../../images/star-rating.png';
 import axios from 'axios';
 import ReactStars from 'react-stars'
 import ReadMoreReact from 'read-more-react';

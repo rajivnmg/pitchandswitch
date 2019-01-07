@@ -27,8 +27,7 @@ class Form extends Component {
     const formEl = this.formEl;
     const formLength = formEl.length;
    if (formEl.checkValidity() === false) {
-      for (let i = 0; i < formLength; i++) {
-		  //console.log("formEl[i]",formEl[i])
+      for (let i = 0; i < formLength; i++) {		 
         const elem = formEl[i];
         const errorLabel = elem.parentNode.querySelector(".invalid-feedback");
         if (errorLabel && elem.nodeName.toLowerCase() !== "button") {
@@ -118,15 +117,16 @@ class Register extends React.Component {
 	    this.handleChangeCountry = this.handleChangeCountry.bind(this);
 	    this.handleChangeState = this.handleChangeState.bind(this);
 	    this.handleChangeCity = this.handleChangeCity.bind(this);
-	    this.recaptchaRef = React.createRef();	    
+	    this.recaptchaRef = React.createRef();	    	   
 	}
 	
- initMap = () => {
+	initMap = () => {		
 		this.setState({
-		  gmapsLoaded: true
+			gmapsLoaded: true
 		});
-  };
+	};
 
+	
 	handleChange = address => {
 		const regForm = {...this.state.registerForm};
 		regForm.latitude = "";
@@ -150,52 +150,48 @@ class Register extends React.Component {
         const regForm = {...this.state.registerForm};
         
         regForm.latitude = latLng['lat'];
-        regForm.longitude = latLng['lng'];
-       // console.log('HERE',  latLng['short_name'])
+        regForm.longitude = latLng['lng'];     
         this.setState({registerForm:regForm});
     })
       .catch(error => console.error('Error', error));
   };
 	
+// Handle on Country change
 	handleChangeCountry(event) {
-	
-    //console.log("handleChangeCountry",event.target.value)
     this.setState({countryId:event.target.value})
     if(event.target.value !== "0"){
-     axios.get('/location/getState/'+event.target.value).then(result =>{
-		// console.log("state",result.data.result)
+     axios.get('/location/getState/'+event.target.value).then(result =>{		
 			this.setState({states:result.data.result,cities:[{_id:'',cityName:''}]})		 
 		 })
-	 }
-    //this.setState({value: event.target.value});
+	 }    
   }
+  // Handle on state change
 	handleChangeState(event) {
-	this.setState({stateId:event.target.value})
-    //console.log("handleChangeState",event.target.value)
+	this.setState({stateId:event.target.value})    
     if(event.target.value !== "0"){
-		axios.get('/location/getCity/'+event.target.value).then(result =>{
-			 //console.log("city",result.data.result)
+		axios.get('/location/getCity/'+event.target.value).then(result =>{			 
 				this.setState({cities:result.data.result,})
 				if(result.data.result.length){
 					this.setState({state:result.data.result[0]._id})
 					this.setState({cityId:result.data.result[0]._id})
 				}
-			 })
-		//this.setState({value: event.target.value});
+			 })		
 	}
   }
-	handleChangeCity(event) {
-    //console.log("handleChangeCity",event.target.value)
+  
+  // Handle on city change
+	handleChangeCity(event) {   
     this.setState({cityId:event.target.value})
     this.setState({state: event.target.value});
   }
-  componentDidMount(){		
-		window.initMap = this.initMap
-		//console.log("COmponentDIDmaount")
-		axios.get('/location/listActiveCountry').then(result => {
-			//	console.log("result", result)
-				this.setState({countries:result.data.result})
-		})		
+  
+  componentDidMount(){	  
+	
+	axios.get('/location/listActiveCountry').then(result => {		
+			this.setState({countries:result.data.result}, () =>{
+					setTimeout(() => { this.initMap();},1000);
+			})
+	})	
 		  
 	}
   showHide(e){
@@ -311,7 +307,9 @@ class Register extends React.Component {
        {this.state.message}
       </div>
     );
-  }
+  } 
+   
+  
   render() {
     return (
             <div className="login-container">
@@ -327,20 +325,18 @@ class Register extends React.Component {
             </div>
           
               <Form submit={this.submit}>
-                 {this.state.showFormError ? this._renderErrorMessage() : null}
-                 
-        
+                 {this.state.showFormError ? this._renderErrorMessage() : null}        
                <div className="form-row">
-                <div className="invalid-feedback validation"> </div>   
-                <span className="astrik">*</span>
-                  <label className="label" htmlFor={"name"}>First Name</label>
-                  <input id={"name"} className={"form-control textBox"} required={true} name={"name"} onChange={(e) => this.inputChangedHandler(e, 'name')} type={"name"} placeholder="Enter your name" />
+                 <div className="invalid-feedback validation"> </div>    
+					<span className="astrik">*</span>
+					<label className="label" htmlFor={"name"}>First Name</label>
+					<input id={"name"} className={"form-control textBox"} required={true} name={"name"} onChange={(e) => this.inputChangedHandler(e, 'name')} type={"name"} placeholder="Enter your First name" />
                 </div>
                  <div className="form-row">
                   <div className="invalid-feedback validation"> </div>   
                     <span className="astrik">*</span>
-                     <label className="label" htmlFor={"name"}>Last Name</label>
-                    <input id={"lastName"} className={"form-control textBox"} required={true} name={"lastName"} onChange={(e) => this.inputChangedHandler(e, 'lastName')} type={"name"} placeholder="Enter your name" />
+                     <label className="label" htmlFor={"lastName"}>Last Name</label>
+                    <input id={"lastName"} className={"form-control textBox"} required={true} name={"lastName"} onChange={(e) => this.inputChangedHandler(e, 'lastName')} type={"name"} placeholder="Enter your Last name" />
                 </div>
                 <div className="form-row">
                 <div className="invalid-feedback validation"> </div>
@@ -389,8 +385,8 @@ class Register extends React.Component {
                   <label className="label" htmlFor={"addressss"}>Address Line Geo</label>
                   <input id={"address"} className={"form-control textBox"} onChange={(e) => this.inputChangedHandler(e, 'addressss')} required={true} name={"address"} type={"text"} placeholder="" />
                 </div>*/}
-				<input className={"form-control textBox hide2"} value={this.state.registerForm.latitude} name={"latitude"} type={"text"} placeholder="" />
-                 <input className={"form-control textBox hide2"} value={this.state.registerForm.longitude}  name={"longitude"} type={"text"} placeholder="" />
+				<Input className={"form-control textBox hide2"} defaultValue={this.state.registerForm.latitude} name={"latitude"} type={"text"} placeholder="" />
+                 <Input className={"form-control textBox hide2"} defaultValue={this.state.registerForm.longitude}  name={"longitude"} type={"text"} placeholder="" />
 				<div className="form-row">
 				<div className="invalid-feedback validation"> </div>   
                 <span className="astrik">*</span>

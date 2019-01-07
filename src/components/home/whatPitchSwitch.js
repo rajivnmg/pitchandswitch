@@ -12,7 +12,7 @@ class HowItWorks extends Component {
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry.
           </p>
-          <Link to="/" className="more-items">
+          <Link to={'/about-us'} className="more-items">
             Explore more
           </Link>
         </div>

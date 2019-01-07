@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import Popup from "react-popup";
+//import Popup from "react-popup";
 import Style from "./App.css";
 import "./App.scss";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 
 import Footer from "./components/footer";
@@ -31,13 +31,13 @@ import SettingSubscription from "./components/setting-subscription";
 import SettingEmailNotification from "./components/setting-email-notification";
 import PublicProfile from "./components/myTreasureChest/public_profile";
 import SettingPassword from "./components/setting-change-password";
-import PublicReviews from "./components/myTreasureChest/public_reviews";
+//import PublicReviews from "./components/myTreasureChest/public_reviews";
 import Help from "./components/pages/contactUs";
 import contactUs from "./components/pages/contactUs";
 import privacy from "./components/pages/privacy";
 import term from "./components/pages/terms";
 import aboutUs from "./components/pages/about";
-import Style1 from "./media.css";
+//import Style1 from "./media.css";
 import axios from "axios";
 import NotFound from "./NotFound";
 import asyncComponent from "./hoc/asyncComponent/asyncComponent";
@@ -51,8 +51,8 @@ const Header = asyncComponent(() => {
   return import("./components/header");
 });
 //import http from 'http';
-const port = 4001;
-const basePath = ""; // '/react-test';
+//const port = 4001;
+//const basePath = ""; // '/react-test';
 //axios.defaults.baseURL = window.location.protocol + '//' + window.location.hostname + ':' + port + basePath;
 axios.defaults.baseURL = constant.BASE_SERVER_URL;
 //axios.defaults.baseURL = 'http://demo.newmediaguru.co:5001'+ basePath;
@@ -98,7 +98,9 @@ class App extends Component {
           <Header setData={this.setSearchData} getData={this.getSearchData}/>
           <div id="content">
             <Switch>
-              <Route exact path="/" component={Home} />
+              <Route exact path="/" render={props => (
+                  <Home {...props} setData={this.setSearchData} getData={this.getSearchData}/>
+                )} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/logout" component={Logout} />
               <Route exact path="/register" component={Register} />

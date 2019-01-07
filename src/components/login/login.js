@@ -168,12 +168,15 @@ class Register extends React.Component {
       .post("/user/login", { email: email, password: password, userType: "0" })
       .then(result => {
         if (result.data.code === 200) {
-          localStorage.setItem("jwtToken", result.data.token);
+          //localStorage.setItem("jwtToken", result.data.token);
           this.setState({ message: "" });
-          //console.log("result",result.data.result)
+          console.log("result",result.data.result)
           if (result.data.result.subscriptionStatus === "0") {
+			localStorage.setItem('userId',result.data.result._id);
+			localStorage.setItem('userName',result.data.result.userName);
             window.location.href = "/subscription";
           } else {
+			localStorage.setItem("jwtToken", result.data.token);
             window.location.href = "/dashboard";
           }
           //this.props.history.push('/dashboard');

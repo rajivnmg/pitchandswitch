@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import Warper from "../common/Warper";
+//import Warper from "../common/Warper";
 import Popup from "reactjs-popup";
-import rcvProduct from '../../images/rcv-product-img.jpg'
-import offerProduct1 from '../../images/offer-product-img1.jpg'
-import offerProduct3 from '../../images/offer-product-img3.jpg'
-import userPic from '../../images/user-pic.png'
+//import rcvProduct from '../../images/rcv-product-img.jpg'
+//import offerProduct1 from '../../images/offer-product-img1.jpg'
+//import offerProduct3 from '../../images/offer-product-img3.jpg'
+//import userPic from '../../images/user-pic.png'
 import axios from 'axios'
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
-import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
+import { If, Then, Else } from 'react-if-elseif-else-render';
+//import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
 const constant = require('../../config/constant')
 const contentStyle = {
     maxWidth: "660px",
@@ -20,7 +20,8 @@ class viewPitchPopup extends Component {
 		this.state = {				
 			offerTrade:this.props.offerTrade,
 			proID:this.props.proID,
-			offerTradeProducts:[]
+			offerTradeProducts:[],
+			dataLoaded : false,
 		}			
 	}
 	
@@ -28,17 +29,27 @@ class viewPitchPopup extends Component {
 		this.setState({offerTradeId:this.state.offerTrade._id})
 	}
 	 
-	componentDidMount(){
-		axios.get('/trade/pitchedProductList/'+this.state.offerTrade._id).then(result => {
-			if(result.data.code === 200){		
-				this.setState({offerTradeProducts:result.data.result})				
+	componentDidMount(){			
+		axios.all([
+			axios.get('/trade/pitchedProductList/'+this.props.offerTrade._id),
+			axios.get('/product/productDetails/'+ this.props.offerTrade.SwitchUserProductId._id)
+		]).then(axios.spread((pitchedProductList, productDetails) => {
+			if(pitchedProductList.data.code === 200){		
+				this.setState({offerTradeProducts:pitchedProductList.data.result,productData:productDetails.data.result})				
 			}
-		})
-		 axios.get('/product/productDetails/'+ this.state.offerTrade.SwitchUserProductId._id).then(result => {
-		    this.setState({
-				productData:result.data.result,
-			});
-		})
+		}))  
+	  .catch(error => console.log(error,this.props.offerTrade));
+		
+		//~ axios.get('/trade/pitchedProductList/'+this.state.offerTrade._id).then(result => {
+			//~ if(result.data.code === 200){		
+				//~ this.setState({offerTradeProducts:result.data.result})				
+			//~ }
+		//~ })
+		 //~ axios.get('/product/productDetails/'+ this.state.offerTrade.SwitchUserProductId._id).then(result => {
+		    //~ this.setState({
+				//~ productData:result.data.result,
+			//~ });
+		//~ })
 		 if (localStorage.getItem("jwtToken") !== null) {
 			  axios.get("/user/getLoggedInUser").then(result => {
 				if(result.data.code === 200) {
@@ -51,7 +62,7 @@ class viewPitchPopup extends Component {
      render() {
 	 const proImg = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
 	 const productIMG = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.profilePic:"";
-	 const categoryID = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productCategory._id:""
+//	 const categoryID = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productCategory._id:""
 	
 	
    return (
@@ -66,7 +77,7 @@ class viewPitchPopup extends Component {
 			<div className="received-product">
 			<div className="received-product-box">
 			<div className="received-product-image-box">
-			  <img src={constant.BASE_IMAGE_URL+'Products/'+proImg} alt="recieved-product image" />
+			  <img src={constant.BASE_IMAGE_URL+'Products/'+proImg} alt="recieved-product thumb" />
 			</div>
 			<div className="received-product-content-box">
 			<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId._id:""}</strong></span>
@@ -90,15 +101,15 @@ class viewPitchPopup extends Component {
 			<span className="pitch-offer">Pitch offered To </span> {(this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:''}</span>
 			<div className="cl"></div>
 			</p>
-
-        <If condition={this.state.offerTradeProducts}>
+		
+        <If condition={this.state.offerTradeProducts && this.state.offerTradeProducts.products}>
 			<Then>
-			  	{ this.state.offerTradeProducts.products.map((productList, index) => {			
+			  	{this.state.offerTradeProducts.products && this.state.offerTradeProducts.products.map((productList, index) => {			
 				var productImages = (productList.productImages)?productList.productImages[0]:'';
 				return(
 				<div className="switch-product-box">
 					<div className="switch-product-image-box">
-					<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product image" />
+					<img src={constant.BASE_IMAGE_URL+'Products/'+productImages} alt="recieved-product thumb" />
 					<div className="switch-option-mask">
 					 <If condition={localStorage.getItem('userId') === productList.userId}>
                        <Then>
@@ -112,7 +123,7 @@ class viewPitchPopup extends Component {
 					</div>
 					<div className="switch-product-content-box">
 					<h4>{productList.productName}</h4>
-					<a className="catLink" href={"/search-listing/"+productList.productCategory._id}>{productList.productCategory.title}</a>
+					<a className="catLink" href={"/search-listing/"+((productList.productCategory)?productList.productCategory._id:"0")}>{(productList.productCategory)?productList.productCategory.title:""}</a>
 					</div>
 				</div>
 				)

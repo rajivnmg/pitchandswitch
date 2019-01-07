@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Style from './myTreasureChest.css';
-import popularItemImg from '../../images/popular-item1.jpg';
-import userPicture from '../../images/user-pic.png';
+//import popularItemImg from '../../images/popular-item1.jpg';
+//import userPicture from '../../images/user-pic.png';
 
 
 class publicReviews extends Component {
@@ -69,7 +69,7 @@ class publicReviews extends Component {
                                             </div>)
                             })
                             }
-                            <a href="javascript:void(0)" className="more-items"> Load More </a>
+                            <a  href="#/" className="more-items"> Load More </a>
                         </div>
                 
                     </div>

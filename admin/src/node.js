@@ -26,11 +26,13 @@ const http = require('http');
 const fs = require('fs');
 const constant = require('../common/constant')
 var cookieParser = require('cookie-parser');
-var session = require('express-session')
+//var session = require('express-session')
+var expressSession =  require('cookie-session');
 var auth = require('./routes/auth');
 
 //database connection
-mongoose.connect(constant.DATABASE)
+mongoose.set('useCreateIndex', true);
+mongoose.connect(constant.DATABASE,{ useNewUrlParser: true });
 
 //mongoose.connect('mongodb://pitchswitch:nmg251@ds251622.mlab.com:51622/pitch-switch');
 //mongoose.connect('mongodb://pitchswitch:nmg251@ds213183.mlab.com:13183/pitch-switch-demo');
@@ -54,19 +56,33 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 //Exoress session object
 app.set('trust proxy', 1) // trust first proxy
-var MemoryStore =session.MemoryStore;
-app.use(session({
+//~ var MemoryStore =session.MemoryStore;
+//~ app.use(session({
+  //~ key: 'userId',
+  //~ secret: 'pitchandswitch',
+  //~ resave: false,
+  //~ store: new MemoryStore(),
+  //~ saveUninitialized: false,
+  //~ cookie: { secure: true },
+  //~ cookie: {
+		//~ maxAge: 1200000 ,
+		//~ expires: new Date(Date.now() + 1200000)
+	  //~ }
+
+//~ }))
+
+app.use(expressSession({
   key: 'userId',
   secret: 'pitchandswitch',
   resave: false,
-  store: new MemoryStore(),
   saveUninitialized: false,
   cookie: { secure: true },
   cookie: {
-		maxAge: 1200000 ,
-		expires: new Date(Date.now() + 1200000)
+  		maxAge: 1200000 ,
+  		expires: new Date(Date.now() + 1200000),
+      secureProxy: true,
+      httpOnly: true
 	  }
-
 }))
 
 app.use((req, res, next) => {

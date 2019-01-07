@@ -18,7 +18,7 @@ const ALLOWED_PATHS = [
   "/privacy-policy",
   "/term-and-condition"
 ];
-const aux = props => {
+const aux = props => {	
   if (localStorage.getItem("jwtToken") === null) {
     if (ALLOWED_PATHS.indexOf(props.match.path) === -1) {
       if (props.history) props.history.push("/logout");
