@@ -160,9 +160,11 @@ changeEvent(event){
 			}
 			
 			var switchedProductsDATA = [];
-			for(var count = 0; count<this.state.switchedProducts.length; count++){
-				const proIDS = this.state.switchedProducts?this.state.switchedProducts[count].products:"";
-			    switchedProductsDATA.push(proIDS); 	
+			if(this.state.switchedProducts){
+				for(var count = 0; count<this.state.switchedProducts.length; count++){
+					const proIDS = this.state.switchedProducts?this.state.switchedProducts[count].products:"";
+					switchedProductsDATA.push(proIDS); 	
+				}
 			}
 			 var switchedProductsIDS = [];
 			  for (var counter=0; counter < this.state.switchedProducts.length; counter++){
