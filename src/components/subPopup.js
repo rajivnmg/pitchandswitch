@@ -26,7 +26,7 @@ modal
                             <a className="close" onClick={close}>
                                 &times;
                             </a>
-                            <div className="header">Upgrade your plan
+                            <div className="header">Upgrade Now
                                 <div className="cl"></div>
                             </div>
                             <div className="content">
