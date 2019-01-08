@@ -92,7 +92,7 @@ class UpgradePlan extends Component {
               &times;
             </a>
             <div className="header">
-              Upgrade your plan
+              Upgrade Now
               <div className="cl" />
             </div>
             {this.state.showFormError ? this._renderErrorMessage() : null}
