@@ -100,8 +100,7 @@ class viewPitchPopup extends Component {
 			<span className="pitch-offered">  
 			<span className="pitch-offer">Pitch offered To </span> {(this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:''}</span>
 			<div className="cl"></div>
-			</p>
-		
+			</p>		
         <If condition={this.state.offerTradeProducts && this.state.offerTradeProducts.products}>
 			<Then>
 			  	{this.state.offerTradeProducts.products && this.state.offerTradeProducts.products.map((productList, index) => {			

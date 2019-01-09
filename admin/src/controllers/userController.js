@@ -394,7 +394,7 @@ const login = (req, res) => {
       } else {
         if (!result) {
           res.json({
-            message: httpResponseMessage.USER_NOT_FOUND,
+            message: httpResponseMessage.INVALID_USER_PASSWORD,
             code: httpResponseMessage.BAD_REQUEST
           });
         } else if (result.userType === req.body.userType) {

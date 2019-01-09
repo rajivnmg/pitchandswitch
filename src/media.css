@@ -1,7 +1,7 @@
 /* ---------- Home page ------------------- */
 
-.banner-details{ text-align:center;} 
-.banner-details a.home-btn{ display:inline-block; margin:10px 5px;}
+.banner-details{ text-align:center;}
+.banner-details a.home-btn{ display:inline-block; margin:20px 5px;}
 .testimonialContainer .starRating span { display:inline-block !important; float:none !important; }
 .form-row .label { padding-bottom:10px; }
 .ant-upload-select-picture-card i { font-size: 16px; padding: 8px; border-radius: 50%; font-weight: bold; }
@@ -23,9 +23,7 @@ button { cursor:pointer; }
 .login .form-row:last-child .colum { width:100%; margin:10px 0; }
 .form-row .no-account.center-text a { text-decoration:none; }
 .form-row a { text-decoration:none; }
-
-.ant-select-auto-complete.ant-select .ant-select-selection__rendered{ line-height:40px;}
-
+.ant-select-auto-complete.ant-select .ant-select-selection__rendered { line-height:40px; }
 /* ------ search listing page ------------- */
 
 .search-page .lft-section { width:235px; position:relative; }
@@ -61,17 +59,18 @@ div.ReactTags__tagInput input.ReactTags__tagInputField, div.ReactTags__tagInput 
 .popularItems .pic { height:240px; overflow:hidden; }
 .subscription-container .colum-basic { vertical-align:top; margin:10px 5px; }
 .popularItems .slides-div .catLink { width:85%; }
-.sort-by .search:before { z-index:99; right:13px; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #636363; border-bottom:0; transform:none; top:48%; }
-.sort-by .search { padding:0; width:140px; margin-top:5px; background:#fff; }
-.tab_details { padding:10px 20px; }
+/*.sort-by .search:before { z-index:99; right:13px; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #636363; border-bottom:0; transform:none; top:48%; }
+.sort-by .search { padding:0; width:140px; margin-top:5px; background:#fff; }*/
+.tab_details { padding:10px 20px; position:relative; }
 .inn_tab .react-tabs__tab { background:#e9ecef; color:#dbb641; width:49%; text-align:center; border-radius: 5px; box-sizing:border-box; }
 .inn_tab .react-tabs__tab:last-child { float:right; }
 .inn_tab .react-tabs__tab.react-tabs__tab--selected { background:#dbb641; color:#fff; }
 .pitch-row .alink { text-transform:capitalize; }
+.message-filter { position:absolute; right:0; top:27px; }
 .message-filter li.active { color:#000; font-weight:bold; }
 .tradeText { padding:15px 20px; text-align:left; }
-
-
+/*.dashboard .dashboardRight .Scrollsdiv{ height:auto !important; position:relative !important; padding:20px 0 !important;}
+.dashboard .dashboardRight .Scrollsdiv div{ position:static !important;}*/
 
 /* ------------- my trades --------------------- */
 
@@ -96,9 +95,6 @@ div.ReactTags__tagInput input.ReactTags__tagInputField, div.ReactTags__tagInput 
 .setting-container .right-container .change-password .checkbox-row { float:left; width:100%; }
 .setting-container .left-container ul li a:hover, .setting-container .left-container ul li a.active { font-weight:bold; }
 .mob_search { display:none; }
-
-.css-vj8t7z{ min-height:44px !important;}
-
 /* ------------ prdouct details ------------------ */
 
 .image-gallery-slide-wrapper { height:450px; margin-bottom:20px; }
@@ -115,19 +111,57 @@ div.ReactTags__tagInput input.ReactTags__tagInputField, div.ReactTags__tagInput 
 .gold-div strong { width:83%; text-align:left; }
 .modal > .header { text-align:center; }
 .mob_left_box { display:none; }
+.sort-by .newly-add { display:inline-block; }
+/* --------------------- search listing ---------------------------- */
+
+.search-page { background-color: #f1f1f1; padding:30px 0 }
+.search-page .container { margin:  0 auto; max-width: 1120px }
+.search-page .lft-section { padding:0px; margin:0px; width:250px; float:left; background:#fff; box-shadow: 0 0 10px #cecaca; border-radius:5px; }
+.search-page .lft-section .column { padding:20px; margin:0px 0 0px; border-bottom:1px solid #dbdbdb }
+.search-page .lft-section .column h4 { padding:0px 0 20px; margin:0px 0 0px; color:#414141; position:relative; }
+.search-page .lft-section .column h4:after { border-right:1px solid #414141; border-bottom:1px solid #414141; content: ''; display: block; width:10px; height: 10px; margin-top: -2px; pointer-events: none; position: absolute; right:-1%; top:17%; -webkit-transform-origin: 66% 66%; -ms-transform-origin: 50% 50%; transform-origin: 50% 50%; -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); transform: rotate(45deg); -webkit-transition: all 0.15s ease-in-out; transition: all 0.15s ease-in-out; }
+.search-page .lft-section ul.categorie-name { list-style:none; }
+.search-page .lft-section ul.categorie-name li { display:block; padding:0 0 8px; }
+.search-page .lft-section ul.categorie-name li a { color:#969696 }
+.search-page .lft-section ul.categorie-name li a.active, .search-page .lft-section ul.categorie-name li a:hover { color:#d0a518; }
+.search-page .lft-section .distance-range { margin:0; }
+.search-page .lft-section .taglinerow { padding:10px 0 0 }
+.search-page .lft-section .tagline { padding:0 5px 0 10px; margin:5px 5px 0 0; color:#fff; background:#dab439; border-radius:25px; font-size:13px; display:inline-block; text-align:center; line-height:20px; }
+.search-page .lft-section .tagline i { color:#fff; font-weight:12px; margin-left:10px; }
+.search-page .lft-section .search { border:1px solid #ccc; border-radius:8px; }
+.multiselect { padding:0px; position: relative; }
+.selectBox { position: relative; }
+.selectBox select { width: 100%; color:#969696; font-size:14px; }
+.overSelect { position: absolute; left: 0; right: 0; top: 0; bottom: 0; cursor:pointer; }
+.distance-range .range-slider { margin:15px auto 10px; width:100%; }
+.distance-range .range { text-align: center; padding:0; font-size:12px; color: #969696; }
+.search-page .rgt-section { padding:0px; margin:0px 0 40px; width:76%; float:right; }
+.search-page .search-row { padding:0 0 25px }
+.search-page .rgt-section .search-result { float:left; font-size:13px; color:#414141; padding-top: 8px; }
+.search-page .rgt-section .sort-by { float:right; position:relative; margin-top:-10px; }
+.search-page .rgt-section .sort-by span { display:inline-block }
+.sort-by .newly-add { display:inline-block; position:relative; padding-right:20px; cursor:pointer; }
+.sort-by .search { position:relative; cursor:pointer; padding: 0 0 0 6px; width:130px }
+.sort-by .search:before { border-right:1px solid #000000; border-bottom:1px solid #000000; z-index:99; content: ''; display: block; width:8px; height:8px; margin-top: -2px; pointer-events: none; position: absolute; right:10px; top:38%; -webkit-transform-origin: 66% 66%; -ms-transform-origin: 66% 66%; transform-origin: 66% 66%; -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); transform: rotate(45deg); -webkit-transition: all 0.15s ease-in-out; transition: all 0.15s ease-in-out; }
+.sortby-expand { position:absolute; background:#fff; width:78%; margin:15px 0 0; padding:20px 15px; z-index:9; border-radius:8px; box-shadow:0 0 10px #ccc }
+.sortby-expand:before { position:absolute; content:""; top:-22px; right:20px; border:10px solid transparent; border-bottom:12px solid #fff; }
+.sortby-expand strong { color:#d0a518; font-size:14px; font-weight:normal }
+.sortby-expand a { padding:10px 0 0; display:block; color:#414141; font-size:14px; }
+.search-page .close { float: right; margin-right:0; color: #fff; color: #ffffff; font-size: 16px; border-radius: 50%; border:0; width:14px; height:16px; text-decoration: none; line-height:16px; margin-top:2px; margin-left:4px; }
+.moreCat { color: #d0a518; font-family: Roboto; font-size: 14px; font-weight: 400; line-height: 24px; margin:8px 0 0 30px; display:inline-block }
+.search-box { border-radius: 4px; border: 1px solid #cccccc; overflow: hidden; }
+.search-box input[type=text] { width: 100%; height:40px; border-radius: 0; border:0; padding: 0 10px; }
+.clearfilter { color: #e62121; font-size: 14px; font-weight: 400; margin-top: 8px; display:inline-block; text-decoration: none; }
+.stardiv { margin-right: 8px }
+.closed { float: right; position: relative; right: -25px; top: -65px; cursor:pointer; }
+button.closed { background:none; border:0; cursor:pointer; }
+button.closed:focus { outline: none; }
+.pitchnowPopup { width: max-content !important; float:right; }
 
 
-/* ------------- login ------------------- */
+/* ------------------- setting upgreade-------------------------- */
 
-.Backs .backBtn {
-    display: block;
-    padding: 10px 0 0 56px;
-    width: auto;
-    color: #fff;
-    font-size: 14px;
-    font-weight: normal;
-}
-
+.trades-list .radioBtn [type="radio"]:checked + label, .trades-list .radioBtn [type="radio"]:not(:checked) + label{ vertical-align:text-top;}
 
 
  @media screen and (max-width:1440px) {
@@ -209,6 +243,15 @@ min-width:115px;
 }
 }
  @media screen and (max-width:768px) {
+
+.popularItems .slides-div .catLink{ width:auto;}	
+.myTreasure .heading-row .more-items{ line-height:25px; margin-top:16px;} 
+.profileRow .pic{ width:100% !important;}
+.setting-container .right-container .change-password h3{ font-size:20px;}
+.setting-container .right-container .whiteboxBG{ width:96%; padding:20px 2%;}
+.whiteboxBG .leftColum{ width:100%;}
+.whiteboxBG .leftColum.right{ float:left; width:100%;}
+	 
 .category {
 float:right;
 }
@@ -224,6 +267,12 @@ left:116px;
 }
 }
  @media screen and (max-width:767px) {
+	 
+
+.whiteboxBG .trades-list li{display: inline-grid;}	 
+.whiteboxBG .leftColum .upgrade-btn{ font-size:16px; line-height:36px; height:36px;}
+.whiteboxBG .leftColum .green{ font-size:20px;}
+	 
 .sponsors, .popularItems, .testimonialContainer, .weKeepSafe, .howitworks {
 padding-top:25px;
 padding-bottom:25px
@@ -445,6 +494,7 @@ width:54%;
 }
  .message-filter {
 float:left;
+position:static;
 }
 .message-filter ul li {
 font-size:13px;
@@ -480,6 +530,7 @@ padding:40px 20px !important;
 font-size:16px;
 line-height:18px;
 text-align:center;
+padding-bottom:10px;
 }
 .form-row .cancel-btn, .form-row.btn-row .ditch, .pitch-div .colum .ditch.cancel-ditch, .tradeText .topbrdr-row a.upgrade-btn, .pitch-div .colum .ditch {
 min-width:100px;
@@ -510,6 +561,8 @@ box-shadow: 0px 4px 1px #ddd;
 border-radius:5px;
 transition:0.2s ease-in-out;
 position:relative;
+left:10px;
+top:-1px;
 }
 .mob_left_box.active {
 position:fixed;
@@ -561,6 +614,7 @@ z-index:999;
 display:block;
 left:0;
 overflow:auto;
+width:100%;
 }
  .search-page .rgt-section {
 float:left;
@@ -568,9 +622,9 @@ width:100%;
 margin-top:20px;
 }
 .search-page .rgt-section .sort-by {
-position:absolute;
+position:absolute !important;
 top:38px;
-right:10px;
+right:0px;
 z-index:1;
 }
 header nav ul li ul.dashboard-subnav {
@@ -603,7 +657,8 @@ width:auto;
 }
 .myTreasure .search-row .sort-by.right span {
 display:block;
-height:25px; line-height:29px;
+height:25px;
+line-height:29px;
 }
  .mob_search {
 display:block;
@@ -814,7 +869,7 @@ width: 100%;
 }
  @media screen and (max-width:479px) {
 .searchBox {
-width:78%;
+width:65%;
 }
 .dashboard .heading-row h1 {
 font-size:16px;

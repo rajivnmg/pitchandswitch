@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Style from "./App.css";
 import "./App.scss";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
+import "./components/main.css";
 
 import Footer from "./components/footer";
 // import LeftNav from './components/leftNav'
@@ -37,7 +37,8 @@ import contactUs from "./components/pages/contactUs";
 import privacy from "./components/pages/privacy";
 import term from "./components/pages/terms";
 import aboutUs from "./components/pages/about";
-//import Style1 from "./media.css";
+
+import "./media.css";
 import axios from "axios";
 import NotFound from "./NotFound";
 import asyncComponent from "./hoc/asyncComponent/asyncComponent";
@@ -114,11 +115,12 @@ class App extends Component {
                 path="/search-result/:id?"
                 component={SearchDetail}
               />
+              
               <Route
                 path="/search-listing"
                 render={props => (
                   <SearchListing {...props} getData={this.getSearchData}/>
-                )}/>
+                )}/>             
               <Route exact path="/search-result" component={SearchDetail} />
               <Route exact path="/add-new-product" component={AddNewProduct} />
               <Route exact path="/edit-product/:id?" component={EditProduct} />

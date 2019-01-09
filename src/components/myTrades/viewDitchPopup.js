@@ -68,8 +68,8 @@ render() {
 			<div className="received-product-content-box">
 			<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId._id:""}</strong></span>
 			<h4>Product Name: {this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productName:""}  </h4>
-			<span> {this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.description:""} </span>
-			<a className="catLink" href={"search-listing/"+productCategoryID}>{this.state.productData.productCategory?this.state.productData.productCategory.title:""}</a>
+			<span> {(this.state.offerTrade && this.state.offerTrade.SwitchUserProductId)?this.state.offerTrade.SwitchUserProductId.description:""} </span>
+			<a className="catLink" href={"search-listing/"+productCategoryID}>{(this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory.title:""}</a>
 			<div className="ratingRow">
 			<Link to={'public-profile/'+userID} >
 				<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+productIMG} alt="" /></div>
@@ -88,9 +88,9 @@ render() {
 			<div className="cl"></div>
 			</p>
 
-        <If condition={this.state.offerTradeProducts}>
+        <If condition={this.state.offerTradeProducts && this.state.offerTradeProducts.products}>
 			<Then>
-			  	{ this.state.offerTradeProducts.products.map((productList, index) => {			
+			  	{this.state.offerTradeProducts.products && this.state.offerTradeProducts.products.map((productList, index) => {			
 				var productImng = (productList.productImages)?productList.productImages[0]:'';
 				return(
 				<div className="switch-product-box">

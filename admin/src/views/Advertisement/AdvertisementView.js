@@ -96,7 +96,7 @@ class AdvertisementView extends Component {
                 </FormGroup>
                 <FormGroup>
                   <Label htmlFor="status">Status</Label>
-                  <Input type="text" value={(this.state.viewAdv.status === '1')?'Active':'Inactive'} />
+                  <Input type="text" value={(this.state.viewAdv.status === '1')?'Inactive':'Active'} />
                 </FormGroup>
                 <Row>
                   <Col xs="6" className="text-right">

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Style from "./main.css";
 import "../slick.min.css";
 import { withRouter, NavLink } from "react-router-dom";
 import Logo from "../images/logo.png";
@@ -338,7 +337,10 @@ class Header extends Component {
     return (
       <header>
         <figure className="logo">
-          <If condition={localStorage.getItem("isLoggedIn") == "1"}>
+			 <NavLink to={"/"}>
+                <img src={Logo} alt="logo" />
+              </NavLink>
+          {/*<If condition={localStorage.getItem("isLoggedIn") == "1"}>
             <Then>
               <NavLink to={"/dashboard"}>
                 <img src={Logo} alt="logo" />
@@ -349,7 +351,7 @@ class Header extends Component {
                 <img src={Logo} alt="logo" />
               </NavLink>
             </Else>
-          </If>
+          </If>*/}
         </figure>
         <CategoryMenu />
 

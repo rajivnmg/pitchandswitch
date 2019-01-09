@@ -152,10 +152,10 @@
   },
   "scripts": {
     "build-css": "node-sass-chokidar --include-path ./node_modules ./src/scss -o ./src/scss",
-    "start-js": "PORT=3002 node scripts/start.js",
+    "start-js": "node scripts/start.js",
     "server-js": "nodemon ./bin/www",
     "admin": "cd admin && npm start",
-    "start": "npm-run-all -p start-js admin",
+    "start": "npm-run-all -p start-js",
     "build-js": "node scripts/build.js",
     "build": "npm-run-all build-css build-js",
     "test": "node scripts/test.js --env=jsdom",

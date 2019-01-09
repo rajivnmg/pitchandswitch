@@ -10,7 +10,12 @@ import successPic from '../../images/successful_img.png';
 import axios from 'axios';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { /*BrowserRouter as Router, Switch,*/ Route, Link } from 'react-router-dom';
-import { Button } from 'reactstrap';
+
+
+import {
+
+  Button
+} from 'reactstrap';
 import { If, Then, Else } from 'react-if-elseif-else-render';
 var FD = require('form-data');
 //var fs = require('fs');
@@ -130,7 +135,9 @@ changeEvent(event){
 				}
 			})
 		} 
-	
+
+
+		
 	  componentDidMount(){
 		axios.get('/trade/offerTradeProduct/'+this.props.offerTrade.SwitchUserProductId._id).then(result => {
 			console.log('result',result);
@@ -144,7 +151,8 @@ changeEvent(event){
 			  this.setState({productData:result.data.result})
 		   }		  
 		})
-				
+		
+		//var switched = [];
 		axios.get('/trade/switchedProduct/'+this.state.offerTrade._id).then(switchedResult => {	
 			if(switchedResult.data.code === 200){
 			   this.setState({switchedProducts:switchedResult.data.result});				
@@ -152,9 +160,11 @@ changeEvent(event){
 			}
 			
 			var switchedProductsDATA = [];
-			for(var count = 0; count<this.state.switchedProducts.length; count++){
-				const proIDS = this.state.switchedProducts?this.state.switchedProducts[count].products:"";
-			    switchedProductsDATA.push(proIDS); 	
+			if(this.state.switchedProducts){
+				for(var count = 0; count<this.state.switchedProducts.length; count++){
+					const proIDS = this.state.switchedProducts?this.state.switchedProducts[count].products:"";
+					switchedProductsDATA.push(proIDS); 	
+				}
 			}
 			 var switchedProductsIDS = [];
 			  for (var counter=0; counter < this.state.switchedProducts.length; counter++){
@@ -224,12 +234,20 @@ render() {
 							<h4>{this.state.productData.productName}</h4>
 							
 							<a className="catLink" href={'search-listing/'+(this.state.productData.productCategory?this.state.productData.productCategory._id:0)}>{this.state.productData.productCategory.title}</a>
+							
+							
+							
+							
 							<div className="ratingRow">
 							
 						<Link to={'public-profile/'+(this.state.productData.userId?this.state.productData.userId._id:0)}>
 								<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+img} alt="" /></div>
 								<p>{this.state.productData.userId.firstName}</p>
 							</Link>
+							
+							
+							
+							
 							<div className="rated">4</div>
 							<div className="cl"></div>
 							</div>

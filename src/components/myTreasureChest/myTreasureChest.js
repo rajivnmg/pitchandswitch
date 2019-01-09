@@ -66,8 +66,7 @@ class myTreasureChest extends Component {
 	componentDidMount(){
 			axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');			
 			if(localStorage.getItem('jwtToken') !== null){
-				axios.get('/user/getLoggedInUser').then(result => {	
-					console.log("resultresult",result)				
+				axios.get('/user/getLoggedInUser').then(result => {						
 					this.setState({ 
 						user:result.data.result,
 						notification_type:result.data.notification_type,
@@ -129,7 +128,7 @@ Capitalize(str){
                     <div className="container">
                         <div className="breadcrumb">
                             <ul>
-                                <li><a href="/">Home</a></li><li>My Trades</li>
+                                <li><a href="/">Home</a></li><li>My Treasure Chest</li>
                             </ul>
                         </div>
                         <div className="heading-row">.

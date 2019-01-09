@@ -78,16 +78,16 @@ app.use(expressSession({
   saveUninitialized: false,
   cookie: { secure: true },
   cookie: {
-  		maxAge: 1200000 ,
+  		maxAge: 1200000,
   		expires: new Date(Date.now() + 1200000),
       secureProxy: true,
       httpOnly: true
 	  }
 }))
-
-app.use((req, res, next) => {
+//celar the cookies after expire or timeout
+app.use((req, res, next) => {	
     if (req.cookies.userId && !req.session.user) {
-        res.clearCookie('user_sid');
+        res.clearCookie('userId');
     }
     next();
 });

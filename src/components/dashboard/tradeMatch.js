@@ -61,11 +61,13 @@ class TradeMatch extends Component {
         <div className="container">
         <h3> <strong>Trade Match</strong></h3>
                <Slider {...settings}>
-                    {(this.state.tradeMatches.length)? this.state.tradeMatches.map(function (tradeMatch) {
+                    {(this.state.tradeMatches.length)? this.state.tradeMatches.map((tradeMatch) => {
+						let tempLatitude = ((tradeMatch.user && (tradeMatch.user.length > 0) && tradeMatch.user[0].loct && tradeMatch.user[0].loct.length > 0 && tradeMatch.user[0].loct.coordinates && (tradeMatch.user[0].loct.coordinates.length > 0))?tradeMatch.user[0].loct.coordinates[0]:localStorage.getItem("Latitude"));
+						let tempLognitude = ((tradeMatch.user && (tradeMatch.user.length > 0) && tradeMatch.user[0].loct && tradeMatch.user[0].loct.length > 0 && tradeMatch.user[0].loct.coordinates && (tradeMatch.user[0].loct.coordinates.length > 0))?tradeMatch.user[0].loct.coordinates[1]:localStorage.getItem("Longitude"));
 						let dist = commonFunction.distance(localStorage.getItem("Latitude"),
 						 localStorage.getItem("Longitude"),
-						 ((tradeMatch.user && tradeMatch.user.length > 0)?tradeMatch.user[0].loct.coordinates[0]:localStorage.getItem("Latitude")),
-						 ((tradeMatch.user && tradeMatch.user.length > 0)?tradeMatch.user[0].loct.coordinates[1]:localStorage.getItem("Longitude")), constant.DISTANCE_UNIT);
+						 tempLatitude,
+						 tempLognitude, constant.DISTANCE_UNIT);
 						var userImage = ((tradeMatch.user && tradeMatch.user.length > 0)?tradeMatch.user[0].profilePic:'default_user@1x.png');
 						let publicProfileUrl =  ((tradeMatch.user && tradeMatch.user.length > 0)?tradeMatch.user[0]._id:'');
 						let categoryUrl =  ((tradeMatch.category && tradeMatch.category.length > 0)?tradeMatch.category[0]._id:'');      
