@@ -99,6 +99,7 @@ class SearchListing extends React.Component {
       sizeTreeData: [],
       brandsList: [],
       constantList: [],
+      ageList: [],
       result: [],
       query: "",
       filters: {
@@ -344,10 +345,11 @@ class SearchListing extends React.Component {
         axios.get("/size/listingsize/"),
         axios.get("/brand/listingbrand/"),
         axios.get("/product/getColors/"),
-        axios.get("/donation/getConstant/")
+        axios.get("/donation/getConstant/"),
+        axios.get("/product/getAgeList/")
       ])
       .then(
-        axios.spread((rs1, rs2, rs3, rs4, rs5, rs6, rs7, rs8) => {
+        axios.spread((rs1, rs2, rs3, rs4, rs5, rs6, rs7, rs8,rs9AgeList) => {
           if (rs1.data.code === 200) {
             this.setState({ resultData: rs1.data.result });
           }
@@ -403,6 +405,9 @@ class SearchListing extends React.Component {
           }
           if (rs8.data.code === 200) {
             this.setState({ constantList: rs8.data.result });
+          }
+          if (rs9AgeList.data.code === 200) {
+            this.setState({ ageList: rs9AgeList.data.result });
           }
         })
       )

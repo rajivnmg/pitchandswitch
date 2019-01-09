@@ -115,11 +115,12 @@ class App extends Component {
                 path="/search-result/:id?"
                 component={SearchDetail}
               />
+              
               <Route
                 path="/search-listing"
                 render={props => (
                   <SearchListing {...props} getData={this.getSearchData}/>
-                )}/>
+                )}/>             
               <Route exact path="/search-result" component={SearchDetail} />
               <Route exact path="/add-new-product" component={AddNewProduct} />
               <Route exact path="/edit-product/:id?" component={EditProduct} />

@@ -1,5 +1,7 @@
 /* ---------- Home page ------------------- */
 
+.banner-details{ text-align:center;}
+.banner-details a.home-btn{ display:inline-block; margin:20px 5px;}
 .testimonialContainer .starRating span { display:inline-block !important; float:none !important; }
 .form-row .label { padding-bottom:10px; }
 .ant-upload-select-picture-card i { font-size: 16px; padding: 8px; border-radius: 50%; font-weight: bold; }
