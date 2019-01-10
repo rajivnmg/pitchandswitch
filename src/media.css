@@ -60,7 +60,7 @@ div.ReactTags__tagInput input.ReactTags__tagInputField, div.ReactTags__tagInput 
 .dashboard .heading-row h1 { padding-top:10px; }
 .popularItems .pic { height:240px; overflow:hidden; }
 .subscription-container .colum-basic { vertical-align:top; margin:10px 5px; }
-.popularItems .slides-div .catLink { width:85%; }
+.popularItems .slides-div .catLink { width:auto; }
 /*.sort-by .search:before { z-index:99; right:13px; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #636363; border-bottom:0; transform:none; top:48%; }
 .sort-by .search { padding:0; width:140px; margin-top:5px; background:#fff; }*/
 .tab_details { padding:10px 20px; position:relative; }
@@ -114,6 +114,9 @@ div.ReactTags__tagInput input.ReactTags__tagInputField, div.ReactTags__tagInput 
 .modal > .header { text-align:center; }
 .mob_left_box { display:none; }
 .sort-by .newly-add { display:inline-block; }
+
+.item-listing .Items .details{ height:100px;}
+
 /* --------------------- search listing ---------------------------- */
 
 .search-page { background-color: #f1f1f1; padding:30px 0 }
