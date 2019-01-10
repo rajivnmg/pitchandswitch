@@ -63,7 +63,7 @@ class viewPitchPopup extends Component {
 	 const proImg = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
 	 const productIMG = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.profilePic:"";
 //	 const categoryID = this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productCategory._id:""
-	
+	let userId = (this.state.offerTrade && this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId._id:'0'
 	
    return (
 	<Popup trigger={<span className= 'view-pitch'> View Pitch </span>} modal contentStyle = {contentStyle} lockScroll > 
@@ -98,7 +98,7 @@ class viewPitchPopup extends Component {
 			<div className="switch-product-section">
 			<p>Offered products for switch:
 			<span className="pitch-offered">  
-			<span className="pitch-offer">Pitch offered To </span> {(this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:''}</span>
+			<span className="pitch-offer">Pitch offered To </span><Link to={"/public-profile/"+userId}>{(this.state.offerTrade && this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId.userName:''}</Link></span>
 			<div className="cl"></div>
 			</p>		
         <If condition={this.state.offerTradeProducts && this.state.offerTradeProducts.products}>
@@ -112,7 +112,7 @@ class viewPitchPopup extends Component {
 					<div className="switch-option-mask">
 					 <If condition={localStorage.getItem('userId') === productList.userId}>
                        <Then>
-						 <a className="view-btn" href={'/my-trade_detail/'+productList._id}>View</a>
+						 <a className="view-btn" href={'/my-trade-detail/'+productList._id}>View</a>
 					   </Then>
 					  <Else>
 					  <a className="view-btn" href={'/search-result/'+productList._id}>View</a>

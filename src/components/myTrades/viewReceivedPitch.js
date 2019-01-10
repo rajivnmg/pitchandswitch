@@ -10,7 +10,9 @@ import successPic from '../../images/successful_img.png';
 //import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Button /*,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row, */} from 'reactstrap';
 import { If, Then, Else } from 'react-if-elseif-else-render';
-import ShippingTypePopup from './shippingTypePopup'
+import ShippingTypePopup from './shippingTypePopup';
+import {letterCaps} from "../commonFunction";
+import {Link} from 'react-router-dom';
 const constant = require('../../config/constant')
 const contentStyle = { maxWidth: "660px", width: "90%"
 };
@@ -93,7 +95,7 @@ class viewReceivedPopup extends Component {
     render() {
 	  const proImg = this.state.offerTrade.SwitchUserProductId.productImages?this.state.offerTrade.SwitchUserProductId.productImages[0]:"";
 	  //const userID = this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId._id:"";
-	
+	let userId = (this.state.offerTrade && this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId._id:'0'
 return (
 <Popup
     trigger={<a className= 'TradeInfobtn'> View Pitch</a>}
@@ -135,13 +137,18 @@ return (
 		<h4>{this.state.offerTrade.SwitchUserProductId.productName} </h4>
 		<span> {this.state.offerTrade.SwitchUserProductId.description} </span>
 		<a className="catLink" href={"search-listing/"+((this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory._id:"")}>{(this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory.title:""}</a>
+			<div className="ratingRow">				
+				<p><Link to={"/public-profile/"+userId}>{(this.state.offerTrade.SwitchUserId && this.state.offerTrade.SwitchUserId.userName)?letterCaps(this.state.offerTrade.SwitchUserId.userName):"N/A"}</Link></p>
+				<div className="rated">4</div>
+				<div className="cl"></div>
+			</div>
 		</div>
 		</div>
 		<div className="cl"></div>
 		<div className="switch-product-section">
 		<p>Offered products for switch:
 			<span class="pitch-offered"><span class="pitch-offer">Pitch offered by </span>
-			  {this.state.offerTrade.SwitchUserId.userName} 
+			  {(this.state.offerTrade.SwitchUserId && this.state.offerTrade.SwitchUserId.userName)?letterCaps(this.state.offerTrade.SwitchUserId.userName):"N/A"} 
 			</span>
 		<div className="cl"></div>
 		</p>
@@ -164,9 +171,9 @@ return (
 				<a className="view-btn" href={'/search-result/'+productList._id}>View</a>
 				</Else>
 			 </If>
-			   <Button className="switch-btn" >
+			   <a className="switch-btn" >
 			      <ShippingTypePopup productID={productList._id} offerTrade={this.state.offerTrade}/>
-			   </Button>			   
+			   </a>			   
 			</div>
 			</div>
 			<div className="switch-product-content-box">

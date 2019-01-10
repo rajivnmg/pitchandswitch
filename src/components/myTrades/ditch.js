@@ -5,7 +5,8 @@ import LastPitchtedPopup from './lastPitchPopup'
 import ViewDitchPopup from './viewDitchPopup'
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import { Spin, Icon, Alert } from 'antd';
-
+import {letterCaps} from "../commonFunction";
+import {Link} from 'react-router-dom';
 class Ditch extends React.Component {
     state = {	
 		currentUser:'',		
@@ -51,11 +52,19 @@ class Ditch extends React.Component {
 				}  else if(send ==1 && pitch.ditchCount == 2){
 				   var ditch = 'Last Ditch';
 				}
-				{console.log('pitch.ditchCount',pitch.ditchCount)}
+				
+				let userId = pitch.pitchUserId?pitch.pitchUserId._id:0;
+				
 				return (<div className="pitch-row" key={index}>
 				<div className="pitch-div">
 				{/*{(pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null } */}
-				<div className="colum user"><span>{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}</span></div>
+				<div className="colum user">
+				<span>
+				<Link className="alink"  to={"/public-profile/"+userId}>				
+					{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?letterCaps(pitch.pitchUserId.userName):'N/A'}
+				</Link>
+				</span>
+				</div>
 				<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Send':'Received'}</span></div>
 				<div className="colum"><ViewDitchPopup offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/> </div>
 				<div className="colum message"> </div>

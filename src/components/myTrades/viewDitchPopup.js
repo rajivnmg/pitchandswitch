@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 //import userPic from '../../images/user-pic.png'
 import axios from 'axios'
 import { If, Then, Else } from 'react-if-elseif-else-render';
-
+import {letterCaps} from "../commonFunction";
 //import { Button,  Card,  CardBody,  CardHeader,  Col,  FormGroup,  Input,  Label,  Row,} from 'reactstrap';
 const constant = require('../../config/constant')
 const contentStyle = {
@@ -67,13 +67,15 @@ render() {
 			</div>
 			<div className="received-product-content-box">
 			<span>Product ID: <strong>{this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId._id:""}</strong></span>
-			<h4>Product Name: {this.state.offerTrade.SwitchUserProductId?this.state.offerTrade.SwitchUserProductId.productName:""}  </h4>
+			<h4>Product Name: {(this.state.offerTrade && this.state.offerTrade.SwitchUserProductId)?this.state.offerTrade.SwitchUserProductId.productName:""}  </h4>
 			<span> {(this.state.offerTrade && this.state.offerTrade.SwitchUserProductId)?this.state.offerTrade.SwitchUserProductId.description:""} </span>
 			<a className="catLink" href={"search-listing/"+productCategoryID}>{(this.state.productData && this.state.productData.productCategory)?this.state.productData.productCategory.title:""}</a>
 			<div className="ratingRow">
 			<Link to={'public-profile/'+userID} >
 				<div className="pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+productIMG} alt="" /></div>
-				<p>{this.state.offerTrade.SwitchUserId?this.state.offerTrade.SwitchUserId.userName:""}</p>
+				<p>{(this.state.offerTrade && this.state.offerTrade.SwitchUserId)?letterCaps(this.state.offerTrade.SwitchUserId.userName):""}</p>
+				<div className="rated">4</div>
+				<div className="cl"></div>
 			</Link>	
 			
 			<div className="cl"></div>

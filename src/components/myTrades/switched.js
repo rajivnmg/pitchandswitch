@@ -4,7 +4,9 @@ import TradeInfo from './tradeInfo'
 import SwitchTradeInfo from './switchTradeInfo'
 import Messages from './message'
 import axios from 'axios'
-import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import { If, Then, Else } from 'react-if-elseif-else-render';
+import {Link} from 'react-router-dom';
+import {letterCaps} from "../commonFunction";
 import { Spin, Icon, Alert } from 'antd';
 
 class Switched extends React.Component {
@@ -60,16 +62,15 @@ class Switched extends React.Component {
 					/>				
 				</Then>								
 			</If>
-        
-       
             {this.state.switches.map((pitch, index) => {							
 			let ditchClasses = ['ditch'];			
 			var send = (pitch.offerTradeId &&  pitch.offerTradeId.pitchUserId._id == this.state.currentUser)?1:0;
 			var action = 'Track';
+			let userId = ((send===1)?(pitch.offerTradeId && pitch.offerTradeId.SwitchUserId)?pitch.offerTradeId.SwitchUserId._id:'0':(pitch.offerTradeId && pitch.offerTradeId.pitchUserId)?pitch.offerTradeId.pitchUserId._id:'0');			
 			return (<div className="pitch-row" key={index}>
 				<div className="pitch-div">
-				   { (pitch.offerTradeId &&  pitch.offerTradeId.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New switched</div> : null }
-					<div className="colum user width1"><span>{(send===1)?(pitch.offerTradeId)?pitch.offerTradeId.SwitchUserId.userName:'N/A':(pitch.offerTradeId)?pitch.offerTradeId.pitchUserId.userName:'N/A'}</span></div>
+				   {/* (pitch.offerTradeId &&  pitch.offerTradeId.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New switched</div> : null */}
+					<div className="colum user width1"><Link className="alink" to={"/public-profile/"+userId}>{(send===1)?(pitch.offerTradeId && pitch.offerTradeId.SwitchUserId)?letterCaps(pitch.offerTradeId.SwitchUserId.userName):'N/A':(pitch.offerTradeId && pitch.offerTradeId.pitchUserId)?letterCaps(pitch.offerTradeId.pitchUserId.userName):'N/A'}</Link></div>
 					<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Sent':'Received'}</span></div>
 					<div className="colum"><a href="#" className="view-pitch">
 					<SwitchTradeInfo offerTrade={pitch} /></a></div>

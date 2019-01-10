@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
 import popularItemImg from "../../images/popular-item1.jpg";
+import {letterCaps} from "../commonFunction";
 const constant = require("../../config/constant");
 
 class PopularItems extends Component {
@@ -155,7 +156,7 @@ class PopularItems extends Component {
 						  >
 							{item._id
 							  ? item._id.userId
-								? item._id.userId.userName
+								? letterCaps(item._id.userId.userName)
 								: ""
 							  : ""}
 						  </NavLink>

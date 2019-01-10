@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import popularItemImg from '../../images/popular-item1.jpg';
 import userPicture from '../../images/user-pic.png';
 import axios from 'axios';
+import {letterCaps} from "../commonFunction";
 const constant = require("../../config/constant");
 class WhatOtherSwitched extends Component {
 	
@@ -93,7 +94,7 @@ class WhatOtherSwitched extends Component {
 						</div>
 						<div className="userdiv">
 						<div className="user-pic userProfilePic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+imagePathSwitchUser} height="20px;" width="20px;"/></div>
-						<div className="user-name">{(switched.offerTradeId && switched.offerTradeId.SwitchUserId)?switched.offerTradeId.SwitchUserId.userName:''}</div>
+						<div className="user-name">{(switched.offerTradeId && switched.offerTradeId.SwitchUserId)?letterCaps(switched.offerTradeId.SwitchUserId.userName):''}</div>
 						{/*
 							switched.offerTradeId.SwitchUserId.profilePic
 								switched.offerTradeId.pitchUserId.profilePic						
@@ -108,7 +109,7 @@ class WhatOtherSwitched extends Component {
 						</div>
 						<div className="userdiv">
 						<div className="user-pic"><img src={constant.BASE_IMAGE_URL+'ProfilePic/'+imagePathPitchUser} height="20px;" width="20px;"/></div>
-						<div className="user-name">{(switched.offerTradeId && switched.offerTradeId.pitchUserId)?switched.offerTradeId.pitchUserId.userName:''}</div>
+						<div className="user-name">{(switched.offerTradeId && switched.offerTradeId.pitchUserId)?letterCaps(switched.offerTradeId.pitchUserId.userName):''}</div>
 						</div>
 						</div>
 						</div>

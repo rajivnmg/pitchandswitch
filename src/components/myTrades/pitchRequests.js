@@ -12,7 +12,7 @@ import axios from 'axios'
 import { Spin, Icon, Alert } from 'antd';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import {Link} from 'react-router-dom';
-
+import {letterCaps} from "../commonFunction";
 class PitchRequests extends React.Component {
     constructor(props) {
         super(props);
@@ -66,13 +66,14 @@ class PitchRequests extends React.Component {
 				var ditch = 'Cancel Pitch';
 			} else if(send===0 && pitch.ditchCount > 3){
 				var ditch = 'Last Ditch';
-			}         					
+			}    
+			let userId = ((send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId._id:'0':(pitch.pitchUserId)?pitch.pitchUserId._id:'0');
 			return (			
 		    <div className="pitch-row" key={index}>
 			<div className="pitch-div">
 				{/* (pitch.SwitchUserId &&  pitch.SwitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null */}
 				<div className="colum user"> <span>
-				<Link className="alink" target="_blank" to={'/public-profile/'+(pitch.SwitchUserId?pitch.SwitchUserId._id:'')}>
+				<Link className="alink" target="_blank" to={'/public-profile/'+(userId)}>
 				{(send===1)?(pitch.SwitchUserId)?pitch.SwitchUserId.userName:'N/A':(pitch.pitchUserId)?pitch.pitchUserId.userName:'N/A'}
 				</Link>
 				</span></div>
