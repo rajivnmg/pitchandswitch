@@ -22,6 +22,16 @@ const distance = function distance(lat1, lon1, lat2, lon2, unit) {
   return dist.toFixed(2);
 };
 
+const changeSpaceToUnderscore = (str) => {
+	if(str === undefined || str === null) return;
+	return str.toString().toLowerCase()
+    .replace(/\s+/g, '-')           // Replace spaces with -
+    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+    .replace(/^-+/, '')             // Trim - from start of text
+    .replace(/-+$/, '');
+}
+
 
 //function to Capitalize the first letter of the string
 const letterCaps = (str) =>  {
@@ -46,5 +56,6 @@ const fsExistsSync = (file)=>{
 module.exports = {
 	distance,
 	letterCaps,
-	fsExistsSync
+	fsExistsSync,
+	changeSpaceToUnderscore
 }

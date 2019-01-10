@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 //import Popup from "react-popup";
 import Style from "./App.css";
 import "./App.scss";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./components/main.css";
+import * as ActionTypes from "./store/actionTypes";
 
 import Footer from "./components/footer";
 // import LeftNav from './components/leftNav'
@@ -182,4 +184,17 @@ class App extends Component {
     );
   }
 }
-export default App;
+const mapStateToProps = state => {
+  console.log("App mapStateToProps", state);
+  return {
+    catId: state.searchListingReducer.category_id,
+    lat: state.searchListingReducer.latitude,
+    long: state.searchListingReducer.longitude
+  };
+};
+
+const mapDispatchToProps = null;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

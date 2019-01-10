@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import "../slick.min.css";
 import { withRouter, NavLink } from "react-router-dom";
 import Logo from "../images/logo.png";
@@ -12,6 +13,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faTag } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import PlacesAutocomplete from "react-places-autocomplete";
+import * as ActionTypes from "../store/actionTypes";
 import {
   geocodeByAddress,
   geocodeByPlaceId,
@@ -20,16 +22,18 @@ import {
 import Geocode from "react-geocode";
 import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
 import $ from 'jquery'
+import * as cmf from "./commonFunction";
 const constant = require("../config/constant");
 
 const Option = AutoComplete.Option;
 const navHide = { display: "none" };
 library.add(faTag);
+
 class Header extends Component {
   constructor(props) {
     //let categoryId = props.match.params.id;
     super(props);
-    console.log('HEader props', this.props)
+    //console.log('HEader props', this.props)
     this.state = {
       user: {
         email: "",
@@ -44,6 +48,7 @@ class Header extends Component {
       rs: [],
       options: [],
       productsListing: [],
+      title: null,
       searchData: "",
       searchD: "",
       categoryId: "",
@@ -58,7 +63,7 @@ class Header extends Component {
     Geocode.enableDebug();
     this.logoutHandler = this.logoutHandler.bind(this);
   }
-
+  
   initMap = () => {
     if (navigator.geolocation) {
       if (!localStorage.getItem("latitude")) {
@@ -163,14 +168,13 @@ class Header extends Component {
     localStorage.removeItem("userName");
     this.props.history.push("/login");
   };
-
   searchHandler = () => {
-    this.props.setData(this.state.searchData);
-    this.props.history.replace("/search-listing");
+    this.props.setCategory({_id: this.state.searchData, title: this.state.title});
+    setTimeout(() => { this.props.history.replace("/search-listing/" + cmf.changeSpaceToUnderscore(this.state.title) )}, 500);
   };
 
-  searchCategory = _id => {
-    this.setState({ searchData: _id });
+  searchCategory = category => {
+    this.setState({ searchData: category._id, title: category.title });
     return true;
   };
 
@@ -209,7 +213,7 @@ class Header extends Component {
          $.ajax('http://ip-api.com/json')
 		  .then(
 			  function success(response) {
-				  console.log('User\'s Location Data is ', response);
+				  //console.log('User\'s Location Data is ', response);
 				  localStorage.setItem("latitude", response.lat);
 				  localStorage.setItem("longitude", response.lon);
 				  localStorage.setItem("ipAddress", response.query);
@@ -319,7 +323,7 @@ class Header extends Component {
       optionsLists = optionsList.map(category => 
 		  (		  
         <Option
-          onClick={() => this.searchCategory(category.productCategory._id)}
+          onClick={() => this.searchCategory(category.productCategory)}
           key={category._id + ":" + category.productCategory._id}
         >
           {category.productName + " - " + category.productCategory.title}
@@ -546,4 +550,24 @@ class Header extends Component {
   }
 }
 
-export default withRouter(Header);
+const mapStateToProps = state => {
+  return {
+    catId: state.searchListingReducer.category_id,
+    lat: state.searchListingReducer.latitude,
+    long: state.searchListingReducer.longitude
+  };
+};
+const mapDispatchToProps = dispatch => {
+  return {
+	  setCategory: category => {
+		return dispatch({
+			type: ActionTypes.SEARCH_LISTING_SET_CATEGORY,
+			payload: {categoryId: category._id, cateName: category.title}
+		  })
+	  }
+  }
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Header));
