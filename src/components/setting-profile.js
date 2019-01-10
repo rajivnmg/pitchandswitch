@@ -638,7 +638,7 @@ class settingProfile extends Component {
                           )}
                         </div>
                         <div className="colum right">
-                          <label className="label" htmlFor={"age"}>
+                          <label className="label" htmlFor={"address2"}>
                             Address Line 2:
                           </label>
                           <input

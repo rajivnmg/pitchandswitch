@@ -11,6 +11,8 @@ import {
   getLatLng,
 } from 'react-places-autocomplete';
 import { Label, Input } from 'reactstrap';
+import DatePicker from "react-date-picker";
+var moment = require("moment");
 const TEST_SITE_KEY = "6LcCA34UAAAAAMW_poPblvTfPh6IuCMfqKfpdN_k";
 var FD = require('form-data');
 var fs = require('fs');
@@ -96,6 +98,7 @@ class Register extends React.Component {
 		  countries:[{_id:'',countryName:''}],
 		  states:[{_id:'',stateName:''}],
 		  cities:[{_id:'',cityName:'Select City'}],
+		  dob:'',
 		  registerForm: {
 			name: '',
 			email:'',
@@ -185,6 +188,12 @@ class Register extends React.Component {
     this.setState({state: event.target.value});
   }
   
+   componentWillMount() {   
+      const dob = moment(new Date(), "YYYY-MM-DD").toDate();
+      if (dob) this.setState({ dob: dob });   
+  }
+
+  
   componentDidMount(){	  
 	
 	axios.get('/location/listActiveCountry').then(result => {		
@@ -240,7 +249,7 @@ class Register extends React.Component {
         data.append('email', (this.state.registerForm.email)?this.state.registerForm.email.value:''),
         data.append('profilePic', ''),
         data.append('phoneNumber',(this.state.registerForm.phoneNumber)?this.state.registerForm.phoneNumber.value:''),
-        data.append('dob', ''), 
+        data.append('dob', this.state.dob), 
         data.append('address',(this.state.registerForm.address)?this.state.registerForm.address:''),
         data.append('address1',(this.state.registerForm.address1)?this.state.registerForm.address1:''),
 		data.append('latitude',(this.state.registerForm.latitude)?this.state.registerForm.latitude:''),
@@ -282,6 +291,20 @@ class Register extends React.Component {
 		  });   
     setTimeout(() => {this.setState({showFormSuccess: false,showFormError: false});}, 12000);
   }   
+  
+  onChange = date =>
+    this.setState({dob: date }, () => {
+      this.setState({dob:moment(date).format("YYYY/MM/DD")});
+    });
+
+  render() {
+    return (
+      <div>
+        <DatePicker onChange={this.onChange} value={this.state.date} />
+      </div>
+    );
+  }
+  
   _renderSuccessMessage() {
     return (
       <div className={"alert alert-success mt-4"} role="alert">
@@ -308,6 +331,7 @@ class Register extends React.Component {
       </div>
     );
   } 
+   
    
   
   render() {
@@ -355,12 +379,7 @@ class Register extends React.Component {
                     />
                   
                 </div>
-                <div className="form-row">
-                <div className="invalid-feedback validation"> </div>   
-                <span className="astrik">*</span>
-                  <label className="label" htmlFor={"phoneNumber"}>Phone Number</label>
-                  <input id={"phoneNumber"} className={"form-control textBox"} onChange={(e) => this.inputChangedHandler(e, 'phoneNumber')} required={true} name={"phoneNumber"} type={"tel"} placeholder="Enter your phone number" />
-                </div>
+                
                 <div className="form-row  password-row">
                 <div className="invalid-feedback validation"> </div>
                 <span className="astrik">*</span>
@@ -379,6 +398,22 @@ class Register extends React.Component {
                   <small className="small-instruction">Must be at least 6 characters long, contain letters and numbers</small>
                   
                 </div>
+                <div className="form-row phones">
+                <div className="invalid-feedback validation"> </div>   
+                <span className="astrik">*</span>
+                  <label className="label" htmlFor={"phoneNumber"}>Phone Number</label>                   
+				   <Input type="select" name="phonePrefix" id="phonePrefix" required={true} className={"form-control textBox limitnum"} onChange={this.handleChangeState}>
+					<option value="1">+1</option>					
+				  </Input>
+                  <input id={"phoneNumber"} className={"form-control textBox"} onChange={(e) => this.inputChangedHandler(e, 'phoneNumber')} required={true} name={"phoneNumber"} type={"tel"} placeholder="Enter your phone number" />
+                </div>
+                <div className="form-row dateOfBirth">
+                <div className="invalid-feedback validation"> </div>   
+                <span className="astrik">*</span>
+                  <label className="label" htmlFor={"phoneNumber"}>Date Of Birth</label>                   
+				  <DatePicker onChange={this.onChange} value={this.state.dob} />  				               
+                </div>
+                
 				{/*<div className="form-row">
                  <div className="invalid-feedback validation"> </div>   
                 <span className="astrik">*</span>

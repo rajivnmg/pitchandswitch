@@ -24,12 +24,15 @@ const aux = props => {
       if (props.history) props.history.push("/logout");
     }
   } else {
+	  //uncomment below to redirect on dashboard for login user when click on logo
+    /*
     if (
       ALLOWED_PATHS.indexOf("/") != -1 ||
       ALLOWED_PATHS.indexOf("/login") != -1
     ) {
       if (props.history && (props.match.path === "/" || props.match.path === "/login")) props.history.push("/dashboard");
     }
+    */
   }
   return props.children;
 };

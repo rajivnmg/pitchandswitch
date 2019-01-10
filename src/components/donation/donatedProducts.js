@@ -106,7 +106,7 @@ class donatedProducts extends Component {
 								var productImage = donatedProduct._id?donatedProduct.productImage:''
 								var userImage = (donatedProduct._id && donatedProduct.userId)?donatedProduct.userId.profilePic:''
                                     return(<div className="Items" key={index}>
-                                    <div className="pic"><div className="overlay"> <p>{(donatedProduct.pickupAddress && (donatedProduct.pickupAddress.length >0))?donatedProduct.pickupAddress[0].address1:''}<br/> {(donatedProduct.pickupAddress && (donatedProduct.pickupAddress.length>0))?donatedProduct.pickupAddress[0].city.cityName:''} <br/> {moment(donatedProduct.createdAt).format('LL')} </p> </div><img src={constant.BASE_IMAGE_URL+'donationImage/'+productImage} alt="" /></div>
+                                    <div className="pic"><div className="overlay"> <p>{(donatedProduct.pickupAddress && (donatedProduct.pickupAddress.length >0))?donatedProduct.pickupAddress[0].address1:''}<br/> {(donatedProduct.pickupAddress && (donatedProduct.pickupAddress.length>0))?donatedProduct.pickupAddress[0].city?donatedProduct.pickupAddress[0].city.cityName:'':''} <br/> {moment(donatedProduct.createdAt).format('LL')} </p> </div><img src={constant.BASE_IMAGE_URL+'donationImage/'+productImage} alt="" /></div>
                                         <div className="details">
                                             <h4><a href="/my-trade-detail">{donatedProduct.productName}</a></h4>
                                             <a href="#" className="catLink"> {(donatedProduct.productCategory)?donatedProduct.productCategory.title:''}</a>           

@@ -8,7 +8,7 @@ import ViewPitchPopup from './viewPitchPopup'
 import axios from 'axios'
 import { Spin, Icon, Alert } from 'antd';
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
-
+import {letterCaps} from "../commonFunction";
 class SendRequests extends React.Component {
     constructor(props) {
         super(props);
@@ -69,7 +69,7 @@ class SendRequests extends React.Component {
 					<div className="pitch-row" key={index}>
 						<div className="pitch-div">
 							{ (pitch.pitchUserId &&  pitch.pitchUserId._id === this.state.currentUser) ? <div className="newPitch">New Pitch</div> : null }
-							<div className="colum user"> <span>{pitch.SwitchUserId?pitch.SwitchUserId.userName:'N/A'}</span>
+							<div className="colum user"> <span>{pitch.SwitchUserId?letterCaps(pitch.SwitchUserId.userName):'N/A'}</span>
 							</div>
 							<div className="colum status"><span className='sent'>Sent</span></div>
 							<div className="colum"><a href="#" className="view-pitch">
