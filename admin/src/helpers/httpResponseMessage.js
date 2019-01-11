@@ -16,7 +16,7 @@ module.exports = {
     CORRECT_PASSWORD:'Please send correct Password.',
     EMAIL_IS_REQ :'Email is required.',
     NAME_IS_REQ : 'Name is required.',
-    INVALID_USER_PASSWORD:'Email doesn’t exist or Password is incorrect',
+    INVALID_USER_PASSWORD:'You have entered wrong Email or password',
     USER_NOT_FOUND:'User not found',
     DATA_MODIFIED_SUCCESSFULLY:'Data has been modified successfully',
     LOGIN_SUCCESSFULLY:'Login Successfully',
