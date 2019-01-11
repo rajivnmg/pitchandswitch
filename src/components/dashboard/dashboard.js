@@ -162,7 +162,7 @@ class Dashboard extends Component {
                   </TabPanel>
 
                   <TabPanel>
-                    <Tabs forceRenderTabPanel className="tab_details">
+                    <Tabs forceRenderTabPanel className="tab_details tab_second_box">
                       <div className="message-filter">
                         <TabList>
                           <Tab className="active tradeall">ALL</Tab>

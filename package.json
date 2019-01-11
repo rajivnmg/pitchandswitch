@@ -155,7 +155,7 @@
     "start-js": "node scripts/start.js",
     "server-js": "nodemon ./bin/www",
     "admin": "cd admin && npm start",
-    "start": "npm-run-all -p start-js admin",
+    "start": "npm-run-all -p start-js",
     "build-js": "node scripts/build.js",
     "build": "npm-run-all build-css build-js",
     "test": "node scripts/test.js --env=jsdom",

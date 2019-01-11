@@ -78,7 +78,7 @@ class PitchRequests extends React.Component {
 				</Link>
 				</span></div>
 				<div className="colum status"><span className={(send===1)?'sent':'received'}>{(send===1)?'Sent':'Received'}</span></div>
-				<div className="colum"><a href="#" className="view-pitch">
+				<div className="colum views"><a href="#" className="view-pitch">
 				<If condition={send === 1}>
 					<Then>
 						<ViewPitchPopup offerTrade={pitch} proID = {pitch.SwitchUserProductId?pitch.SwitchUserProductId._id:""}/>										 
@@ -88,8 +88,8 @@ class PitchRequests extends React.Component {
 					</Else>						
 				 </If>
 				</a></div>
-				<div className="colum"></div>
-				<div className="colum message"></div>  
+				
+				
 				<div className="colum action">	
 				{console.log('pitch',pitch)}									
 				{send == 0? <DitchPopup offerTrade={pitch}/> :<CancelPitchPopup offerTrade={pitch}/>}

@@ -34,7 +34,7 @@
 .popularItems .slides-div .details { padding:10px 15px; text-align: left}
 .popularItems .slides-div .details h4 { color: #414141;font-family: Roboto;font-size: 18px;font-weight: 400; margin-bottom: 10px;     text-overflow: ellipsis; height:53px; overflow: hidden; }
 .popularItems .slides-div .details h4 a {color:#414141; text-decoration: none}
-.popularItems .slides-div .catLink {background-color: #dab439; color: #fff; display: inline-block; padding: 5px 15px; border-radius:15px; text-decoration: none; font-size: 12px;}
+.popularItems .slides-div .catLink {background-color: #dab439; color: #fff; display: inline-block; padding: 5px 15px; border-radius:15px; text-decoration: none; font-size: 12px; line-height:20px; height:20px; overflow:hidden;}
 .more-items {border-radius:25px; padding: 13px 25px; background:#dcb73f; color:#fff; text-align: center; display: block; margin:25px auto 0; max-width: 170px; text-decoration: none;font-family: Roboto;font-size: 20px; }
 .more-items:hover {  background:#caa325;}
 .userdiv { padding:10px 9px; border-top:1px solid #d8d8d8; text-align: left; }

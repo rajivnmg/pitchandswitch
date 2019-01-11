@@ -1,15 +1,16 @@
 header { background:#fff; box-shadow:0 0 2px rgba(0,0,0,0.5); padding:10px 15px; position: relative; z-index: 9}
 header .logo {float:left; max-width:200px;}
-header .logo img {max-width:100%;}
-header nav {float:right; margin-top:25px; }
+header .logo a{ display:block;}
+header .logo img {max-width:100%; display:block;}
+header nav {float:right; margin-top:18px; }
 header nav ul { margin: 0; padding: 0; list-style: none; text-align: right}
-header nav ul li { display: inline-block; padding: 0 15px 11px; position: relative}
-header nav ul li ul {position: absolute; top:45px; right:0; background: #fff; border:1px solid #ccc; padding:10px 10px; width: 200px; text-align: left; display: none}
+header nav ul li { display: inline-block; padding: 0 15px 0px; position: relative}
+header nav ul li ul {position: absolute; top:34px; right:0; background: #fff; border:1px solid #ccc; padding:10px 10px; width: 200px; text-align: left; display: none}
 header nav ul li:hover ul {display:block}
 header nav ul li ul li { display: block; padding: 5px 15px;}
 header nav ul li a {color:#666}
 header nav ul li.user-login {}
-header nav.after-login{ margin-top:20px;}
+header nav.after-login{ margin-top:14px;}
 header nav ul .drop-arrow { position: relative;  padding-right:15px; vertical-align: middle}
 header nav ul .drop-arrow::after {content:""; position: absolute; top:2px; right:0; border: solid #414141; border-width: 0 2px 2px 0; display: inline-block; padding: 3px; vertical-align: middle; transform: rotate(45deg); -webkit-transform: rotate(45deg);}
 header nav ul li .pic {margin-right: 10px; vertical-align: middle; display: inline-block}
@@ -17,7 +18,7 @@ header nav ul li .pic {margin-right: 10px; vertical-align: middle; display: inli
 .login-nav .login-link {  padding:10px 15px; color:#dcb73f; background:url(../images/login-icon.png) no-repeat 0 10px; padding-left:30px; text-decoration: none;}
 .login-nav .register-link { background:#dcb73f; padding: 10px 15px; color:#fff; border-radius:20px; text-decoration: none}
 .login-nav .register-link:hover { background:#caa325;}
-header nav ul li.notification { padding:8px; vertical-align: top; padding-bottom: 20px;}
+header nav ul li.notification { padding:8px; vertical-align: top; padding-bottom:0px;}
 header nav ul li.notification i { display: block; width:16px; height:16px; background:url(../images/notification-icon.png) no-repeat 0 0; }
 header .mob_search i { display: block; width:16px; height:16px; background:url(../images/search-icon1.png) no-repeat 0 0; }
 
@@ -68,8 +69,8 @@ header nav ul li ul.dashboard-subnav.notification-show {width:420px;}
 
 
 
-.category {padding:0 0 15px 0px;  margin: 25px 0 0 75px;float:left; position: relative; cursor: pointer}
-.category .cats{background: url(../images/category-icon.png) no-repeat 0 0; padding:0px 0 0 25px;}
+.category {padding:0 0 15px 0px;  margin: 20px 0 0 75px;float:left; position: relative; cursor: pointer}
+.category .cats{background: url(../images/category-icon.png) no-repeat 0 2px; padding:0px 0 0 25px;}
 
 
 .category .dropDown { position: absolute; top:23px; left:-14px; border-radius: 0 0 4px;border: 1px solid #d6d6d6;background-color: #ffffff; z-index: 999; display: none;}
@@ -89,15 +90,16 @@ header nav ul li ul.dashboard-subnav.notification-show {width:420px;}
 
 
 
-.search-container {margin: 12px 0 0 15px;float:left; border: 1px solid rgba(172,172,172,0.5);background-color: rgba(233,233,233,0.5); padding:10px 0 10px 10px; border-radius:5px}
+.search-container {margin:6px 0 0 15px;float:left; border: 1px solid rgba(172,172,172,0.5);background-color: rgba(233,233,233,0.5); padding:10px 0 10px 10px; border-radius:5px}
 .search-container .location {float:left; padding-left:20px;  background: url(../images/location-icon.png) no-repeat 0 2px; width:160px; position:relative; line-height:20px;}
-.search-container .location input[type=text]{ border:0; color: #969696;font-family: Roboto;font-size: 14px;font-weight: 400; background: none; outline: none; width:100%; height:14px;}
+.search-container .location input[type=text]{ border:0; color: #969696;font-family: Roboto;font-size: 12px;font-weight: 400; background: none; outline: none; width:100%; height:14px;}
 .search-container .search {float:left; width:410px; border-left:1px solid  rgba(172,172,172,0.3); padding:0; margin:-10px 0 -10px }
 .search .css-1wy0on6 { display: none;  }
-.search input[type=text]{ border:0; color: #969696;font-family: Roboto;font-size: 14px;font-weight: 400; background: none; outline: none; width:100%}
+.search input[type=text]{ border:0; color: #969696;font-family: Roboto;font-size: 12px;font-weight: 400; background: none; outline: none; width:100%}
 .search-icon {width:40px;height:42px;background: #dcb73f url(../images/search-icon.png) no-repeat center; border: 0; margin: -11px -1px -11px 0; border-top-right-radius:5px; border-bottom-right-radius:5px; text-indent: -999px; overflow:hidden; outline:none; cursor: pointer}
 .search .css-1aya2g8, .search .css-2o5izw { border: 0; box-shadow:none; background: none;}
 
+.ant-select-selection__placeholder, .ant-select-search__field__placeholder{border:0; color: #969696 !important;font-family: Roboto;font-size: 12px;font-weight: 400; background: none; outline: none;}
 
 
 
@@ -137,11 +139,12 @@ select{ height:30px; width:100%; border:0px; background:transparent; appearance:
 .tab-outer-container .react-tabs { padding: 0}
 .react-tabs__tab-list {padding:0}
 .react-tabs__tab-list li {padding:10px 15px; display: inline-block;background-color: #dcb73f;color: #ffffff;font-size: 18px;font-weight: 400; margin-right: 6px; cursor: pointer}
-.react-tabs__tab-list li.react-tabs__tab--selected { background-color:#fff; color:#dcb73f; cursor: default}
-.react-tabs__tab-panel { float:left; width:100%; background: #fff; padding:10px 0 30px 0px; display: none}
+.react-tabs__tab-list li.react-tabs__tab--selected { background-color:#fff; color:#dcb73f; cursor: default;  border-bottom:0; }
+
+.react-tabs__tab-panel { float:left; width:100%; background: #fff; padding:0px 0 30px 0px; display: none}
 .react-tabs__tab-panel.react-tabs__tab-panel--selected { display: block}
 
-.expanded-tabs .react-tabs__tab-list li {padding:13px 15px; display: inline-block;border: 1px solid #dce2e5;background-color: #efefea;color: #d0a518;font-size: 18px;font-weight: 400; margin-right: 6px; cursor: pointer; width:48%; box-sizing: border-box; margin-right: 0; margin-right:2%; border-radius: 4px; text-align: center}
+.expanded-tabs .react-tabs__tab-list li {padding:13px 15px; display: inline-block;border: 1px solid #dce2e5;background-color: #efefea;color: #d0a518;font-size: 18px;font-weight: 400; margin-right: 6px; cursor: pointer; width:48%; box-sizing: border-box; margin-right: 0; margin-right:2%; border-radius: 0px; text-align: center}
 .expanded-tabs .react-tabs__tab-list li.react-tabs__tab--selected { border: 1px solid #dcb73f;background-color: #dcb73f; color:#fff; cursor: default}
 .expanded-tabs .react-tabs__tab-list li:last-child { margin-right: 0}
 
