@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import ReactDOM from "react-dom";
 import Style from "./home.css";
 // import imgPath from '../../images'
@@ -11,11 +12,14 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  NavLink
+  NavLink,
+  Link,
+  withRouter
 } from "react-router-dom";
 import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
 import popularItemImg from "../../images/popular-item1.jpg";
-import {letterCaps} from "../commonFunction";
+import * as ActionTypes from "../../store/actionTypes";
+import * as cmf from "../commonFunction";
 const constant = require("../../config/constant");
 
 class PopularItems extends Component {
@@ -36,9 +40,14 @@ class PopularItems extends Component {
     };
   }
 
+setCategory = (category) => {	
+	  this.props.setCategory(category);
+	  cmf.changeSpaceToUnderscore(this.state.title)
+	  setTimeout(() => { this.props.history.replace("/search-listing/" + cmf.changeSpaceToUnderscore(this.props.cateName))}, 500);
+  };
+
   componentDidMount() {
-    axios.get("/product/popularItems").then(result => {
-      console.log("popularItems", result);
+    axios.get("/product/popularItems").then(result => {      
       if (result.data.code === 200) {
         this.setState({ popularItems: result.data.result });
       }
@@ -73,7 +82,7 @@ class PopularItems extends Component {
         }
       ]
     };
-
+	
     return (
       <div className="popularItems">
         <h3>
@@ -81,7 +90,7 @@ class PopularItems extends Component {
           Pitch and switch's <span>popular Items</span>{" "}
         </h3>
         <Slider {...settings}>
-          {this.state.popularItems.map(function(item) {
+          {this.state.popularItems.map((item)=>{
 			if(item._id){				
 				var productImage = item._id ? item._id.productImages[0] : "";
 				var userImage = item._id ? item._id.userId.profilePic : "";
@@ -113,7 +122,7 @@ class PopularItems extends Component {
 							{}
 						  </NavLink>
 						</h4>
-						<NavLink
+						{/*<NavLink
 						  className="catLink"
 						  to={
 							"/search-listing/" +
@@ -123,13 +132,20 @@ class PopularItems extends Component {
 								: ""
 							  : "")
 						  }
-						>
+						> 
 						  {item._id
 							? item._id.productCategory
 							  ? item._id.productCategory.title
 							  : ""
 							: ""}
-						</NavLink>
+						</NavLink>*/}
+							<Link className="catLink" to={"#/"} onClick={() => this.setCategory(item._id.productCategory)}>
+							  {item._id
+							? item._id.productCategory
+							  ? item._id.productCategory.title
+							  : ""
+							: ""}
+							</Link>
 					  </div>
 					  <div className="userdiv">
 						<div className="user-pic">
@@ -156,7 +172,7 @@ class PopularItems extends Component {
 						  >
 							{item._id
 							  ? item._id.userId
-								? letterCaps(item._id.userId.userName)
+								? cmf.letterCaps(item._id.userId.userName)
 								: ""
 							  : ""}
 						  </NavLink>
@@ -169,7 +185,7 @@ class PopularItems extends Component {
           })}
           <If condition={this.state.popularItems.length > 10}>
             <Then>
-              {this.state.morePopularItem.map(function(slide) {
+              {this.state.morePopularItem.map((slide)=>{
                 return (
                   <div className={"slides-div " + slide.className} key={slide}>
                     <div key={slide}>
@@ -202,4 +218,29 @@ class PopularItems extends Component {
     );
   }
 }
-export default PopularItems;
+
+const mapStateToProps = state => {
+  return {
+    catId: state.searchListingReducer.category_id,
+    lat: state.searchListingReducer.latitude,
+    long: state.searchListingReducer.longitude,
+    cateName: state.searchListingReducer.categoryName,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+	  setCategory: category => { 
+		return dispatch({
+			type: ActionTypes.SEARCH_LISTING_SET_CATEGORY,
+			payload: {categoryId: category._id, categoryName: category.title}
+		  })
+	  }
+  }
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(PopularItems));
+
+//export default PopularItems;

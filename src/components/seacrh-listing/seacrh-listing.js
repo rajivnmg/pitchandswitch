@@ -2,6 +2,7 @@ import "rc-collapse/assets/index.css";
 import Collapse, { Panel } from "rc-collapse";
 import React from "react";
 import Select from "react-select";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 //import colorImg from "../../images/color.png";
 import star from "../../images/star.png";
@@ -113,7 +114,7 @@ class SearchListing extends React.Component {
         selectedAges: [],
         selectedRatings: []
       },
-      categoryId: this.props.getData().searchData,
+      categoryId: props.cateId,
       flag: this.props.getData().flag,
       latitude: localStorage.getItem('latitude'),
       longitude: localStorage.getItem('longitude'),
@@ -420,15 +421,14 @@ class SearchListing extends React.Component {
 
   doSearch = () => {
       this.setState({
-        categoryId: this.props.getData().searchData,
-        flag: this.props.getData().flag
+        categoryId: this.props.catId
       }, () => {
         this.executeSearch();
       });
   };
 
   componentWillReceiveProps(newProps) {
-    this.doSearch();
+	this.doSearch();
   }
 
   componentDidMount() {
@@ -899,4 +899,14 @@ class SearchListing extends React.Component {
   }
 }
 
-export default SearchListing;
+const mapStateToProps = state => {
+  return {
+    catId: state.searchListingReducer.category_id
+  };
+};
+
+const mapDispatchToProps = null;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SearchListing);

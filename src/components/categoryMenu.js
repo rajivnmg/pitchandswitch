@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import "./main.css";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import icon from "../images/lockicon.png";
 import axios from "axios";
 import jquery from "jquery";
+import * as ActionTypes from "../store/actionTypes";
+import * as cmf from "./commonFunction";
 const menuHide = {
   display: "none"
 };
@@ -66,6 +70,11 @@ class categoryMenu extends Component {
       ]
     };
   }
+  setCategory = (category) => {
+	  this.props.setCategory(category);
+	  cmf.changeSpaceToUnderscore(this.state.title)
+	  setTimeout(() => { this.props.history.replace("/search-listing/" + cmf.changeSpaceToUnderscore(this.props.cateName))}, 500);
+  };
 
   componentDidMount() {
     axios
@@ -154,9 +163,12 @@ class categoryMenu extends Component {
                   }
                 >
                   <img src={icon} style={menuHide} alt={icon} />{" "}
-                  <NavLink to={"/search-listing/" + slide._id}>
+                  {/*<NavLink to={"/search-listing/" + slide._id}>
                     {slide.title}
-                  </NavLink>
+                  </NavLink> */}
+                  <a href="javascript:;" onClick={() => this.setCategory(slide)}>
+					{slide.title}
+                  </a>
                   {slide.children && slide.children.length ? (
                     <ul className="drop2">
                       {slide.children.map((subMenu, i) => {
@@ -168,8 +180,8 @@ class categoryMenu extends Component {
                                 ? "submenu"
                                 : null
                             }
-                          >
-                            <a href={"/search-listing/" + subMenu._id}>
+                          >{/*href={"/search-listing/" + subMenu._id}*/}
+                            <a  href="javascript:;"  onClick={() => this.setCategory(subMenu)}>
                               {subMenu.title}
                             </a>
                             {subMenu.children && subMenu.children.length ? (
@@ -177,11 +189,14 @@ class categoryMenu extends Component {
                                 {subMenu.children.map((subMenu, i) => {
                                   return (
                                     <li key={subMenu.value}>
-                                      <NavLink
+                                      {/*<NavLink
                                         to={"/search-listing/" + subMenu._id}
                                       >
                                         {subMenu.title}
-                                      </NavLink>
+                                      </NavLink> */}
+										<a href="javascript:;" onClick={() => this.setCategory(subMenu)}>
+										  {subMenu.title}
+										</a>
                                     </li>
                                   );
                                 })}
@@ -201,4 +216,27 @@ class categoryMenu extends Component {
     );
   }
 }
-export default categoryMenu;
+
+const mapStateToProps = state => {
+  return {
+    catId: state.searchListingReducer.category_id,
+    lat: state.searchListingReducer.latitude,
+    long: state.searchListingReducer.longitude,
+    cateName: state.searchListingReducer.categoryName,
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+	  setCategory: category => { 
+		return dispatch({
+			type: ActionTypes.SEARCH_LISTING_SET_CATEGORY,
+			payload: {categoryId: category._id, categoryName: category.title}
+		  })
+	  }
+  }
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(categoryMenu));
