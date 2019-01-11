@@ -1,7 +1,13 @@
 /* ---------- Home page ------------------- */
 
-.banner-details{ text-align:center;}
-.banner-details a.home-btn{ display:inline-block; margin:20px 5px;}
+
+
+
+input.middle:focus { outline-width: 0; }
+.display-text-group { height:100px; padding:10px 0; overflow:hidden; }
+.ant-select { width:100% !important; outline-width: 0; }
+.banner-details { text-align:center; }
+.banner-details a.home-btn { display:inline-block; margin:20px 5px; }
 .testimonialContainer .starRating span { display:inline-block !important; float:none !important; }
 .form-row .label { padding-bottom:10px; }
 .ant-upload-select-picture-card i { font-size: 16px; padding: 8px; border-radius: 50%; font-weight: bold; }
@@ -9,9 +15,7 @@
 .add-product .ant-select-selection--single { height:45px; }
 .add-product .ant-select-selection__rendered { line-height:40px; }
 .add-product .ant-select-arrow:before { content:""; width: 0; position:absolute; right:0px; top:5px; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid #636363; }
-.cms-page h2 strong { font-size:15px; }
-.cms-page ul { margin-left:20px; margin-top:10px; }
-.cms-page ul li { color: #969696; font-family: Roboto; font-size: 13px; font-weight: 400; padding-left:0px; }
+
 button { cursor:pointer; }
 .setting-container .right-container .whiteboxBG { float:left; width:100%; }
 .setting-container .right-container .react-date-picker { width: 100%; height: 50px; line-height: 50px; border-radius: 4px; border: 1px solid #cfcfcf; background-color: #fff; -webkit-box-sizing: border-box; box-sizing: border-box; padding: 0 15px; clear: both; }
@@ -24,10 +28,8 @@ button { cursor:pointer; }
 .form-row .no-account.center-text a { text-decoration:none; }
 .form-row a { text-decoration:none; }
 .ant-select-auto-complete.ant-select .ant-select-selection__rendered { line-height:40px; }
-
-.banner-details{ text-align:center;}
-.banner-details a.home-btn{ display:inline-block; margin:20px 5px;}
-
+.banner-details { text-align:center; }
+.banner-details a.home-btn { display:inline-block; margin:20px 5px; }
 /* ------ search listing page ------------- */
 
 .search-page .lft-section { width:235px; position:relative; }
@@ -45,7 +47,7 @@ button { cursor:pointer; }
 .switch-product-image-box { height:240px; overflow:hidden; }
 .switch-product-content-box { height:85px; }
 .btn.btn-secondary { border:0; background:none; }
-.more-items { border:0; padding:10px 25px; }
+.more-items { border:0; padding:0px 25px; line-height:35px; height:35px; font-size:15px; }
 .lft-section .rc-collapse .rc-collapse-item .rc-collapse-header .arrow { width:7px; height:7px; border-right: 1px solid #000; border-bottom: 1px solid #000; top:24%; }
 .rc-collapse > .rc-collapse-item > .rc-collapse-header { line-height:26px; padding-bottom:15px; }
 .rc-tree-select-selection--multiple .rc-tree-select-selection__rendered:after { content:""; width: 0; position:absolute; right:10px; top:20px; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid #636363; }
@@ -58,6 +60,8 @@ div.ReactTags__tagInput input.ReactTags__tagInputField, div.ReactTags__tagInput 
 .select-box.top-right.pitchnowPopup select { padding:13px 10px 10px 10px; height:40px; }
 /* -------- dashboard --------------- */
 
+
+.pitch-row { float:left; width:96%; padding:15px 2%; }
 .dashboard .heading-row .more-items { margin-top:0; }
 .dashboard .heading-row h1 { padding-top:10px; }
 .popularItems .pic { height:240px; overflow:hidden; }
@@ -65,17 +69,26 @@ div.ReactTags__tagInput input.ReactTags__tagInputField, div.ReactTags__tagInput 
 .popularItems .slides-div .catLink { width:auto; }
 /*.sort-by .search:before { z-index:99; right:13px; width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #636363; border-bottom:0; transform:none; top:48%; }
 .sort-by .search { padding:0; width:140px; margin-top:5px; background:#fff; }*/
-.tab_details { padding:10px 20px; position:relative; }
+.tab_details { padding:70px 20px 10px 20px; position:relative; }
+.tab_details .react-tabs__tab-list { position:relative; z-index:99; }
+.tab_details .react-tabs__tab-list li.react-tabs__tab--selected { background-color:#fff; color:#dcb73f; cursor: default; border:1px solid #d8d8d8; border-bottom:0; border:1px solid #d8d8d8; position:relative; }
+.tab_details .react-tabs__tab-list li.react-tabs__tab--selected:after { content:""; border-bottom:1px solid #fff; position:absolute; bottom:-1px; width:100%; left:0; }
+.tab_details .react-tabs__tab-panel { margin-top:-1px; }
+.tab_details .ant-alert-info { border:1px solid #d8d8d8; background:#fff; border-radius:0; }
+.tab_details .message-filter .react-tabs__tab-list li.react-tabs__tab--selected { border:0; border-bottom:4px solid #dcb73f; }
 .inn_tab .react-tabs__tab { background:#e9ecef; color:#dbb641; width:49%; text-align:center; border-radius: 5px; box-sizing:border-box; }
 .inn_tab .react-tabs__tab:last-child { float:right; }
 .inn_tab .react-tabs__tab.react-tabs__tab--selected { background:#dbb641; color:#fff; }
 .pitch-row .alink { text-transform:capitalize; }
-.message-filter { position:absolute; right:0; top:27px; }
+.message-filter { position:absolute; right:0; top:27px; z-index:999; }
 .message-filter li.active { color:#000; font-weight:bold; }
 .tradeText { padding:15px 20px; text-align:left; }
 /*.dashboard .dashboardRight .Scrollsdiv{ height:auto !important; position:relative !important; padding:20px 0 !important;}
 .dashboard .dashboardRight .Scrollsdiv div{ position:static !important;}*/
 
+
+.tab_details.tab_second_box { padding-top:40px; }
+.tab_details.tab_second_box .message-filter { top:43px; }
 /* ------------- my trades --------------------- */
 
 .received-product-content-box .ratingRow p { line-height:20px; }
@@ -116,9 +129,7 @@ div.ReactTags__tagInput input.ReactTags__tagInputField, div.ReactTags__tagInput 
 .modal > .header { text-align:center; }
 .mob_left_box { display:none; }
 .sort-by .newly-add { display:inline-block; }
-
-.item-listing .Items .details{ height:100px;}
-
+.item-listing .Items .details { height:100px; }
 /* --------------------- search listing ---------------------------- */
 
 .search-page { background-color: #f1f1f1; padding:30px 0 }
@@ -164,47 +175,43 @@ div.ReactTags__tagInput input.ReactTags__tagInputField, div.ReactTags__tagInput 
 button.closed { background:none; border:0; cursor:pointer; }
 button.closed:focus { outline: none; }
 .pitchnowPopup { width: max-content !important; float:right; }
-
-
 /* ------------- register ------------------- */
 
-.phones label{ float:left; width:100%;} 
-.phones .limitnum{ float:left; width:20% !important;}
-.phones .limitnum  .ant-select-selection--single{height:51px; background-color: #f4f4f4;}
-.phones .limitnum .ant-select-selection__rendered{ height:40px; background-color: #f4f4f4; line-height: 51px;}
-.phones #phoneNumber{ float:right; width:78%; clear:none !important;}
+.phones label { float:left; width:100%; }
+.phones .limitnum { float:left; width:20% !important; }
+.phones .limitnum .ant-select-selection--single { height:51px; background-color: #f4f4f4; }
+.phones .limitnum .ant-select-selection__rendered { height:40px; background-color: #f4f4f4; line-height: 51px; }
+.phones #phoneNumber { float:right; width:78%; clear:none !important; }
 
 /* ------------------- setting upgreade-------------------------- */
 
-.trades-list .radioBtn [type="radio"]:checked + label, .trades-list .radioBtn [type="radio"]:not(:checked) + label{ vertical-align:text-top;}
+.trades-list .radioBtn [type="radio"]:checked + label, .trades-list .radioBtn [type="radio"]:not(:checked) + label {
+vertical-align:text-top;
+}
+.dateOfBirth label { float:left; width:100%; }
+.react-date-picker { width:100%; }
+.react-date-picker__wrapper { width: 100%; height: 50px; line-height: 50px; border-radius: 4px; border: 1px solid #cfcfcf; background-color: #f4f4f4; -webkit-box-sizing: border-box; box-sizing: border-box; padding: 0 15px; clear: both; }
+.react-date-picker .react-date-picker__button { border-radius: 4px; border: 0; padding: 10px 15px; height: 45px; box-sizing: border-box; line-height: 30px; background-color: #f4f4f4 !important; }
 
 
-.dateOfBirth label{ float:left; width:100%;}
 
+/* ------------------------ Common pages ------------------------ */
 
-.react-date-picker{ width:100%;}
+.cms-page br{ display:none;}
+.cms-page p{ font-size:15px; font-family: Roboto; line-height:24px;}
+.cms-page h2{ font-size:25px;}
+.cms-page h3{font-size:23px;}
+.cms-page h4{font-size:18px;}
 
-.react-date-picker__wrapper{    width: 100%;
-    height: 50px;
-    line-height: 50px;
-    border-radius: 4px;
-    border: 1px solid #cfcfcf;
-    background-color: #f4f4f4;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    padding: 0 15px;
-    clear: both;}
-    
-.react-date-picker .react-date-picker__button {
-    border-radius: 4px;
-    border: 0;
-    padding: 10px 15px;
-    height: 45px;
-    box-sizing: border-box;
-    line-height: 30px;
-    background-color: #f4f4f4 !important;
-    
-    }
+.cms-page ul { margin-left:20px; margin-top:10px; }
+.cms-page ul li { color: #969696; font-family: Roboto; font-size: 14px; font-weight: 400;  padding:5px 0; }
+.cms-page ol { margin-left:20px; margin-top:10px; }
+.cms-page ol li { color: #969696; font-family: Roboto; font-size: 14px; font-weight: 400;  padding:5px 0;}
+.cms-page li strong{ color: #969696; font-family: Roboto; font-size: 14px; font-weight: 400;padding:5px 0; }
+
+.hmlist{ text-align:center; list-style:none;}
+.hmlist li{color: #fff; font-family: Roboto; font-size: 14px; font-weight: 400;padding:5px 0;}
+
 
  @media screen and (max-width:1440px) {
 }
@@ -249,9 +256,6 @@ max-width:96%;
 .search-page .rgt-section {
 width:calc(100% - 260px);
 }
-.tab-outer-container h4 {
-font-size:22px;
-}
  .cms-page .brdr-top {
 padding: 0px 0 10px;
 margin-top: 15px;
@@ -285,16 +289,31 @@ min-width:115px;
 }
 }
  @media screen and (max-width:768px) {
-
-.popularItems .slides-div .catLink{ width:auto;}	
-.myTreasure .heading-row .more-items{ line-height:25px; margin-top:16px;} 
-.profileRow .pic{ width:100% !important;}
-.setting-container .right-container .change-password h3{ font-size:20px;}
-.setting-container .right-container .whiteboxBG{ width:96%; padding:20px 2%;}
-.whiteboxBG .leftColum{ width:100%;}
-.whiteboxBG .leftColum.right{ float:left; width:100%;}
-	 
-.category {
+ .popularItems .slides-div .catLink {
+width:auto;
+}
+.myTreasure .heading-row .more-items {
+line-height:25px;
+margin-top:16px;
+}
+.profileRow .pic {
+width:100% !important;
+}
+.setting-container .right-container .change-password h3 {
+font-size:20px;
+}
+.setting-container .right-container .whiteboxBG {
+width:96%;
+padding:20px 2%;
+}
+.whiteboxBG .leftColum {
+width:100%;
+}
+.whiteboxBG .leftColum.right {
+float:left;
+width:100%;
+}
+ .category {
 float:right;
 }
 .search-container {
@@ -307,15 +326,24 @@ left:-120px;
 .category .dropDown > ul:before, .category .dropDown > ul:after {
 left:116px;
 }
+ .select-box.top-right {
+float:none !important;
+display:inline-block;
+}
 }
  @media screen and (max-width:767px) {
-	 
-
-.whiteboxBG .trades-list li{display: inline-grid;}	 
-.whiteboxBG .leftColum .upgrade-btn{ font-size:16px; line-height:36px; height:36px;}
-.whiteboxBG .leftColum .green{ font-size:20px;}
-	 
-.sponsors, .popularItems, .testimonialContainer, .weKeepSafe, .howitworks {
+ .whiteboxBG .trades-list li {
+display: inline-grid;
+}
+.whiteboxBG .leftColum .upgrade-btn {
+font-size:16px;
+line-height:36px;
+height:36px;
+}
+.whiteboxBG .leftColum .green {
+font-size:20px;
+}
+ .sponsors, .popularItems, .testimonialContainer, .weKeepSafe, .howitworks {
 padding-top:25px;
 padding-bottom:25px
 }
@@ -325,12 +353,7 @@ padding:0
  h3, .howitworks h3, .whatpitch h3, .sponsors h3, .my-trades h3 {
 font-size: 20px
 }
-.cms-page h3 {
-font-size:20px;
-}
-.cms-page h2 {
-font-size:15px;
-}
+
 .banner-details {
 max-width: 300px;
 margin-left: -150px;
@@ -345,19 +368,19 @@ font-size: 16px;
 max-width: 150px;
 }
 .more-items, .donateContainer .donate-div .details a, .howitworks .more-items, .whatpitch .more-items {
-padding: 6px 15px;
+padding: 0px 15px;
 font-size: 13px;
 max-width: 120px;
 }
  .login-nav {
 margin: 0 auto 15px;
-    float: none;
-    clear: both;
-    display: block;
-    text-align: center;
-    position: absolute;
-    top: 71px;
-    left: 152px;
+ float: none;
+ clear: both;
+ display: block;
+ text-align: center;
+ position: absolute;
+ top: 71px;
+ left: 152px;
 }
 .search-container {
 float:none;
@@ -519,27 +542,26 @@ font-size:14px;
 padding:10px 9px;
 }
 .pitch-row .pitch-div {
-display:block;
+display:block; text-align:center;
 }
 .pitch-row {
 float:left;
-width:87%;
+width:96%;
 }
 .pitch-div .colum.user.width1 {
 width:100%;
 }
-.pitch-row .pitch-div > div, .pitch-div .colum.action, .pitch-row .pitch-div > div, .pitch-div .colum.action {
-width:100%;
-float:left;
-margin:5px 0;
-text-align:left;
-}
+
 .search input[type=text] {
 width:54%;
+}
+ .tab_details {
+padding:30px 10px 10px 10px; z-index:0;
 }
  .message-filter {
 float:left;
 position:static;
+margin-bottom:10px;
 }
 .message-filter ul li {
 font-size:13px;
@@ -876,6 +898,16 @@ float:left;
 
 
 /* ---------- my trades -------- */
+
+
+.pitch-div .colum.user{ position:static; text-align:center; width:100%; margin-bottom:20px; text-transform:uppercase;}
+.pitch-div .colum.status, .pitch-div .colum{ float:none; display:inline-block; width:auto; margin:0 5px;}
+.pitch-div .colum.views{ float:none; display:inline-block; width:auto; margin:0 5px;}
+.pitch-div .colum.action{ float:none; display:inline-block; width:130px; margin:0 5px; text-align:center;}
+.pitch-div .colum.trade-info{float:none; display:inline-block; width:auto; margin:0 5px;}
+.pitch-div .colum .sent{ width:auto;}
+pitch-div .colum .received{ width:auto; margin-left:5px;}
+.pitch-div .colum .view-pitch{ font-size:15px;}
 
 .pitch-div .newPitch {
 position:relative;

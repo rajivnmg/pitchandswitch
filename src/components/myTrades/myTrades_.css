@@ -13,7 +13,7 @@
 .message-filter .received { background:url(../../images/arrow-received.png) no-repeat 15px 5px; padding-left: 45px;}
 
 .tab-outer-container h4 {text-align: left; color: #414141; font-size: 30px; font-weight: 700; padding-bottom:35px;}
-.pitch-row { padding:15px 20px;box-shadow: 0 1px 0 #d8d8d8;border-radius: 4px;border: 1px solid #d8d8d8;background-color: #ffffff; position: relative; margin-bottom: 15px;}
+.pitch-row { padding:15px 20px;box-shadow: 0 1px 0 #d8d8d8;border-radius: 0px;border: 1px solid #d8d8d8;background-color: #ffffff; position: relative; margin-bottom: 15px;}
 .pitch-row .pitch-div { display: flex;align-items: center; }
 .pitch-row .pitch-div > div {width:16.66667%;}
 .pitch-div .colum.user {color: #414141;font-size: 18px;font-weight: 700;}
