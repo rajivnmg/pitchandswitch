@@ -24,7 +24,7 @@
 .pitch-div .colum .view-pitch {color: #d0a518;font-size: 18px;font-weight: 400; text-decoration: underline; cursor:pointer;}
 .pitch-div .colum .message {color: #d0a518;font-size: 18px;font-weight: 400; text-decoration: none; background:url(../../images/message-icon.png) no-repeat 0 0; padding: 0 0 0 35px; border:0; outline:none; cursor: pointer }
 .pitch-div .colum .message.new {background:url(../../images/message-icon2.png) no-repeat 0 0; padding-top:5px; padding-bottom: 3px;}
-.pitch-div .colum .ditch {text-align: center; height:35px; line-height:35px; border-radius: 23px; background-color: #ff7979;  display: inline-block; color: #ffffff; font-size:15px; text-decoration: none; margin: 0 auto; cursor: pointer; padding:0 10px; min-width: 75px; border:0;}
+.pitch-div .colum .ditch {text-align: center; height:35px; line-height:35px; border-radius: 23px; background-color: #ff7979;  display: inline-block; color: #ffffff; font-size:15px; text-decoration: none; margin: 0 auto; cursor: pointer; padding:0 20px; min-width: 75px; border:0;}
 .pitch-div .colum .ditch.cancel-ditch {min-width:125px;}
 .pitch-div .colum.action { text-align: right; min-width:130px;}
 .pitch-div .newPitch { position: absolute; top:44px; left: 10px;color: #3ab03a;font-size: 13px;font-weight: 700; padding-left: 20px;}
@@ -110,6 +110,7 @@
 .productDetails table {border:0; border-collapse:collapse;}
 .productDetails table tr td { padding:6px 8px; font-family: "Roboto";font-size: 13px;font-weight: 400;}
 .productDetails table tr td:nth-child(2) { font-weight: 700;}
+.productDetails table tr td:nth-child(2) img{ display:inline-block; vertical-align:middle; margin-right:5px;}
 .productDetails table tr:nth-child(odd) td { background:#fff}
 
 .pitch-row .pitch-div > div.complete-date {color: #414141;font-family: Roboto;font-size: 18px;font-weight: 400; width:21%}

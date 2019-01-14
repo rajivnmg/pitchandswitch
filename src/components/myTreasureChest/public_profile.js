@@ -136,7 +136,7 @@ class publicProfile extends Component {
               <h1>Tresure chest</h1>
               <div className="cl" />
             </div>
-            <div className="item-listing">
+            <div className="item-listing prof_box">
               {this.state.products
                 .slice(0, this.state.limit)
                 .map((slide, index) => {

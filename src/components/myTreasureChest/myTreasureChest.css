@@ -3,7 +3,7 @@
 .msgSuccess {height: 22px;border-radius: 4px;background-color: #3ab03a; text-align: center; padding:15px 0; margin:0 auto 40px; color: #ffffff;font-size: 16px; line-height: 22px; max-width: 820px;}
 .msgSuccess .close {float:right; margin-right:25px; color:#fff;color: #ffffff;font-size: 16px;  border-radius:50%; border:2px solid #fff; width:22px; height: 22px; text-decoration: none; line-height:22px;}
 .myTreasure .heading-row { padding-bottom:30px; margin-top: 0}
-.myTreasure .heading-row .more-items {float:right; max-width:unset; margin-top: 0; border-radius:35px;}
+.myTreasure .heading-row .more-items {float:right; max-width:unset; margin-top: 0; border-radius:35px; line-height:32px;}
 .myTreasure .heading-row h1 {color: #414141;font-size: 30px;font-weight: 700; padding-bottom: 15px; padding-top:0px}
 .myTreasure .heading-row .more-items .plus {font-size:22px; margin-right: 10px;}
 .myTreasure .heading-row .more-items.pink {background-color: #ff7979;}

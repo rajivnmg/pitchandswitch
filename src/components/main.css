@@ -1,11 +1,11 @@
-header { background:#fff; box-shadow:0 0 2px rgba(0,0,0,0.5); padding:10px 15px; position: relative; z-index: 9}
+header { background:#fff; box-shadow:0 0 2px rgba(0,0,0,0.5); padding:10px 15px; position:relative; z-index:inherit; }
 header .logo {float:left; max-width:200px;}
 header .logo a{ display:block;}
 header .logo img {max-width:100%; display:block;}
 header nav {float:right; margin-top:18px; }
 header nav ul { margin: 0; padding: 0; list-style: none; text-align: right}
 header nav ul li { display: inline-block; padding: 0 15px 0px; position: relative}
-header nav ul li ul {position: absolute; top:34px; right:0; background: #fff; border:1px solid #ccc; padding:10px 10px; width: 200px; text-align: left; display: none}
+header nav ul li ul {position: absolute; top:34px; right:0; background: #fff; border:1px solid #ccc; padding:10px 10px; width: 200px; text-align: left; display: none; z-index:99;}
 header nav ul li:hover ul {display:block}
 header nav ul li ul li { display: block; padding: 5px 15px;}
 header nav ul li a {color:#666}

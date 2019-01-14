@@ -34,12 +34,12 @@
 .popularItems .slides-div .details { padding:10px 15px; text-align: left}
 .popularItems .slides-div .details h4 { color: #414141;font-family: Roboto;font-size: 18px;font-weight: 400; margin-bottom: 10px;     text-overflow: ellipsis; height:53px; overflow: hidden; }
 .popularItems .slides-div .details h4 a {color:#414141; text-decoration: none}
-.popularItems .slides-div .catLink {background-color: #dab439; color: #fff; display: inline-block; padding: 5px 15px; border-radius:15px; text-decoration: none; font-size: 12px; line-height:20px; height:20px; overflow:hidden;}
+.popularItems .slides-div .catLink {background-color: #dab439; color: #fff; display: inline-block; padding: 5px 10px; border-radius:15px; text-decoration: none; font-size: 12px; line-height:20px; height:20px; overflow:hidden;}
 .more-items {border-radius:25px; padding: 13px 25px; background:#dcb73f; color:#fff; text-align: center; display: block; margin:25px auto 0; max-width: 170px; text-decoration: none;font-family: Roboto;font-size: 20px; }
 .more-items:hover {  background:#caa325;}
 .userdiv { padding:10px 9px; border-top:1px solid #d8d8d8; text-align: left; }
 .userdiv .user-pic { display: inline-block; margin-right:10px; vertical-align: middle}
-.userdiv .user-name { display: inline-block; color: #414141;font-family: Helvetica;font-size: 16px; vertical-align: middle}
+.userdiv .user-name { display: inline-block; color: #414141;font-family: Helvetica;font-size: 16px; vertical-align: middle;}
 
 
 /**************** testimonials css starts ***********************/
@@ -115,7 +115,7 @@
 .flip-container {perspective: 1000px;}
 	/* flip the pane when hovered */
 .flip-container:hover .flipper, .flip-container.hover .flipper {transform: rotateY(180deg);}
-.flip-container, .front, .back {width:100%; height: 402px; margin-top:6px;}
+.flip-container, .front, .back {width:100%; height: 410px; margin-top:0px;}
 /* flip speed goes here */
 .flipper {transition: 0.6s;transform-style: preserve-3d;position: relative;}
 /* hide back of pane during swap */

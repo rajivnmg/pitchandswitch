@@ -177,7 +177,7 @@ class categoryMenu extends Component {
                             key={subMenu.value}
                             className={
                               subMenu.children && subMenu.children.length
-                                ? "submenu"
+                                ? "submenu2"
                                 : null
                             }
                           >{/*href={"/search-listing/" + subMenu._id}*/}
