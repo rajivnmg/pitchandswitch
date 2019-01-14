@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
-
 import {
   Badge,
   Button,
@@ -25,13 +24,14 @@ import {
 } from 'reactstrap';
 import Widget03 from '../../views/Widgets/Widget03'
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
+import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
 
 const brandPrimary = getStyle('--primary')
 const brandSuccess = getStyle('--success')
 const brandInfo = getStyle('--info')
 const brandWarning = getStyle('--warning')
 const brandDanger = getStyle('--danger')
+var moment = require("moment");
 
 // Card Chart 1
 const cardChartData1 = {
@@ -623,7 +623,7 @@ componentDidMount(){
                 <Row>
                   <Col sm="5">
                     <CardTitle className="mb-0">Traffic</CardTitle>
-                    <div className="small text-muted">November 2015</div>
+                    <div className="small text-muted">{moment(Date()).format("LL")}</div>
                   </Col>
                   <Col sm="7" className="d-none d-sm-inline-block">
                     <Button color="primary" className="float-right"><i className="icon-cloud-download"></i></Button>
@@ -641,27 +641,25 @@ componentDidMount(){
                 </div>
               </CardBody>
               <CardFooter>
+              
                 <Row className="text-center">
+					<Col sm={12} md className="mb-sm-2 mb-0">
+						<div className="text-muted"></div>
+						<strong>{this.state.users} Users</strong>
+						{/*<Progress className="progress-xs mt-2" color="danger" value={this.state.users} />*/}
+					</Col>
+                  
                   <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">Visits</div>
-                    <strong>29.703 Users (40%)</strong>
-                    <Progress className="progress-xs mt-2" color="success" value="40" />
+                    <div className="text-muted"></div>
+                    <strong>{this.state.trades} Trades</strong>
+                    {/*<Progress className="progress-xs mt-2" color="success" value={this.state.trades} />*/}
                   </Col>
                   <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
-                    <div className="text-muted">Unique</div>
-                    <strong>24.093 Users (20%)</strong>
-                    <Progress className="progress-xs mt-2" color="info" value="20" />
-                  </Col>
-                  <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">Pageviews</div>
-                    <strong>78.706 Views (60%)</strong>
-                    <Progress className="progress-xs mt-2" color="warning" value="60" />
-                  </Col>
-                  <Col sm={12} md className="mb-sm-2 mb-0">
-                    <div className="text-muted">New Users</div>
-                    <strong>22.123 Users (80%)</strong>
-                    <Progress className="progress-xs mt-2" color="danger" value="80" />
-                  </Col>
+                    <div className="text-muted"></div>
+                    <strong>{this.state.products} Products</strong>
+                    {/*<Progress className="progress-xs mt-2" color="info" value={this.state.products} />*/}
+                  </Col>                 
+                  
                  {/* <Col sm={12} md className="mb-sm-2 mb-0 d-md-down-none">
                     <div className="text-muted">Bounce Rate</div>
                     <strong>Average Rate (40.15%)</strong>
