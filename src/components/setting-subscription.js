@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 //import popularItemImg from '../images/popular-item1.jpg';
 //import userPicture from '../images/user-pic.png';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import DitchPopup from "./subPopup";
+import UpgradePlan from "./subPopup";
 // import { library } from '@fortawesome/fontawesome-svg-core';
 //import Select from "react-select";
 import axios from "axios";
-
 // import { faHeart } from '@fortawesome/free-solid-svg-icons';
 // library.add(faHeart);
+import PayAddonPopup from './payAddonPopup';
 import Auxios from './Auxios';
 var moment = require("moment");
 class settingSubscription extends Component {
@@ -25,6 +25,7 @@ class settingSubscription extends Component {
 		userSubscription: {},
 		addons:[],		
 		subscriptions : [],
+		selectedAddon:{},
 	    isValidated: false,
 	    isProcess : false,
 	    showFormError:true,
@@ -46,28 +47,7 @@ class settingSubscription extends Component {
   }
 
   componentWillMount() {
-    if (localStorage.getItem("jwtToken") !== null) {
-      //~ axios.get("/user/getLoggedInUser").then(result => {
-        //~ if (result.data.code === 200) {
-          //~ this.setState({
-            //~ user: result.data.result
-          //~ });
-          //~ localStorage.setItem("loggedInUser", result.data.result._id);
-          //~ localStorage.setItem("userId", result.data.result._id);
-          //~ localStorage.setItem("userEmail", result.data.result.email);
-          //~ localStorage.setItem("userName", result.data.result.userName);
-          //~ if (
-            //~ result.data.result.emailVerified === "1" &&
-            //~ result.data.result.subscriptionStatus === "1"
-          //~ ) {
-            //~ localStorage.setItem("isLoggedIn", 1);
-          //~ } else {
-            //~ localStorage.setItem("isLoggedIn", 0);
-          //~ }
-        //~ } else {
-          //~ this.props.history.push("/logout");
-        //~ }
-      //~ });
+    if (localStorage.getItem("jwtToken") !== null) {      
 			axios.all([
 				 axios.get('/user/getLoggedInUser'),
 				 axios.get('/subscription/getActiveAddons'),
@@ -106,9 +86,10 @@ class settingSubscription extends Component {
     }
   }
   
-  handleItemClick(index) {
+  handleItemClick(index,addon) {	  
     this.setState({
       activeItem: index,
+      selectedAddon:addon
     })
   }
  	inputChangedHandler = (event, inputIdentifier) => {
@@ -277,7 +258,7 @@ class settingSubscription extends Component {
                             .add(1, "years")
                             .format("LL")}</p>
                     <div className="cl" />
-                    <DitchPopup />
+                    <UpgradePlan />
 
                     <p className="green fr">Free</p>
                   </div>
@@ -295,7 +276,7 @@ class settingSubscription extends Component {
 							<Auxios key={index}>
 							 <li  key={index} className={this.state.activeItem === index ? 'active' : ''}>
 							  <div className="radioBtn" >
-								<input id={"gold1"+index} onClick={this.handleItemClick.bind(this, index)} type="radio" name="plan" onChange={(e) => this.inputChangedHandler(e, 'radio')} data-ptype={'addon'} data-ptypeid={addon._id} value={addon.price} data-trade={addon.totalTradePermitted} data-inventory={addon.totalInventoryAllowed}/>
+								<input id={"gold1"+index} onClick={this.handleItemClick.bind(this, index,addon)} type="radio" name="plan" onChange={(e) => this.inputChangedHandler(e, 'radio')} data-ptype={'addon'} data-ptypeid={addon._id} value={addon.price} data-trade={addon.totalTradePermitted} data-inventory={addon.totalInventoryAllowed}/>
 								<label htmlFor={"gold1"+index}></label>
 							 </div>	
 							  <span className="bold">${addon.price} USD</span>
@@ -309,10 +290,17 @@ class settingSubscription extends Component {
 					})
 					}
                   </ul>
-                  <div className="form-row">
-                    <button type={"submit"} className={"submitBtn fl"}>
+                  <div className="form-row">{console.log("LEND",this.state.selectedAddon._id)}
+                  { (this.state.selectedAddon && this.state.selectedAddon._id===undefined)?
+					 (<button type={"button"} className={"grayBtn fl"} disabled={true}>
                       Buy Now
-                    </button>
+                    </button>):<PayAddonPopup selectedAddon={this.state.selectedAddon}/>
+					  
+				 }
+                   {/* <button type={"submit"} className={"submitBtn fl"}>
+                      Buy Now
+                    </button> */}
+                 
                     <div className="cl"> </div>
                   </div>
                 </div>

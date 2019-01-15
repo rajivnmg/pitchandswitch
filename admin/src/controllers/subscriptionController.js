@@ -523,35 +523,39 @@ const getActiveAddons = (req, res) => {
  *  Date	: October 08, 2018
  *	Description : Function to update the user status.
  **/
-const saveUserSubscriptionPlan = (req, res) => {
- console.log("saveUserSubscriptionPlan",req.body)
-  User.update({ _id:req.body.userId },  { "$set": { "subscriptionPlan": req.body.subscriptionId,"subscriptionStatus":"1","totalInventory":req.body.totalInventory,"totalTrade":req.body.totalTrade} }, { new:true }, (err,result) => {
+const saveUserSubscriptionPlan = (req, res) => { 
+	let user = {};
+  User.updateOne({ _id:req.body.userId },  { "$set": { "subscriptionPlan": req.body.subscriptionId,"subscriptionStatus":"1","totalInventory":req.body.totalInventory,"totalTrade":req.body.totalTrade} }, { new:true }, (err,result) => {
     if(err){
 		return res.send({
 			code: httpResponseCode.BAD_REQUEST,
 			message: httpResponseMessage.INTERNAL_SERVER_ERROR
 		  });
-    }else {
-      //  console.log("result user",result)
-      let data = {}
-        data.subscriptionId =req.body.subscriptionId
-        data.userId = req.body.userId
-        data.status = 1
-        UserSubscription.create(data, (err, responceData) => {
-          if(err){
-            return res.send({
-              code: httpResponseCode.BAD_REQUEST,
-              message: httpResponseMessage.INTERNAL_SERVER_ERROR
-            });
-          }else{
-              //console.log("responceData",responceData)
-              return res.json({
-                  code: httpResponseCode.EVERYTHING_IS_OK,
-                  message: httpResponseMessage.CHANGE_STATUS_SUCCESSFULLY,
-                 result: responceData
-                });
-            }
-      })
+    }else {		
+		User.findById({_id:req.body.userId}, (err, resultUser) => {
+			user = resultUser;
+		});					
+		  let data = {}
+			data.subscriptionId =req.body.subscriptionId
+			data.userId = req.body.userId
+			data.status = 1
+			UserSubscription.create(data, (err, responceData) => {
+			  if(err){
+				return res.send({
+				  code: httpResponseCode.BAD_REQUEST,
+				  message: httpResponseMessage.INTERNAL_SERVER_ERROR
+				});
+			  }else{
+				  
+				  return res.json({
+					  code: httpResponseCode.EVERYTHING_IS_OK,
+					  message: httpResponseMessage.CHANGE_STATUS_SUCCESSFULLY,
+					 result: responceData,
+					 user:user
+					});
+				}
+		  })
+	  
     }
   })
 }

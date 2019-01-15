@@ -740,8 +740,8 @@ class SearchListing extends React.Component {
           catId = item.productCategory[0]._id;
           catName = item.productCategory[0].title;
         } else {
-          catId = item.productCategory._id;
-          catName = item.productCategory.title;
+          catId = (item.productCategory)?item.productCategory_id:0;
+          catName = (item.productCategory)?item.productCategory.title:'N/A';
         }
 
 		// Get The distance from lat log of user

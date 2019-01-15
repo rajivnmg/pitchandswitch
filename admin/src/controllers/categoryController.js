@@ -104,8 +104,8 @@ const categories = (req, res) => {
   Category.find({})
     .skip((perPage * page) - perPage)
     .limit(perPage)
-    .populate('parent',['title'])
-    .sort({createdAt:-1})
+    .populate('parent',['title'])   
+    .sort({ title: 'ascending', createdAt:-1})   
     .exec(function(err, categories) {
         Category.count().exec(function(err, count) {
           if (err) return next(err)
@@ -127,8 +127,8 @@ const categories = (req, res) => {
 /// function to list all category available in  collection
 const categoriesActive = (req, res) => {
   Category.find({status:1})
-    .populate('parent',['title'])
-    .sort({createdAt:-1})
+    .populate('parent',['title'])   
+    .sort({ title: 'ascending', createdAt:-1})   
     .exec(function(err, categories) {
         Category.count().exec(function(err, count) {			
           if (err) return next(err)
@@ -335,7 +335,7 @@ const getNestedChildren = (arr, parent) => {
 /// function to list all products
 const allCategories = (req, res) => {
 	// top to bottom query
-   Category.find({}).sort({parent: 1})
+   Category.find({}).sort({ title: 'ascending', parent: 1})
     .exec(function(err, categories) {
 		var newCats = [];
 		var index = 0;
@@ -449,6 +449,7 @@ const deleteCategory = (req, res) => {
 /// function to simplly get list all category
 const listCategory = (req, res) => {
   Category.find({})
+	.sort({ title: 'ascending', createdAt:-1}) 
     .exec(function(err, categories) {
         if (err) return next(err);
         var newCats = [];
@@ -474,8 +475,7 @@ const listCategory = (req, res) => {
           result: newCats
         });
     });
-  };
-
+};
 
 module.exports = {
   create,

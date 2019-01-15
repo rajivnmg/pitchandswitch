@@ -150,7 +150,7 @@ class UpgradePlan extends Component {
 											<strong>5 Items</strong> Wishlist
 										</div> */}
                         <h4 className="price">
-                          {subscription.price === "0"
+                          {(subscription.price === "0" || subscription.price === "0.00")
                             ? "Free"
                             : "$" + subscription.price}
                           <sub>/y</sub>
@@ -170,7 +170,7 @@ class UpgradePlan extends Component {
                       </div>
                     );
                   })}
-
+					<div class="form-row"><Link to={"/setting-subscription"}><button type="button" class="submitBtn fl">Purchase Addon</button></Link></div>
                   <div className="cl" />
                 </div>
               </div>

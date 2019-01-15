@@ -327,7 +327,6 @@ const addProduct = (req, res) => {
 const allProducts = (req, res) => {
     var perPage = constant.PER_PAGE_RECORD
     var page = req.params.page || 1;
-
     Product.aggregate([{
             $lookup: {
                 from: 'productimages',
@@ -1301,10 +1300,9 @@ const myTreasureChestFilterBy = (req, res) => {
         decoded = jwt.verify(token, settings.secret);
         var userId = decoded._id;
         condObject["userId"] = userId;
-        if (req.body.category !== '') {
+        if (req.body.category !== '' && req.body.category !='5c3c8d8ca4d8f47cfc9d252a') {
             condObject["productCategory"] = req.body.category;
         }
-
         Product.find(condObject)
                 .populate({path: "productCategory", model: "Category"})
                 .populate({path: "userId", model: "User"})
@@ -1568,7 +1566,7 @@ const tradeMatchFilterBy = function (req, res) {
             var condObject = {};
             var stype = "productName";
             var sdir = 1;
-            if (req.body.category !== '') {
+            if (req.body.category !== '' && req.body.category !='5c3c8d8ca4d8f47cfc9d252a') {
                 condObject["productCategory"] = req.body.category;
             }
             if (req.body.sortBy != "" || req.body.sortBy != undefined) {
