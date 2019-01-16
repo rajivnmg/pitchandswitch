@@ -35,8 +35,30 @@ class UpgradePlan extends Component {
         this.setState({ showFormError: false, showFormSuccess: true });
         setTimeout(() => {
           this.setState({ showFormError: false, showFormSuccess: false });
-          localStorage.removeItem("jwtToken");
-          window.location.href = "/logout";
+         // localStorage.removeItem("jwtToken");
+          localStorage.setItem("jwtToken",result.data.token);
+          localStorage.setItem("loggedInUser", result.data.user._id);
+          localStorage.setItem("userId", result.data.user._id);
+          localStorage.setItem("userEmail", result.data.user.email);
+          localStorage.setItem("userName", result.data.user.userName);
+          localStorage.setItem(
+            "Latitude",
+            result.data.user.loct.coordinates[0]
+          );
+          localStorage.setItem(
+            "Longitude",
+            result.data.user.loct.coordinates[1]
+          );
+          if (
+            result.data.user.emailVerified == "1" &&
+            result.data.user.subscriptionStatus == "1"
+          ) {
+            localStorage.setItem("isLoggedIn", 1);
+          } else {
+            localStorage.setItem("isLoggedIn", 0);
+          }
+          
+          window.location.href = "/dashboard";
         }, 12000);
       } else {
         this.setState(

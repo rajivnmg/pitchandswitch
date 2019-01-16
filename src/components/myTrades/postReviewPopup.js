@@ -6,7 +6,7 @@ import ReactStars from "react-stars";
 import axios from "axios";
 import { If, Then, Else } from "react-if-elseif-else-render";
 import successPic from "../../images/successful_img.png";
-
+//import $ from 'jquery';
 //import { Badge, Button, ButtonDropdown, Form, FormGroup, FormText, FormFeedback, Input} from "reactstrap";
 var FD = require("form-data");
 //var fs = require("fs");
@@ -44,6 +44,12 @@ class postReviewPopup extends Component {
       }
     };
   }
+	
+  componentDidMount(){
+	  axios.get('trade/getReview/'+this.props.offerTrade._id).then(result =>{
+		  
+	  })
+  }
 
   ratingChanged = review => {
     this.setState({ review: review });
@@ -54,21 +60,30 @@ class postReviewPopup extends Component {
 
   submitHandler(e) {
     e.preventDefault();
-    let formSubmitFlag = true;
-    for (let field in this.state.validation) {
-      //let lastValidFieldFlag = true;
-      let addReview = this.state.validation;
-      addReview[field].valid = null;
-      for (let fieldCheck in this.state.validation[field].rules) {
-        switch (fieldCheck) {
-          case "notEmpty":
-            break;
-          default:
-			break;
-        }
-      }
-      this.setState({ validation: addReview });
-    }
+    let formSubmitFlag = false;
+    //~ for (let field in this.state.validation) {
+      //~ //let lastValidFieldFlag = true;
+      //~ let addReview = this.state.validation;
+      //~ addReview[field].valid = null;
+      //~ for (let fieldCheck in this.state.validation[field].rules) {
+        //~ switch (fieldCheck) {
+          //~ case "notEmpty":
+            //~ break;
+          //~ default:
+			//~ break;
+        //~ }
+      //~ }
+      //~ this.setState({ validation: addReview });
+    //~ }
+    console.log("this.state.comments",formSubmitFlag,this.state.comments,this.state.review)
+    if(this.state.comments ===null || this.state.comments ==='' || this.state.comments === undefined){
+		alert("Please write comment for this trade");
+	}else if(this.state.review === null || this.state.review ==='' || this.state.review === undefined){
+		alert("Please rate this trade");
+	}else{
+		formSubmitFlag = true;
+	}
+	  console.log("formSubmitFlag",formSubmitFlag,this.state.comments,this.state.review)
 
     if (formSubmitFlag) {
       const data = new FD();
@@ -80,8 +95,8 @@ class postReviewPopup extends Component {
       );
       data.append("userId", this.state.offerTrade.offerTradeId.pitchUserId._id);
       data.append("tradeId", this.state.offerTrade._id);
-      axios.post("/trade/submitReview", data).then(result => {
-        console.log("result", result.data.result);
+     
+      axios.post("/trade/submitReview", data).then(result => {       
         if (result.data.code === 200) {
           this.setState({
             message: result.data.message,
@@ -91,9 +106,9 @@ class postReviewPopup extends Component {
             isProcess: false
           });
           setTimeout(() => {
-            this.setState({ showFormError: false, showFormSuccess: false });
-            //window.location.href='/my-trades';
-            this.props.history.push("/my-trades");
+            this.setState({ showFormError: false, showFormSuccess: false });           
+             window.location.href='/my-trades';
+            //this.props.history.push("/my-trades");
           }, 12000);
         }
       });
@@ -114,7 +129,7 @@ class postReviewPopup extends Component {
       >
         {close => (
           <div className="modal">
-            <a className="close" onClick={close}>
+            <a className="close"  onClick={close}>
               &times;
             </a>
             <If condition={this.state.showFormSuccess === true}>

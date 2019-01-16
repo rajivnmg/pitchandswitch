@@ -1038,6 +1038,43 @@ const submitReview = (req, res) => {
           })
      })
 }
+/** Auther	: Rajiv Kumar
+ *  Date	: Jan 15, 2019
+ */
+///function to the trade reviewed
+const getReview = (req, res) => {
+	var token = commonFunction.getToken(req.headers);
+     if(token) {
+		decoded = jwt.verify(token,settings.secret);
+		var userId = decoded._id;
+		
+	     UserTradeRating.find({submitUserId:userId,tradeId:req.params.tradeId}, (err, result) => {
+			 if (err) {
+					return res.send({
+					code: httpResponseCode.BAD_REQUEST,
+					message: httpResponseMessage.INTERNAL_SERVER_ERROR
+					})
+				} else {
+				if (!result) {
+					res.json({
+					message: httpResponseMessage.USER_NOT_FOUND,
+					code: httpResponseMessage.BAD_REQUEST
+					});
+				} else {
+					return res.json({
+					code: httpResponseCode.EVERYTHING_IS_OK,
+					result: result
+					});
+				  }
+			  }
+          })   
+	  }else{
+		return res.send({
+			code: httpResponseCode.BAD_REQUEST,
+			message: httpResponseMessage.INTERNAL_SERVER_ERROR
+			})
+	  } 
+}
 
 /** Auther	: KS
  *  Date	: September 13, 2018
@@ -1420,7 +1457,8 @@ module.exports = {
   submitTradeProduct,
   pitchedProductList,
   submitReview,
-  returnTrade,
+  getReview,
+  returnTrade,  
   switchedProduct,
   submitPitchAgain,
   tradeStatus,

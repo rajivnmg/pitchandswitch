@@ -6,6 +6,7 @@ import axios from 'axios'
 import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
 import { Spin, Icon, Alert } from 'antd';
 import { Link } from 'react-router-dom';
+var moment = require("moment");
 var FD = require('form-data');
 var fs = require('fs');
 const contentStyle = {
@@ -82,6 +83,7 @@ class subscriptionBasic extends Component {
 		this.state = {
 			subscription:this.props.subscription,
 			isProcess : false,
+			transactionid:'',
 			message:'',
 			addPaymentForm: {
 				cardHolderName:'',
@@ -119,19 +121,33 @@ class subscriptionBasic extends Component {
 		data.totalTrade = this.state.subscription.totalTradePermitted;		
 		//console.log("submit",data)
 		this.setState({isProcess:true})
-        axios.post('/subscription/payOnStripe', data).then(result => {        
+        axios.post('/subscription/payOnStripe', data).then(result => {  			      
          if(result.data.code === 200){
 			  this.setState({
 				message: result.data.message,
 				code :result.data.code,
 				showFormSuccess: true,
 				showFormError: false,
-				isProcess:false
+				isProcess:false,
+				transactionid:result.data.transactionid
 			  });	
 			  setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});
-						 localStorage.removeItem('jwtToken'); 
-						 window.location.href='/login';
-			 }, 12000);		  
+						// localStorage.removeItem('jwtToken'); 
+						// window.location.href='/login';
+						  localStorage.setItem("jwtToken",result.data.token);
+						  localStorage.setItem("loggedInUser", result.data.user._id);
+						  localStorage.setItem("userId", result.data.user._id);
+						  localStorage.setItem("userEmail", result.data.user.email);
+						  localStorage.setItem("userName", result.data.user.userName);
+						  localStorage.setItem("Latitude",result.data.user.loct.coordinates[0]);
+						  localStorage.setItem("Longitude",result.data.user.loct.coordinates[1]);
+						  if (result.data.user.emailVerified == "1" && result.data.user.subscriptionStatus == "1") {
+								localStorage.setItem("isLoggedIn", 1);
+						  } else {
+								localStorage.setItem("isLoggedIn", 0);
+						  }							  
+						  window.location.href = "/dashboard";
+			 }, 10000);		  
 			}else{
 			  this.setState({
 				message: result.data.result.message,
@@ -153,12 +169,10 @@ class subscriptionBasic extends Component {
  _renderSuccessMessage() {
     return (   
       <div className={"alert alert-success mt-4"} role="alert">
-      Congratulation!!! You have successfully subscribe the plan <Link to={'/login'}> Go to Login </Link> Or it will automaticaly redirect in 10 second.            
+		Congratulation!!! You have successfully subscribe the plan <Link to={'/dashboard'}> Go to Dashboard </Link> Or it will automaticaly redirect in 10 second.            
       </div>
-    );
-  
-  }
-  
+    );  
+  }  
  _renderErrorMessage() {
     return (
       <div align="center" className={"alert alert-danger mt-4"} role="alert">
@@ -186,7 +200,7 @@ render() {
 									{(this.state.subscription.totalTradePermitted === 9999)?'Unlimited':this.state.subscription.totalTradePermitted} Free Trade, {(this.state.subscription.totalInventoryAllowed === 9999)?'Unlimited':this.state.subscription.totalInventoryAllowed} Inventory, Unlimited Wishlist</p>
 								</div>
 								<div className="form-row brdr-row">
-								<p className="bold fr">Oct 1, 2018<br/>7353795</p>
+								{moment(Date()).format("LL")}<p className="bold fr"><br/>{this.state.transactionid}</p>
 								<p>Date<br/>Order Id</p>
 							</div>
 							<div>&nbsp;</div>
@@ -242,12 +256,12 @@ render() {
 							<div className="colum">
 								<span className="astrik">*</span>
 								<label className="label">Expiration Month</label>                    
-								<input type="text" id={"expiryMonth"} required={true} name={"expiryMonth"} type={"expiryMonth"}  onChange={(e) => this.inputChangedHandler(e, 'expiryMonth')} placeholder="07" className="form-control textBox"/>
+								<input type="text" id={"expiryMonth"} required={true} name={"expiryMonth"} type={"expiryMonth"}  onChange={(e) => this.inputChangedHandler(e, 'expiryMonth')} placeholder={moment(Date()).format("MM")} className="form-control textBox"/>
 							</div>
 							 <div className="colum right">
 								<span className="astrik">*</span>
 								<label className="label">Expiration Year</label>                    
-								<input type="text" id={"expiryYear"} required={true} name={"expiryYear"} type={"expiryYear"}  onChange={(e) => this.inputChangedHandler(e, 'expiryYear')} placeholder="2018" className="form-control textBox"/>
+								<input type="text" id={"expiryYear"} required={true} name={"expiryYear"} type={"expiryYear"}  onChange={(e) => this.inputChangedHandler(e, 'expiryYear')} placeholder={moment(Date()).add(1, "years").format("YYYY")} className="form-control textBox"/>
 							</div>                
 						</div>
 						 

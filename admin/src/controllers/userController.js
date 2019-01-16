@@ -377,10 +377,8 @@ const login = (req, res) => {
     "email",
     "password",
     "userType"
-  ]);
-   console.log("flag",data)
-  if (flag) {
-    // console.log("flag",flag)
+  ]);  
+  if (flag) {    
     return res.json(flag);
   }
   User.findOne(
