@@ -35,8 +35,30 @@ class UpgradePlan extends Component {
         this.setState({ showFormError: false, showFormSuccess: true });
         setTimeout(() => {
           this.setState({ showFormError: false, showFormSuccess: false });
-          localStorage.removeItem("jwtToken");
-          window.location.href = "/logout";
+         // localStorage.removeItem("jwtToken");
+          localStorage.setItem("jwtToken",result.data.token);
+          localStorage.setItem("loggedInUser", result.data.user._id);
+          localStorage.setItem("userId", result.data.user._id);
+          localStorage.setItem("userEmail", result.data.user.email);
+          localStorage.setItem("userName", result.data.user.userName);
+          localStorage.setItem(
+            "Latitude",
+            result.data.user.loct.coordinates[0]
+          );
+          localStorage.setItem(
+            "Longitude",
+            result.data.user.loct.coordinates[1]
+          );
+          if (
+            result.data.user.emailVerified == "1" &&
+            result.data.user.subscriptionStatus == "1"
+          ) {
+            localStorage.setItem("isLoggedIn", 1);
+          } else {
+            localStorage.setItem("isLoggedIn", 0);
+          }
+          
+          window.location.href = "/dashboard";
         }, 12000);
       } else {
         this.setState(
@@ -150,7 +172,7 @@ class UpgradePlan extends Component {
 											<strong>5 Items</strong> Wishlist
 										</div> */}
                         <h4 className="price">
-                          {subscription.price === "0"
+                          {(subscription.price === "0" || subscription.price === "0.00")
                             ? "Free"
                             : "$" + subscription.price}
                           <sub>/y</sub>
@@ -170,7 +192,7 @@ class UpgradePlan extends Component {
                       </div>
                     );
                   })}
-
+					<div class="form-row"><Link to={"/setting-subscription"}><button type="button" class="submitBtn fl">Purchase Addon</button></Link></div>
                   <div className="cl" />
                 </div>
               </div>

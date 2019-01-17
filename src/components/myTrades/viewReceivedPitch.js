@@ -98,7 +98,7 @@ class viewReceivedPopup extends Component {
 	let userId = (this.state.offerTrade && this.state.offerTrade.SwitchUserId)?this.state.offerTrade.SwitchUserId._id:'0'
 return (
 <Popup
-    trigger={<a className= 'TradeInfobtn'> View Pitch</a>}
+    trigger={<span className= 'TradeInfobtn'> View Pitch</span>}
     modal
     contentStyle = {contentStyle}
     lockScroll 

@@ -139,7 +139,7 @@ setCategory = (category) => {
 							  : ""
 							: ""}
 						</NavLink>*/}
-							<Link className="catLink" to={"#/"} onClick={() => this.setCategory(item._id.productCategory)}>
+							<Link className="catLink" to={""} onClick={() => this.setCategory(item._id.productCategory)}>
 							  {item._id
 							? item._id.productCategory
 							  ? item._id.productCategory.title

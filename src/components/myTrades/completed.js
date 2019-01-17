@@ -25,8 +25,7 @@ class Completed extends React.Component {
 
     handleChange = e => {
       this.form.validateFields(e.target);
-    }
-        
+    }        
      componentDidMount(){
 		axios.get('/trade/completedTrades').then(result => {			
 			  if(result.data.code === 200){

@@ -29,9 +29,32 @@ class Subscription extends React.Component {
 				if(result.data.code === 200){
 					this.setState({showFormError: false,showFormSuccess: true})
 					 setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});
-						 localStorage.removeItem('jwtToken'); 
-						 window.location.href='/login';
-				    }, 12000);
+						 //localStorage.removeItem('jwtToken'); 
+						 //window.location.href='/login';
+							  localStorage.setItem("jwtToken",result.data.token);
+							  localStorage.setItem("loggedInUser", result.data.user._id);
+							  localStorage.setItem("userId", result.data.user._id);
+							  localStorage.setItem("userEmail", result.data.user.email);
+							  localStorage.setItem("userName", result.data.user.userName);
+							  localStorage.setItem(
+								"Latitude",
+								result.data.user.loct.coordinates[0]
+							  );
+							  localStorage.setItem(
+								"Longitude",
+								result.data.user.loct.coordinates[1]
+							  );
+							  if (
+								result.data.user.emailVerified == "1" &&
+								result.data.user.subscriptionStatus == "1"
+							  ) {
+								localStorage.setItem("isLoggedIn", 1);
+							  } else {
+								localStorage.setItem("isLoggedIn", 0);
+							  }
+							  
+							  window.location.href = "/dashboard";
+				    }, 2000);
 					
 				}else{
 					this.setState({showFormError: true,message:result.data.result.message},function(){						
@@ -53,7 +76,7 @@ class Subscription extends React.Component {
  _renderSuccessMessage() {
     return (
       <div className={"alert alert-success mt-4"} role="alert">
-      Congratulation!!! You have successfully subscribe the plan <Link to={'/login'}> Go to login </Link> Or it will automaticaly redirect in 10 second.
+      Congratulation!!! You have successfully subscribe the plan <Link to={'/Dashboard'}> Go to Dashboard </Link> Or it will automaticaly redirect.
         
       </div>
     );

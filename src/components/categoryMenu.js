@@ -16,58 +16,7 @@ class categoryMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      category: [
-        //~ {
-        //~ name: 'Electronics',
-        //~ icon: {icon},
-        //~ link: '/',
-        //~ isSubnav: true,
-        //~ children: [
-        //~ {
-        //~ name: "Kids Clothing",
-        //~ link: "/",
-        //~ isSubnav1: true,
-        //~ submenu1: [
-        //~ {
-        //~ name: "United Colors of Benetton",
-        //~ link: "/"
-        //~ },
-        //~ {
-        //~ name: "The Children's Place",
-        //~ link: "/"
-        //~ }
-        //~ ]
-        //~ },
-        //~ {
-        //~ name: "Boy's Clothing",
-        //~ link: "/",
-        //~ isSubnav1: false,
-        //~ submenu1: []
-        //~ }
-        //~ ]
-        //~ },
-        //~ {
-        //~ name: 'TVs & Appliances',
-        //~ icon: './assets/images/flags/uk.png',
-        //~ link: '/',
-        //~ isSubnav: false,
-        //~ submenu: []
-        //~ },
-        //~ {
-        //~ name: 'Men',
-        //~ icon: './assets/images/flags/uk.png',
-        //~ link: '/',
-        //~ isSubnav: false,
-        //~ submenu: []
-        //~ },
-        //~ {
-        //~ name: 'Baby & Kids',
-        //~ icon: './assets/images/flags/uk.png',
-        //~ link: '/',
-        //~ isSubnav: false,
-        //~ submenu: []
-        //~ }
-      ]
+      category: []
     };
   }
   setCategory = (category) => {

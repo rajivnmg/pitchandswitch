@@ -18,6 +18,14 @@ const keyPublishable = constant.StripeKeyPublic;
 const keySecret = constant.StripeKeySecret;
 const stripe = require("stripe")(keySecret);
 
+const http = require("http");
+const path = require("path");
+const fs = require("fs"); //FileSystem for node.js
+var gm = require("gm"); //GraphicsMagick for node.js
+var passport = require("passport");
+require("../config/passport")(passport);
+var jwt = require("jsonwebtoken");
+var settings = require("../config/settings"); // get settings file
 /** Auther	: Rajiv kumar
  *  Date	: June 18, 2018
  */
@@ -523,35 +531,42 @@ const getActiveAddons = (req, res) => {
  *  Date	: October 08, 2018
  *	Description : Function to update the user status.
  **/
-const saveUserSubscriptionPlan = (req, res) => {
- console.log("saveUserSubscriptionPlan",req.body)
-  User.update({ _id:req.body.userId },  { "$set": { "subscriptionPlan": req.body.subscriptionId,"subscriptionStatus":"1","totalInventory":req.body.totalInventory,"totalTrade":req.body.totalTrade} }, { new:true }, (err,result) => {
+const saveUserSubscriptionPlan = (req, res) => { 
+  User.updateOne({ _id:req.body.userId },  { "$set": { "subscriptionPlan": req.body.subscriptionId,"subscriptionStatus":"1","totalInventory":req.body.totalInventory,"totalTrade":req.body.totalTrade} }, { new:true }, (err,result) => {
     if(err){
 		return res.send({
 			code: httpResponseCode.BAD_REQUEST,
 			message: httpResponseMessage.INTERNAL_SERVER_ERROR
 		  });
-    }else {
-      //  console.log("result user",result)
-      let data = {}
-        data.subscriptionId =req.body.subscriptionId
-        data.userId = req.body.userId
-        data.status = 1
-        UserSubscription.create(data, (err, responceData) => {
-          if(err){
-            return res.send({
-              code: httpResponseCode.BAD_REQUEST,
-              message: httpResponseMessage.INTERNAL_SERVER_ERROR
-            });
-          }else{
-              //console.log("responceData",responceData)
-              return res.json({
-                  code: httpResponseCode.EVERYTHING_IS_OK,
-                  message: httpResponseMessage.CHANGE_STATUS_SUCCESSFULLY,
-                 result: responceData
-                });
-            }
-      })
+    }else {		
+		User.findById({_id:req.body.userId}, (err, resultUser) => {				
+			 // set the use data in to session
+              req.session.user = resultUser;
+              //////////////////// JWT Token   ///////////////////
+              // if user is found and password is right create a token
+              var token = jwt.sign(resultUser.toJSON(), settings.secret);
+              // return the information including token as JSON					
+		  let data = {}
+			data.subscriptionId =req.body.subscriptionId
+			data.userId = req.body.userId
+			data.status = 1
+			UserSubscription.create(data, (err, responceData) => {
+			  if(err){
+				return res.send({
+				  code: httpResponseCode.BAD_REQUEST,
+				  message: httpResponseMessage.INTERNAL_SERVER_ERROR
+				});
+			  }else{				  
+				  return res.json({
+					  code: httpResponseCode.EVERYTHING_IS_OK,
+					  message: httpResponseMessage.CHANGE_STATUS_SUCCESSFULLY,
+					 result: responceData,
+					 user:resultUser,
+					 token:token
+					});
+				}
+		  })
+	  });	
     }
   })
 }
@@ -600,7 +615,14 @@ const payOnStripe = (req, res) => {
             message: httpResponseMessage.INTERNAL_SERVER_ERROR
           });
         }else{
-			
+			User.findById({_id:req.body.userId}, (err, resultUser) => {				
+			 // set the use data in to session
+              req.session.user = resultUser;
+              //////////////////// JWT Token   ///////////////////
+              // if user is found and password is right create a token
+              var token = jwt.sign(resultUser.toJSON(), settings.secret);
+              // return the information including token as JSON				
+												
 			let TransactionData = {};
 				TransactionData.transactionId = charge.id
 				TransactionData.transactionType = 'Subscription purchased'
@@ -610,7 +632,7 @@ const payOnStripe = (req, res) => {
 				TransactionData.status = (charge.status === 'succeeded')?1:0
 				TransactionData.transactionDate = new Date();
 				Transaction.create(TransactionData, (err, transactionResp) => {
-					console.log("transactionResp",transactionResp)
+					//console.log("transactionResp",transactionResp)
 				});					
 				// console.log("responceData",responceData)
     			// setup email data with unicode symbols
@@ -631,17 +653,21 @@ const payOnStripe = (req, res) => {
                       if (error) {
                           console.log(error);
                       }else{
-                        console.log('Message sent: %s', info.messageId);
-            						// Preview only available when sending through an Ethereal account
-            						console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+							console.log('Message sent: %s', info.messageId);
+							// Preview only available when sending through an Ethereal account
+							//console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
                       }
                   });
               })
             return res.json({
                 code: httpResponseCode.EVERYTHING_IS_OK,
                 message: httpResponseMessage.CHANGE_STATUS_SUCCESSFULLY,
-               result: responceData
+                result: responceData,
+                user:resultUser,
+                token:token,
+                transactionid:charge.id
               });
+		  });
           }
     })
 
