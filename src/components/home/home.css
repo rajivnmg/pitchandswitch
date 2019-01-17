@@ -14,7 +14,7 @@
 
 /**************** banner css starts ***********************/
 .banner img { max-width: 100%; width:100%}
-.banner-details { position: absolute; top:50%; left:50%; margin: -60px 0 0 -420px; max-width: 840px; width: 100%;}
+.banner-details { position: absolute; top:50%; left:50%; margin: -60px 0 0 -50%; max-width: 100%; width: 100%;}
 .banner-details h1 {text-shadow: 0 3px 4px rgba(0, 0, 0, 0.27);color: #ffffff;font-family: Roboto;font-size: 60px;font-weight: 700; font-weight: normal; text-align: center}
 .banner-details a.home-btn {max-width:220px; background:#fff; border-radius: 35px; padding: 15px 25px; color: #dcb73f; font-size:16px; text-decoration: none; margin:20px auto 0; display: block; text-align:center; font-size: 20px;font-weight: 400; text-decoration: none}
 .banner-details a.home-btn:hover {background:#fff; color: #dcb73f;}

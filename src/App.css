@@ -2,7 +2,7 @@
 * { margin: 0; padding: 0}
 body { font-family: 'Roboto', sans-serif; font-size: 14px; color:#666;}
 a { text-decoration: underline; transition:all 0.5s ease }
-a:hover { text-decoration:none}
+
 .fl {float:left;}
 .fr {float:right}
 .cl {clear:both; line-height: 0; font-size: 0; height:0}
