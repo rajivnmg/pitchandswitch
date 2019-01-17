@@ -272,21 +272,37 @@ class Header extends Component {
       // console.log("localStorage",localStorage.getItem('isLoggedIn'));
 
       let width = window.innerWidth;
-
+    
+				
+				if (width < 1025) {
+       
+							 jquery(".drop-arrow").click(function() {
+        jquery(this).next().slideToggle();
+         
+        });
+								
+								 jquery(".notification a").click(function() {
+          
+          jquery(".mob_dash").hide(500);
+										jquery(".search-container").hide(500);
+        });
+								
+							
+    }
+				
       if (width < 768) {
         jquery(".mob_search").click(function() {
-          jquery(this)
-            .next()
-            .slideToggle();
+          jquery(this).next().slideToggle();
           jquery(".category .dropDown").hide(500);
         });
 
-        jquery(".after-login .drop-arrow").click(function() {
+         jquery(".after-login .drop-arrow").click(function() {
           jquery(".category .dropDown").hide(500);
           jquery(".search-container").hide(500);
         });
       }
     }
+				
 
     // HTTP request to get the list of cities and active product from the server
     axios
@@ -445,7 +461,7 @@ class Header extends Component {
                   <a className="drop-arrow" href="#">
                     {this.Capitalize(this.state.user.userName.substring(0, 10))}
                   </a>
-                  <ul className="dashboard-subnav">
+                  <ul className="dashboard-subnav mob_dash">
                     <li>
                       <NavLink to={"/dashboard"} className="dashboard-icon">
                         Dashboard
