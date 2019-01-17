@@ -29,6 +29,9 @@ button { cursor:pointer; }
 .ant-select-auto-complete.ant-select .ant-select-selection__rendered { line-height:40px; }
 .banner-details { text-align:center; }
 .banner-details a.home-btn { display:inline-block; margin:20px 5px; }
+
+.whatpitch .more-items, .howitworks .more-items{ line-height:40px; height:40px;}
+
 /* ------ search listing page ------------- */
 
 .search-page .lft-section { width:235px; position:relative; }
