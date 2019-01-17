@@ -56,6 +56,8 @@ class TradeMatch extends Component {
                 }
             ]
         };
+        
+        
         return (
     <div className="popularItems recently-added">
         <div className="container">
@@ -80,8 +82,8 @@ class TradeMatch extends Component {
 										<Link className="catLink" to={'/search-listing/'+categoryUrl}>{(tradeMatch.category && (tradeMatch.category.length > 0))?tradeMatch.category[0].title:''}</Link>
 									</div>
 									  <div className="userdiv">
-										<div className="user-pic"><img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} alt="UserImg"/></div>
-										<div className="user-name"><Link className="alink" target="_blank" to={'/public-profile/'+publicProfileUrl}>{(tradeMatch.user && tradeMatch.user.length > 0)?tradeMatch.user[0].userName:''}</Link>
+										<div className="user-pic"><Link className="alink" target="_blank" to={'/public-profile/'+publicProfileUrl}><img className="userPicNew" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} alt="UserImg"/></Link></div>
+										<div className="user-name"><Link className="alink" target="_blank" to={'/public-profile/'+publicProfileUrl}>{(tradeMatch.user && tradeMatch.user.length > 0)?commonFunction.letterCaps(tradeMatch.user[0].userName):''}</Link>
 										 <p className="distance">{dist} {(constant.DISTANCE_UNIT==='M')?'Miles':'Km'}</p>
 										</div>										
 									</div>
