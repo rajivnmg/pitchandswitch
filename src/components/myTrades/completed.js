@@ -81,9 +81,9 @@ class Completed extends React.Component {
 				   <Then>
 					 <div className="colum action"><ReturnInfo offerTrade={pitch}/></div>
 				   </Then>
-				   <Else>
+				   {/*<Else>
 				     <div className="colum action">Time Exceed</div>
-				   </Else>
+				   </Else>*/}
 				</If>
 			</div>
 			{(pitch.trackStatus) ? <div className="statusTrack"><img src={statusTrack} /></div> : ''}

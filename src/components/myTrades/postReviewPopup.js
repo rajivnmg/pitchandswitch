@@ -4,7 +4,7 @@ import Popup from "reactjs-popup";
 //import starRating from "../../images/star-rating.png";
 import ReactStars from "react-stars";
 import axios from "axios";
-import { If, Then, Else } from "react-if-elseif-else-render";
+import { If, Then, Else ,ElseIf} from "react-if-elseif-else-render";
 import successPic from "../../images/successful_img.png";
 //import $ from 'jquery';
 //import { Badge, Button, ButtonDropdown, Form, FormGroup, FormText, FormFeedback, Input} from "reactstrap";
@@ -19,6 +19,7 @@ class postReviewPopup extends Component {
   constructor(props) {
     super(props);
     this.state = {
+	  reviewed : {},
       offerTrade: this.props.offerTrade,
       validation: {
         reviews: {
@@ -43,11 +44,12 @@ class postReviewPopup extends Component {
         }
       }
     };
-  }
-	
+  }	
   componentDidMount(){
 	  axios.get('trade/getReview/'+this.props.offerTrade._id).then(result =>{
-		  
+			if(result.data.code === 200){
+				this.setState({reviewed:(result.data.result && result.data.result.length > 0 )?result.data.result[0]:[]})
+			}
 	  })
   }
 
@@ -75,7 +77,7 @@ class postReviewPopup extends Component {
       //~ }
       //~ this.setState({ validation: addReview });
     //~ }
-    console.log("this.state.comments",formSubmitFlag,this.state.comments,this.state.review)
+    //console.log("this.state.comments",formSubmitFlag,this.state.comments,this.state.review)
     if(this.state.comments ===null || this.state.comments ==='' || this.state.comments === undefined){
 		alert("Please write comment for this trade");
 	}else if(this.state.review === null || this.state.review ==='' || this.state.review === undefined){
@@ -109,7 +111,7 @@ class postReviewPopup extends Component {
             this.setState({ showFormError: false, showFormSuccess: false });           
              window.location.href='/my-trades';
             //this.props.history.push("/my-trades");
-          }, 12000);
+          }, 3000);
         }
       });
     }
@@ -128,7 +130,7 @@ class postReviewPopup extends Component {
         lockScroll
       >
         {close => (
-          <div className="modal">
+          <div className="modal">{this.state.reviewed.length}
             <a className="close"  onClick={close}>
               &times;
             </a>
@@ -151,6 +153,33 @@ class postReviewPopup extends Component {
                   </div>
                 </div>
               </Then>
+              <ElseIf condition={this.state.reviewed && this.state.reviewed._id}>
+               <div className="header">
+                  Post review
+                  <div className="cl" />
+                </div>               
+               <div className="content">
+                  <div className="return-request-form">
+                    <div className="form-row">
+                      <label className="label">Your review</label>
+                      <textarea
+						 className="form-control textarea"                      
+                        value={this.state.reviewed.comment}
+                      />
+                    </div>
+                    <div className="form-row">
+                      <ReactStars
+                        count={5}
+                        value={(this.state.reviewed.review)/10}
+                        name="rating"
+                        onChange={this.ratingChanged}
+                        size={27}
+                        color2={"#dcb73f"}
+                      />
+                    </div>                    
+                  </div>
+                </div>
+              </ElseIf>
               <Else>
                 <div className="header">
                   Post review

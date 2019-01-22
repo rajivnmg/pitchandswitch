@@ -4,6 +4,7 @@ import { Badge} from 'reactstrap';
 import ReadMoreReact from 'read-more-react';
 // import PropTypes from 'prop-types';
 
+
 class Product extends Component {
 
 Capitalize(str){

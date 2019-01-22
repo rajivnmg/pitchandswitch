@@ -27,12 +27,33 @@ var bcrypt = require('bcrypt-nodejs');
 const multiparty = require('multiparty');
 const easyPostComponent = require('../components/EasyPostComponent');
 var async = require('async');
+const fs = require("fs"); //FileSystem for node.js
+var readHTMLFile = function(path, callback) {
+  fs.readFile(path, { encoding: "utf-8" }, function(err, html) {
+    if (err) {
+      throw err;
+      callback(err);
+    } else {
+      callback(null, html);
+    }
+  });
+};
 
 const keyPublishable = constant.StripeKeyPublic;
 const keySecret = constant.StripeKeySecret;
 const stripe = require("stripe")(keySecret);
 
 
+// create reusable transporter object using the default SMTP transport
+var transporter = nodemailer.createTransport({
+  host: constant.SMTP_HOST,
+  port: constant.SMTP_PORT,
+  secure: false, // true for 465, false for other ports
+  auth: {
+    user: constant.SMTP_USERNAME, // generated ethereal user
+    pass: constant.SMTP_PASSWORD // generated ethereal password
+  }
+});
 
 getToken = function (headers) {
   if(headers && headers.authorization) {
@@ -107,7 +128,12 @@ const newTrades = (req, res) => {
 //Function to view all Trades
 const viewTrades = (req, res) => {
 	const id = req.params.id;
-	Trade.findById({_id:id}, (err, result) => {
+	Trade.findById({_id:id})
+	.populate({ path: "tradePitchProductId",populate:(["productCategory","userId"])})
+	.populate({ path: "tradeSwitchProductId", model: "Product",populate:(["productCategory","userId"])})
+	.populate({ path: "productImages", model: "Product"})
+	.populate({ path: "offerTradeId",populate:(["pitchUserId","SwitchUserId"]), model: "offerTrade"})
+	.exec((err, result) => {
     if (err) {
       return res.send({
         code: httpResponseCode.BAD_REQUEST,
@@ -278,7 +304,7 @@ const offerTrades = (req, res) => {
    if (token) {
     decoded = jwt.verify(token,settings.secret);
     var userId = decoded._id;
-    console.log("offerTrades userId",userId)
+  //  console.log("offerTrades userId",userId)
     //~ OfferTrade.find({'ditchCount': {$ne : "4"}}).or([{ 'status':0  }, { 'status': 3 }]).or([{ 'pitchUserId':userId  }, { 'SwitchUserId': userId }])
     
      OfferTrade.find({'status': 0}).or([{ 'pitchUserId':userId  }, { 'SwitchUserId': userId }])    
@@ -454,7 +480,7 @@ const completedTrades = (req, res) => {
       .exec(function(err, switchTradesIds) {
       //  console.log("switchTradesIds-userId",switchTradesIds,userId)
           if(err) return next(err);
-          Trade.find({offerTradeId: {$in: switchTradesIds},'status': 2}).populate({path:'offerTradeId',model:'offerTrade',populate:[{path:"pitchUserId",model:"User"},{path:"SwitchUserId",model:"User"},{path:"SwitchUserProductId",model:"Product"}]}).exec(function(err, switchedTrades) {
+          Trade.find({offerTradeId: {$in: switchTradesIds}}).or([{ 'status':3  }, { 'status': 2 }]).populate({path:'offerTradeId',model:'offerTrade',populate:[{path:"pitchUserId",model:"User"},{path:"SwitchUserId",model:"User"},{path:"SwitchUserProductId",model:"Product"}]}).exec(function(err, switchedTrades) {
               if(err)
                   return next(err)
                   //ok to send the array of mongoose model, will be stringified, each toJSON is called
@@ -1076,14 +1102,66 @@ const getReview = (req, res) => {
 	  } 
 }
 
+/** Auther	: Rajiv Kumar
+ *  Date	: Jan 22, 2019
+ */
+///function to the trade problem reported
+const getReportedProblem = (req, res) => {
+	var token = commonFunction.getToken(req.headers);
+     if(token) {
+		decoded = jwt.verify(token,settings.secret);
+		var userId = decoded._id;
+		
+	     TradeReturn.find({UserId:userId,TradeId:req.params.tradeId}, (err, result) => {
+			 if (err) {
+					return res.send({
+					code: httpResponseCode.BAD_REQUEST,
+					message: httpResponseMessage.INTERNAL_SERVER_ERROR
+					})
+				} else {
+				if (!result) {
+					res.json({
+					message: httpResponseMessage.USER_NOT_FOUND,
+					code: httpResponseMessage.BAD_REQUEST
+					});
+				} else {
+					return res.json({
+					code: httpResponseCode.EVERYTHING_IS_OK,
+					result: result
+					});
+				  }
+			  }
+          })   
+	  }else{
+		return res.send({
+			code: httpResponseCode.BAD_REQUEST,
+			message: httpResponseMessage.INTERNAL_SERVER_ERROR
+			})
+	  } 
+}
+
 /** Auther	: KS
  *  Date	: September 13, 2018
  */
 
 ///function to save new offer trade in the offerTrade collections
 const returnTrade = (req, res) => {
+	var userName='';
+	var token = commonFunction.getToken(req.headers);
+		if (token) {
+			decoded = jwt.verify(token, settings.secret); 
+			userName =   decoded.userName;
+		}
+		
    var form = new multiparty.Form();
-	form.parse(req, function(err, data, files) {
+	form.parse(req, function(err, data, files) {			
+		Trade.update({ _id:data.TradeId },  { "$set": { "status":3} }, (err,result) => {
+		if(err){
+			return res.send({
+				code: httpResponseCode.BAD_REQUEST,
+				message: httpResponseMessage.INTERNAL_SERVER_ERROR
+				})
+		}
 		TradeReturn.create(data, (err, result) => {
 			if (err) {
 					return res.send({
@@ -1104,6 +1182,40 @@ const returnTrade = (req, res) => {
 				 }
 			  }
           })
+         
+            host = req.get("host");            
+            readHTMLFile("src/views/emailTemplate/emailProblemReport.html", function(
+              err,
+              html
+            ) {
+              var template = handlebars.compile(html);
+              var replacements = {
+                tradeid: data.TradeId,
+                userName: userName.toUpperCase(),
+                description:data.Description,
+                proposedSolution:data.ProposedSolution
+              };
+              var htmlToSend = template(replacements);
+              // setup email data with unicode symbols
+              let mailOptions = {
+                from: constant.SMTP_FROM_EMAIL, // sender address
+                to:constant.ADMIN_EMAIL, // list of receivers
+                subject: "Problem Reported", // Subject line                
+                html: htmlToSend
+              };
+              // send mail with defined transport object
+              transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                  return res.json({
+					code: httpResponseCode.EVERYTHING_IS_OK,
+					message:"Email sending error",
+					error: error
+					});
+                }
+              });
+            });
+          
+        })
      });
 }
 
@@ -1458,6 +1570,7 @@ module.exports = {
   pitchedProductList,
   submitReview,
   getReview,
+  getReportedProblem,
   returnTrade,  
   switchedProduct,
   submitPitchAgain,

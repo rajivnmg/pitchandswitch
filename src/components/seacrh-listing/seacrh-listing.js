@@ -28,29 +28,34 @@ var FD = require("form-data");
 //var fs = require("fs");
 const treeData = [
   {
-    label: "month - 6 month",
-    value: "0-0",
+    label: "0 month - 6 month",
+    value: "1",
     key: "0-0"
   },
   {
     label: "6 month - 1 year",
-    value: "0-1",
+    value: "2",
     key: "0-1"
   },
   {
     label: "1 year - 2 year",
-    value: "0-2",
+    value: "3",
     key: "0-2"
   },
   {
     label: "2 year - 5 year",
-    value: "0-3",
+    value: "4",
     key: "0-3"
   },
   {
     label: "5 year - 10 year",
-    value: "0-4",
+    value: "5",
     key: "0-4"
+  },
+  {
+    label: "above 10 year",
+    value: "6",
+    key: "0-5"
   }
 ];
 //let catArr;

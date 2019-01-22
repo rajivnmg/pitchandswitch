@@ -24,7 +24,7 @@ class Trade extends Component {
   }
 
 	componentWillMount(){
-		axios.get('/trade/tradeStatus').then(result => {
+	  axios.get('/trade/tradeStatus').then(result => {
            this.setState({tradeStatus: result.data.result});
        });
 	   axios.get('/donation/getdonationshippingStatus').then(result => {

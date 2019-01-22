@@ -4,7 +4,7 @@ import "../slick.min.css";
 import { withRouter, NavLink } from "react-router-dom";
 import Logo from "../images/logo.png";
 //import Logo from "../images/PandS-logo-PNG-13.png";
-import userIMg from "../images/user-pic.png";
+import userIMg from "../images/default_user@1x.png";
 import CategoryMenu from "./categoryMenu";
 import jquery from "jquery";
 import { AutoComplete } from "antd";
@@ -24,7 +24,7 @@ import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
 import $ from 'jquery'
 import * as cmf from "./commonFunction";
 const constant = require("../config/constant");
-
+var fs = require("fs");
 const Option = AutoComplete.Option;
 const navHide = { display: "none" };
 library.add(faTag);
@@ -109,9 +109,7 @@ class Header extends Component {
                 localStorage.getItem("latitude"),
                 localStorage.getItem("longitude")
               ).then(
-                response => {
-					console.log("response",response)
-					
+                response => {					
                   const address =
                       (response.results[1].address_components[0].long_name +
                       ", " +
@@ -354,6 +352,12 @@ class Header extends Component {
       ));
     }
     let matchingData = this.state.notification_type;
+    
+     let userIhumb = userIMg;
+	  if(this.state.user && cmf.fsExistsSync(constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.user.profilePic)){
+			userIhumb = constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.user.profilePic;
+	   }
+    
     return (
       <header>
         <figure className="logo">
@@ -454,10 +458,10 @@ class Header extends Component {
           <Then>
             <nav className="after-login">
               <ul>
-                <li>
-                  <span className="pic">
-                    <img src={userIMg} alt={userIMg} />
-                  </span>
+                <li>				  
+					<span className="pic">
+						<img  height="40px" width="40px" src={userIMg} alt={userIMg} />				    
+					</span>                   
                   <a className="drop-arrow" href="#">
                     {this.Capitalize(this.state.user.userName.substring(0, 10))}
                   </a>
