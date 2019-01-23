@@ -194,8 +194,7 @@ class Register extends React.Component {
   }
 
   
-  componentDidMount(){	  
-	
+  componentDidMount(){	
 	axios.get('/location/listActiveCountry').then(result => {		
 			this.setState({countries:result.data.result}, () =>{
 					setTimeout(() => { this.initMap();},1000);

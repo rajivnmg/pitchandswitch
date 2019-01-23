@@ -39,9 +39,10 @@ class Header extends Component {
         email: "",
         lastName: "",
         middleName: "",
-        profilePic: "",
+        profilePic:"",
         userName: ""
       },
+      userProfilePic:userIMg,
       notifications: 0,
       notifications: [],
       result: [],
@@ -178,11 +179,18 @@ class Header extends Component {
 
   componentWillMount() {
     if (localStorage.getItem("jwtToken") !== null) {
+		
       axios.get("/user/getLoggedInUser").then(result => {
         if (result.data.code === 200) {
           this.setState({
-            user: result.data.result
-          });
+            user: result.data.result,            
+          });          
+          if(constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.user.profilePic){			 
+			this.setState({
+				userProfilePic: constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.user.profilePic
+			});
+		   }
+		   
           localStorage.setItem("loggedInUser", result.data.result._id);
           localStorage.setItem("userId", result.data.result._id);
           localStorage.setItem("userEmail", result.data.result.email);
@@ -272,8 +280,7 @@ class Header extends Component {
       let width = window.innerWidth;
     
 				
-				if (width < 1025) {
-       
+				if (width < 1025) {       
 							 jquery(".drop-arrow").click(function() {
         jquery(this).next().slideToggle();
          
@@ -353,10 +360,10 @@ class Header extends Component {
     }
     let matchingData = this.state.notification_type;
     
-     let userIhumb = userIMg;
-	  if(this.state.user && cmf.fsExistsSync(constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.user.profilePic)){
-			userIhumb = constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.user.profilePic;
-	   }
+	  //~ if(this.state.user && cmf.fsExistsSync(constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.user.profilePic)){
+			//~ userIhumb = constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.user.profilePic;
+			
+	   //~ }
     
     return (
       <header>
@@ -451,7 +458,7 @@ class Header extends Component {
           >
             &nbsp;
           </button>
-          <div className="cl" />
+          <div className="cl"/>
           {this.state.value}
         </div>
         <If condition={localStorage.getItem("isLoggedIn") == "1"}>
@@ -460,7 +467,7 @@ class Header extends Component {
               <ul>
                 <li>				  
 					<span className="pic">
-						<img  height="40px" width="40px" src={userIMg} alt={userIMg} />				    
+						<img  height="35px" width="35px" src={this.state.userProfilePic} alt={''} />				    
 					</span>                   
                   <a className="drop-arrow" href="#">
                     {this.Capitalize(this.state.user.userName.substring(0, 10))}

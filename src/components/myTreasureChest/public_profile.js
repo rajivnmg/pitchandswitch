@@ -74,7 +74,10 @@ class publicProfile extends Component {
 
   render() {
 	  let userIhumb = userPicture;
-	  if(fsExistsSync(constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.publicProfile.profilePic)){
+	  //~ if(fsExistsSync(constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.publicProfile.profilePic)){
+			//~ userIhumb = constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.publicProfile.profilePic;
+	   //~ }
+	    if(constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.publicProfile.profilePic){
 			userIhumb = constant.BASE_IMAGE_URL + "ProfilePic/" + this.state.publicProfile.profilePic;
 	   }
     return (
@@ -91,10 +94,11 @@ class publicProfile extends Component {
             </div>
             <div className="details">
               <h2>
-                {this.state.publicProfile
+                {(this.state.publicProfile && this.state.publicProfile.firstName !==undefined)
                   ? this.state.publicProfile.firstName
-                  : ""(this.state.publicProfile)
-                  ? this.state.publicProfile.lastName
+                  : ""}
+                {(this.state.publicProfile && this.state.publicProfile.firstName !==undefined)
+                  ? " "+this.state.publicProfile.lastName
                   : ""}
               </h2>
               <p className="date">

@@ -119,9 +119,8 @@ class settingProfile extends Component {
     const regForm = { ...this.state.registerForm };
     regForm.latitude = "";
     regForm.longitude = "";
-
     this.setState({ registerForm: regForm });
-    this.setState({ address });
+    this.setState({ address: address });
   };
 
   handleChangeCountry = event => {
@@ -163,18 +162,12 @@ class settingProfile extends Component {
   };
   deactivateAccount = e => {
     e.preventDefault();
-
     this.setState({
       modalStatus: true
     });
   };
 
-  initMap = () => {
-    this.setState({
-      gmapsLoaded: true
-    });
-  };
-
+ 
   submitHandler = e => {
     e.preventDefault();
     const data = new FD();
@@ -182,12 +175,14 @@ class settingProfile extends Component {
     for (let key in profileForm) {
       if (profileForm.hasOwnProperty(key)) {
         //console.log("profileForm[key]", profileForm[key]);
-        if (profileForm[key] !== "") {
+        if (profileForm[key] !== "") {		  
           if (profileForm[key] instanceof File) data.set(key, profileForm[key]);
-          else data.set(key, profileForm[key].toString());
+          else data.set(key, profileForm[key].toString());   
+                         
+          if(key === "address") data.set(key, this.state.address)
         }
       }
-    }
+    }    
     axios
       .post("/user/updateUser", data)
       .then(result => {
@@ -220,47 +215,57 @@ class settingProfile extends Component {
     setTimeout(() => {
       this.setState({ showFormSuccess: false, showFormError: false });
     }, 12000);
-    axios
-      .post("/user/updateUser", data)
-      .then(result => {
-        if (result.data.code == 200) {
-          this.setState({
-            message: result.data.message,
-            code: result.data.code,
-            showFormSuccess: true,
-            showFormError: false
-          });
-          window.scrollTo(0, 0);
-        } else {
-          this.setState({
-            message: result.data.message,
-            code: result.data.code,
-            showFormError: true,
-            showFormSuccess: false
-          });
-        }
-      })
-      .catch(error => {
-        if (!error.status) {
-          this.setState({
-            showFormError: true,
-            showFormSuccess: false,
-            message: "Error in process, Please try again."
-          });
-        }
-      });
-    setTimeout(() => {
-      this.setState({ showFormSuccess: false, showFormError: false });
-    }, 12000);
+    //~ axios
+      //~ .post("/user/updateUser", data)
+      //~ .then(result => {
+        //~ if (result.data.code == 200) {
+          //~ this.setState({
+            //~ message: result.data.message,
+            //~ code: result.data.code,
+            //~ showFormSuccess: true,
+            //~ showFormError: false
+          //~ });
+          //~ window.scrollTo(0, 0);
+        //~ } else {
+          //~ this.setState({
+            //~ message: result.data.message,
+            //~ code: result.data.code,
+            //~ showFormError: true,
+            //~ showFormSuccess: false
+          //~ });
+        //~ }
+      //~ })
+      //~ .catch(error => {
+        //~ if (!error.status) {
+          //~ this.setState({
+            //~ showFormError: true,
+            //~ showFormSuccess: false,
+            //~ message: "Error in process, Please try again."
+          //~ });
+        //~ }
+      //~ });
+    //~ setTimeout(() => {
+      //~ this.setState({ showFormSuccess: false, showFormError: false });
+    //~ }, 12000);
+  };
+	
+  initMap = () => {
+    this.setState({
+      gmapsLoaded: true
+    });
   };
 
-  componentWillMount() {
+
+  componentDidMount() {	 
     if (localStorage.getItem("jwtToken") !== null) {
       axios.get("/user/myProfle").then(result => {
         if (result.data.code === 200) {
           const profileForm = { ...this.state.profileForm };
           const form = { _id: null, ...this.form };
-          for (let key in form) {
+          for (let key in form) {			  
+			  if(key === "address"){
+				  this.setState({address:result.data.result[0][key]})
+			  }
             profileForm[key] = result.data.result[0][key]
               ? result.data.result[0][key]
               : "";
@@ -300,7 +305,9 @@ class settingProfile extends Component {
     }
 
     axios.get("/location/getLocation").then(result => {
-      this.setState({ countries: result.data.result });
+      this.setState({ countries: result.data.result }, () =>{
+			setTimeout(() => { this.initMap();},2000);
+		});
     });
   }
 
@@ -459,6 +466,8 @@ class settingProfile extends Component {
                               this.state.profileForm.profilePic
                             }
                             alt=""
+                            height="100px"
+                            width="100px"
                           />{" "}
                           {profileImageCropper}
                         </div>
@@ -578,12 +587,16 @@ class settingProfile extends Component {
 
                       <div className="form-row">
                         <div className="colum">
-                          {this.state.gmapsLoaded && (
+                         <label className="label" htmlFor={"address1"}>
+                            Address Line 1:
+                          </label>
+                         {this.state.gmapsLoaded && (
                             <PlacesAutocomplete
                               value={this.state.address}
                               onChange={this.handleChange}
                               onSelect={this.handleSelect}
                               name={"address"}
+                              id={"address"}
                             >
                               {({
                                 getInputProps,
@@ -600,6 +613,7 @@ class settingProfile extends Component {
                                     })}
                                     onBlur={this.formatEndpoint}
                                     required={true}
+                                    
                                   />
                                   <div className="autocomplete-dropdown-container">
                                     {loading && <div>Loading...</div>}
