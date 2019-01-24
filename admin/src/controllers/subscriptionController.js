@@ -17,7 +17,6 @@ const app = require("express")();
 const keyPublishable = constant.StripeKeyPublic;
 const keySecret = constant.StripeKeySecret;
 const stripe = require("stripe")(keySecret);
-
 const http = require("http");
 const path = require("path");
 const fs = require("fs"); //FileSystem for node.js
@@ -62,7 +61,7 @@ const create = (req, res) => {
       let now = new Date();
 
       Subscription.create(req.body, (err, result) => {
-		  console.log('RES-Subscription',err, result);
+		 
         if (err) {
           return res.send({
 			errr : err,
@@ -408,7 +407,7 @@ const listAddon = (req, res) => {
 **/
 const viewAddon = (req, res) => {
 	const id = req.params.id;
-	console.log('<<<<<<<<<<<packageName>>>>',id);
+	//console.log('<<<<<<<<<<<packageName>>>>',id);
 	Addon.findById({_id:id}, (err, result) => {
     if (err) {
       return res.send({
@@ -485,7 +484,7 @@ const deleteAddon = (req, res) => {
  **/
 //Function to update the Addon status.
 const updateStatus = (req, res) => {
- console.log("REQ0",req.body)
+ 
   Addon.update({ _id:req.body._id },  { "$set": { "status": req.body.status } }, { new:true }, (err,result) => {
     if(err){
 		return res.send({
@@ -524,8 +523,6 @@ const getActiveAddons = (req, res) => {
 			 });
     });
 }
-
-
 
 /** Auther	: Rajiv Kumar
  *  Date	: October 08, 2018

@@ -64,6 +64,7 @@ var transporter = nodemailer.createTransport({
     pass: constant.SMTP_PASSWORD // generated ethereal password
   }
 });
+
 /** Auther	: Rajiv Kumar
  *  Date	: June 18, 2018
  *	Description : Function to create a new user
@@ -363,9 +364,7 @@ const userSignup = (req, res) => {
  *  Date	: June 18, 2018
  *	Description : Function to verify user and login
  **/
-const login = (req, res) => {
-	console.log('req',req.body.email)
-  
+const login = (req, res) => {	 
   if (!req.body.email && !req.body.password) {
     return res.json({
       code: httpResponseCode.BAD_REQUEST,
@@ -461,7 +460,8 @@ const login = (req, res) => {
                 code: httpResponseCode.EVERYTHING_IS_OK,
                 message: httpResponseMessage.LOGIN_SUCCESSFULLY,
                 result: result,
-                token: token
+                token: token,
+                expiresIn:constant.SESSION_EXPIRE
               });
             } else {
               return res.json({
@@ -1946,7 +1946,7 @@ getPublicProfile = (req, res) => {
 getReviews = (req, res) => {
   if (req.params.id) {
     var userId = req.params.id;
-    UserTradeRating.find({ userId: userId })
+    UserTradeRating.find({ submitUserId:{ $ne: userId }})
       .populate({ path: "submitUserId", model: "User" })
       .exec(function(err, userviews) {
         // Don't forget your error handling

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import * as ActionTypes from "../../store/actionTypes";
 import Style from './login.css';
 import loginIcon from '../../images/login-page-icon.png';
 import { Link,Redirect } from 'react-router-dom';
@@ -17,7 +19,11 @@ class Logout extends React.Component {
      localStorage.setItem('isLoggedIn',0);
      localStorage.removeItem('userId');
 	 localStorage.removeItem('userEmail');
-	 localStorage.removeItem('userName');   	 	
+	 localStorage.removeItem('userName');  
+	 this.props.setAuthentication({
+	  isAuthenticated: false,
+	  username: ''
+	 });
   }
  
   render() {	   
@@ -27,6 +33,20 @@ class Logout extends React.Component {
       </div>
     );
   }
-}
- 
-export default Logout;
+} 
+const mapStateToProps = null;
+const mapDispatchToProps = dispatch => {
+  return {
+	  setAuthentication: logout => {
+		return dispatch({
+			type: ActionTypes.SET_AUTHENTICATION,
+			payload: logout
+		  })
+	  }
+  }
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Logout);
+

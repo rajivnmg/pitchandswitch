@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import "../slick.min.css";
+import moment from "moment";
 import { withRouter, NavLink } from "react-router-dom";
 import Logo from "../images/logo.png";
 //import Logo from "../images/PandS-logo-PNG-13.png";
@@ -165,6 +166,7 @@ class Header extends Component {
     localStorage.removeItem("userId");
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userName");
+    localStorage.removeItem("expirationTime");    
     this.props.history.push("/login");
   };
   searchHandler = () => {
@@ -176,10 +178,30 @@ class Header extends Component {
     this.setState({ searchData: category._id, title: category.title });
     return true;
   };
+	
+  componentWillReceiveProps(newProps) {
+	if (localStorage.getItem("jwtToken") !== null) {	
+		setTimeout(() => {
+		  console.log('HERE in settimeout', parseInt(localStorage.getItem("expirationTimestamp"))*1000)	
+		  if(moment().toDate().getTime() > localStorage.getItem("expirationTime")){
+			  this.props.history.push("/logout");
+		  }
+	  }, parseInt(localStorage.getItem("expirationTimestamp"))*1000);
+	 }
+  }
 
   componentWillMount() {
-    if (localStorage.getItem("jwtToken") !== null) {
-		
+    if (localStorage.getItem("jwtToken") !== null) {	
+		console.log('HEREREH', moment().toDate().getTime() > localStorage.getItem("expirationTime"));
+	  if(moment().toDate().getTime() > localStorage.getItem("expirationTime")){
+		  this.props.history.push("/logout");
+	  }
+	  setTimeout(() => {
+		  console.log('HERE in settimeout', parseInt(localStorage.getItem("expirationTimestamp"))*1000)	
+		  if(moment().toDate().getTime() > localStorage.getItem("expirationTime")){
+			  this.props.history.push("/logout");
+		  }
+	  }, parseInt(localStorage.getItem("expirationTimestamp"))*1000);
       axios.get("/user/getLoggedInUser").then(result => {
         if (result.data.code === 200) {
           this.setState({
@@ -216,7 +238,7 @@ class Header extends Component {
         }
       });
     }else{
-         $.ajax('http://ip-api.com/json')
+		 $.ajax('http://ip-api.com/json')
 		  .then(
 			  function success(response) {
 				  //console.log('User\'s Location Data is ', response);
@@ -461,7 +483,7 @@ class Header extends Component {
           <div className="cl"/>
           {this.state.value}
         </div>
-        <If condition={localStorage.getItem("isLoggedIn") == "1"}>
+        <If condition={this.props.isAuthenticated}>
           <Then>
             <nav className="after-login">
               <ul>
@@ -470,7 +492,7 @@ class Header extends Component {
 						<img  height="35px" width="35px" src={this.state.userProfilePic} alt={''} />				    
 					</span>                   
                   <a className="drop-arrow" href="#">
-                    {this.Capitalize(this.state.user.userName.substring(0, 10))}
+                    {this.Capitalize(this.props.username.substring(0, 10))}
                   </a>
                   <ul className="dashboard-subnav mob_dash">
                     <li>
@@ -581,7 +603,9 @@ const mapStateToProps = state => {
   return {
     catId: state.searchListingReducer.category_id,
     lat: state.searchListingReducer.latitude,
-    long: state.searchListingReducer.longitude
+    long: state.searchListingReducer.longitude,
+    isAuthenticated: localStorage.getItem("jwtToken")?true:(state.appReducer.isAuthenticated),
+    username: (localStorage.getItem('userName'))?localStorage.getItem('userName'):state.appReducer.username
   };
 };
 const mapDispatchToProps = dispatch => {

@@ -188,7 +188,8 @@ const mapStateToProps = state => {
   return {
     catId: state.searchListingReducer.category_id,
     lat: state.searchListingReducer.latitude,
-    long: state.searchListingReducer.longitude
+    long: state.searchListingReducer.longitude,
+    isAuthenticated: state.appReducer.isAuthenticated
   };
 };
 

@@ -1,9 +1,12 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import * as ActionTypes from "../../store/actionTypes";
 import Style from "./login.css";
 import loginIcon from "../../images/login-page-icon.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Aux from "../../hoc/Auxillary";
+import moment from "moment";
 /**
  * A custom Form component that handles form validation errors.
  * It executes the form's checkValidity
@@ -102,7 +105,7 @@ class Form extends Component {
     );
   }
 }
-class Register extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -170,14 +173,20 @@ class Register extends React.Component {
         if (result.data.code === 200) {
           //localStorage.setItem("jwtToken", result.data.token);
           this.setState({ message: "" });
-          console.log("result",result.data.result)
-          if (result.data.result.subscriptionStatus === "0") {
+          this.props.setAuthentication({isAuthenticated:true, username: result.data.result.userName});
+          console.log("LOGIN RESULT ",result.data)
+          const expirationTime = moment().toDate().getTime() + parseInt(result.data.expiresIn) * 1000;
+			localStorage.setItem("expirationTime", expirationTime);
+			localStorage.setItem("expirationTimestamp", result.data.expiresIn);
+          if (result.data.result.subscriptionStatus === "0") {			
 			localStorage.setItem('userId',result.data.result._id);
 			localStorage.setItem('userName',result.data.result.userName);
-            window.location.href = "/subscription";
-          } else {
+            //window.location.href = "/subscription";
+            this.props.history.push('/subscription');            
+          } else {			  
 			localStorage.setItem("jwtToken", result.data.token);
-            window.location.href = "/dashboard";
+            //window.location.href = "/dashboard";
+            this.props.history.push('/dashboard');
           }
           //this.props.history.push('/dashboard');
         } else if (result.data.code === 403) {
@@ -346,4 +355,23 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.appReducer.isAuthenticated
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+	  setAuthentication: isAuthenticated => {
+		return dispatch({
+			type: ActionTypes.SET_AUTHENTICATION,
+			payload: isAuthenticated
+		  })
+	  }
+  }
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

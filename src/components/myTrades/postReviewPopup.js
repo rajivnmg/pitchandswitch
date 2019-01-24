@@ -6,6 +6,7 @@ import ReactStars from "react-stars";
 import axios from "axios";
 import { If, Then, Else ,ElseIf} from "react-if-elseif-else-render";
 import successPic from "../../images/successful_img.png";
+import { withRouter } from "react-router-dom";
 //import $ from 'jquery';
 //import { Badge, Button, ButtonDropdown, Form, FormGroup, FormText, FormFeedback, Input} from "reactstrap";
 var FD = require("form-data");
@@ -44,6 +45,7 @@ class postReviewPopup extends Component {
         }
       }
     };
+    console.log('Post review popup', this.props);
   }	
   componentDidMount(){
 	  axios.get('trade/getReview/'+this.props.offerTrade._id).then(result =>{
@@ -91,10 +93,7 @@ class postReviewPopup extends Component {
       const data = new FD();
       data.append("comment", this.state.comments);
       data.append("review", this.state.review);
-      data.append(
-        "submitUserId",
-        this.state.offerTrade.offerTradeId.SwitchUserId._id
-      );
+      data.append("submitUserId",localStorage.getItem('userId'));
       data.append("userId", this.state.offerTrade.offerTradeId.pitchUserId._id);
       data.append("tradeId", this.state.offerTrade._id);
      
@@ -108,9 +107,8 @@ class postReviewPopup extends Component {
             isProcess: false
           });
           setTimeout(() => {
-            this.setState({ showFormError: false, showFormSuccess: false });           
-             window.location.href='/my-trades';
-            //this.props.history.push("/my-trades");
+            this.setState({ showFormError: false, showFormSuccess: false });                       
+            this.props.history.push("/my-trades");
           }, 3000);
         }
       });
@@ -123,7 +121,7 @@ class postReviewPopup extends Component {
       boxClass.push("active");
     }
     return (
-      <Popup
+     <Popup
         trigger={<a className="TradeInfobtn"> Post Review </a>}
         modal
         contentStyle={contentStyle}
@@ -225,4 +223,4 @@ class postReviewPopup extends Component {
   }
 }
 
-export default postReviewPopup;
+export default withRouter(postReviewPopup);
