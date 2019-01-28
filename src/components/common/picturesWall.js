@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Upload, Icon, Modal }  from 'antd';
+import ImgCrop from 'antd-img-crop';
 import moment from 'moment';
 import './picturesWall.css';
 // import 'antd/dist/antd.css';
@@ -44,6 +45,7 @@ class PicturesWall extends React.Component {
     );
     return (
       <div className="clearfix">
+      <ImgCrop>
         <Upload
           action={constant.BASE_SERVER_URL+"/product/tepmUpload/"}
           listType="picture-card"
@@ -54,6 +56,7 @@ class PicturesWall extends React.Component {
         >
           {fileList.length >= 4 ? null : uploadButton}
         </Upload>
+        </ImgCrop>
         <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
         </Modal>

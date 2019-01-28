@@ -3,7 +3,8 @@ import ImageGallery from 'react-image-gallery';
 import "../../../node_modules/react-image-gallery/styles/css/image-gallery.css";
 import axios from 'axios';	
 const constant = require('../../config/constant')
-const PREFIX_URL = 'http://newmediaguru.co/html/pitchandswitch/gallery/';
+const PREFIX_URL = constant.BASE_IMAGE_URL+'Products/';
+var basicIMG = `${constant.BASE_IMAGE_URL}`; 
 class ThumbGallery extends React.Component {
 
   constructor(props) {
@@ -25,25 +26,16 @@ class ThumbGallery extends React.Component {
       showVideo: {},
       resultData: "",
       mainImages: "default_product_img@3x.png",
-      productImagesResult:"",
+      productImagesResult:[],
       imageLoaded : false     
     };
-    console.log("galleriesImg",this.props)
+   
   }
   
  
   componentWillMount(){		
-	  let basicIMG = `${constant.BASE_IMAGE_URL}`; 
-	  let imgD = '' 	  
-	  console.log('imgases',this.props)
-	     axios.get('/product/productDetails/'+ this.props.galleriesID).then(results => {	
-			this.setState({mainImages:results.data.result?results.data.result.productImages[0]:"",imageLoaded:true});					
-		})
-	     axios.get('/product/productImages/'+ this.props.galleriesID).then(results => {	
-			this.setState({productImagesResult:results.data.result});			
-		})   
-		
-		this.images = [
+	  
+	  this.images = [
 			  {
 				//original: basicIMG+this.state.mainImages,
 				original: basicIMG+'Products/'+this.props.galleriesImg,
@@ -56,6 +48,26 @@ class ThumbGallery extends React.Component {
 				//~ thumbnailClass: 'featured-thumb'      
 			  //~ },
 			].concat(this._getStaticImages());
+			
+	}  
+  componentDidMount(){	
+	  let imgD = '' 	  	  
+		axios.all([
+			axios.get('/product/productDetails/'+ this.props.galleriesID),
+			axios.get('/product/productImages/'+ this.props.galleriesID)
+		]).then(axios.spread((results, resultsImg) => {
+			this.setState({mainImages:results.data.result?results.data.result.productImages[0]:"",imageLoaded:true,productImagesResult:resultsImg.data.result}, () => {console.log('IIIIII', resultsImg.data.result)});			
+			resultsImg.data.result.map((img) => {
+				console.log("img",img)
+				this.images.push({
+				original: basicIMG+'Products/'+img.imageName,
+				thumbnail:basicIMG+'Products/'+img.imageName
+				})
+			});
+				
+		}))
+		//.then(response => this.setState({ vehicles: response.data }))
+		.catch(error => console.log(error));
 	}
   
   
@@ -105,13 +117,13 @@ class ThumbGallery extends React.Component {
   }
 
   _getStaticImages() {
-    let images = []; 
-     for (let i = 2; i < 3; i++) {
-      images.push({
-        original: `${PREFIX_URL}${i}.jpg`,
-        thumbnail:`${PREFIX_URL}${i}t.jpg`
-      });
-    }
+     let images = []; 
+     //~ for (let i = 2; i < 3; i++) {
+      //~ images.push({
+        //~ original: `${PREFIX_URL}${i}.jpg`,
+        //~ thumbnail:`${PREFIX_URL}${i}.jpg`
+      //~ });
+    //~ }
 
     return images;
   }

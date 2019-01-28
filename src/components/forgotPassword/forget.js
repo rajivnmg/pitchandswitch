@@ -1,19 +1,21 @@
 import React, { Component } from 'react';
 import forgetIcon from '../../images/forget-icon.png';
 import { Link } from 'react-router-dom';
+import {Form, Icon, Input, Button } from 'antd';
 import axios from 'axios';
+import "../error.css";
 /**
  * A custom Form component that handles form validation errors.
  * It executes the form's checkValidity
  **/
-class Form extends React.Component {
+/*class Form extends React.Component {
 	constructor() {
     super();
     this.email = React.createRef();    
     this.state = {
 	forgotForm: {
 			email : ''
-		},        
+	  },        
       message: '',
       code:9999,
       showFormSuccess : false,
@@ -67,7 +69,7 @@ class Form extends React.Component {
       delete props.className;
     }
     if (this.state.isValidated) {
-      classNames.push("was-validated");
+		classNames.push("was-validated");
     }
     return (
       <form
@@ -81,7 +83,7 @@ class Form extends React.Component {
       </form>
     );
   }
-}
+}*/
 class Forget extends React.Component {
     constructor(props){
     super(props);
@@ -91,8 +93,7 @@ class Forget extends React.Component {
     }
     this.showHide = this.showHide.bind(this);
   
-  }
-  
+  }  
   showHide(e){
     e.preventDefault();
     e.stopPropagation();
@@ -116,14 +117,15 @@ class Forget extends React.Component {
     updatedFormElement.touched = true;
     updatedForm[inputIdentifier] = updatedFormElement;    
     this.setState({ forgotForm: updatedForm }, function(){console.log(this.state.forgotForm)});
-  };
-  
-  
-  submit = () => {	
+  };    
+  submit = (e) => {	
+	  e.preventDefault();
+	  console.log('HERERERE', e);
+	  this.props.form.validateFields((err, values) => {
+      if (!err) {
 		const email = this.state.forgotForm.email.value;
 		axios.post('/user/forgotPasswordWeb', { email: email, userType: '0'})
-		  .then((result) => {
-			console.log('Forget password result', result)
+		  .then((result) => {			
 			if(result.data.code ==200){
 			  localStorage.setItem('jwtToken', result.data.result.accessToken);         
 			  this.setState({
@@ -148,61 +150,57 @@ class Forget extends React.Component {
 				// network error
 			}
 		  });   
-    setTimeout(() => {this.setState({showFormSuccess: false,showFormError: false});}, 12000)
+		setTimeout(() => {this.setState({showFormSuccess: false,showFormError: false});}, 12000)
+	  }
+    });
   }
-  _renderSuccessMessage() {
-    return (
-      <div className={"alert alert-success mt-4"} role="alert">
-		Reset Password link has been sent successfully to your registered email address,! Please Check Your Mail To Reset Password     
-      </div>
-    );
-  }
-   _renderErrorMessage() {
-    return (
-      <div align="center" className={"alert alert-danger mt-4"} role="alert">
-        Oops! Something Went wrong!!!
-      </div>
-    );
-  }
+  //~ _renderSuccessMessage() {
+    //~ return (
+      //~ <div className={"alert alert-success mt-4"} role="alert">
+		//~ Reset Password link has been sent successfully to your registered email address,! Please Check Your Mail To Reset Password     
+      //~ </div>
+    //~ );
+  //~ }
+   //~ _renderErrorMessage() {
+    //~ return (
+      //~ <div align="center" className={"alert alert-danger mt-4"} role="alert">
+        //~ Oops! Something Went wrong!!!
+      //~ </div>
+    //~ );
+  //~ }
   render() {
+	  const { getFieldDecorator } = this.props.form;
     return (
             <div className="login-container">
         <div  className="container">
            <p className="Backs"><Link to={"/"} className="backBtn">Back to Home </Link></p>
         <div className="cl"></div>
-          <div className="login">          
-          
-            <div className="form-row login-row">
-                                <img className='login-icon' src={forgetIcon} alt="" />
-                                <h3>Forget</h3>
-                                <p>Provide your registered email address</p>
-                            </div>
-             
-              <Form submit={this.submit}>
-					{this.state.showFormSuccess ? this._renderSuccessMessage() : null}
+          <div className="login">   
+			<div className="form-row login-row">
+				<img className='login-icon' src={forgetIcon} alt="" />
+				<h3>Forget</h3>
+				<p>Provide your registered email address</p>
+			</div>
+              <Form onSubmit={this.submit}>
+				   {this.state.showFormSuccess ? this._renderSuccessMessage() : null}
                    {this.state.showFormError ? this._renderErrorMessage() : null}
+                   
+                   
                 <div className="form-row">
                 <div className="invalid-feedback validation" > </div><span className="astrik">*</span>
+				  
                   <label className="label" htmlFor={"email"} >Email Address </label>
-                  <input
-                    id={"email"}
-                    className={"form-control textBox"}
-                    required={true}
-                    name={"email"}
-                    type={"email"}
-                    onChange={(e) => this.inputChangedHandler(e, 'email')}
-                    placeholder="Enter your email address"
-                    />
+                  <Form.Item>
+          {getFieldDecorator('email', {
+            rules: [{ required: true, message: 'Please enter a valid email!' }],
+          })(
+            <Input name={"email"} onChange={(e) => this.inputChangedHandler(e, 'email')} placeholder="Enter your email address" />
+          )}
+        </Form.Item>
                 </div>
-                               <div className="form-row">
-                    <button
-                      type={"submit"}
-                      className={"submitBtn"}
-                      >
-                   Submit
-                    </button>
-                  </div>
-					
+                   <div className="form-row">
+                    <Button type="primary" className={"submitBtn"} htmlType="Submit">Submit</Button>
+                  </div>					
               </Form>
             
           
@@ -214,5 +212,5 @@ class Forget extends React.Component {
     );
   }
 }
- 
-export default Forget;
+const WrappedNormalLoginForm = Form.create({ name: 'normal_forget' })(Forget);
+export default WrappedNormalLoginForm;

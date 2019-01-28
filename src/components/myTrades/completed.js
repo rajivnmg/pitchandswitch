@@ -8,7 +8,7 @@ import { Alert } from 'antd';
 import {Link} from 'react-router-dom';
 import {letterCaps} from "../commonFunction";
 const moment = require('moment-timezone');
-
+const constant = require("../../config/constant");
 class Completed extends React.Component {
     TrackHandler = (id) => {
         let pitches = this.state.pitches;
@@ -66,7 +66,7 @@ class Completed extends React.Component {
 		}
 		
 		let userId = ((send===1)?(pitch.offerTradeId && pitch.offerTradeId.SwitchUserId)?letterCaps(pitch.offerTradeId.SwitchUserId._id):0:(pitch.offerTradeId && pitch.offerTradeId.pitchUserId)?letterCaps(pitch.offerTradeId.pitchUserId._id):0);
-		var startDate = moment().subtract(30, 'days').format('YYYY/MM/DD');
+		var startDate = moment().subtract(constant.RETURN_EXPIRY, 'days').format('YYYY/MM/DD');
 		var currentData = moment().format('YYYY/MM/DD'); 		 
 		return (<div className="pitch-row" key={index}>
 		  <div className="pitch-div">
@@ -81,9 +81,9 @@ class Completed extends React.Component {
 				   <Then>
 					 <div className="colum action"><ReturnInfo offerTrade={pitch}/></div>
 				   </Then>
-				   {/*<Else>
-				     <div className="colum action">Time Exceed</div>
-				   </Else>*/}
+				   <Else>
+				     <div className="colum action">Return Time Expired</div>
+				   </Else>
 				</If>
 			</div>
 			{(pitch.trackStatus) ? <div className="statusTrack"><img src={statusTrack} /></div> : ''}

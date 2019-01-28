@@ -143,7 +143,7 @@ const create = (req, res) => {
                 if ((files.productImages) && files.productImages.length > 0 && files.productImages != '') {
                     var fileName = files.productImages[0].originalFilename;
                     var ext = path.extname(fileName);
-                    var newfilename = files.productImages[0].fieldName + '-' + Date.now() + ext;
+                    var newfilename = files.productImages[0].fieldName + '-' + new Date().getUTCSeconds() + ext;
                     fs.readFile(files.productImages[0].path, function (err, fileData) {
                         if (err) {
                             //res.send(err);
@@ -1160,15 +1160,16 @@ const productDetails = (req, res) => {
  *	Description : Function to search product listing
  **/
 const productImages = (req, res) => {
-    const id = mongoose.mongo.ObjectId(req.params.id);
+    const id = mongoose.mongo.ObjectId(req.params.id);    
     ProductImage.find({productId: id})
-            .exec(function (err, result) {
+            .exec(function (err, result) {				
+				
                 if (err) {
                     return res.send({
                         code: httpResponseCode.BAD_REQUEST,
                         message: httpResponseMessage.INTERNAL_SERVER_ERROR
                     })
-                } else {
+                } else {					
                     if (!result) {
                         res.json({
                             message: httpResponseMessage.USER_NOT_FOUND,

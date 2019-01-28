@@ -9,6 +9,7 @@ router.post('/signup',userController.signup);
 router.post('/userSignup',userController.userSignup);
 router.post('/login',userController.login);
 router.get('/users/:page', userController.users);
+router.get('/filterUser/:searchKey', userController.filterUserByKey);
 router.post('/sortingUsers', userController.sortingUsers);
 router.get('/listUser', userController.listUser);
 router.get('/viewUser/:id',userController.viewUser);

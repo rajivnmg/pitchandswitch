@@ -501,7 +501,13 @@ const forgotPassword = (req, res) => {
           message: httpResponseMessage.INTERNAL_SERVER_ERROR
         });
       } else {
-
+		if(!result){			
+			return res.json({
+				code: httpResponseCode.BAD_REQUEST,
+				message: httpResponseMessage.USER_NOT_FOUND
+			});
+		}
+		
         let transporter = nodemailer.createTransport({
           host: constant.SMTP_HOST,
           port: constant.SMTP_PORT,
@@ -872,6 +878,66 @@ const users = (req, res) => {
     return res.status(403).send({ code: 403, message: "Unauthorized." });
   }
 };
+
+//Auther	: Rajiv Kumar Date	: Jan 22, 2019
+//Description : Function to list the natch users 
+
+const filterUserByKey = (req, res) => {
+  var token = commonFunction.getToken(req.headers);   
+  if (token) {
+    var perPage = constant.PER_PAGE_RECORD;
+    var page = req.params.page || 1;
+
+    User.aggregate([
+	{ $match: { 
+			  $or: [{ 
+				userName: req.params.searchKey
+			  }, { 
+				email: req.params.searchKey
+			  }] 
+		}
+	 },
+      {
+        $lookup: {
+          from: "userSubscription",
+          localField: "_id",
+          foreignField: "userId",
+          as: "subscriptionPlan"
+        }
+      },
+      {
+        $lookup: {
+          from: "flagUser",
+          localField: "flagTo",
+          foreignField: "_id",
+          as: "userFlag"
+        }
+      },
+      { $sort: { firstName: -1 } }
+    ])   
+     // .skip(perPage * page - perPage)
+     // .limit(perPage)     
+      .sort({ createdAt: -1 })     
+      .exec(function(err, users) {
+       
+          if (err) return next(err);
+          return res.json({
+            code: httpResponseCode.EVERYTHING_IS_OK,
+            message: httpResponseMessage.SUCCESSFULLY_DONE,
+            result: users,
+            total: users.lenght,
+            current: page,
+            perPage: perPage,
+            pages: Math.ceil(users.lenght / perPage)
+          });
+        
+      });
+  } else {
+    return res.status(403).send({ code: 403, message: "Unauthorized." });
+  }
+};
+
+
 
 //Auther	: KS Date	: August 28, 2018
 //Description : Function to list the available users with pagination
@@ -1978,6 +2044,7 @@ module.exports = {
   changeUserStatus,
   deleteUser,
   users,
+  filterUserByKey,
   contustUs,
   //send,
   getLoggedInUser, 

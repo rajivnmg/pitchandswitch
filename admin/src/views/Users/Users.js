@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../../custom.css';
 import {Link} from 'react-router-dom';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
 import axios from 'axios';
@@ -8,6 +9,7 @@ import { Badge} from 'reactstrap';
 import ReactPaginate from 'react-paginate';
 var FD = require('form-data');
 var fs = require('fs');
+
 //var passport = require('passport');
 //console.log('passport', passport);/
 //require('../../config/passport')(passport);
@@ -29,6 +31,7 @@ class Users extends Component {
 		  usersCount: 0,
 		  offset: 0,
 		  info: false,
+		  searchValue:''
     };
     if(this.props.match.params.page != undefined){
       this.setState({currentPage: this.props.match.params.page});
@@ -58,7 +61,7 @@ class Users extends Component {
 				this.data.email = user.email;
 				this.data.firstName = user.firstName;
 		   });
-          console.log('ussssss',this.data,this.state.users);
+         
         }
      })
     .catch((error) => {
@@ -81,6 +84,25 @@ class Users extends Component {
       approveId: id
     });
     this.toggle();
+  }
+  
+  filterUser = () =>{
+	axios.get('/user/filterUser/'+this.state.searchValue).then(result => {
+      if(result.data.code === 200){              
+        this.setState({
+           users: result.data.result,
+           currentPage: result.data.current,
+           PerPage: result.data.perPage,
+           totalPages: result.data.pages,
+           total_count:result.data.total
+          });          
+      }
+    });
+  }
+ updateInputValue=(evt) =>{
+    this.setState({
+      searchValue: evt.target.value
+    },console.log("searchValue",this.state.searchValue));
   }
   
   changeStatusHandler(user){
@@ -134,7 +156,7 @@ class Users extends Component {
 				 this.props.history.push("/login");
 			 }
 		});
-		console.log('ddddd',this.state.users);
+		
   }
 
 
@@ -187,6 +209,13 @@ class Users extends Component {
                 <Link to="users/add" className="btn btn-success btn-sm pull-right">Add User</Link>
               </CardHeader>
               <CardBody>
+				<div className="input-group searchUserInputButton  pull-right">
+					<input className="form-control" id="input1-group2" value={this.state.searchValue} onChange={this.updateInputValue} type="text" name="input1-group2" placeholder="Username/Email" autocomplete="username" required/>
+					<span className="input-group-prepend">
+						<button className="btn btn-primary" type="button" onClick={() => this.filterUser()} >
+						<i className="fa fa-search"></i> Search</button>
+					</span>
+				</div>
                 <Table hover bordered striped responsive size="sm">
                   <thead>
                      <tr>

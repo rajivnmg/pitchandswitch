@@ -265,7 +265,7 @@ class UserView extends Component {
   }
   checkValidity(value, rules) {
     let isValid = false;
-	console.log('Validity', value);
+	//console.log('Validity', value);
     if (rules.required) {
       isValid = typeof(value) === 'string' && value.trim() != "" && isValid;
     }
@@ -293,13 +293,13 @@ class UserView extends Component {
     updatedFormElement.touched = true;
     updatedUser[inputIdentifier] = updatedFormElement;
     this.setState({ editUser: updatedUser }, () => {
-		console.log('data value for category', this.state.editUser);
+		//console.log('data value for category', this.state.editUser);
 	});
   };
   
    fileChangedHandler = (event) => {
 	  this.setState({selectedFile: event.target.files[0]}, function(){
-		  console.log('Current state', this.state.selectedFile)
+		  //console.log('Current state', this.state.selectedFile)
 		});
    }
    handleCountry = (country) => {
@@ -307,7 +307,7 @@ class UserView extends Component {
    }
    handleState = (state) => {
       this.setState({state: state}, function(){
-		  console.log('Current state', this.state.state)
+		 // console.log('Current state', this.state.state)
 		});
    }
    handleCity = (city) => {
@@ -383,7 +383,7 @@ class UserView extends Component {
 			  editUser['subscriptionPlan'].elementConfig.options = result.data.result;
 			  editUser['userType'].elementConfig.options = constant.userType;
 			this.setState({ editUser},()=>{
-				console.log('userType subscription', editUser, constant.userType);
+				//console.log('userType subscription', editUser, constant.userType);
 				});
 		  }
 	  })

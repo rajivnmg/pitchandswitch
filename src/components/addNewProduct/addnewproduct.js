@@ -8,8 +8,6 @@ import CategorySelectBox from "../../components/CategorySelectBox/CategorySelect
 //import BrandSelectBox from '../../components/BrandSelectBox/BrandSelectBox';
 //import SizeSelectBox from '../../components/SizeSelectBox/SizeSelectBox';
 import axios from "axios";
-import { Modal } from "antd";
-import pica from "pica";
 var FD = require("form-data");
 //var fs = require('fs');
 var CropViewer = require("rc-cropping");
@@ -84,7 +82,7 @@ class Form extends Component {
     );
   }
 }
-class Register extends React.Component {
+class AddProduct extends React.Component {
   state = {
     selectedFiles: "",
     // ageSelected : constant.selectedAges,
@@ -124,9 +122,7 @@ class Register extends React.Component {
         message: ""
       },
       showFormSuccess: false
-    },
-    cropper: false,
-    imageCropper: null
+    }
   };
 
   handleCategory = category => {
@@ -272,34 +268,10 @@ class Register extends React.Component {
       </div>
     );
   }
-  resizer = (from, to) => {
-    return pica().resize(from, to);
-  };
 
-  updatedImage = file => {
-    console.log("Updated file", file);
-  };
+  
 
   render() {
-    let imageCropper = null;
-    if (this.state.cropper) {
-      imageCropper = (
-        <CropViewer
-          size={[64, 64]}
-          thumbnailSizes={[[64, 64]]}
-          file={this.state.imageCropper}
-          locale="en-US"
-          fileType="image/jpeg"
-          accept="image/gif,image/jpeg,image/png,image/bmp,image/x-png,image/pjpeg"
-          getSpinContent={() => <span>loading...</span>}
-          renderModal={() => <Modal />}
-          circle={true}
-          resizer={this.resizer}
-          onChange={this.updatedImage}
-        />
-      );
-    }
-
     let optionTemplate;
     if (constant.selectedAges) {
       let conditionsList = constant.selectedAges;
@@ -367,7 +339,7 @@ class Register extends React.Component {
               </div>
 
               <div className="form-row">
-                <label className="label">Add product a photo</label>
+                <label className="label">Add a photo</label>                
                 <PicturesWall
                   multiple={false}
                   onHandlePicture={this.handlePictureChange}
@@ -614,4 +586,4 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+export default AddProduct;

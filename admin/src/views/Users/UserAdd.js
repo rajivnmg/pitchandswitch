@@ -59,7 +59,7 @@ class UserEdit extends Component {
 			  value: "",
 			  label: "Middle Name",
 			  validation: {
-				required: true
+				required: false
 			  },
 			  valid: false,
 			  touched: false
@@ -174,7 +174,7 @@ class UserEdit extends Component {
 			  value: new Date(),
 			  label: "DOB",
 			  validation: {
-				required: true
+				required: false
 			  },
 			  valid: false,
 			  touched: false

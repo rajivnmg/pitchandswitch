@@ -11,6 +11,7 @@
     "access-token": "^0.2.2",
     "ajv": "^6.5.1",
     "antd": "^3.6.5",
+    "antd-img-crop": "^0.6.0",
     "autoprefixer": "7.1.6",
     "axios": "^0.18.0",
     "babel": "^6.23.0",

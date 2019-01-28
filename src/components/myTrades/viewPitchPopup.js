@@ -31,9 +31,10 @@ class viewPitchPopup extends Component {
 		this.setState({offerTradeId:this.state.offerTrade._id})
 	}
 	 
-	componentDidMount(){			
+	componentDidMount(){
+		if(this.props.offerTrade && this.props.offerTrade.SwitchUserProductId){
 		axios.all([
-			axios.get('/trade/pitchedProductList/'+this.props.offerTrade._id),
+			axios.get('/trade/pitchedProductList/'+((this.props.offerTrade && this.props.offerTrade._id)?this.props.offerTrade._id:0)),
 			axios.get('/product/productDetails/'+ this.props.offerTrade.SwitchUserProductId._id)
 		]).then(axios.spread((pitchedProductList, productDetails) => {
 			if(pitchedProductList.data.code === 200){		
@@ -58,7 +59,8 @@ class viewPitchPopup extends Component {
 				  localStorage.setItem("userId", result.data.result._id);
 				} 
 			  });
-		   }	
+		   }
+		}
 	}
 	
      render() {
