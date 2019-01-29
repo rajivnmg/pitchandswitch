@@ -60,7 +60,7 @@ class Header extends Component {
       gmapsLoaded: false,
       value: ""
     };
-
+    if(props.match.params.id) this.setState({searchData:props.match.params.id});
     Geocode.setApiKey("AIzaSyA_Is11HwzMFGIFAU-q78V2kQUiT9OQiZI");
     Geocode.enableDebug();
     this.logoutHandler = this.logoutHandler.bind(this);
@@ -171,7 +171,10 @@ class Header extends Component {
   };
   searchHandler = () => {
     this.props.setCategory({_id: this.state.searchData, title: this.state.title});
-    setTimeout(() => { this.props.history.replace("/search-listing/" + cmf.changeSpaceToUnderscore(this.state.title) )}, 500);
+    setTimeout(() => { 
+		if(this.state.title !== null) this.props.history.replace("/search-listing/" + cmf.changeSpaceToUnderscore(this.state.title) ) 
+		else this.props.history.replace("/search-listing/" + this.props.catId);
+	}, 500);
   };
 
   searchCategory = category => {
@@ -192,7 +195,7 @@ class Header extends Component {
 
   componentWillMount() {
     if (localStorage.getItem("jwtToken") !== null) {	
-		console.log('HEREREH', moment().toDate().getTime() > localStorage.getItem("expirationTime"));
+		//console.log('HEREREH', moment().toDate().getTime() > localStorage.getItem("expirationTime"));
 	  if(moment().toDate().getTime() > localStorage.getItem("expirationTime")){
 		  this.props.history.push("/logout");
 	  }

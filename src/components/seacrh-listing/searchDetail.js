@@ -36,7 +36,7 @@ var FD = require("form-data");
 var fs = require("fs");
 
 const history = createHistory();
-class MyTrades extends React.Component {
+class SearchResult extends React.Component {
   constructor(props) {
     super(props);
     let productId = props.match.params.id;
@@ -344,4 +344,4 @@ class MyTrades extends React.Component {
   }
 }
 
-export default MyTrades;
+export default SearchResult;

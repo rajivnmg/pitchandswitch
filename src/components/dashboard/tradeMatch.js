@@ -13,18 +13,13 @@ class TradeMatch extends Component {
     {
         super(props);
         this.state = {
-            tradeMatches: [{
-                    "title": "",
-                    "image": "",
-                    "category": ""
-                   }
-            ]
+            tradeMatches: []
         }
     }
 	 componentWillMount(){
 		axios.get('/product/listProduct').then(result => {		 
-		  if(result.data.code===200){	 
-				this.setState({tradeMatches:(result.data.result !== null)?result.data.result:[]})
+		  if(result.data.code === 200){	 
+				this.setState({tradeMatches:result.data.result})
 			}
 		})
 	  }
@@ -90,12 +85,12 @@ class TradeMatch extends Component {
 								</div>
 							</div>
 							)
-                        }):'null'
+                        }):null
                     }
                   </Slider>
                 </div>
                </div>
                );
             }
-        }
+        } 
 export default TradeMatch;

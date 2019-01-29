@@ -296,25 +296,25 @@ class Dashboard extends Component {
                       <p>
                         Start date:{" "}
                         <span>
-                          {moment(
+                          {this.state.userSubscription? moment(
                             this.state.userSubscription.subscriptionId
                               ? this.state.userSubscription.subscriptionId
                                   .createdAt
                               : Date()
-                          ).format("LL")}
+                          ).format("LL"):''}
                         </span>
                       </p>
                       <p>
                         End date:{" "}
                         <span>
-                          {moment(
+                          {this.state.userSubscription ? moment(
                             this.state.userSubscription.subscriptionId
                               ? this.state.userSubscription.subscriptionId
                                   .createdAt
                               : Date()
                           )
                             .add(1, "years")
-                            .format("LL")}
+                            .format("LL"):''}
                         </span>
                       </p>
                       <UpgradePlan />

@@ -85,7 +85,7 @@ class Register extends React.Component {
 			brand:'',
 			productAge:'',
 			condition:'',
-			productImages:'',
+			productImages:[],
 			productStatus:'0',
 			length:'0',
 			width:'0',
@@ -96,6 +96,7 @@ class Register extends React.Component {
 	   brands: [],
 	   sizes: [],
 	   colors: [],
+	   listImage:[],
 	   conditions: [],
 	   ageSelected: [],
 	   categoryValue: '',
@@ -160,28 +161,60 @@ class Register extends React.Component {
 		this.setState({ addProductForm: productForm });
 	};		
 	
-	componentDidMount() {			
-		axios.get('/product/viewProduct/' + this.state.productId).then(result => {
-		  if(result.data.code === 200) {
-			let productData = result.data.result;
-			productData.productCategory = productData.productCategory._id;
-			productData.brand = productData.brand._id;
-			productData.size = productData.size._id;
-			this.setState({editProductForm: productData});
-			//console.log('Product Data',result.data.result, productData);
+	componentDidMount() {		
+		//~ axios.all([
+			//~ axios.get('/product/viewProduct/' + this.state.productId),
+			//~ axios.get('/product/productImages/'+ this.state.productId)
+		//~ ]).then(axios.spread((result,productImage)=>{
+			 //~ if(result.data.code === 200) {
+			//~ let productData = result.data.result;
+			//~ productData.productCategory = productData.productCategory._id;
+			//~ productData.brand = productData.brand._id;
+			//~ productData.size = productData.size._id;
+			//~ this.setState({editProductForm: productData,productImages: result.data.result.productImages});
+			//~ //console.log('Product Data',result.data.result, productData);
 			
-			//~ this.setState({productImages: result.data.result.productImages});       
-		   }      
-		 });
+			//~ //this.setState({productImages: result.data.result.productImages});       
+		   //~ }   
+		//~ }
+		//~ axios.get('/product/viewProduct/' + this.state.productId).then(result => {
+		  //~ if(result.data.code === 200) {
+			//~ let productData = result.data.result;
+			//~ productData.productCategory = productData.productCategory._id;
+			//~ productData.brand = productData.brand._id;
+			//~ productData.size = productData.size._id;
+			//~ this.setState({editProductForm: productData,productImages: result.data.result.productImages});
+			//~ //console.log('Product Data',result.data.result, productData);
+			
+			//~ //this.setState({productImages: result.data.result.productImages});       
+		   //~ }      
+		 //~ });
 		 			
-		axios.all([							
+		axios.all([		
+				axios.get('/product/viewProduct/' + this.state.productId),
+				axios.get('/product/productImages/'+ this.state.productId),
 				axios.get('/size/listingsize/'),
 				axios.get('/brand/listingbrand/'),
 				axios.get('/product/getColors/'),
 				axios.get('/donation/getConstant/'),
 				axios.get('/product/getAgeList/')
 			  ])
-			  .then(axios.spread((rsize, rbrand,rcolor,rconstant,rAge) => {
+			  .then(axios.spread((viewProduct,productImage, rsize, rbrand,rcolor,rconstant,rAge) => {
+				 if(viewProduct.data.code === 200) {
+					let productData = viewProduct.data.result;
+					productData.productCategory = productData.productCategory._id;
+					productData.brand = productData.brand._id;
+					productData.size = productData.size._id;
+					let images = productImage.data.result.map((img) => {
+						var reader  = new FileReader();
+						img.imageName = reader.readAsDataURL(constant.BASE_IMAGE_URL + 'Products/' + img.imageName);
+						//img.imageName = new File(["key"], constant.BASE_IMAGE_URL + 'Products/' + img.imageName);
+						return img;
+					});
+					console.log('images', images);
+					this.setState({editProductForm: productData,listImage: images });					     
+			}   
+				
 				if(rsize.data.code === 200){
 				  this.setState({sizes:rsize.data.result});
 				}
@@ -232,10 +265,7 @@ class Register extends React.Component {
 		this.setState({ editProductForm: productForm });
 	};
   
-	submit = () => {	  
-		
-		
-		
+	submit = () => {
 		const data =new FD()		
 		const formData = this.state.editProductForm;
 		for (let [key, value] of Object.entries(formData)) {
@@ -335,7 +365,7 @@ class Register extends React.Component {
 		
 		<div className="form-row">
 			<label className="label">Add product a photo</label>
-			<PicturesWall onHandlePicture={this.handlePictureChange} />
+			<PicturesWall onHandlePicture={this.handlePictureChange} fileList={this.state.listImage}/>
 		</div>
 		
 		<div className="form-row">

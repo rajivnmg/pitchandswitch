@@ -22,6 +22,7 @@ import jquery from "jquery";
 import Aux from "../../hoc/Auxillary";
 import { If, Then /*, ElseIf*/, Else } from "react-if-elseif-else-render";
 import commonFunction from "../commonFunction";
+import * as ActionTypes from "../../store/actionTypes";
 const constant = require("../../config/constant");
 
 var FD = require("form-data");
@@ -139,7 +140,7 @@ class SearchListing extends React.Component {
       isBrandOpen: false,
       locationMin: 0,
       locationMax: 1000
-    };
+    };    
   }
   onChange = activeKey => {
     this.setState({
@@ -444,6 +445,13 @@ class SearchListing extends React.Component {
         .toggleClass("opens");
       jquery(this).toggleClass("active");
     });
+    if(this.props.match.params.id){
+		const catId = localStorage.getItem('categoryId');
+		this.props.setCategory({_id: catId, title: this.props.match.params.id});
+		setTimeout(() => {
+			this.doSearch();
+		}, 500);
+	}
   }
 
   onAgeChange = value => {
@@ -909,8 +917,16 @@ const mapStateToProps = state => {
     catId: state.searchListingReducer.category_id
   };
 };
-
-const mapDispatchToProps = null;
+const mapDispatchToProps = dispatch => {
+  return {
+	  setCategory: category => {
+		return dispatch({
+			type: ActionTypes.SEARCH_LISTING_SET_CATEGORY,
+			payload: {categoryId: category._id, cateName: category.title}
+		  })
+	  }
+  }
+};
 export default connect(
   mapStateToProps,
   mapDispatchToProps

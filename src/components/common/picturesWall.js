@@ -7,19 +7,14 @@ import './picturesWall.css';
 // import 'antd/dist/antd.css';
 const constant = require("../../config/constant");
 class PicturesWall extends React.Component {
-  state = {
-    previewVisible: false,
-    previewImage: '',
-    fileList: [
-    //~ {
-      //~ uid: -1,
-      //~ name: 'xxx.png',
-      //~ status: 'done',
-      //~ url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    //~ }
-    ],
-  };
-
+	constructor(props){
+		super(props);
+		  this.state = {
+			previewVisible: false,
+			previewImage: '',
+			fileList:(this.props.fileList)?this.props.fileList:[],
+		  };
+}
   handleCancel = () => this.setState({ previewVisible: false })
 
   handlePreview = (file) => {

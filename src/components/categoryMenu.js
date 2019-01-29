@@ -103,6 +103,9 @@ class categoryMenu extends Component {
         <span className="cats">Category</span>
         <div className="dropDown">
           <ul>
+			<li key="all">
+            <a href="javascript:;" onClick={() => this.setCategory({_id:'all', title: "All"})}>All</a>
+            </li>
             {this.state.category.map((slide, index) => {
               return (
                 <li

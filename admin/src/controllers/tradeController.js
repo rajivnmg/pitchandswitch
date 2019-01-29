@@ -717,7 +717,13 @@ const getProductByCategory = (req, res) => {
      if(token) {
 		decoded = jwt.verify(token,settings.secret);
 		var userId = decoded._id;
-		Product.find({productCategory:id,userId:userId})
+		var findObject = {
+			userId:userId
+		};
+		if(id !== 'all'){
+			findObject.productCategory = id;
+		}
+		Product.find(findObject)
 		.populate('userId')
 		.populate('userId',['firstName','lastName'])
 		.populate('productCategory',['title'])

@@ -11,7 +11,10 @@ import successPic from '../../images/successful_img.png';
 import axios from 'axios';
 import { Button } from 'reactstrap';
 import { If, Then, Else } from 'react-if-elseif-else-render';
+import { withRouter } from "react-router-dom";
+
 var FD = require('form-data');
+
 //var fs = require('fs');
 
 const constant = require('../../config/constant')
@@ -53,7 +56,8 @@ class viewPitchPopup extends Component {
 			this.setState({stateChange:stateChange})
         }
 	 
-	 handleOnChange = (chosenValue) => {		
+	 handleOnChange = (chosenValue) => {
+		 console.log('chosenValue ---', chosenValue.target.value, '--------');	
            this.setState({ categoriesValues: chosenValue.target.value})
 		     axios.get('/trade/getProductByCategory/'+chosenValue.target.value).then(result => {
 			 if(result.data.code === 200){
@@ -114,21 +118,22 @@ changeEvent(event){
 				isProcess:false
 			  });	
 			   setTimeout(() => {this.setState({showFormError: false,showFormSuccess: false});			
-				window.location.href='/my-trades';
+				//window.location.href='/my-trades';
+				this.props.history.replace('/my-trades');
 			 }, 5000);	
 		  }
       })  
    }
 
 
-	  handleOnChange = (chosenValue) => {	 
-		   this.setState({ categoriesValues: chosenValue.target.value})
-			 axios.get('/trade/getProductByCategory/'+chosenValue.target.value).then(result => {
-			   if(result.data.code === 200){
-				  this.setState({getAllProduct:result.data.result})						 
-				}
-			})
-		} 
+	  //~ handleOnChange = (chosenValue) => {	 
+		   //~ this.setState({ categoriesValues: chosenValue.target.value})
+			 //~ axios.get('/trade/getProductByCategory/'+chosenValue.target.value).then(result => {
+			   //~ if(result.data.code === 200){
+				  //~ this.setState({getAllProduct:result.data.result})						 
+				//~ }
+			//~ })
+		//~ } 
 	
 	  componentDidMount(){
 		axios.get('/trade/offerTradeProduct/'+this.props.proID).then(result => {
@@ -141,7 +146,7 @@ changeEvent(event){
 			if(result.data.code === 200){
 			  this.setState({productData:result.data.result})
 		   }
-		   console.log('thisaaaaaaaaaaaaaaa',this.state.productData)
+		  
 		})
 			
 	  }
@@ -157,7 +162,7 @@ render() {
   let productImg = 
   this.state.productData.productImages?this.state.productData.productImages[0]:"";
   return(
-    <Popup trigger={<a href='#' className= 'ditch'>Pitch Now</a>}
+   <Popup trigger={<a href='#' className= 'ditch'>Pitch Now</a>}
 		modal contentStyle = {contentStyle}  lockScroll >
 			{ close => (
 			<div className="modal">
@@ -204,6 +209,7 @@ render() {
 				</div>
 				 <div className="select-box top-right pitchnowPopup">
 					<select id="select" innerRef={input => (this.condition = input)} className="form-control" onChange={this.handleOnChange}>
+						   <option value="all">All</option>
 						   {optionTemplate}
 					</select>
 				 </div>
@@ -256,5 +262,5 @@ render() {
    )}
 }
 
-export default viewPitchPopup;
+export default withRouter(viewPitchPopup);
 //export default Warper(CustomModal);

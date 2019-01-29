@@ -118,7 +118,7 @@ class App extends Component {
               />
               
               <Route
-                path="/search-listing"
+                path="/search-listing/:id?"
                 render={props => (
                   <SearchListing {...props} getData={this.getSearchData}/>
                 )}/>             

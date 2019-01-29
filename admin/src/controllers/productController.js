@@ -925,20 +925,56 @@ const updateUserProduct = (req, res) => {
  *  Date	: June 21, 2018
  *	Description : Function to delete the Product
  **/
-const deleteProduct = (req, res) => {
-    Product.findByIdAndRemove(req.params.id, (err, result) => {
-        if (err) {
-            return res.json({
-                message: httpResponseMessage.USER_NOT_FOUND,
-                code: httpResponseMessage.BAD_REQUEST
-            });
-        }
-        return res.json({
-            code: httpResponseCode.EVERYTHING_IS_OK,
-            message: httpResponseMessage.SUCCESSFULLY_DONE,
-            result: result
-        });
-    })
+const deleteProduct = (req, res) => {	
+	Promise.all([
+		OfferTrade.find({ 'SwitchUserProductId':req.params.id }),
+		TradePitchProduct.find({products: { $eq: req.params.id}})
+	]).then( ([ offerTradeProducts, tradePitchProducts ]) => {
+		console.log("offerTradeProducts",offerTradeProducts);
+		console.log("tradePitchProducts",tradePitchProducts);
+		if(!offerTradeProducts && !tradePitchProducts){
+			
+			Product.findByIdAndRemove(req.params.id, (err, result) => {
+				if (err) {
+					return res.json({
+						message: httpResponseMessage.USER_NOT_FOUND,
+						code: httpResponseMessage.BAD_REQUEST
+					});
+				}
+				return res.json({
+					code: httpResponseCode.EVERYTHING_IS_OK,
+					message: httpResponseMessage.SUCCESSFULLY_DONE,
+					result: result
+				});
+			})
+		}else{
+			console.log("offerTradeProducts eeee",offerTradeProducts)
+			console.log("tradePitchProducts eee",tradePitchProducts)
+			return res.json({
+			message: "You can't this Product! because this product already pitched",
+			code: httpResponseMessage.BAD_REQUEST
+		  });
+		}
+	});
+
+
+	
+	//~ OfferTrade.find({ 'SwitchUserProductId':req.params.id  })
+    //~ .then(resultPitchProsuct =>{
+		//~ Product.findByIdAndRemove(req.params.id, (err, result) => {
+			//~ if (err) {
+				//~ return res.json({
+					//~ message: httpResponseMessage.USER_NOT_FOUND,
+					//~ code: httpResponseMessage.BAD_REQUEST
+				//~ });
+			//~ }
+			//~ return res.json({
+				//~ code: httpResponseCode.EVERYTHING_IS_OK,
+				//~ message: httpResponseMessage.SUCCESSFULLY_DONE,
+				//~ result: result
+			//~ });
+		//~ })
+	//~ })
 }
 
 /** Auther	: KS
@@ -947,7 +983,7 @@ const deleteProduct = (req, res) => {
  **/
 const searchresult = (req, res) => {
 
-	 const id = req.params.id;
+	let id = req.params.id;
 	if (req.params.latitude && req.params.latitude.trim().length) {
     var latitude = req.params.latitude;
   	var longitude = req.params.longitude;
@@ -987,6 +1023,10 @@ const searchresult = (req, res) => {
 
 					});
 				}
+				if(id === 'all'){
+					id = ""; 
+				}
+				
 				if (id && id.trim().length && latitude && latitude.trim().length){
 					var searchvalue = {productCategory:ObjectId(id),productStatus:"1",userId: {$in: responseData}};
 				}

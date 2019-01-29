@@ -64,7 +64,8 @@ class myTreasureChest extends Component {
 		this.setState({newlyAdded:constant.sortBy},function(){/*console.log("newlyAdded",this.state.newlyAdded[0])*/})
 	}
 	componentDidMount(){
-			axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');			
+			axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');		
+						
 			if(localStorage.getItem('jwtToken') !== null){
 				axios.get('/user/getLoggedInUser').then(result => {						
 					this.setState({ 
@@ -75,17 +76,30 @@ class myTreasureChest extends Component {
 					})			
 				})
 			}
-			axios.get('/product/myTreasureChest').then(result =>{				
+			
+			axios.all([
+				axios.get('/product/myTreasureChest'),
+				axios.get('/category/listCategory')
+			]).then(			
+			axios.spread((resTreasurChest,rsListCategory) => {
 				this.setState({
-					myTreasureChests : result.data.result,
-					totalInventory:result.data.result.length
+					myTreasureChests : resTreasurChest.data.result,
+					totalInventory:resTreasurChest.data.result.length,
+					categories : rsListCategory.data.result
 				});
-			});
-			axios.get('/category/listCategory').then(result =>{			
-				this.setState({
-					categories : result.data.result
-				});
-			});
+			})).catch(error => console.log(error));
+			
+			//~ axios.get('/product/myTreasureChest').then(result =>{				
+				//~ this.setState({
+					//~ myTreasureChests : result.data.result,
+					//~ totalInventory:result.data.result.length
+				//~ });
+			//~ });
+			//~ axios.get('/category/listCategory').then(result =>{			
+				//~ this.setState({
+					//~ categories : result.data.result
+				//~ });
+			//~ });
 			
 	}
 	
