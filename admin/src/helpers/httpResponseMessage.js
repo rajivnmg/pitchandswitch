@@ -23,7 +23,7 @@ module.exports = {
     EMAIL_VERIFY_SUCCESSFULLY: 'Email Verified Successfully, Please login',
     CHANGE_STATUS_SUCCESSFULLY:'Status updated Successfully',
     ALL_READY_EXIST_CATEGORYNAME:'This categoryName is Already exist',
-    ALL_READY_EXIST_PRODUCTNAME:'This categoryName is Already exist',
+    ALL_READY_EXIST_PRODUCTNAME:'This ProductName is Already exist',
     PRODUCTS_LIST:'List of products.',
     CATEGORIES_LIST:'List of Categories.',
     LISTED_SUCCESSFULLY:'Item Listed Successfully',
@@ -31,5 +31,6 @@ module.exports = {
     FILE_UPLOAD_ERROR :'Error in file uploading' ,
     PASSWORD_CHANGE_SUCCESSFULLY : 'Password Changed Successfully! Please Login',
     INACTIVE_USER:'Account is not active or suspended, Please contact administrator to activate the account.',
-    USER_EMAIL_NOT_VERIFIED:'Your account is not verified, Please verify your email to access your account.'
+    USER_EMAIL_NOT_VERIFIED:'Your account is not verified, Please verify your email to access your account.',
+    ALREADY_IN_USED:'Oops! Already in used'
 }

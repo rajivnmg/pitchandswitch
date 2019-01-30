@@ -831,7 +831,7 @@ class SearchListing extends React.Component {
                 </h4>
 
                 <Link className="catLink" to={"/search-listing/" + catId}>
-                  {catName}
+                  {commonFunction.SubSTR(catName)}
                 </Link>
               </div>
               <div className="userdiv">

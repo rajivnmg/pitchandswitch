@@ -36,18 +36,32 @@ class MyTradesDetail extends React.Component {
     }
 
 	 componentDidMount(){
-	      axios.get('/product/productDetails/'+ this.state.productId).then(result => {
-		    this.setState({
-				resultData:result.data.result,
-				mainImages:result.data.result?result.data.result.productImages[0]:"default_product_img@3x.png",
-				isAlreadyPitched:result.data.pitchProduct,
-				isAlreadyInWishlist:result.data.wishListProduct
+		 
+		 axios.all([
+			axios.get('/product/productDetails/'+ this.state.productId),
+			axios.get('/donation/getConstant')			
+		 ]).then(axios.spread((resPDetails,rCondition)=>{
+			 this.setState({
+				resultData:resPDetails.data.result,
+				mainImages:resPDetails.data.result?resPDetails.data.result.productImages[0]:"default_product_img@3x.png",
+				isAlreadyPitched:resPDetails.data.pitchProduct,
+				isAlreadyInWishlist:resPDetails.data.wishListProduct,
+				conditions: rCondition.data.result
 				});
-		})
+		})). catch(error => console.log(error))
+		 		 
+	     //~ axios.get('/product/productDetails/'+ this.state.productId).then(result => {
+		    //~ this.setState({
+				//~ resultData:result.data.result,
+				//~ mainImages:result.data.result?result.data.result.productImages[0]:"default_product_img@3x.png",
+				//~ isAlreadyPitched:result.data.pitchProduct,
+				//~ isAlreadyInWishlist:result.data.wishListProduct
+				//~ });
+		//~ })
 
-	   axios.get('/donation/getConstant').then(result => {
-		   this.setState({conditions: result.data.result});
-	   });
+	   //~ axios.get('/donation/getConstant').then(result => {
+		   //~ this.setState({conditions: result.data.result});
+	   //~ });
        
 		axios.get('/user/getLoggedInUser').then(result => {
 			this.setState({ user:result.data.result })

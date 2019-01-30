@@ -42,6 +42,13 @@ const letterCaps = (str) =>  {
   }
   return str.join(' ');
 }
+//function to find the 15 char string from long string
+const SubSTR = (str) =>  {
+ if (typeof str !== 'string' || str === null || str === '') return '';
+ if(str.length < 20) return str; 
+  str = str.substring(0, 20)+'...'; 
+  return str;
+}
 
 // function to check file exist
 const fsExistsSync = (file)=>{
@@ -57,5 +64,6 @@ module.exports = {
 	distance,
 	letterCaps,
 	fsExistsSync,
-	changeSpaceToUnderscore
+	changeSpaceToUnderscore,
+	SubSTR
 }

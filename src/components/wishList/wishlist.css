@@ -7,6 +7,7 @@
 .myTreasure .heading-row h1 {color: #414141;font-size: 30px;font-weight: 700; padding-bottom: 15px; padding-top:0px}
 .myTreasure .heading-row .more-items .plus {font-size:22px; margin-right: 10px;}
 .myTreasure .heading-row .more-items.pink {background-color: #ff7979;}
+.item-listing .Items .details h4{height: 40px !important;}
 .item-listing .Items .details h4 a { text-decoration: none;}
 .heading-row .subheading {color: #969696;font-size: 16px;font-weight: 400;}
 .myTreasure .item-listing {padding: 0 0 0}

@@ -31,7 +31,8 @@ class Users extends Component {
 		  usersCount: 0,
 		  offset: 0,
 		  info: false,
-		  searchValue:''
+		  searchValue:'',
+		  showError : false
     };
     if(this.props.match.params.page != undefined){
       this.setState({currentPage: this.props.match.params.page});
@@ -176,7 +177,11 @@ class Users extends Component {
               approve: false
             });
             this.toggle();
-          }
+          }else{
+			  this.toggle();
+			  this.setState({showError:true,message:result.data.message});
+			  setTimeout(() => {this.setState({message: "",showError:false})}, 5000)
+		  }
         });
       }
     });
@@ -209,6 +214,11 @@ class Users extends Component {
                 <Link to="users/add" className="btn btn-success btn-sm pull-right">Add User</Link>
               </CardHeader>
               <CardBody>
+					{this.state.showError ?
+					<div className="alert alert-danger pull-left" role="alert">
+						{this.state.message}
+					</div>
+				 :''}
 				<div className="input-group searchUserInputButton  pull-right">
 					<input className="form-control" id="input1-group2" value={this.state.searchValue} onChange={this.updateInputValue} type="text" name="input1-group2" placeholder="Username/Email" autocomplete="username" required/>
 					<span className="input-group-prepend">

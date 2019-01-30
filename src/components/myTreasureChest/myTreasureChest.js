@@ -8,6 +8,7 @@ import {Link} from 'react-router-dom';
 import { Popconfirm, message, Button,Spin, Icon, Alert } from 'antd';
 import { If, Then, Else } from 'react-if-elseif-else-render';
 import PayInventoryPopup from '../payInventoryPopup';
+import * as cmf from "../commonFunction";
 const constant = require("../../config/constant");
 const text = 'Are you sure to delete this?';
 
@@ -56,7 +57,10 @@ class myTreasureChest extends Component {
             });
             this.setState({showFormSuccess: true});
 			setTimeout(() => {this.setState({showFormSuccess: false});}, 12000)
-          }
+          }else{			   
+				this.setState({showFormError: true});
+				setTimeout(() => {this.setState({showFormError: false});}, 12000)
+		  }
         });
 	}
 	
@@ -64,7 +68,7 @@ class myTreasureChest extends Component {
 		this.setState({newlyAdded:constant.sortBy},function(){/*console.log("newlyAdded",this.state.newlyAdded[0])*/})
 	}
 	componentDidMount(){
-			axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');		
+			axios.defaults.headers.common['Authorization'] = localStorage.getItem('jwtToken');	
 						
 			if(localStorage.getItem('jwtToken') !== null){
 				axios.get('/user/getLoggedInUser').then(result => {						
@@ -88,18 +92,6 @@ class myTreasureChest extends Component {
 					categories : rsListCategory.data.result
 				});
 			})).catch(error => console.log(error));
-			
-			//~ axios.get('/product/myTreasureChest').then(result =>{				
-				//~ this.setState({
-					//~ myTreasureChests : result.data.result,
-					//~ totalInventory:result.data.result.length
-				//~ });
-			//~ });
-			//~ axios.get('/category/listCategory').then(result =>{			
-				//~ this.setState({
-					//~ categories : result.data.result
-				//~ });
-			//~ });
 			
 	}
 	
@@ -136,6 +128,13 @@ Capitalize(str){
       </div>
     );
   }
+ _renderErrorMessage() {
+    return (
+      <div className={"alert alert-danger mt-4"} role="alert">
+       <Alert description="You can't delete this Product! because this product already pitched" type="error" showIcon />
+      </div>
+    );
+  }
     render() {
         return (
                 <div className="myTreasure">
@@ -146,7 +145,7 @@ Capitalize(str){
                             </ul>
                         </div>
                         <div className="heading-row">.
-							<If condition={this.state.totalInventory <= this.state.user.totalInventory }>
+							<If condition={this.state.totalInventory <= this.state.user.totalInventory}>
 								<Then>
 									 <Link to={'/add-new-product'} className="more-items"><span className="plus">+</span> Add New Product</Link>
 								</Then>
@@ -174,6 +173,7 @@ Capitalize(str){
                             <div className="cl"></div>
                         </div>
                          {this.state.showFormSuccess ? this._renderSuccessMessage() : null}
+                          {this.state.showFormError ? this._renderErrorMessage() : null}
                         <div className="item-listing">
                             {this.state.myTreasureChests.slice(0, this.state.limit).map((slide, index) => {
 								var userImage = slide.userId?slide.userId.profilePic:'';
@@ -188,12 +188,18 @@ Capitalize(str){
 											</div>
 											<div className="details">
 												<h4><Link to={"/my-trade-detail/"+slide._id}>{slide.productName}</Link></h4>
-												<a href="#" className="catLink"> {(slide.productCategory && slide.productCategory !== null)?slide.productCategory.title:'N/A'}</a>           
+												<a href="#" className="catLink"> {(slide.productCategory && slide.productCategory !== null)?cmf.SubSTR(slide.productCategory.title):'N/A'}</a>           
 											</div>
+											 <Link
+												to={
+												  "/public-profile/" + (slide.userId ? slide.userId._id : "")
+												}
+											  >
 											<div className="userdiv">
 												<div className="user-pic"><img className="userProfile" src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} /></div>
-												<div className="user-name">{(slide.userId)?slide.userId.userName:''}</div>
+												<div className="user-name">{(slide.userId)?cmf.letterCaps(slide.userId.userName):''}</div>
 											</div>
+											</Link>
 										</div>
 									)
                             })}

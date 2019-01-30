@@ -384,6 +384,75 @@ const allProducts = (req, res) => {
             });
 }
 
+
+/** Auther	: Rajiv kumar
+ *  Date	: Jan 18, 2019
+ */
+/// function to list all active products
+const allActiveProducts = (req, res) => {
+    var perPage = constant.PER_PAGE_RECORD
+    var page = req.params.page || 1;
+    Product.aggregate([
+		{ $match : { productStatus : "1" } },
+		{
+            $lookup: {
+                from: 'productimages',
+                localField: '_id',
+                foreignField: 'productId',
+                as: 'images'
+           }
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: "userId",
+                foreignField: "_id",
+                as: "user"
+            }
+        }, {
+            $lookup: {
+                from: "categories",
+                localField: "productCategory",
+                foreignField: "_id",
+                as: "category"
+            }
+        }, {
+            $lookup: {
+                from: "sizes",
+                localField: "size",
+                foreignField: "_id",
+                as: "size"
+            }
+
+        }, {
+            $lookup: {
+                from: "brands",
+                localField: "brand",
+                foreignField: "_id",
+                as: "brand"
+            }
+        }])
+            .skip((perPage * page) - perPage)
+            .limit(perPage)
+            .sort({createdAt: -1})
+            .exec(function (err, products) {
+                Product.count().exec(function (err, count) {
+                    if (err)
+                        return next(err)
+                    return res.json({
+                        code: httpResponseCode.EVERYTHING_IS_OK,
+                        message: httpResponseMessage.SUCCESSFULLY_DONE,
+                        result: products,
+                        total: count,
+                        current: page,
+                        perPage: perPage,
+                        pages: Math.ceil(count / perPage)
+                    });
+                })
+            });
+}
+
+
 /** Auther	: KS
  *  Date	: JULY 9, 2018
  *	Description : Function to update the user status.
@@ -474,11 +543,11 @@ const activeProducts = (req, res) => {
 }
 
 const filterBycategory = (req,res) => {
+	
 	  var form = new multiparty.Form();
     var conditionObject = {};
-	  form.parse(req, function(err, data, files) {
-      //console.log('filterBycategory', data)
-      if(data.category_type){
+	  form.parse(req, function(err, data, files) {     
+      if(data.category_type && data.category_ids[0] !=='all'){
         conditionObject[data.category_type] = {$in: data.category_ids[0].split(',')};
       }
       if(data.brand_type){
@@ -500,7 +569,7 @@ const filterBycategory = (req,res) => {
       if(data.age_type){
         conditionObject[data.age_type] = {$in: data.age_ids[0].split(',')};
       }
-
+		
       if(data.location_type){
         var location = data.location_ids[0].split(',');
         //conditionObject[data.location_type] = {$in: };
@@ -559,7 +628,8 @@ const filterBycategory = (req,res) => {
         // });
       }
       //console.log('conditionObject', conditionObject)
-	   Product.find(conditionObject)
+      conditionObject["productStatus"] = "1";
+	  Product.find(conditionObject)
      .populate('productCategory',['title','_id'])
      .populate({path:'userId',model:'User', select: 'firstName lastName profilePic' })
      .populate({path:'brand',model:'Brand'})
@@ -868,6 +938,7 @@ const updateUserProduct = (req, res) => {
                         var productImages = JSON.parse(data.files);
                        
                         for (var i = 0; i < productImages.length; i++) {
+                           if(productImages[i].filename != undefined){
                             var uidv1 = uuidv1()                                                        
                            	console.log("productImages",productImages[i].filename);
                            	var filename = productImages[i].filename;
@@ -890,6 +961,7 @@ const updateUserProduct = (req, res) => {
                                 imageStatus: 1,
                                 imageURL: constant.product_path + filename
                             });
+                           }
                         }
                         try {
                             ProductImage.insertMany(uploadedFiles);
@@ -897,7 +969,8 @@ const updateUserProduct = (req, res) => {
                             res.send(e);
                             return;
                         }
-                        Product.update({_id: result._id}, {"$set": {"productImages": productImages[0].filename}}, {new : true}).then(pimage => {							
+                        filename = (productImages[0] !== undefined && productImages[0].filename !== '')?productImages[0].filename:'';
+                        Product.update({_id: result._id}, {"$set": {"productImages": filename}}, {new : true}).then(pimage => {							
                              return res.send({
                                 code: httpResponseCode.EVERYTHING_IS_OK,
                                 message: httpResponseMessage.SUCCESSFULLY_DONE,
@@ -929,11 +1002,8 @@ const deleteProduct = (req, res) => {
 	Promise.all([
 		OfferTrade.find({ 'SwitchUserProductId':req.params.id }),
 		TradePitchProduct.find({products: { $eq: req.params.id}})
-	]).then( ([ offerTradeProducts, tradePitchProducts ]) => {
-		console.log("offerTradeProducts",offerTradeProducts);
-		console.log("tradePitchProducts",tradePitchProducts);
-		if(!offerTradeProducts && !tradePitchProducts){
-			
+	]).then( ([ offerTradeProducts, tradePitchProducts ]) => {		
+		if((offerTradeProducts.length === 0) && (tradePitchProducts.length === 0)){						
 			Product.findByIdAndRemove(req.params.id, (err, result) => {
 				if (err) {
 					return res.json({
@@ -948,11 +1018,11 @@ const deleteProduct = (req, res) => {
 				});
 			})
 		}else{
-			console.log("offerTradeProducts eeee",offerTradeProducts)
-			console.log("tradePitchProducts eee",tradePitchProducts)
+			console.log("offerTradeProducts eeee",offerTradeProducts.length)
+			console.log("tradePitchProducts eee",tradePitchProducts.length)
 			return res.json({
-			message: "You can't this Product! because this product already pitched",
-			code: httpResponseMessage.BAD_REQUEST
+				message: "You can't this Product! because this product already pitched",
+				code: httpResponseMessage.BAD_REQUEST
 		  });
 		}
 	});
@@ -977,12 +1047,32 @@ const deleteProduct = (req, res) => {
 	//~ })
 }
 
+/** Auther	: Rajiv kumar
+ *  Date	: Jan 29, 2019
+ *	Description : Function to delete the Product image
+ **/
+const deleteProductImage = (req, res) => {		
+		ProductImage.findByIdAndRemove(req.params.id, (err, result) => {
+			if (err) {
+				return res.json({
+					message: httpResponseMessage.USER_NOT_FOUND,
+					code: httpResponseMessage.BAD_REQUEST
+				});
+			}
+			return res.json({
+				code: httpResponseCode.EVERYTHING_IS_OK,
+				message: httpResponseMessage.SUCCESSFULLY_DONE,
+				result: result
+			});
+		})
+}
+
+
 /** Auther	: KS
  *  Date	: september 13, 2018
  *	Description : Function to search product listing
  **/
 const searchresult = (req, res) => {
-
 	let id = req.params.id;
 	if (req.params.latitude && req.params.latitude.trim().length) {
     var latitude = req.params.latitude;
@@ -1035,12 +1125,13 @@ const searchresult = (req, res) => {
 					var searchvalue = {productStatus:"1",userId: {$in: responseData}};
 				}
 				else if(id && id.trim().length){
-
 					var searchvalue = {productCategory:ObjectId(id),productStatus:"1",userId: {$in: responseData}};
 				}else{
 					
-					var searchvalue = {};
+					var searchvalue = {productStatus:"1"};
 				}
+				
+				
         Product.aggregate([
               {$match: searchvalue},
               {
@@ -1113,23 +1204,11 @@ const searchresult = (req, res) => {
                 }
               }
             ], function (err, result) {
-                Product.count().exec(function (err, count) {
-                    if (err) {
-                        console.log("ewrewr" + err)
-                        return next(err)
-                    } else {
-                        console.log("value" + result)
-                        return res.json({
-                            code: httpResponseCode.EVERYTHING_IS_OK,
-                            message: httpResponseMessage.SUCCESSFULLY_DONE,
-                            result: result,
-
-                            //pages: Math.ceil(count / perPage)
-                        });
-                    }
-                })
-
-
+				   return res.json({
+						code: httpResponseCode.EVERYTHING_IS_OK,
+						message: httpResponseMessage.SUCCESSFULLY_DONE,
+						result: result,
+				   });
             }
 
 
@@ -1341,7 +1420,7 @@ const myTreasureChestFilterBy = (req, res) => {
         decoded = jwt.verify(token, settings.secret);
         var userId = decoded._id;
         condObject["userId"] = userId;
-        if (req.body.category !== '' && req.body.category !='5c3c8d8ca4d8f47cfc9d252a') {
+        if (req.body.category !== '' && req.body.category !='all') {
             condObject["productCategory"] = req.body.category;
         }
         Product.find(condObject)
@@ -1794,7 +1873,7 @@ const wishList = (req, res) => {
         WishList.find({userId:userId})
                 .populate('userId')
                 .populate('userId', ['firstName', 'lastName', 'userName', 'profilePic'])
-                .populate({path: 'productId', model: 'Product', populate: [{path: "productCategory", model: "Category"}]})
+                .populate({path: 'productId', model: 'Product', populate: [{path: "productCategory", model: "Category"},{path: "userId", model: "User"}]})
                 .exec(function (err, result) {
                    
                     if (err) {
@@ -1870,6 +1949,7 @@ const getAgeList = (req, res) => {
 module.exports = {
   create,
   allProducts,
+  allActiveProducts,
   viewProduct,
   updateProduct,
   deleteProduct,
@@ -1879,6 +1959,7 @@ module.exports = {
   myTreasureChest,
   addProduct,
   updateUserProduct,
+  deleteProductImage,
   tepmUpload,
   activeProducts,
   searchresult,

@@ -72,7 +72,7 @@ class Form extends Component {
     );
   }
 }
-class Register extends React.Component {
+class EditProduct extends React.Component {
 	state = {
 		productId: this.props.match.params.id,
 		selectedFiles: '',		
@@ -95,8 +95,8 @@ class Register extends React.Component {
 	   Categories: [],
 	   brands: [],
 	   sizes: [],
-	   colors: [],
-	   listImage:[],
+	   colors: [],	 
+	   listImage: [],
 	   conditions: [],
 	   ageSelected: [],
 	   categoryValue: '',
@@ -131,9 +131,8 @@ class Register extends React.Component {
 	
 	// set the selected file in to state
 	handlePictureChange = (event) => {
-	  let oldFiles = [];
-	  event.map((file) => {
-		console.log('FIle', file);
+	  let oldFiles = [];	 
+	  event.map((file) => {		
 		if (file.response && file.response.code === 200) {
 		  // Component will show file.url as link
 		  oldFiles.push({
@@ -206,13 +205,25 @@ class Register extends React.Component {
 					productData.brand = productData.brand._id;
 					productData.size = productData.size._id;
 					let images = productImage.data.result.map((img) => {
-						var reader  = new FileReader();
-						img.imageName = reader.readAsDataURL(constant.BASE_IMAGE_URL + 'Products/' + img.imageName);
+						let imgData = {};
+						imgData.uid = img._id;
+						imgData.name= img.imageName;
+						imgData.status= 'done';
+						imgData.url= constant.BASE_IMAGE_URL + 'Products/' + img.imageName;
+						this.state.listImage.push(imgData);
+						//~ var reader  = new FileReader();
+						//~ reader.addEventListener('load', function(img){
+							//~ console.log('Image load', img);
+						//~ });
+						//img.imageName = reader.readAsDataURL(img.imageName, constant.BASE_IMAGE_URL + 'Products/' + img.imageName);
 						//img.imageName = new File(["key"], constant.BASE_IMAGE_URL + 'Products/' + img.imageName);
 						return img;
-					});
-					console.log('images', images);
-					this.setState({editProductForm: productData,listImage: images });					     
+					},()=>{
+							console.log("Image Listy",this.state.listImage);;
+						});
+					//console.log('images', productImage.data.result );
+					this.setState({editProductForm: productData});
+										     
 			}   
 				
 				if(rsize.data.code === 200){
@@ -513,4 +524,4 @@ class Register extends React.Component {
   }
 }
  
-export default Register;
+export default EditProduct;

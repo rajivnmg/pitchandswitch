@@ -1320,19 +1320,29 @@ const searchCity = (req, res) => {
  *	Description : Function to delete the user
  **/
 const deleteUser = (req, res) => {
-  User.findByIdAndRemove(req.params.id, (err, result) => {
-    if (err) {
-      return res.json({
-        message: httpResponseMessage.USER_NOT_FOUND,
-        code: httpResponseMessage.BAD_REQUEST
-      });
-    }
-    return res.json({
-      code: httpResponseCode.EVERYTHING_IS_OK,
-      message: httpResponseMessage.SUCCESSFULLY_DONE,
-      result: result
-    });
-  });
+  Product.find({userId:req.params.id}).then(resultUser => {
+	if(!resultUser.length){		
+		User.findByIdAndRemove(req.params.id, (err, result) => {
+		if (err) {
+		  return res.json({
+			message: httpResponseMessage.USER_NOT_FOUND,
+			code: httpResponseMessage.BAD_REQUEST
+		  });
+		}
+		return res.json({
+		  code: httpResponseCode.EVERYTHING_IS_OK,
+		  message: httpResponseMessage.SUCCESSFULLY_DONE,
+		  result: result
+		});
+	  });
+  }else{
+	  return res.json({
+			message: httpResponseMessage.ALREADY_IN_USED,
+			code: httpResponseMessage.FORBIDDEN
+		  });
+  }
+  })
+  
 };
 
 /** Auther	: Rajiv Kumar

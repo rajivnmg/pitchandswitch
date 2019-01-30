@@ -72,17 +72,7 @@ class viewReceivedPopup extends Component {
 				this.setState({productData:productDetails.data.result})
 			}
 		}))  
-	  .catch(error => console.log(error,this.props.offerTrade));
-		//~ axios.get('/trade/tradingProduct/'+this.state.offerTrade._id).then(result => {
-			//~ if(result.data.code === 200){					
-				//~ this.setState({offerTradeProducts:result.data.result})				
-			//~ }
-		//~ })
-		 //~ axios.get('/product/productDetails/'+ this.state.proID).then(result => {
-		    //~ this.setState({
-				//~ productData:result.data.result,
-			//~ });
-		//~ })
+	  .catch(error => console.log(error,this.props.offerTrade));		
 		 if (localStorage.getItem("jwtToken") !== null) {
 			  axios.get("/user/getLoggedInUser").then(result => {
 				if(result.data.code === 200) {
@@ -154,7 +144,7 @@ return (
 		</p>
 		<If condition={this.state.offerTradeProducts}>
 			<Then>
-				{ this.state.offerTradeProducts.products.map((productList, index) => {			
+				{ (this.state.offerTradeProducts && this.state.offerTradeProducts.products)? this.state.offerTradeProducts.products.map((productList, index) => {			
 				var productImages = (productList.productImages)?productList.productImages[0]:'';
 				var productCategoryID = (productList && productList.productCategory)?productList.productCategory._id:"";
 		
@@ -182,7 +172,7 @@ return (
 			</div>
 		</div>
 		)
-		})
+		}) : null
 		}
 		</Then>							
 		<Else>

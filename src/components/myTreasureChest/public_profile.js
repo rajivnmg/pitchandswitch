@@ -13,6 +13,8 @@ import { Link } from "react-router-dom";
 //import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import {fsExistsSync} from "../../components/commonFunction";
+import * as cmf from "../commonFunction";
+
 var fs = require("fs");
 
 library.add(faHeart);
@@ -176,11 +178,12 @@ class publicProfile extends Component {
                         >
                           {" "}
                           {slide.productCategory
-                            ? slide.productCategory.title
+                            ? cmf.SubSTR(slide.productCategory.title)
                             : ""}
                         </Link>
                       </div>
                       <div className="userdiv">
+                      <Link to={"/public-profile/" + ((this.state.publicProfile)? this.state.publicProfile._id : "")}>
                         <div className="user-pic">
                           {" "}
                           <FontAwesomeIcon icon="heart-o" />{" "}
@@ -195,9 +198,10 @@ class publicProfile extends Component {
                         </div>
                         <div className="user-name">
                           {this.state.publicProfile
-                            ? this.state.publicProfile.userName
+                            ?cmf.letterCaps(this.state.publicProfile.userName)
                             : ""}
                         </div>
+                        </Link>
                       </div>
                     </div>
                   );

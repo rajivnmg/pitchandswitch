@@ -4,6 +4,7 @@ import { Upload, Icon, Modal }  from 'antd';
 import ImgCrop from 'antd-img-crop';
 import moment from 'moment';
 import './picturesWall.css';
+import axios from 'axios';
 // import 'antd/dist/antd.css';
 const constant = require("../../config/constant");
 class PicturesWall extends React.Component {
@@ -29,6 +30,12 @@ class PicturesWall extends React.Component {
 		this.setState({ fileList })
 		this.props.onHandlePicture(fileList);
 	}
+	handleRemove = (file) => {
+		axios.delete('/product/deleteProductImage/'+file.uid).then(result =>{
+				console.log('handleRemove', file);
+		})
+		
+	};
 
   render() {
     const { previewVisible, previewImage, fileList } = this.state;
@@ -44,10 +51,11 @@ class PicturesWall extends React.Component {
         <Upload
           action={constant.BASE_SERVER_URL+"/product/tepmUpload/"}
           listType="picture-card"
-          fileList={fileList}
-          multiple={true}
+          fileList={this.state.fileList}
+          multiple={false}
           onPreview={this.handlePreview}
           onChange={this.handleChange}
+          onRemove={this.handleRemove}
         >
           {fileList.length >= 4 ? null : uploadButton}
         </Upload>

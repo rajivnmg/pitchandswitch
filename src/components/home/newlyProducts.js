@@ -20,7 +20,7 @@ class NewlyProducts extends Component {
     }
 
    componentWillMount(){
-	 axios.get('/product/listProduct').then(result => {		 
+	 axios.get('/product/allActiveProduct').then(result => {		 
 			if(result.data.code === 200){
 				this.setState({newlyProducts:(result.data.result !== null)?result.data.result:[]})
 			}
