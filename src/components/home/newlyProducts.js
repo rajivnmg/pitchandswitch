@@ -9,7 +9,9 @@ import { Link } from 'react-router-dom';
 //import popularItemImg from '../../images/popular-item1.jpg';
 import axios from 'axios';
 //import { If, Then, ElseIf, Else } from 'react-if-elseif-else-render';
+import * as cmf from "../commonFunction";
 const constant = require("../../config/constant");
+
 class NewlyProducts extends Component {
    constructor(props)
     {
@@ -72,13 +74,13 @@ class NewlyProducts extends Component {
 								<div className='pic'><Link to={productUrl} ><img src={constant.BASE_IMAGE_URL+'Products/'+newlyProduct.productImages} alt={"Product Thumb"}/></Link></div>
 									<div className='details'>
 									<h4><a href={productUrl}>{newlyProduct.productName}</a></h4>
-										<Link className="catLink" to={'/search-listing/'+newlyProduct.productCategory}>{(newlyProduct.category && (newlyProduct.category.length > 0))?newlyProduct.category[0].title:''}</Link>
+										<Link className="catLink" to={'/search-listing/'+newlyProduct.productCategory}>{(newlyProduct.category && (newlyProduct.category.length > 0))?cmf.SubSTR(newlyProduct.category[0].title):''}</Link>
 									</div>
 									  <div className="userdiv">
 										<div className="user-pic"><img className="userPicNew"src={constant.BASE_IMAGE_URL+'ProfilePic/'+userImage} alt={"User Thumb"}/></div>
 										<div className="user-name">
 										<Link className="alink" target="_blank" to={'/public-profile/'+((newlyProduct.user && (newlyProduct.user.length > 0))?newlyProduct.user[0]._id:'')}>
-											{(newlyProduct.user  && (newlyProduct.user.length > 0))?newlyProduct.user[0].userName:''}
+											{(newlyProduct.user  && (newlyProduct.user.length > 0))?cmf.letterCaps(newlyProduct.user[0].userName):''}
 										</Link>
 										</div>
 									</div>

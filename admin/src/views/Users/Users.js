@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import '../../custom.css';
 import {Link} from 'react-router-dom';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Card, CardBody, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
 import axios from 'axios';
 import User from './User';
-import Moment from 'moment';
-import { Badge} from 'reactstrap';
+//import Moment from 'moment';
+//import { Badge} from 'reactstrap';
 import ReactPaginate from 'react-paginate';
 var FD = require('form-data');
-var fs = require('fs');
+//var fs = require('fs');
 
 //var passport = require('passport');
 //console.log('passport', passport);/
@@ -17,10 +17,7 @@ var fs = require('fs');
 
 class Users extends Component {
   constructor(props){
-    super(props);
-     const data = [
-		{ name:'', email:'', firstName:''},
-	];
+    super(props);     
     this.state = {
 		  users: [],
 		  sortType :1,
@@ -34,7 +31,7 @@ class Users extends Component {
 		  searchValue:'',
 		  showError : false
     };
-    if(this.props.match.params.page != undefined){
+    if(this.props.match.params.page !== undefined){
       this.setState({currentPage: this.props.match.params.page});
     }
     this.toggle = this.toggle.bind(this);
@@ -103,7 +100,7 @@ class Users extends Component {
  updateInputValue=(evt) =>{
     this.setState({
       searchValue: evt.target.value
-    },console.log("searchValue",this.state.searchValue));
+    });
   }
   
   changeStatusHandler(user){
@@ -190,13 +187,13 @@ class Users extends Component {
   render() {
    let users;
    let classValue;
-   const FilterableTable = require('react-filterable-table');
-   const FieldRenders = require('./User');
+  // const FilterableTable = require('react-filterable-table');
+  // const FieldRenders = require('./User');
      if(this.state.users){
        let userList = this.state.users;
          users = userList.map((user,index) => <User key={user._id} onDeleteUser={this.userDeleteHandler.bind(this)} onflagUsers={this.toggleInfo.bind(this)} changeStatus={(user) => this.changeStatusHandler(user)} user={user} sequenceNumber={index} />);
      }
-     if(this.state.sortType==1){
+     if(this.state.sortType===1){
 		   classValue ="fa fa-sort-asc";
 		}
 		else {

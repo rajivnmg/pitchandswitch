@@ -298,8 +298,7 @@ class Dashboard extends Component {
                         <span>
                           {this.state.userSubscription? moment(
                             this.state.userSubscription.subscriptionId
-                              ? this.state.userSubscription.subscriptionId
-                                  .createdAt
+                              ? this.state.userSubscription.createdAt
                               : Date()
                           ).format("LL"):''}
                         </span>
@@ -309,8 +308,7 @@ class Dashboard extends Component {
                         <span>
                           {this.state.userSubscription ? moment(
                             this.state.userSubscription.subscriptionId
-                              ? this.state.userSubscription.subscriptionId
-                                  .createdAt
+                              ? this.state.userSubscription.createdAt
                               : Date()
                           )
                             .add(1, "years")

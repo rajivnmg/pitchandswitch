@@ -25,10 +25,8 @@ class Login extends Component {
 
     axios.post('/user/login', { email: email, password:password, userType: '1'})
       .then((result) => {
-		  
-        console.log('LOGIN RESULT', result)
         if(result.data.code === 200){
-		  console.log("accessToken",result.data.token)		
+		  //console.log("accessToken",result.data.token)		
           localStorage.setItem('jwtToken', result.data.token);
           this.setState({ message: '' });
           this.props.history.push('/dashboard');

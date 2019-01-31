@@ -13,7 +13,6 @@ const userId =  localStorage.getItem('userId')
 const constant = require('../../config/constant')
 var FD = require('form-data');
 var fs = require('fs');
-
 class MyTradesDetail extends React.Component {
 	
 	constructor(props)
@@ -49,28 +48,15 @@ class MyTradesDetail extends React.Component {
 				conditions: rCondition.data.result
 				});
 		})). catch(error => console.log(error))
-		 		 
-	     //~ axios.get('/product/productDetails/'+ this.state.productId).then(result => {
-		    //~ this.setState({
-				//~ resultData:result.data.result,
-				//~ mainImages:result.data.result?result.data.result.productImages[0]:"default_product_img@3x.png",
-				//~ isAlreadyPitched:result.data.pitchProduct,
-				//~ isAlreadyInWishlist:result.data.wishListProduct
-				//~ });
+		
+		//~ axios.get('/user/getLoggedInUser').then(result => {
+			//~ this.setState({ user:result.data.result })
+			//~ localStorage.setItem('loggedInUser',result.data.result._id);
+			//~ localStorage.setItem('userId',result.data.result._id);
+			//~ localStorage.setItem('userName',result.data.result.userName);
+			//~ localStorage.setItem('isLoggedIn',1);
+			//~ this.setState({resultData:result.data.result});
 		//~ })
-
-	   //~ axios.get('/donation/getConstant').then(result => {
-		   //~ this.setState({conditions: result.data.result});
-	   //~ });
-       
-		axios.get('/user/getLoggedInUser').then(result => {
-			this.setState({ user:result.data.result })
-			localStorage.setItem('loggedInUser',result.data.result._id);
-			localStorage.setItem('userId',result.data.result._id);
-			localStorage.setItem('userName',result.data.result.userName);
-			localStorage.setItem('isLoggedIn',1);
-			this.setState({resultData:result.data.result});
-		})
 		
     }
 	
@@ -105,7 +91,10 @@ class MyTradesDetail extends React.Component {
 				<div className="cl"></div>
 				</div>            
 				<p className="tagsrow">{(this.state.resultData && this.state.resultData.productCategory)?this.state.resultData.productCategory.title:""}</p>
-					<h1>{(this.state.resultData && this.state.resultData.productName)?this.state.resultData.productName:''}~ {(this.state.resultData && this.state.resultData.description)?this.state.resultData.description:''}</h1>
+					<h1>{(this.state.resultData && this.state.resultData.productName)?this.state.resultData.productName:''}~ </h1>
+					<p>
+						{(this.state.resultData && this.state.resultData.description)?this.state.resultData.description:''}
+					</p>
 				<div className="productId">Product ID: <strong>{this.state.productId}</strong>
 					<span className="postedDate">Posted date: {(this.state.resultData && this.state.resultData.createdAt)?Moment(this.state.resultData.createdAt).format('Y-M-D'):''}</span>
                 </div>

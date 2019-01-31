@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Style from './register.css';
 import registerIcon from '../../images/register-icon.png';
-import { Link } from 'react-router-dom';
+import { Link,withRouter } from 'react-router-dom';
 import axios from 'axios';
 import ReCAPTCHA from "react-google-recaptcha";
 import PlacesAutocomplete from 'react-places-autocomplete';
@@ -12,10 +12,14 @@ import {
 } from 'react-places-autocomplete';
 import { Label, Input } from 'reactstrap';
 import DatePicker from "react-date-picker";
+import { Modal, Button } from 'antd';
+
 var moment = require("moment");
 const TEST_SITE_KEY = "6LcCA34UAAAAAMW_poPblvTfPh6IuCMfqKfpdN_k";
 var FD = require('form-data');
 var fs = require('fs');
+
+const confirm = Modal.confirm;
 /**
  * A custom Form component that handles form validation errors.
  * It executes the form's checkValidity
@@ -197,7 +201,7 @@ class Register extends React.Component {
   componentDidMount(){	
 	axios.get('/location/listActiveCountry').then(result => {		
 			this.setState({countries:result.data.result}, () =>{
-					setTimeout(() => { this.initMap();},1000);
+					setTimeout(() => { this.initMap();},1500);
 			})
 	})	
 		  
@@ -229,6 +233,7 @@ class Register extends React.Component {
   };
   
   submit = () => {	
+	  
 	const recaptchaValue = this.recaptchaRef.current.getValue();
 	if(!recaptchaValue){
 		this.setState({
@@ -263,28 +268,32 @@ class Register extends React.Component {
         //console.log("data",data,this.state)
         axios.post('/user/userSignup', data).then(result => {
          // console.log('USER DATA', data)
-         if(result.data.code ==200){			    
-			  this.setState({
-				message: result.data.message,
-				code :result.data.code, 
-				showFormSuccess: true,
-				showFormError: false
-			  });
-			  window.scrollTo(0, 0)
+         if(result.data.code ==200){	
+			 this.success();
+			 //~ const formRes = [...this.state.registerForm]
+			 
+			  //~ this.setState({								
+				//~ message: result.data.message,
+				//~ code :result.data.code, 
+				//~ showFormSuccess: true,
+				//~ showFormError: false,				
+			  //~ });
+			
+			  //~ window.scrollTo(0, 0)
 			}else{
-			  window.scrollTo(0, 0)
+			  window.scrollTo(0, 0)			  
 			  this.setState({
 				message: result.data.message,
 				code :result.data.code,
 				showFormError: true,
-				showFormSuccess: false,
+				showFormSuccess: false,				
 			  });
 			}
 		  })
 		  .catch((error) => {
 			//console.log('error', error);
 			if (!error.status) {
-				 this.setState({ showFormError: true,showFormSuccess: false,message: 'Login failed. Username or Email not match' });
+				 this.setState({ showFormError: true,showFormSuccess: false,message: 'Internal Server Error :'+error});
 				// network error
 			}
 		  });   
@@ -295,6 +304,26 @@ class Register extends React.Component {
     this.setState({dob: date }, () => {
       this.setState({dob:moment(date).format("YYYY/MM/DD")});
     });
+
+
+
+success=()=>{
+  Modal.success({
+    title: 'Registration Successful!',   
+    content: (
+      <div>
+        <p>Congratulation!!!</p>
+        <p>You have successfully registerd, A verification link has been sent to your registed email, Please verify to access your account.</p>
+      </div>
+    ),
+    onOk() {
+		window.location.href='/login';
+		//this.props.history.push('/login'); 
+	},
+    
+  });
+}
+
 
   render() {
     return (
@@ -315,8 +344,7 @@ class Register extends React.Component {
   
   formatEndpoint = () => {
     const form = [...this.state.registerForm];
-	let endpoint = this.state.registerForm.longitude;
-	//alert(endpoint)
+	let endpoint = this.state.registerForm.longitude;	
 	if(endpoint==""){
 		this.setState({address:""});
 	}
@@ -569,4 +597,4 @@ class Register extends React.Component {
   }
 }
  
-export default Register;
+export default withRouter(Register);

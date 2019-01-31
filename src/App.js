@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 //import Popup from "react-popup";
-import Style from "./App.css";
+import "./App.css";
 import "./App.scss";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./components/main.css";
-import * as ActionTypes from "./store/actionTypes";
+//import * as ActionTypes from "./store/actionTypes";
 
 import Footer from "./components/footer";
 // import LeftNav from './components/leftNav'

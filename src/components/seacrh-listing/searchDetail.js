@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Style from "../myTrades/myTrades.css";
+import "../myTrades/myTrades.css";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 // import PitchRequests from './pitchRequests'
 import detailPic from "../../images/detail-pic.png";
@@ -12,6 +12,7 @@ import ThumbGallery from "../../components/seacrh-listing/Gallery";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Moment from "moment";
+
 import ReadMoreReact from "read-more-react";
 import { Spin, Alert } from "antd";
 import { If, Then, ElseIf, Else } from "react-if-elseif-else-render";
@@ -111,11 +112,11 @@ class SearchResult extends React.Component {
     });
     setTimeout(() => {
       this.setState({ showFormSuccess: false });
-    }, 12000);
+    }, 10000);
   }
 
   _renderSuccessMessage() {
-    return <Alert message="Added Successfully in wishlist" type="success" />;
+	return <Alert message="Added Successfully in wishlist" type="success" />;
   }
   render() {
     let optionTemplate;
@@ -184,8 +185,7 @@ class SearchResult extends React.Component {
                         : ""}
                     </p>
                     <h1>{this.state.resultData.productName}</h1>
-                    <div className="productId">
-                      Product ID: <strong>{this.state.productId}</strong>
+                    <div className="productId">                      
                       <span className="postedDate">
                         Posted date:
                         {Moment(this.state.resultData.createdAt).format(
@@ -225,12 +225,13 @@ class SearchResult extends React.Component {
                       </div>
                     </div>
                     <div className="brdr-top">
+                    <h2>Description</h2>
                       <ReadMoreReact
                         className="readmore"
                         text={description}
                         min={1}
-                        ideal={15}
-                        max={15}
+                        ideal={constant.IDEAL_TEXT_VISIBLE}
+                        max={constant.MAX_TEXT_VISIBLE}
                       />
                     </div>
                     <div className="btnRow">

@@ -1245,7 +1245,7 @@ const productDetails = (req, res) => {
                             message: httpResponseMessage.USER_NOT_FOUND,
                             code: httpResponseMessage.BAD_REQUEST
                         });
-                    } else {
+                    } else{
                         var token = commonFunction.getToken(req.headers);
                         if (token.length > 10) {
                            
